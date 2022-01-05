@@ -1,0 +1,190 @@
+<resources>
+    <string name="google_maps_Api_Key" translatable="false">AIzaSyBCtO6-15WHCAA5lFyIz339WB1MTHzqLbg</string>
+    <string name="default_notification_channel_id" translatable="false">com.com.icestores.General</string>
+    <string name="navigation_drawer_open" translatable="false">Drawer Open</string>
+    <string name="navigation_drawer_close" translatable="false">Drawer Close</string>
+
+    <string name="time" translatable="false">0:%1$s</string>
+    <string name="html_text" translatable="false"><![CDATA[%1$s]]></string>
+
+
+    <string name="app_name">Sport Gate</string>
+
+    <string name="no_connect">No internet connection, please check the connection and try again later</string>
+    <string name="connect_snackbar">Connect</string>
+    <string name="server_down">An unexpected error, please try again later.</string>
+    <string name="sucsess_dialog_str">Success</string>
+
+    <string name="ok_str">OK</string>
+    <string name="there_s_no_items">Empty list</string>
+    <string name="yes_str">Yes</string>
+    <string name="no_str">No</string>
+    <string name="are_sure_str">Are you sure?</string>
+    <string name="slide1_str">The app dashboard is filled with many products categorized into multiple sections to easily find your favorite item</string>
+    <string name="slide2_str">Enjoy the shopping experience by easily selecting your favorite products and adding them to the cart</string>
+    <string name="slide3_str">We offer fast delivery to your doorstep, don\'t forget to check order status on the app</string>
+
+
+    <!--validations-->
+    <string name="valid_email">Email is not valid</string>
+    <string name="valid_pass">Password must be at least 8 characters long</string>
+    <string name="valid_name">Name is not valid</string>
+    <string name="valid_street">Street name is not valid</string>
+    <string name="valid_building">Building number is not valid</string>
+    <string name="valid_floor">Floor number is not valid</string>
+    <string name="valid_Message">Message is not valid</string>
+    <string name="valid_phone">Phone number is not valid</string>
+    <string name="valid_coupon_code">Please enter a valid coupon code</string>
+    <string name="valid_address">Select delivery address</string>
+    <string name="validation_verify_code">Enter a valid Code</string>
+    <string name="select_city_str">Select city</string>
+    <string name="select_area_str">Select area</string>
+
+
+    <string name="home_str">Home</string>
+    <string name="notifications_str">Notifications</string>
+    <string name="categories_str">Categories</string>
+    <string name="new_arrivals_str">New Products</string>
+    <string name="best_selling_str">Best Selling</string>
+    <string name="recommended_str">Recommended</string>
+    <string name="price_jod_str">%1$.2f&#160; %2$s</string>
+    <string name="price_ratio_str">%1$s %%</string>
+    <string name="what_are_you_locking_for_str">What are you looking for?</string>
+    <string name="apply_str">Submit</string>
+    <string name="perm_denied_str">Permission denied</string>
+    <string name="reject_go_to_setting_str">Please allow the required permissions by opening the device Settings -> Permissions and granting access</string>
+    <string name="settings_str">Settings</string>
+    <string name="best_match_str">Best Match</string>
+    <string name="a_z_str">A-Z</string>
+    <string name="z_a_str">Z-A</string>
+    <string name="price_low_to_high_str">Low to high (Price)</string>
+    <string name="price_high_to_low_str">High to low (Price)</string>
+    <string name="search_str">Search</string>
+    <string name="sorting_by_str">Sort By</string>
+    <string name="don_t_have_an_account_str">Don’t have an account?</string>
+    <string name="sign_in_str">Login</string>
+    <string name="forget_password_str">Forget Password</string>
+    <string name="sign_up_str">Sign Up</string>
+    <string name="new_password_str">New Password</string>
+    <string name="password_str">Password</string>
+    <string name="full_name_str">Full name</string>
+    <string name="email_str">Email</string>
+    <string name="phone_number_str">Phone Number</string>
+    <string name="confirm_password_str">Confirm Password</string>
+    <string name="camera_str">Camera</string>
+    <string name="gallery_str">Gallery</string>
+    <string name="delete_str">Delete</string>
+    <string name="upload_image_str">Upload Image</string>
+    <string name="choose_image_str">Choose Image</string>
+    <string name="verify_str">Verify</string>
+    <string name="resend_code_str">Resend</string>
+    <string name="reset_pass_str">Reset Password</string>
+    <string name="valid_confirm">Password and confirm password do not match</string>
+    <string name="terms_of_us_str">Terms of service</string>
+    <string name="no_terms_str">No Content</string>
+    <string name="no_about_us_str">No Content</string>
+    <string name="max_qty_str">You have reached the maximum number of items</string>
+    <string name="min_qty_str">You have reached the Minimum number of items</string>
+    <string name="checkout_str">Checkout</string>
+    <string name="cart_str">Cart</string>
+    <string name="continue_str">Continue</string>
+    <string name="check_out_str">Checkout</string>
+    <string name="select_coord_map">Please select your location on the map</string>
+    <string name="your_current_location_str">Your current location</string>
+    <string name="type_email_address_to_verify_str">Type your email address used with your account to verify your identity</string>
+    <string name="type_phone_to_verify_str">Type your phone number to reset your account password</string>
+    <string name="step_1_of_3_str">Step 1 Of 3</string>
+    <string name="please_enter_the_new_password_str">Please enter your new password</string>
+    <string name="step_3_of_3_str">Step 3 Of 3</string>
+    <string name="sub_total_str">Subtotal</string>
+    <string name="edit_profile_info_str">Edit Profile</string>
+    <string name="change_password_str">Change Password</string>
+    <string name="my_favorite_str">Favorites</string>
+    <string name="my_orders_history_str">Orders</string>
+    <string name="about_us_str">About Us</string>
+    <string name="terms_and_conditions_str">Terms &amp; Conditions</string>
+    <string name="share_app_str">App Share</string>
+    <string name="change_language_str">Change Language</string>
+    <string name="contact_us_str">Contact Us</string>
+    <string name="log_out_str">Logout</string>
+    <string name="save_str">Save</string>
+    <string name="change_pass_str">Change Password</string>
+    <string name="old_password_str">Old Password</string>
+    <string name="change_language_sr">Change Language</string>
+    <string name="you_do_not_have_any_favorite_products_str">Your wish List is Empty</string>
+    <string name="mange_addresses_str">Addresses</string>
+    <string name="you_do_not_have_any_previous_addresses_please_add_an_address_str">You do not have any previous addresses, please create one to use with your next orders</string>
+    <string name="edit_str">Edit</string>
+    <string name="add_a_new_address_str">New Address</string>
+    <string name="cur_loc_str">Current Location</string>
+    <string name="notes_str">Notes</string>
+    <string name="floor_str">Floor number *</string>
+    <string name="building_str">Building number *</string>
+    <string name="street_str">Street *</string>
+    <string name="validation_exceed_addresses_limit">Please remove old addresses before creating a new one</string>
+    <string name="edit_address_str">Edit Address</string>
+    <string name="get_my_location_str">Get My Location</string>
+    <string name="send_str">Send</string>
+    <string name="message_str">Message</string>
+    <string name="select_payment_method_str">Payment Method</string>
+    <string name="select_payment_method_sub_str">Choose your preferred payment method</string>
+    <string name="cash_str">Cash on Delivery</string>
+    <string name="credit_str">Credit Card (Visa, Mastercard)</string>
+    <string name="select_delivery_address_str">Delivery Address</string>
+    <string name="select_delivery_address_sub_str">Selected your delivery address</string>
+    <string name="change_str">Change</string>
+    <string name="promo_code_str">Promo Code</string>
+    <string name="enter_promo_code_str">Enter promo code</string>
+    <string name="vat_str">TAX</string>
+    <string name="delivery_str">Delivery</string>
+    <string name="discount_str">Discount</string>
+    <string name="order_total_str">Total</string>
+    <string name="order_id_str">%1$s</string>
+    <string name="date_value_str">%1$s</string>
+    <string name="you_do_not_have_any_orders_str">No orders created, add products to your cart and enjoy your first order</string>
+    <string name="you_do_not_have_any_notification_str">You don\'t have any notifications</string>
+    <string name="qty_num_str">Quantity: %1$d</string>
+    <string name="qty_lbl">Quantity</string>
+    <string name="order_details_str">Order Details</string>
+    <string name="notification_setting_str">Notification Settings</string>
+    <string name="see_all_str">See All</string>
+    <string name="close_str">Close</string>
+    <string name="wish_list">Wish List</string>
+    <string name="login">Login</string>
+    <string name="app_version">App Version: %s</string>
+    <string name="all_rights_reserved">All Rights Reserved</string>
+    <string name="souqapp">SouqApp.</string>
+    <string name="powered_by">Powered By: \t</string>
+    <string name="your_cart_is_empty">Your Cart is Empty</string>
+    <string name="start_shopping_now">Start Shopping Now!</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="buy">Buy</string>
+    <string name="order_number">Order Number</string>
+    <string name="status">Status</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="item_available">%1$d Available</string>
+    <string name="extra">Extra</string>
+    <string name="specifications">Specifications</string>
+    <string name="see_more">See More</string>
+    <string name="see_less">See Less</string>
+    <string name="continue_shopping">Continue Shopping</string>
+    <string name="no_search_result">No search result</string>
+    <string name="loginByPhoneNumber">Login by Phone Number</string>
+    <string name="loginByEmail">Login by Email</string>
+    <string name="did_you">Did you</string>
+    <string name="forget_your_password">forget your password?</string>
+    <string name="contact_info">Contact info</string>
+    <string name="you_will_shortly_receive_an_sms_code">You will shortly receive an SMS code</string>
+    <string name="select_country">Select Country</string>
+    <string name="primary">Primary</string>
+    <string name="set_address_as_default">Set As Primary</string>
+    <string name="thank_you">Thank you</string>
+    <string name="your_order_has_been_submitted_and_will_be_delivered_within_4_working_days">Your order has been submitted and will be delivered within 4 working days</string>
+    <string name="order_details">Order Details</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="pick_your_location">Pick your location</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="available_in_stock">%1$d available in stock</string>
+
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">#2B2B2B</color> <!--#0284D4-->
+    <color name="colorPrimary">#191919</color> <!--#0093ee-->
+    <color name="colorAccent">#A0AEC0</color> <!--#A0AEC0-->
+
+    <color name="blackCol">#000000</color>
+    <color name="offWhiteCol">#F8F9FF</color>
+
+    <color name="blackDarkOverLayCol">#8B000000</color>
+    <color name="blurTransColor">#1E68ACD6</color>
+
+    <color name="whiteCol">#FFFFFF</color>
+    <color name="fullTransparent">#00dadada</color>
+    <color name="redColor">#FF0000</color>
+    <color name="greyColor">#A0A0A0</color>
+    <color name="greyColor2">#FF979797</color>
+    <color name="greyColor3">#a8a8a8</color>
+    <color name="greyColor4">#4a4a4a</color>
+    <color name="lightGreyColor">#d8d8d8</color>
+    <color name="lightGreyColor2">#ededed</color>
+
+
+    <color name="text_color">#de000000</color>
+    <color name="text_color_secondary">#99000000</color>
+    <color name="selected_color">#FF0000</color>
+    <color name="outline_button_color">#FF0000</color>
+    <!--    <color name="selected_color">#0093ee</color>-->
+    <!--    <color name="outline_button_color">#4a90e2</color>-->
+    <color name="radio_selected_color">#2e2d2d</color>
+    <color name="border_color">#61000000</color>
+    <color name="view_separator">#e0dbdb</color>
+</resources>

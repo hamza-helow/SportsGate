@@ -1,4 +1,4 @@
-package com.souqApp.utilities;
+package com.souqApp.infra.custome_view;
 
 import android.content.Context;
 import android.graphics.Paint;

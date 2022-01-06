@@ -4,6 +4,7 @@
     package="com.souqApp">
 
     <application
+        android:name=".infra.App"
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -30,6 +31,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
+
         </activity>
 
     </application>

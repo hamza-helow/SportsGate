@@ -6,7 +6,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.souqApp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

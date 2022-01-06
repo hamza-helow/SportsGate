@@ -1,6 +1,6 @@
-package com.souqApp.domain.login.entity
+package com.souqApp.domain.common.entity
 
-data class LoginEntity(
+data class UserEntity(
     val id: Int,
     val name: String,
     val email: String,

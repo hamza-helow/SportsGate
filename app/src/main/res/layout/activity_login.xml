@@ -128,7 +128,7 @@
 
                             </FrameLayout>
 
-                            <com.souqApp.utilities.TextInputLayout
+                            <com.souqApp.infra.custome_view.TextInputLayout
                                 android:id="@+id/phone_input_lay"
                                 style="@style/textFieldStyle"
                                 android:layout_marginTop="0dp"
@@ -144,10 +144,10 @@
                                     android:textColor="@color/text_color"
                                     tools:text="079999999" />
 
-                            </com.souqApp.utilities.TextInputLayout>
+                            </com.souqApp.infra.custome_view.TextInputLayout>
                         </LinearLayout>
 
-                        <com.souqApp.utilities.TextInputLayout
+                        <com.souqApp.infra.custome_view.TextInputLayout
                             android:id="@+id/email_input_lay"
                             style="@style/textFieldStyle"
                             android:visibility="gone">
@@ -161,10 +161,10 @@
                                 android:textColor="@color/text_color"
                                 tools:text="test@gmail.com" />
 
-                        </com.souqApp.utilities.TextInputLayout>
+                        </com.souqApp.infra.custome_view.TextInputLayout>
                     </FrameLayout>
 
-                    <com.souqApp.utilities.TextInputLayout
+                    <com.souqApp.infra.custome_view.TextInputLayout
                         android:id="@+id/password_input_lay"
                         style="@style/textFieldStyle"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -182,7 +182,7 @@
                             android:textColor="@color/text_color"
                             tools:text="987654321" />
 
-                    </com.souqApp.utilities.TextInputLayout>
+                    </com.souqApp.infra.custome_view.TextInputLayout>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/login_btn"

@@ -1,4 +1,4 @@
-package com.souqApp.infra
+package com.souqApp.infra.utils
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

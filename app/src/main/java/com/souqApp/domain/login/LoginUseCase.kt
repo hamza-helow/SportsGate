@@ -1,4 +1,4 @@
-package com.souqApp.domain.login.usecase
+package com.souqApp.domain.login
 
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.login.remote.dto.LoginRequest

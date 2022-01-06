@@ -30,7 +30,6 @@ class LoginRepositoryImpl @Inject constructor(private val loginApi: LoginApi) : 
                 )
                 emit(BaseResult.Success(loginEntity))
             } else {
-
                 val type = object : TypeToken<WrappedResponse<UserResponse>>() {}.type
                 val error: WrappedResponse<UserResponse> =
                     Gson().fromJson(response.errorBody()!!.charStream(), type)

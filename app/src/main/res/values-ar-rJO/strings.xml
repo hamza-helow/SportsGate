@@ -178,4 +178,8 @@
     <string name="cancel">إلغاء</string>
     <string name="add">ُضافة</string>
     <string name="available_in_stock">%1$d متوفر في المستودع</string>
+
+    <string name="error_email_not_valid">Email is not valid</string>
+    <string name="error_phone_not_valid">Phone is not valid</string>
+    <string name="error_password_not_valid">Password is not valid</string>
 </resources>

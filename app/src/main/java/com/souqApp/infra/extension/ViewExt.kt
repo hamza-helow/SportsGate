@@ -1,4 +1,4 @@
-package com.souqApp.presentation.common.extension
+package com.souqApp.infra.extension
 
 import android.view.View
 
@@ -12,4 +12,11 @@ fun View.gone() {
 
 fun View.inVisible() {
     visibility = View.INVISIBLE
+}
+
+fun View.isVisible(isVisible: Boolean) {
+    visibility = if (isVisible)
+        View.VISIBLE
+    else
+        View.GONE
 }

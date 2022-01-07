@@ -16,10 +16,19 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
     private val state = MutableStateFlow<LoginActivityState>(LoginActivityState.Init)
+    private var loginByPhone: Boolean = true
+
     val mState: StateFlow<LoginActivityState> get() = state
+    val isPhoneEnable: Boolean get() = loginByPhone
+
 
     private fun setLoading() {
         state.value = LoginActivityState.IsLoading(true)
+    }
+
+    fun loginByPhoneToggle() {
+        loginByPhone = !loginByPhone
+        state.value = LoginActivityState.LoginByPhone(loginByPhone)
     }
 
     private fun hideLoading() {
@@ -64,6 +73,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
 sealed class LoginActivityState {
     object Init : LoginActivityState()
     data class IsLoading(val isLoading: Boolean) : LoginActivityState()
+    data class LoginByPhone(val isEnable: Boolean) : LoginActivityState()
     data class ShowToast(val message: String) : LoginActivityState()
     data class SuccessLogin(val loginEntity: UserEntity) : LoginActivityState()
     data class ErrorLogin(val rawResponse: WrappedResponse<UserResponse>) : LoginActivityState()

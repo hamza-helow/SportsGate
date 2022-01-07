@@ -17,7 +17,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField 'String' , 'API_BASE_URL' , '"https://sportgate.2advanced.me/api/v1/"'
+        buildConfigField 'String' , 'API_BASE_URL' , '"https://sportgate.2advanced.me/api/"'
         buildConfigField 'String' ,'APP_NAME' , '"Sports gate"'
 
     }
@@ -83,4 +83,7 @@ dependencies {
 
     //splashscreen core
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+
+    //sdp
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
 }

@@ -106,6 +106,7 @@
         <item name="boxBackgroundColor">@color/whiteCol</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxBackgroundMode">outline</item>
+
         <item name="hintAnimationEnabled">true</item>
         <item name="boxCornerRadiusTopStart">8dp</item>
         <item name="boxCornerRadiusTopEnd">8dp</item>

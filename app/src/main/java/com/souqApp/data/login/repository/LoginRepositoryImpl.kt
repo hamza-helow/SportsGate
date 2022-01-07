@@ -1,5 +1,6 @@
 package com.souqApp.data.login.repository
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -17,7 +18,9 @@ class LoginRepositoryImpl @Inject constructor(private val loginApi: LoginApi) : 
     override suspend fun login(loginRequest: LoginRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return flow {
             val response = loginApi.login(loginRequest)
-            if (response.isSuccessful) {
+            val isSuccessful = response.body()?.status
+
+            if (isSuccessful == true) {
                 val body = response.body()!!.data!!
                 val loginEntity = UserEntity(
                     body.id,
@@ -30,10 +33,7 @@ class LoginRepositoryImpl @Inject constructor(private val loginApi: LoginApi) : 
                 )
                 emit(BaseResult.Success(loginEntity))
             } else {
-                val type = object : TypeToken<WrappedResponse<UserResponse>>() {}.type
-                val error: WrappedResponse<UserResponse> =
-                    Gson().fromJson(response.errorBody()!!.charStream(), type)
-                emit(BaseResult.Errors(error))
+                emit(BaseResult.Errors(response.body()!!))
             }
         }
     }

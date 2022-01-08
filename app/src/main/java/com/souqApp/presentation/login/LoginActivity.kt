@@ -1,13 +1,13 @@
 package com.souqApp.presentation.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import androidx.activity.viewModels
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,25 +19,24 @@ import com.souqApp.databinding.ActivityLoginBinding
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.presentation.register.RegisterActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity(), View.OnClickListener, TextWatcher,
+class LoginActivity : AppCompatActivity(), View.OnClickListener,
     CompoundButton.OnCheckedChangeListener {
 
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
     private lateinit var binding: ActivityLoginBinding
     val viewModel: LoginViewModel by viewModels()
     private val tag: String = LoginActivity::class.java.simpleName
 
-    @Inject
-    lateinit var sharedPrefs: SharedPrefs
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -46,18 +45,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, TextWatcher,
     }
 
     private fun initListener() {
-
         binding.switchTypeLogin.setOnCheckedChangeListener(this)
-
         binding.loginBtn.setOnClickListener(this)
-
-        binding.passwordEdt.addTextChangedListener(this)
-        binding.phoneEdt.addTextChangedListener(this)
+        binding.createAccBtn.setOnClickListener(this)
+        binding.includePassword.passwordEdt.doAfterTextChanged { validate() }
+        binding.includePhoneNumber.phoneEdt.doAfterTextChanged { validate() }
     }
 
     private fun observe() {
         viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { stete -> handleState(stete) }
+            .onEach { state -> handleState(state) }
             .launchIn(lifecycleScope)
     }
 
@@ -82,12 +79,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, TextWatcher,
     }
 
     private fun handleSuccessLogin(loginEntity: UserEntity) {
-
+        sharedPrefs.saveToken(loginEntity.token)
     }
 
     private fun handleErrorLogin(rawResponse: WrappedResponse<UserResponse>) {
         if (rawResponse.errors != null && rawResponse.errors!!.isNotEmpty()) {
             val error = rawResponse.errors!![0]
+            Log.d(tag, error)
         }
     }
 
@@ -103,12 +101,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, TextWatcher,
     }
 
     private fun getUsernameField(): TextInputEditText {
-        return if (!viewModel.isPhoneEnable) binding.emailEdt else binding.phoneEdt
+        return if (!viewModel.isPhoneEnable) binding.emailEdt else binding.includePhoneNumber.phoneEdt
     }
 
     private fun login() {
         val username = getUsernameField().text.toString().trim()
-        val password = binding.passwordEdt.text.toString()
+        val password = binding.includePassword.passwordEdt.text.toString()
         val code = if (viewModel.isPhoneEnable) "+962" else ""
 
         if (validate()) {
@@ -120,9 +118,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, TextWatcher,
     private fun validate(): Boolean {
         resetAllError()
         val username = getUsernameField().text.toString().trim()
-        val password = binding.passwordEdt.text.toString()
-
-        binding.loginBtn.isEnabled = false
+        val password = binding.includePassword.passwordEdt.text.toString()
 
         if (viewModel.isPhoneEnable) {
             if (!username.isPhone()) {
@@ -136,19 +132,18 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, TextWatcher,
                 return false
             }
         }
-
         if (!password.isPasswordValid()) {
-            binding.passwordInputLay.activeBorder(this, false)
-
+            binding.includePassword.passwordInputLay.activeBorder(this, false)
             return false
         }
-        binding.loginBtn.isEnabled = true
 
+        binding.loginBtn.isEnabled = true
         return true
     }
 
     private fun resetAllError() {
-        binding.passwordInputLay.activeBorder(this, true)
+        binding.loginBtn.isEnabled = false
+        binding.includePassword.passwordInputLay.activeBorder(this, true)
         binding.emailInputLay.activeBorder(this, true)
         binding.phoneInputLay.activeBorder(this, true)
     }
@@ -156,25 +151,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, TextWatcher,
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.loginBtn.id -> login()
+            binding.createAccBtn.id -> goToCreateAccountScreen()
         }
+    }
+
+    private fun goToCreateAccountScreen() {
+        startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
     }
 
     private fun loginByPhoneToggle() {
         viewModel.loginByPhoneToggle()
     }
 
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-    }
-
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-    }
-
-    override fun afterTextChanged(et: Editable?) {
-        validate()
-    }
-
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
         loginByPhoneToggle()
-        validate()
+        binding.loginBtn.isEnabled = validate()
     }
 }

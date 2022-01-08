@@ -1,7 +1,5 @@
 package com.souqApp.data.register.repositroy
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.register.remote.api.RegisterApi
@@ -23,16 +21,14 @@ class RegisterRepositoryImpl @Inject constructor(private val registerApi: Regist
         return flow {
 
             val response = registerApi.register(registerRequest)
+            val isSuccessful = response.body()?.status
 
-            if (response.isSuccessful) {
+            if (isSuccessful == true) {
                 val body = response.body()!!.data!!
                 val registerEntity = RegisterEntity(body.token)
                 emit(BaseResult.Success(registerEntity))
             } else {
-                val type = object : TypeToken<WrappedResponse<RegisterResponse>>() {}.type
-                val error: WrappedResponse<RegisterResponse> =
-                    Gson().fromJson(response.errorBody()!!.charStream(), type)
-                emit(BaseResult.Errors(error))
+                emit(BaseResult.Errors(response.body()!!))
             }
 
         }
@@ -42,9 +38,9 @@ class RegisterRepositoryImpl @Inject constructor(private val registerApi: Regist
         return flow {
 
             val response = registerApi.activeAccount(activeAccountRequest)
+            val isSuccessful = response.body()?.status
 
-            if (response.isSuccessful) {
-
+            if (isSuccessful == true) {
                 val body = response.body()!!.data!!
                 val userEntity = UserEntity(
                     body.id,
@@ -55,13 +51,9 @@ class RegisterRepositoryImpl @Inject constructor(private val registerApi: Regist
                     body.verified,
                     body.token
                 )
-
                 emit(BaseResult.Success(userEntity))
             } else {
-                val type = object : TypeToken<WrappedResponse<UserResponse>>() {}.type
-                val error: WrappedResponse<UserResponse> =
-                    Gson().fromJson(response.errorBody()!!.charStream(), type)
-                emit(BaseResult.Errors(error))
+                emit(BaseResult.Errors(response.body()!!))
             }
         }
     }

@@ -1,241 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:gravity="center"
-    android:orientation="vertical">
+<layout xmlns:tools="http://schemas.android.com/tools">
 
-
-    <LinearLayout
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_16sdp"
+        android:layout_height="match_parent"
+        android:background="@color/white"
         android:gravity="center"
         android:orientation="vertical">
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="@dimen/_32sdp"
-            android:gravity="center"
-            android:text="@string/login"
-            android:textAllCaps="false"
-            android:textSize="@dimen/_22sdp"
-            android:textStyle="bold" />
-
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch_type_login"
-            android:layout_width="@dimen/_64sdp"
-
-            android:layout_height="@dimen/_28sdp"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:layout_weight="1"
-            android:background="@drawable/toggle_login_type"
-            android:backgroundTint="@color/colorAccent"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:thumb="@null"
-            app:track="@null"
-            tools:ignore="InefficientWeight" />
-
-        <ProgressBar
-            android:id="@+id/loading_progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone" />
-
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/border_bg"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:text="@string/code_country"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13sdp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/phone_edt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:hint="@string/phone_number_str"
-                android:inputType="text"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_15sdp"
-                tools:text="" />
-
-        </LinearLayout>
-
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/layout_phone_number"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:visibility="gone">
+            android:layout_margin="@dimen/_16sdp"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:text="@string/code_country"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13sdp"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:gravity="center"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_22sdp"
                 android:textStyle="bold" />
+
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_type_login"
+                android:layout_width="@dimen/_64sdp"
+
+                android:layout_height="@dimen/_28sdp"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_login_type"
+                android:backgroundTint="@color/colorAccent"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:thumb="@null"
+                app:track="@null"
+                tools:ignore="InefficientWeight" />
+
+            <ProgressBar
+                android:id="@+id/loading_progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone" />
+
+
+            <include
+                android:id="@+id/include_phone_number"
+                layout="@layout/edit_text_phone_number" />
+
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/layout_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:text="@string/code_country"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/phone_input_lay"
+                    style="@style/LoginTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:hint="@string/phone_number_str"
+                        android:inputType="text"
+                        android:paddingStart="@dimen/_42sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        tools:text="" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/phone_input_lay"
+                android:id="@+id/email_input_lay"
                 style="@style/LoginTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:visibility="gone"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email_edt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:hint="@string/phone_number_str"
-                    android:inputType="text"
-                    android:paddingStart="@dimen/_42sdp"
-                    android:paddingEnd="@dimen/_15sdp"
+                    android:hint="@string/email_str"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    android:textColor="@color/black"
                     tools:text="" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <include
+                android:id="@+id/include_password"
+                layout="@layout/edit_text_password"
+                app:hintText="@{@string/password_str}" />
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_input_lay"
-            style="@style/LoginTextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:visibility="gone"
-            app:hintEnabled="false">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email_edt"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/login_btn"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:hint="@string/email_str"
-                android:inputType="textEmailAddress"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_8sdp"
-                android:textColor="@color/black"
-                tools:text="" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_input_lay"
-            style="@style/LoginTextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            app:hintEnabled="false"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorAccent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_edt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:hint="@string/password_str"
-                android:inputType="textPassword"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_8sdp"
-                tools:text="" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:enabled="false"
+                android:text="@string/sign_in_str"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/checkBox"
+                tools:ignore="HardcodedText" />
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_btn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:enabled="false"
-            android:text="@string/sign_in_str"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox"
-            tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/forgetPassBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/forget_your_password"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
 
 
-        <TextView
-            android:id="@+id/forgetPassBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/forget_your_password"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:gravity="center"
+                android:text="@string/don_t_have_an_account_str"
+                android:textAllCaps="false"
+                android:textSize="14sp" />
 
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:gravity="center"
-            android:text="@string/don_t_have_an_account_str"
-            android:textAllCaps="false"
-            android:textSize="14sp" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/createAccBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:enabled="true"
+                android:text="@string/sign_up_str"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/checkBox"
+                tools:ignore="HardcodedText" />
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/createAccBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:enabled="true"
-            android:text="@string/sign_up_str"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox"
-            tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/txt_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:gravity="center"
+                android:text="@string/app_intro_skip_button"
+                android:textAllCaps="false"
+                android:textSize="14sp" />
 
 
-        <TextView
-            android:id="@+id/txt_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_32sdp"
-            android:gravity="center"
-            android:text="@string/app_intro_skip_button"
-            android:textAllCaps="false"
-            android:textSize="14sp" />
+        </LinearLayout>
+
+    </FrameLayout>
 
 
-    </LinearLayout>
-
-</LinearLayout>
+</layout>

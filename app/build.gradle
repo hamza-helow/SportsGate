@@ -17,7 +17,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField 'String' , 'API_BASE_URL' , '"https://sportgate.2advanced.me/api/"'
+        buildConfigField 'String' , 'API_BASE_URL' , '"https://dev.2advanced.me/api/"'
         buildConfigField 'String' ,'APP_NAME' , '"Sports gate"'
         vectorDrawables.useSupportLibrary = true
 
@@ -87,4 +87,6 @@ dependencies {
 
     //sdp
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
+    implementation "com.github.mukeshsolanki:android-otpview-pinview:$pinview_version"
 }

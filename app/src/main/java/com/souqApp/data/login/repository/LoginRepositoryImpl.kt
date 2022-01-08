@@ -1,8 +1,5 @@
 package com.souqApp.data.login.repository
 
-import android.util.Log
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.login.remote.api.LoginApi
 import com.souqApp.data.login.remote.dto.LoginRequest

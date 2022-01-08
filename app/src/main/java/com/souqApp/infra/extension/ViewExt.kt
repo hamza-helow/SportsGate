@@ -1,7 +1,10 @@
 package com.souqApp.infra.extension
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.souqApp.R
@@ -22,6 +25,7 @@ fun TextInputLayout.activeBorder(context: Context, active: Boolean) {
     this.boxStrokeColor =
         ContextCompat.getColor(context, if (active) R.color.green else R.color.red)
 }
+
 
 fun View.isVisible(isVisible: Boolean) {
     visibility = if (isVisible)

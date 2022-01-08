@@ -10,7 +10,7 @@
         <item name="backgroundBaseScreen">@color/gray_background</item>
         <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/colorAccent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-
+        <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
     </style>
 
 
@@ -56,6 +56,7 @@
         <item name="strokeColor">@android:color/transparent</item>
         <item name="iconTint">@color/gray</item>
     </style>
+
 
 
 </resources>

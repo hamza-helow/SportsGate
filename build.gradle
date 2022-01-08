@@ -28,6 +28,9 @@ buildscript {
     //app intro
     ext.app_intro_version ="6.1.0"
 
+    // pin view (otp)
+    ext.pinview_version ="2.1.2"
+
     repositories {
         google()
         mavenCentral()

@@ -18,6 +18,9 @@
     <color name="yellow_light4">#fffafbd6</color>
 
 
+    <color name="grey">#FF979797</color>
+
+
 
     <color name="abc_input_method_navigation_guard">@android:color/black</color>
     <color name="abc_search_url_text_normal">#ff7fa87f</color>

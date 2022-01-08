@@ -2,24 +2,22 @@ package com.souqApp.presentation.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.CompoundButton
 import androidx.activity.viewModels
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
-import com.souqApp.R
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.login.remote.dto.LoginRequest
 import com.souqApp.databinding.ActivityLoginBinding
 import com.souqApp.domain.common.entity.UserEntity
-import com.souqApp.infra.extension.isEmail
-import com.souqApp.infra.extension.isPasswordValid
-import com.souqApp.infra.extension.isPhone
-import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -27,11 +25,11 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity(), View.OnClickListener {
+class LoginActivity : AppCompatActivity(), View.OnClickListener, TextWatcher,
+    CompoundButton.OnCheckedChangeListener {
 
     private lateinit var binding: ActivityLoginBinding
     val viewModel: LoginViewModel by viewModels()
-
     private val tag: String = LoginActivity::class.java.simpleName
 
     @Inject
@@ -48,8 +46,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initListener() {
-        binding.btnSwitchPhoneEmail.setOnClickListener(this)
+
+        binding.switchTypeLogin.setOnCheckedChangeListener(this)
+
         binding.loginBtn.setOnClickListener(this)
+
+        binding.passwordEdt.addTextChangedListener(this)
+        binding.phoneEdt.addTextChangedListener(this)
     }
 
     private fun observe() {
@@ -70,20 +73,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun handleShowToast(message: String) {
-
         Log.d(tag, message)
-
     }
 
     private fun handleLoginByPhone(enable: Boolean) {
-        binding.btnSwitchPhoneEmail.icon = AppCompatResources.getDrawable(
-            this,
-            if (enable) R.drawable.phone_email_switch else R.drawable.email_phone_switch
-        )
-
         binding.emailInputLay.isVisible(!enable)
-        binding.phoneInputLay.isVisible(enable)
-        binding.flCountryCodes.isVisible(enable)
+        binding.layoutPhoneNumber.isVisible(enable)
     }
 
     private fun handleSuccessLogin(loginEntity: UserEntity) {
@@ -94,7 +89,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         if (rawResponse.errors != null && rawResponse.errors!!.isNotEmpty()) {
             val error = rawResponse.errors!![0]
         }
-
     }
 
     private fun handleIsLoading(isLoading: Boolean) {
@@ -117,62 +111,70 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val password = binding.passwordEdt.text.toString()
         val code = if (viewModel.isPhoneEnable) "+962" else ""
 
-        if (validate(username, password)) {
+        if (validate()) {
 
             viewModel.login(LoginRequest(code + username, password, 0, ""))
         }
     }
 
-    private fun validate(username: String, password: String): Boolean {
+    private fun validate(): Boolean {
         resetAllError()
+        val username = getUsernameField().text.toString().trim()
+        val password = binding.passwordEdt.text.toString()
+
+        binding.loginBtn.isEnabled = false
 
         if (viewModel.isPhoneEnable) {
             if (!username.isPhone()) {
-                setPhoneError(getString(R.string.error_phone_not_valid))
+                binding.phoneInputLay.activeBorder(this, false)
                 return false
             }
 
         } else {
             if (!username.isEmail()) {
-                setEmailError(getString(R.string.error_email_not_valid))
+                binding.emailInputLay.activeBorder(this, false)
                 return false
             }
         }
 
         if (!password.isPasswordValid()) {
-            setPasswordError(getString(R.string.error_password_not_valid))
+            binding.passwordInputLay.activeBorder(this, false)
+
             return false
         }
+        binding.loginBtn.isEnabled = true
 
         return true
     }
 
-    private fun setEmailError(e: String?) {
-        binding.emailEdt.error = e
-    }
-
-    private fun setPhoneError(e: String?) {
-        binding.phoneEdt.error = e
-    }
-
-    private fun setPasswordError(e: String?) {
-        binding.passwordEdt.error = e
-    }
-
     private fun resetAllError() {
-        setEmailError(null)
-        setPasswordError(null)
-        setPhoneError(null)
+        binding.passwordInputLay.activeBorder(this, true)
+        binding.emailInputLay.activeBorder(this, true)
+        binding.phoneInputLay.activeBorder(this, true)
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            binding.btnSwitchPhoneEmail.id -> loginByPhoneToggle()
             binding.loginBtn.id -> login()
         }
     }
 
     private fun loginByPhoneToggle() {
         viewModel.loginByPhoneToggle()
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun afterTextChanged(et: Editable?) {
+        validate()
+    }
+
+    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+        loginByPhoneToggle()
+        validate()
     }
 }

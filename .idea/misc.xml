@@ -7,7 +7,24 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/SportsGate/app/src/main/res/layout/activity_login.xml" value="0.72" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/SportsGate/app/src/main/res/layout/activity_main.xml" value="0.1765625" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/SportsGate/app/src/main/res/layout/activity_splash.xml" value="0.190625" />
-        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/background_button_border_enable.xml" value="0.21944444444444444" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/background_button_curve.xml" value="0.1421875" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/bg_spinner.xml" value="0.21944444444444444" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/border_bg.xml" value="0.21944444444444444" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/button_checkbox_selector.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/checkbox_check.xml" value="0.13489583333333333" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/checkbox_selector.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/circle_badge.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_check_checkbox.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_dec.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_email_phone_switch.xml" value="0.21944444444444444" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_forward_arrow.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_notify.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_phone_email_switch.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_splashscreen.xml" value="0.2064814814814815" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/round_gray.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/toggle_login_type.xml" value="0.21944444444444444" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_login.xml" value="0.264" />
       </map>
     </option>
   </component>

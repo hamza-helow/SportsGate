@@ -19,6 +19,7 @@ android {
 
         buildConfigField 'String' , 'API_BASE_URL' , '"https://sportgate.2advanced.me/api/"'
         buildConfigField 'String' ,'APP_NAME' , '"Sports gate"'
+        vectorDrawables.useSupportLibrary = true
 
     }
 

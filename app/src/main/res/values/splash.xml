@@ -7,7 +7,8 @@
         <item name="windowSplashScreenBackground">@color/colorPrimary</item>
 
         // Set the theme of the Activity that directly follows your splash screen.
-        <item name="postSplashScreenTheme">@style/Theme.IceStores</item>  # Required.
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+        # Required.
 
     </style>
 

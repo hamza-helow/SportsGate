@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.login.remote.dto.LoginRequest
+import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.login.LoginUseCase
@@ -65,7 +66,6 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
             }
 
         }
-
     }
 
 }

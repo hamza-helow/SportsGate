@@ -185,7 +185,8 @@
     <string name="code_country">+962</string>
     <string name="register">Register</string>
     <string name="sign_up">Sign up</string>
-    <string name="resend_code_60_sec">Resend code 60 sec</string>
     <string name="phone_otp_message">An SMS has been sent to your mobile number enter below to verify your phone number and complete your registration</string>
     <string name="verify_phone_number">Verify Phone Number</string>
+    <string name="resend_code_after">Resend code after %1$d sec </string>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.souqApp.data.register.remote.dto
+package com.souqApp.data.verifcation.remote.dto
 
 import com.google.gson.annotations.SerializedName
 

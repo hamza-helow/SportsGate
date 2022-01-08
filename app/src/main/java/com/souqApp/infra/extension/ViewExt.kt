@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.souqApp.R
@@ -32,4 +33,13 @@ fun View.isVisible(isVisible: Boolean) {
         View.VISIBLE
     else
         View.GONE
+}
+
+fun ProgressBar.start(start: Boolean) {
+    this.isVisible(start)
+    if (start) {
+        this.isIndeterminate = true
+    } else {
+        this.progress = 0
+    }
 }

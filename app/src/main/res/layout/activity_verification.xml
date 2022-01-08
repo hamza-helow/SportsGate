@@ -21,6 +21,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/loader"
+        layout="@layout/loader" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_16sdp"
-        android:text="@string/resend_code_60_sec"
+        android:text="@string/resend_code_str"
         android:textColor="#757575"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintStart_toStartOf="parent"

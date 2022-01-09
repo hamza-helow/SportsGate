@@ -1,12 +1,13 @@
 package com.souqApp.presentation.main
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.souqApp.R
 import com.souqApp.databinding.ActivityMainBinding
-import com.souqApp.presentation.login.LoginActivity
-import dagger.hilt.android.AndroidEntryPoint
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +19,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        startActivity(Intent(this, LoginActivity::class.java))
+        binding.bottomNavigationView.setupWithNavController(
+            Navigation.findNavController(
+                this,
+                R.id.nav_host_fragment_content_main
+            )
+        )
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
 
 }

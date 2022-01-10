@@ -21,6 +21,15 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext())
+        binding.viewPager.adapter = sliderPagerAdapter
+        binding.tabDots.setupWithViewPager(binding.viewPager)
+
+    }
+
     companion object {
         @JvmStatic
         fun newInstance() = HomeFragment()

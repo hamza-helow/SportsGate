@@ -188,5 +188,9 @@
     <string name="phone_otp_message">An SMS has been sent to your mobile number enter below to verify your phone number and complete your registration</string>
     <string name="verify_phone_number">Verify Phone Number</string>
     <string name="resend_code_after">Resend code after %1$d sec </string>
+    <string name="home">Home</string>
+    <string name="categories">Categories</string>
+    <string name="cart">Cart</string>
+    <string name="more">More</string>
 
 </resources>

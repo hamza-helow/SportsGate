@@ -22,7 +22,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit
             .Builder().apply {
-                baseUrl(BuildConfig.API_BASE_URL)
+                baseUrl(BuildConfig.API_BASE_URL_PRODUCTION)
                 addConverterFactory(GsonConverterFactory.create())
                 client(okHttpClient)
             }.build()
@@ -33,9 +33,9 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(requestInterceptor: RequestInterceptor): OkHttpClient {
         return OkHttpClient.Builder().apply {
-            connectTimeout(60, TimeUnit.SECONDS)
-            readTimeout(60, TimeUnit.SECONDS)
-            writeTimeout(60, TimeUnit.SECONDS)
+            connectTimeout(30, TimeUnit.SECONDS)
+            readTimeout(30, TimeUnit.SECONDS)
+            writeTimeout(30, TimeUnit.SECONDS)
             addInterceptor(requestInterceptor)
         }.build()
     }

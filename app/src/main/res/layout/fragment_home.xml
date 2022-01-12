@@ -1,60 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <include layout="@layout/search_view_read_only" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_swiper"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/_32sdp"
-            tools:context=".presentation.main.home.HomeFragment">
+            android:layout_height="match_parent">
 
-            <include layout="@layout/search_view_read_only" />
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_140sdp"
-                tools:ignore="SpeakableTextPresentCheck" />
+                android:layout_height="match_parent">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabDots"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/white"
-                app:tabBackground="@drawable/tab_selector"
-                app:tabGravity="center"
-                app:tabIndicatorHeight="0dp"
-                tools:ignore="SpeakableTextPresentCheck" />
+                <LinearLayout
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/_32sdp"
+                    tools:context=".presentation.main.home.HomeFragment">
 
 
-            <!-- Categories-->
-            <include
-                android:id="@+id/include_categories"
-                layout="@layout/home_section"
-                app:title='@{"Categories"}' />
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_140sdp"
+                        tools:ignore="SpeakableTextPresentCheck" />
 
-            <!-- Best selling-->
-            <include
-                android:id="@+id/include_best_selling"
-                layout="@layout/home_section"
-                app:title='@{"Best selling"}' />
-
-
-            <!-- Recommended Products-->
-            <include
-                android:id="@+id/include_"
-                layout="@layout/home_section"
-                app:title='@{"Recommended Products"}' />
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabDots"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="@color/white"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp"
+                        tools:ignore="SpeakableTextPresentCheck" />
 
 
-        </LinearLayout>
+                    <!-- Categories-->
+                    <include
+                        android:id="@+id/include_categories"
+                        layout="@layout/home_section"
+                        app:horizontalMargin='@{@dimen/_32sdp}'
+                        app:title='@{"Categories"}' />
 
-    </ScrollView>
+                    <!-- Best selling-->
+                    <include
+                        android:id="@+id/include_best_selling"
+                        layout="@layout/home_section"
+                        app:title='@{"Best selling"}' />
+
+
+                    <!-- Recommended Products-->
+                    <include
+                        android:id="@+id/include_recommended"
+                        layout="@layout/home_section"
+                        app:title='@{"Recommended Products"}' />
+
+
+                    <!-- New Products-->
+                    <include
+                        android:id="@+id/include_new_Products"
+                        layout="@layout/home_section"
+                        app:title='@{"New Products"}' />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
 </layout>

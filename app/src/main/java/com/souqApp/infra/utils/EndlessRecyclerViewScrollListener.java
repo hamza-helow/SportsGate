@@ -91,6 +91,10 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
             onLoadMore(currentPage, totalItemCount, view);
             loading = true;
         }
+
+
+
+
     }
 
     // Call this method whenever performing new searches

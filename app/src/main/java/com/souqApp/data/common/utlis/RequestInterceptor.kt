@@ -11,8 +11,9 @@ class RequestInterceptor constructor(private val sharedPrefs: SharedPrefs) : Int
         val token = sharedPrefs.getToken()
         val newRequest = chain.request()
             .newBuilder()
+            .addHeader("Accept-Language", "en")
+            .addHeader("Content-Type", "application/json")
             .addHeader("Authorization", token).build()
-
         return chain.proceed(newRequest)
     }
 }

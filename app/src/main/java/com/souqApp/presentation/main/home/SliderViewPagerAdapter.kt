@@ -8,16 +8,19 @@ import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import com.souqApp.R
+import com.souqApp.data.main.home.remote.dto.ProductAdsResponse
 import com.souqApp.databinding.ItemSliderBinding
+import com.squareup.picasso.Picasso
 import java.util.*
 
-class SliderViewPagerAdapter(val context: Context) : PagerAdapter() {
+class SliderViewPagerAdapter(val context: Context, private val ads: List<ProductAdsResponse>) :
+    PagerAdapter() {
 
     private val inflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
-        return 5
+        return ads.size
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -26,12 +29,7 @@ class SliderViewPagerAdapter(val context: Context) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val binding: ItemSliderBinding = ItemSliderBinding.inflate(inflater, container, false)
-
-        val rnd = Random()
-        val color: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-
-        binding.image.setColorFilter(color)
-
+        Picasso.get().load(ads[position].image).into(binding.image)
         container.addView(binding.root)
         return binding.root
     }

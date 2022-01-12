@@ -16,9 +16,9 @@ import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.domain.common.entity.UserEntity
+import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.SharedPrefs
-import com.souqApp.presentation.common.extension.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -2,7 +2,9 @@ package com.souqApp.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.databinding.BindingAdapter
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -33,4 +35,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    companion object{
+
+        @BindingAdapter( "app:tt")
+        fun setText(view: TextView, text: CharSequence?) {
+            view.text = text
+        }
+
+    }
 }

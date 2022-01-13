@@ -1,6 +1,7 @@
 package com.souqApp.presentation.main
 
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.squareup.picasso.Picasso
 import androidx.navigation.plusAssign
 import androidx.navigation.ui.setupWithNavController
+import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.utils.KeepStateNavigator
 
 
@@ -25,7 +27,9 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         installSplashScreen()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -63,6 +67,12 @@ class MainActivity : AppCompatActivity() {
         @JvmStatic
         fun setBottomMargin(view: View, margin: Float) {
             view.setPadding(0, 0, margin.toInt(), 0)
+        }
+
+        @BindingAdapter("isVisible")
+        @JvmStatic
+        fun isVisible(view: View, isVisible: Boolean) {
+            view.isVisible(isVisible)
         }
     }
 }

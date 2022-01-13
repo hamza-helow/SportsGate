@@ -82,6 +82,8 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun handleHomeLoaded(homeEntity: HomeEntity) {
+
+        //visible content
         binding.content.isVisible = true
         //init adapters
         val bestSellingAdapter = ProductAdapter()
@@ -111,7 +113,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         //link viewpager with tabs layout
         binding.tabDots.setupWithViewPager(binding.viewPager)
-
 
         //viability
         binding.includeNewProducts.root.isVisible = homeEntity.newProducts.isNotEmpty()

@@ -192,5 +192,6 @@
     <string name="categories">Categories</string>
     <string name="cart">Cart</string>
     <string name="more">More</string>
+    <string name="powered_name">SouqApp</string>
 
 </resources>

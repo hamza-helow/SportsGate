@@ -47,6 +47,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
     private fun initListener() {
         binding.switchTypeLogin.setOnCheckedChangeListener(this)
         binding.loginBtn.setOnClickListener(this)
+        binding.txtSkip.setOnClickListener(this)
         binding.createAccBtn.setOnClickListener(this)
         binding.includePassword.passwordEdt.doAfterTextChanged { validate() }
         binding.includePhoneNumber.phoneEdt.doAfterTextChanged { validate() }
@@ -80,13 +81,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun handleSuccessLogin(loginEntity: UserEntity) {
         sharedPrefs.saveToken(loginEntity.token)
+        finish()
     }
 
     private fun handleErrorLogin(rawResponse: WrappedResponse<UserResponse>) {
-        if (rawResponse.errors != null && rawResponse.errors!!.isNotEmpty()) {
-            val error = rawResponse.errors!![0]
-            Log.d(tag, error)
-        }
+        showGenericAlertDialog(rawResponse.formattedErrors())
     }
 
     private fun handleIsLoading(isLoading: Boolean) {
@@ -152,11 +151,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
         when (p0?.id) {
             binding.loginBtn.id -> login()
             binding.createAccBtn.id -> goToCreateAccountScreen()
+            binding.txtSkip.id -> finish() // return to MainActivity
         }
     }
 
     private fun goToCreateAccountScreen() {
-        startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+        startActivity(Intent(this, RegisterActivity::class.java))
     }
 
     private fun loginByPhoneToggle() {

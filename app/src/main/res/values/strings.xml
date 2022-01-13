@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="google_maps_Api_Key" translatable="false">AIzaSyBCtO6-15WHCAA5lFyIz339WB1MTHzqLbg</string>
     <string name="default_notification_channel_id" translatable="false">com.com.icestores.General</string>
     <string name="navigation_drawer_open" translatable="false">Drawer Open</string>
@@ -197,10 +197,16 @@
     <string name="verify_phone_number">Verify Phone Number</string>
     <string name="resend_code_after">Resend code after %1$d sec </string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" tools:ignore="MissingTranslation">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="categories">Categories</string>
     <string name="cart">Cart</string>
     <string name="more">More</string>
+
+
+    <string name="facebook_link" translatable="false">https://m.facebook.com/sportgate.jor/?ti=as</string>
+    <string name="tiktok_link" translatable="false">https://vm.tiktok.com/ZSeCSrgGV</string>
+    <string name="instagram_link" translatable="false">https://instagram.com/sport_gate.jo?utm_medium</string>
+    <string name="powered_name">SouqApp</string>
 
 </resources>

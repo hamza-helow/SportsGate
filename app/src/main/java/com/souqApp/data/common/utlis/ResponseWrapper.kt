@@ -8,7 +8,12 @@ data class WrappedListResponse<T>(
     @SerializedName("status") var status: Boolean,
     @SerializedName("errors") var errors: List<String>? = null,
     @SerializedName("data") var data: List<T>? = null
-)
+) {
+    //convert array of errors to formatted text
+    fun formattedErrors(): String {
+        return formattedErrors(this.errors)
+    }
+}
 
 
 data class WrappedResponse<T>(
@@ -17,4 +22,21 @@ data class WrappedResponse<T>(
     @SerializedName("status") var status: Boolean,
     @SerializedName("errors") var errors: List<String>? = null,
     @SerializedName("data") var data: T? = null
-)
+
+) {
+
+    fun formattedErrors(): String {
+        return formattedErrors(this.errors)
+    }
+}
+
+//convert array of errors to formatted text
+fun formattedErrors(arrErrors: List<String>?): String {
+    var errors = ""
+    if (arrErrors != null && arrErrors.isNotEmpty()) {
+        arrErrors.forEach { error ->
+            errors += error + "\n"
+        }
+    }
+    return errors
+}

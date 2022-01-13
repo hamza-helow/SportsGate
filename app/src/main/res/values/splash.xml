@@ -8,7 +8,6 @@
 
         // Set the theme of the Activity that directly follows your splash screen.
         <item name="postSplashScreenTheme">@style/AppTheme</item>
-        # Required.
 
     </style>
 

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.souqApp.BuildConfig
 
-class SharedPrefs(private val context: Context) {
+class SharedPrefs(context: Context) {
 
     companion object {
         private const val PREF = BuildConfig.APP_NAME
@@ -17,6 +17,10 @@ class SharedPrefs(private val context: Context) {
 
     fun saveToken(token: String) {
         put(PREF_TOKEN, token)
+    }
+
+    fun isLogin(): Boolean {
+        return getToken().isNotEmpty()
     }
 
     fun getToken() = get(PREF_TOKEN, String::class.java)

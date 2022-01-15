@@ -1,5 +1,6 @@
 package com.souqApp.presentation.verification
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.souqApp.databinding.ActivityVerificationBinding
@@ -16,9 +17,11 @@ import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.domain.common.entity.UserEntity
+import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -61,6 +64,7 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun handleToast(message: String) {
         showToast(message)
+        Log.e(tag, message)
     }
 
     private fun handleLoading(isLoading: Boolean) {
@@ -70,14 +74,22 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun handleSuccessVerification(userEntity: UserEntity) {
         sharedPrefs.saveToken(userEntity.token)
+        navigateToMainActivity()
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //clear back stack
+        startActivity(intent)
     }
 
     private fun handleErrorVerification(wrappedResponse: WrappedResponse<UserResponse>) {
-        Log.e(tag, wrappedResponse.errors.toString())
+        showGenericAlertDialog(wrappedResponse.formattedErrors())
     }
 
     private fun initListener() {
         binding.txtResend.setOnClickListener(this)
+        binding.btnSendOtp.setOnClickListener(this)
         binding.otpView.doAfterTextChanged {
             binding.btnSendOtp.isEnabled = validate()
         }
@@ -112,7 +124,6 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
                 binding.otpView.text!!.toString(),
                 "0",
                 "",
-                "en"
             )
         )
     }

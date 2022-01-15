@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
+import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.souqApp.R
@@ -25,6 +26,12 @@ fun View.inVisible() {
 fun TextInputLayout.activeBorder(context: Context, active: Boolean) {
     this.boxStrokeColor =
         ContextCompat.getColor(context, if (active) R.color.green else R.color.red)
+}
+
+fun ActionBar.setup() {
+    setDisplayHomeAsUpEnabled(true)
+    setDisplayShowHomeEnabled(true)
+    setDisplayShowTitleEnabled(false)
 }
 
 

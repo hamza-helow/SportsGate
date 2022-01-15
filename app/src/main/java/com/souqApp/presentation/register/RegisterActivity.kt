@@ -1,5 +1,6 @@
 package com.souqApp.presentation.register
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import com.souqApp.databinding.ActivityRegisterBinding
 import com.souqApp.domain.register.entity.RegisterEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.presentation.verification.VerificationActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -66,10 +68,15 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun handleSuccessRegister(registerEntity: RegisterEntity) {
         sharedPrefs.saveToken(registerEntity.token)
+        navigateToVerificationActivity()
+    }
+
+    private fun navigateToVerificationActivity() {
+        startActivity(Intent(this, VerificationActivity::class.java))
     }
 
     private fun handleErrorRegister(rawResponse: WrappedResponse<RegisterResponse>) {
-        Log.e(tag, rawResponse.errors.toString())
+        showGenericAlertDialog(rawResponse.formattedErrors())
     }
 
     private fun handleLoading(isLoading: Boolean) {
@@ -95,7 +102,8 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     private fun createAccount() {
         val fullName = binding.includeFullName.emailEdt.text.toString().trim()
         val email = binding.includeEmail.emailEdt.text.toString().trim()
-        val phone = binding.includePhoneNumber.phoneEdt.text.toString()
+        val code = "+962"
+        val phone = code + binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber()
         val password = binding.includePassword.passwordEdt.text.toString()
 
         viewModel.register(RegisterRequest(fullName, email, phone, password))

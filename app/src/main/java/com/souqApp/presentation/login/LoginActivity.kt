@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
+import com.souqApp.data.common.mapper.toUserResponse
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.login.remote.dto.LoginRequest
@@ -19,7 +20,9 @@ import com.souqApp.databinding.ActivityLoginBinding
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.presentation.main.MainActivity
 import com.souqApp.presentation.register.RegisterActivity
+import com.souqApp.presentation.verification.VerificationActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -79,9 +82,23 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
         binding.layoutPhoneNumber.isVisible(enable)
     }
 
-    private fun handleSuccessLogin(loginEntity: UserEntity) {
-        sharedPrefs.saveToken(loginEntity.token)
-        finish()
+    private fun handleSuccessLogin(userEntity: UserEntity) {
+        sharedPrefs.saveToken(userEntity.token)
+        sharedPrefs.saveUserInfo(userEntity.toUserResponse())
+        if (userEntity.verified == 2)
+            navigateToVerificationActivity()
+        else
+            navigateToMainActivity()
+    }
+
+    private fun navigateToVerificationActivity() {
+        startActivity(Intent(this, VerificationActivity::class.java))
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 
     private fun handleErrorLogin(rawResponse: WrappedResponse<UserResponse>) {
@@ -104,12 +121,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun login() {
-        val username = getUsernameField().text.toString().trim()
+        var username = getUsernameField().text.toString().trim()
         val password = binding.includePassword.passwordEdt.text.toString()
         val code = if (viewModel.isPhoneEnable) "+962" else ""
 
-        if (validate()) {
+        if (viewModel.isPhoneEnable)
+            username = username.toPhoneNumber()
 
+        if (validate()) {
             viewModel.login(LoginRequest(code + username, password, 0, ""))
         }
     }

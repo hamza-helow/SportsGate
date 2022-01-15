@@ -22,19 +22,21 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     val mState: StateFlow<LoginActivityState> get() = state
     val isPhoneEnable: Boolean get() = loginByPhone
 
-
-    private fun setLoading() {
-        state.value = LoginActivityState.IsLoading(true)
-    }
-
     fun loginByPhoneToggle() {
         loginByPhone = !loginByPhone
         state.value = LoginActivityState.LoginByPhone(loginByPhone)
     }
 
+
+    private fun setLoading() {
+        state.value = LoginActivityState.IsLoading(true)
+    }
+
+
     private fun hideLoading() {
         state.value = LoginActivityState.IsLoading(false)
     }
+
 
     private fun showToast(message: String) {
         state.value = LoginActivityState.ShowToast(message)

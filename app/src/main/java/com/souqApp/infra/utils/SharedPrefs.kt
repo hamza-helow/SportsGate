@@ -2,13 +2,20 @@ package com.souqApp.infra.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.souqApp.BuildConfig
+import com.souqApp.data.common.mapper.toEntity
+import com.souqApp.data.common.remote.dto.UserResponse
+import com.souqApp.domain.common.entity.UserEntity
+import org.json.JSONObject
+
 
 class SharedPrefs(context: Context) {
 
     companion object {
         private const val PREF = BuildConfig.APP_NAME
         private const val PREF_TOKEN = "user_token"
+        private const val PREF_USER_INFO = "user_info"
     }
 
     private val sharedPref: SharedPreferences =
@@ -17,6 +24,20 @@ class SharedPrefs(context: Context) {
 
     fun saveToken(token: String) {
         put(PREF_TOKEN, token)
+    }
+
+    fun saveUserInfo(userResponse: UserResponse) {
+        val jsonString = Gson().toJson(userResponse, UserResponse::class.java) ?: ""
+        put(PREF_USER_INFO, jsonString)
+    }
+
+    fun getUserInfo(): UserEntity? {
+        val result = get(PREF_USER_INFO, String::class.java)
+
+        if (result.isEmpty())
+            return null
+
+        return Gson().fromJson(result, UserResponse::class.java).toEntity()
     }
 
     fun isLogin(): Boolean {

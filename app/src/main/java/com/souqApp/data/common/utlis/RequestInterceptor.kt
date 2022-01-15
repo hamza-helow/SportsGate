@@ -13,7 +13,7 @@ class RequestInterceptor constructor(private val sharedPrefs: SharedPrefs) : Int
             .newBuilder()
             .addHeader("Accept-Language", "en")
             .addHeader("Content-Type", "application/json")
-            .addHeader("Authorization", token).build()
+            .addHeader("Authorization", "Bearer $token").build()
         return chain.proceed(newRequest)
     }
 }

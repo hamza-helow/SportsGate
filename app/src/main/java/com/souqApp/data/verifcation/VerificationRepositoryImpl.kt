@@ -14,6 +14,26 @@ import javax.inject.Inject
 class VerificationRepositoryImpl @Inject constructor(private val verificationApi: VerificationApi) :
     VerificationRepository {
     override suspend fun activeAccount(activeAccountRequest: ActiveAccountRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
-        return flow { }
+        return flow {
+            val response = verificationApi.activeAccount(activeAccountRequest)
+            val isSuccessful = response.body()?.status
+
+            if (isSuccessful == true) {
+                val body = response.body()!!.data!!
+                val entity = UserEntity(
+                    body.id,
+                    body.name,
+                    body.email,
+                    body.phone,
+                    body.image,
+                    body.verified,
+                    body.token
+                )
+                emit(BaseResult.Success(entity))
+            } else {
+                emit(BaseResult.Errors(response.body()!!))
+            }
+
+        }
     }
 }

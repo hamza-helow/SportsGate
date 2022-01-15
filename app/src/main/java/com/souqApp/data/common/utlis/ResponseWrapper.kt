@@ -38,5 +38,5 @@ fun formattedErrors(arrErrors: List<String>?): String {
             errors += error + "\n"
         }
     }
-    return errors
+    return errors.trim()
 }

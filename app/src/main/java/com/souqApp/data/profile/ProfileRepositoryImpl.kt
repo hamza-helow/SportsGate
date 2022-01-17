@@ -25,31 +25,26 @@ class ProfileRepositoryImpl @Inject constructor(private val profileApi: ProfileA
         image: String
     ): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
 
-        val imgFile = File(image)
-        val requestFile = imgFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-
-
-        val builder: MultipartBody.Builder = MultipartBody.Builder();
-        builder.setType(MultipartBody.FORM)
-
-        builder.addFormDataPart("image", imgFile.name, requestFile);
-        builder.addFormDataPart("name", "hamza");
-
-        val imgPart: MultipartBody.Part =
-            MultipartBody.Part.createFormData("image", imgFile.name, requestFile)
-
-        val namePart: MultipartBody.Part =
-            MultipartBody.Part.createFormData("name", "hamza")
-
-
         return flow {
 
+            val imageRequestBody =
+                File(image).asRequestBody("application/octet-stream".toMediaTypeOrNull())
+
+            val body: RequestBody =
+                MultipartBody
+                    .Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("image", "file", imageRequestBody)
+                    .addFormDataPart("name", name)
+                    .build()
+
             Log.e("ERe", "upload ......")
-            val response = profileApi.updateUser(imgPart, namePart)
+            val response = profileApi.updateUser(body)
+
+            Log.e("ERe", "finish")
 
             Log.e("ERe", "${response.code()}")
 
-            Log.e("ERe", "ererer")
 
             val isSuccessful = response.body()?.status ?: false
 

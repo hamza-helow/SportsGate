@@ -19,10 +19,14 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
     private val state = MutableStateFlow<ProfileActivityState>(ProfileActivityState.Init)
     val mState: StateFlow<ProfileActivityState> get() = state
 
+
+    fun setProfileChanged(isChanged: Boolean) {
+        state.value = ProfileActivityState.ProfileChanged(isChanged)
+    }
+
     private fun setLoading() {
         state.value = ProfileActivityState.IsLoading(true)
     }
-
 
     private fun hideLoading() {
         state.value = ProfileActivityState.IsLoading(false)
@@ -42,7 +46,6 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
         state.value = ProfileActivityState.ErrorUpdateProfile(rawResponse)
     }
 
-
     fun updateProfile(name: String, image: String) {
         viewModelScope.launch {
             profileUseCase.updateProfile(name, image)
@@ -56,7 +59,6 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
                     when (it) {
                         is BaseResult.Success -> successUpdateProfile(it.data)
                         is BaseResult.Errors -> errorUpdateProfile(it.error)
-
                     }
                 }
 
@@ -69,6 +71,9 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
 sealed class ProfileActivityState {
     object Init : ProfileActivityState()
     data class IsLoading(val isLoading: Boolean) : ProfileActivityState()
+    data class ProfileChanged(val isChanged: Boolean) :
+        ProfileActivityState()
+
     data class ShowToast(val message: String) : ProfileActivityState()
     data class SuccessUpdateProfile(val userEntity: UserEntity) : ProfileActivityState()
     data class ErrorUpdateProfile(val rawResponse: WrappedResponse<UserResponse>) :

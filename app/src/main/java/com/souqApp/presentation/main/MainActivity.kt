@@ -60,7 +60,9 @@ class MainActivity : AppCompatActivity() {
         @BindingAdapter("networkImage")
         @JvmStatic
         fun setImageUrl(view: ImageView, path: String) {
-            Picasso.get().load(path).into(view)
+            Picasso.get()
+                .load(path)
+                .into(view)
         }
 
         @BindingAdapter("horizontalMargin")

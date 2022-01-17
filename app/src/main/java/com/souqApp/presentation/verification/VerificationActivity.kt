@@ -73,7 +73,7 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun handleSuccessVerification(userEntity: UserEntity) {
-        sharedPrefs.saveToken(userEntity.token)
+        sharedPrefs.saveToken(userEntity.token?:"")
         navigateToMainActivity()
     }
 

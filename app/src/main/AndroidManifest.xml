@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:requestLegacyExternalStorage="true"
         android:name=".infra.utils.App"
         android:allowBackup="true"
         android:fullBackupContent="false"

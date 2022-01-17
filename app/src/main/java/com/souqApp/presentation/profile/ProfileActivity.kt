@@ -1,8 +1,6 @@
 package com.souqApp.presentation.profile
 
 import android.Manifest
-import android.app.Activity
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,107 +11,148 @@ import com.souqApp.infra.extension.setup
 import com.souqApp.infra.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.souqApp.data.common.mapper.toUserResponse
+import com.souqApp.domain.common.entity.UserEntity
+import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.PathUtil
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.io.File
-
 
 @AndroidEntryPoint
 class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var binding: ActivityProfileBinding
-
-    val viewModel: ProfileViewModel by viewModels()
-
-    private lateinit var cameraCachePath: File
-    private val uniqueKey = System.currentTimeMillis().toString()
-
-    private lateinit var requestCameraPermission: ActivityResultLauncher<String>
-    private lateinit var getImageContent: ActivityResultLauncher<String>
-    private lateinit var takePicture: ActivityResultLauncher<Uri>
-
     @Inject
     lateinit var sharedPrefs: SharedPrefs
+    private lateinit var binding: ActivityProfileBinding
+    private lateinit var cameraCachePath: File
+    private lateinit var requestCameraPermission: ActivityResultLauncher<String>
+    private lateinit var getImageContent: ActivityResultLauncher<String>
+    val viewModel: ProfileViewModel by viewModels()
+    var imageSelected: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.includeAppBar.toolbar);
-        supportActionBar?.setup()
-
-        binding.user = sharedPrefs.getUserInfo()
-
-        cameraCachePath = File(cacheDir, "camera")
-
         init()
+        initListener()
+        initResultLaunchers()
 
-        requestCameraPermission =
-            activityResultRegistry.register("requestCameraPermission_$uniqueKey",
-                this, ActivityResultContracts.RequestPermission(),
-                ActivityResultCallback<Boolean> { isGranted ->
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        observe()
+    }
+
+    private fun initResultLaunchers() {
+        requestCameraPermission = activityResultRegistry
+            .register("requestCameraPermission",
+                this, ActivityResultContracts.RequestPermission(), { isGranted ->
                     if (isGranted) {
                         getImageContent.launch("image/*")
                     }
                 })
 
-
-        getImageContent = activityResultRegistry.register("getImageContent_$uniqueKey",
+        getImageContent = activityResultRegistry.register("getImageContent",
             this, ActivityResultContracts.GetContent(),
             { uri ->
-
-                Log.e("ERer", uri.toString())
-
-                val filePath: String =
-                    PathUtil.getPath(baseContext, uri)
-
-                Log.e("ERer", filePath)
-
-                viewModel.updateProfile("hamza al-helow",filePath)
-
+                imageSelected = PathUtil.getPath(baseContext, uri)
+                binding.imgProfile.setImageURI(uri)
+                viewModel.setProfileChanged(true)
             })
+    }
 
+    private fun initListener() {
+        binding.imgProfile.setOnClickListener(this)
+        binding.btnSave.setOnClickListener(this)
+
+        binding.etName.doAfterTextChanged {
+            val name = it.toString()
+
+            if (name != sharedPrefs.getUserInfo()?.name || imageSelected != null) {
+                viewModel.setProfileChanged(true)
+            } else {
+                viewModel.setProfileChanged(false)
+            }
+        }
     }
 
     private fun init() {
+        //setup toolbar
+        setSupportActionBar(binding.includeAppBar.toolbar)
+        supportActionBar?.setup()
+        binding.user = sharedPrefs.getUserInfo()
+        cameraCachePath = File(cacheDir, "images")
+    }
 
-        binding.imgProfile.setOnClickListener(this)
+    private fun observe() {
+        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state -> handleState(state) }
+            .launchIn(lifecycleScope)
+    }
 
-        viewModel.updateProfile("hamza al-helow","/storage/emulated/0/DCIM/Camera/IMG_20211231_235711.jpg")
+    private fun handleState(state: ProfileActivityState) {
+
+        when (state) {
+            is ProfileActivityState.Init -> Unit
+            is ProfileActivityState.ProfileChanged -> handleProfileChanged(state.isChanged)
+            is ProfileActivityState.ErrorUpdateProfile -> Unit
+            is ProfileActivityState.SuccessUpdateProfile -> handleSuccessUpdateProfile(state.userEntity)
+            is ProfileActivityState.IsLoading -> handleIsLoading(state.isLoading)
+            is ProfileActivityState.ShowToast -> Unit
+
+        }
 
     }
+
+    private fun handleIsLoading(isLoading: Boolean) {
+        binding.includeLoader.loadingProgressBar.start(isLoading)
+    }
+
+    private fun handleSuccessUpdateProfile(userEntity: UserEntity) {
+        sharedPrefs.saveUserInfo(userEntity.toUserResponse())
+        showToast("Updated successfully")
+    }
+
+    private fun handleProfileChanged(changed: Boolean) {
+        binding.btnSave.isEnabled = changed
+    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
 
-
     override fun onClick(view: View) {
-
         when (view.id) {
-
-            binding.imgProfile.id -> updateImage()
-
+            binding.imgProfile.id -> requestPermissionReadStorageAndSelectImage()
+            binding.btnSave.id -> updateProfile()
         }
-
     }
 
-    private fun updateImage() {
-        requestPermissionAndTakePicture()
-
-
+    private fun updateProfile() {
+        val name = binding.etName.text.toString().trim()
+        viewModel.updateProfile(name, imageSelected!!)
     }
 
-
-    private fun requestPermissionAndTakePicture() {
+    private fun requestPermissionReadStorageAndSelectImage() {
         requestCameraPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        requestCameraPermission.unregister()
+        getImageContent.unregister()
+    }
 }
-
-
-

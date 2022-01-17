@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun handleSuccessLogin(userEntity: UserEntity) {
-        sharedPrefs.saveToken(userEntity.token)
+        sharedPrefs.saveToken(userEntity.token ?: "")
         sharedPrefs.saveUserInfo(userEntity.toUserResponse())
         if (userEntity.verified == 2)
             navigateToVerificationActivity()

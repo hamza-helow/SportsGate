@@ -11,6 +11,6 @@ data class ProductEntity(
     val salePrice: Double?,
     val userFavourite: Boolean?,
     val percentAddedTax: Double?,
-    val settingCurrency: Double?,
+    val settingCurrency: String?,
     val settingPercentAddedTax: Double?,
 )

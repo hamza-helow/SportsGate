@@ -3,7 +3,6 @@ package com.souqApp.presentation.profile
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import com.souqApp.databinding.ActivityProfileBinding
@@ -35,8 +34,8 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var cameraCachePath: File
     private lateinit var requestCameraPermission: ActivityResultLauncher<String>
     private lateinit var getImageContent: ActivityResultLauncher<String>
+    private var imageSelected: String? = null
     val viewModel: ProfileViewModel by viewModels()
-    var imageSelected: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +44,6 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         init()
         initListener()
         initResultLaunchers()
-
-
     }
 
     override fun onStart() {
@@ -66,20 +63,21 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         getImageContent = activityResultRegistry.register("getImageContent",
             this, ActivityResultContracts.GetContent(),
             { uri ->
-                imageSelected = PathUtil.getPath(baseContext, uri)
-                binding.imgProfile.setImageURI(uri)
-                viewModel.setProfileChanged(true)
+                //check image is selected
+                if (uri != null) {
+                    imageSelected = PathUtil.getPath(baseContext, uri)
+                    binding.imgProfile.setImageURI(uri)
+                    viewModel.setProfileChanged(true)
+                }
             })
     }
 
     private fun initListener() {
         binding.imgProfile.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
-
         binding.etName.doAfterTextChanged {
             val name = it.toString()
-
-            if (name != sharedPrefs.getUserInfo()?.name || imageSelected != null) {
+            if (name != sharedPrefs.getUserInfo()?.name) {
                 viewModel.setProfileChanged(true)
             } else {
                 viewModel.setProfileChanged(false)
@@ -102,7 +100,6 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun handleState(state: ProfileActivityState) {
-
         when (state) {
             is ProfileActivityState.Init -> Unit
             is ProfileActivityState.ProfileChanged -> handleProfileChanged(state.isChanged)
@@ -110,9 +107,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             is ProfileActivityState.SuccessUpdateProfile -> handleSuccessUpdateProfile(state.userEntity)
             is ProfileActivityState.IsLoading -> handleIsLoading(state.isLoading)
             is ProfileActivityState.ShowToast -> Unit
-
         }
-
     }
 
     private fun handleIsLoading(isLoading: Boolean) {
@@ -128,7 +123,6 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnSave.isEnabled = changed
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -143,7 +137,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun updateProfile() {
         val name = binding.etName.text.toString().trim()
-        viewModel.updateProfile(name, imageSelected!!)
+        viewModel.updateProfile(name, imageSelected?:"")
     }
 
     private fun requestPermissionReadStorageAndSelectImage() {

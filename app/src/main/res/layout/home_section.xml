@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
-                app:horizontalMargin="@{horizontalMargin}"
+                app:horizontalPadding="@{horizontalMargin}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="10"
                 tools:listitem="@layout/item_product" />

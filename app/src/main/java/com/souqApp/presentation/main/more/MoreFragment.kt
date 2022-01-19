@@ -39,9 +39,13 @@ class MoreFragment : Fragment(), View.OnClickListener {
         init()
     }
 
-    private fun init() {
+    override fun onResume() {
+        super.onResume()
         binding.sharedPrefs = sharedPrefs
         binding.user = sharedPrefs.getUserInfo()
+    }
+
+    private fun init() {
         binding.imgFacebook.setOnClickListener(this)
         binding.imgTiktok.setOnClickListener(this)
         binding.imgInstagram.setOnClickListener(this)

@@ -33,16 +33,16 @@ class ProfileRepositoryImpl @Inject constructor(private val profileApi: ProfileA
             val body: RequestBody =
                 MultipartBody
                     .Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("image", "file", imageRequestBody)
-                    .addFormDataPart("name", name)
-                    .build()
+                    .setType(MultipartBody.FORM).apply {
+                        if(image.isNotEmpty())
+                        addFormDataPart("image", "file", imageRequestBody)
+                        addFormDataPart("name", name)
 
-            Log.e("ERe", "upload ......")
+                    }.build()
+
             val response = profileApi.updateUser(body)
 
             Log.e("ERe", "finish")
-
             Log.e("ERe", "${response.code()}")
 
 

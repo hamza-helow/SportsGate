@@ -42,6 +42,7 @@
                 android:layout_gravity="center|top"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:src="@drawable/ic_account_circle"
+                app:placeholder ="@{@drawable/ic_account_circle}"
                 app:networkImage="@{user.image}" />
 
 

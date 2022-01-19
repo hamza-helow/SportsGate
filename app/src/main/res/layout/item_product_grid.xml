@@ -15,11 +15,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingStart="0dp"
-        android:paddingEnd="@dimen/_16sdp">
+        android:paddingEnd="@dimen/_8sdp">
 
         <ImageView
-            android:layout_width="@dimen/_160sdp"
-            android:layout_height="@dimen/_120sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_90sdp"
             android:scaleType="fitXY"
             app:networkImage="@{product.firstImage}"
             tools:srcCompat="@drawable/gym_category_for_test" />

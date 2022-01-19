@@ -1,6 +1,7 @@
 package com.souqApp.presentation.main.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +15,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.databinding.FragmentHomeBinding
 import com.souqApp.domain.main.home.entity.HomeEntity
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
+import com.souqApp.presentation.common.CategoryAdapter
+import com.souqApp.presentation.common.ProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -30,6 +34,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding: FragmentHomeBinding
 
     private val viewModel: HomeViewModel by viewModels()
+    private lateinit var progressBar: ProgressDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +47,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.content.isVisible = false
+        progressBar = ProgressDialog(requireContext())
         initListeners()
         observer()
 
@@ -70,11 +76,12 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun handleHomeLoadedError(rawResponse: WrappedResponse<HomeResponse>) {
-        context?.showLoader(false)
+        progressBar.showLoader(false)
+
     }
 
     private fun handleIsLoading(loading: Boolean) {
-        context?.showLoader(loading)
+        progressBar.showLoader(loading)
     }
 
     private fun generateLinearLayoutManager(): RecyclerView.LayoutManager {
@@ -82,27 +89,26 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun handleHomeLoaded(homeEntity: HomeEntity) {
-
         //visible content
         binding.content.isVisible = true
         //init adapters
         val bestSellingAdapter = ProductAdapter()
-        val categoryAdapter = CategoryAdapter()
+        val categoryAdapter = CategoryAdapter(verticalMode = false)
         val recommendedAdapter = ProductAdapter()
-        val newProductAdapter = ProductAdapter()
+        val newProductAdapter = ProductGridAdapter()
         val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.ads)
 
         // set lists
-        categoryAdapter.list = homeEntity.categories
-        bestSellingAdapter.list = homeEntity.bestSellingProducts
-        recommendedAdapter.list = homeEntity.recommendedProducts
-        newProductAdapter.list = homeEntity.newProducts
+        categoryAdapter.list = homeEntity.categories.toEntity()
+        bestSellingAdapter.list = homeEntity.bestSellingProducts.toEntity()
+        recommendedAdapter.list = homeEntity.recommendedProducts.toEntity()
+        newProductAdapter.list = homeEntity.newProducts.toEntity()
 
         // set layout managers
         binding.includeCategories.rec.layoutManager = generateLinearLayoutManager()
         binding.includeBestSelling.rec.layoutManager = generateLinearLayoutManager()
         binding.includeRecommended.rec.layoutManager = generateLinearLayoutManager()
-        binding.includeNewProducts.rec.layoutManager = GridLayoutManager(context, 2)
+        binding.includeNewProducts.rec.layoutManager = GridLayoutManager(context, 3)
 
         //set adapters
         binding.includeCategories.rec.adapter = categoryAdapter
@@ -127,6 +133,8 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun handleShowToast(message: String) {
         context?.showToast(message)
         context?.showLoader(false)
+
+        Log.e("Ere", message)
     }
 
     companion object {

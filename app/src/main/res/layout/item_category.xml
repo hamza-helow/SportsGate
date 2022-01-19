@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
+            name="verticalMode"
+            type="Boolean" />
+
+        <variable
             name="category"
-            type="com.souqApp.data.main.home.remote.dto.CategoryResponse" />
+            type="com.souqApp.domain.main.home.entity.CategoryEntity" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_marginBottom='@{verticalMode ? @dimen/_12sdp :@dimen/_0dp}'
+        android:background="@color/white"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/_120sdp"
             android:paddingStart="0dp"
-            android:paddingEnd="@dimen/_16sdp"
+            android:paddingEnd="@{verticalMode ? @dimen/_0dp :@dimen/_8sdp}"
             android:scaleType="fitXY"
             app:networkImage="@{category.logo}"
-            tools:srcCompat="@drawable/gym_category_for_test" />
+            tools:srcCompat="@drawable/gym_category_for_test"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="match_parent"

@@ -111,6 +111,7 @@
                 app:title='@{@string/wish_list}' />
 
             <include
+                android:id="@+id/include_card_change_password"
                 layout="@layout/list_tile"
                 app:isVisible="@{sharedPrefs.login}"
                 app:title='@{@string/change_pass_str}' />

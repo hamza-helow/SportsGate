@@ -1,6 +1,6 @@
 package com.souqApp.domain.main.home.entity
 
-import com.souqApp.data.main.home.remote.dto.CategoryResponse
+import com.souqApp.data.main.common.CategoryResponse
 import com.souqApp.data.main.home.remote.dto.ProductAdsResponse
 import com.souqApp.data.main.home.remote.dto.ProductResponse
 

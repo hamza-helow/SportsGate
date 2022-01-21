@@ -1,4 +1,4 @@
-package com.souqApp.presentation.profile
+package com.souqApp.presentation.main.more.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

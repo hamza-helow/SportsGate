@@ -16,12 +16,14 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
-        tools:context=".presentation.profile.ProfileActivity">
+        tools:context=".presentation.main.more.profile.ProfileActivity">
 
         <include
             android:id="@+id/include_app_bar"
             layout="@layout/app_bar"
             app:title='@{"User Profile"}' />
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -115,6 +117,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:text="@string/save_str" />
+
+
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/log_out_str" />
 
 
         </LinearLayout>

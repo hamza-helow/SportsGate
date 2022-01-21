@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_40sdp"
     android:layout_marginBottom="@dimen/_16sdp"
@@ -22,8 +23,8 @@
         android:layout_height="match_parent"
         android:background="@null"
         android:hint="@string/phone_number_str"
+        android:inputType="phone"
         android:maxLength="10"
-        android:inputType="text"
         android:paddingStart="@dimen/_8sdp"
         android:paddingEnd="@dimen/_15sdp" />
 

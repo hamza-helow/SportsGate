@@ -11,7 +11,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedListResponse
-import com.souqApp.data.main.home.remote.dto.CategoryResponse
+import com.souqApp.data.main.common.CategoryResponse
 import com.souqApp.databinding.FragmentCategoriesBinding
 import com.souqApp.domain.main.home.entity.CategoryEntity
 import com.souqApp.infra.extension.showGenericAlertDialog

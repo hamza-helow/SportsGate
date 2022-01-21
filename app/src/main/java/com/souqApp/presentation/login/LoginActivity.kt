@@ -20,7 +20,7 @@ import com.souqApp.databinding.ActivityLoginBinding
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.SharedPrefs
-import com.souqApp.presentation.main.MainActivity
+import com.souqApp.presentation.forgot_password.ForgotPasswordActivity
 import com.souqApp.presentation.register.RegisterActivity
 import com.souqApp.presentation.verification.VerificationActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +49,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun initListener() {
         binding.switchTypeLogin.setOnCheckedChangeListener(this)
+        binding.forgetPassBtn.setOnClickListener(this)
         binding.loginBtn.setOnClickListener(this)
         binding.txtSkip.setOnClickListener(this)
         binding.createAccBtn.setOnClickListener(this)
@@ -79,7 +80,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun handleLoginByPhone(enable: Boolean) {
         binding.emailInputLay.isVisible(!enable)
-        binding.layoutPhoneNumber.isVisible(enable)
+        binding.includePhoneNumber.root.isVisible(enable)
     }
 
     private fun handleSuccessLogin(userEntity: UserEntity) {
@@ -96,9 +97,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
+        finish()
     }
 
     private fun handleErrorLogin(rawResponse: WrappedResponse<UserResponse>) {
@@ -121,6 +120,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun login() {
+        hideKeyboard()
         var username = getUsernameField().text.toString().trim()
         val password = binding.includePassword.passwordEdt.text.toString()
         val code = if (viewModel.isPhoneEnable) "+962" else ""
@@ -140,7 +140,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
 
         if (viewModel.isPhoneEnable) {
             if (!username.isPhone()) {
-                binding.phoneInputLay.activeBorder(this, false)
+                // binding.phoneInputLay.activeBorder(this, false)
                 return false
             }
 
@@ -163,15 +163,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
         binding.loginBtn.isEnabled = false
         binding.includePassword.passwordInputLay.activeBorder(this, true)
         binding.emailInputLay.activeBorder(this, true)
-        binding.phoneInputLay.activeBorder(this, true)
+        // binding.phoneInputLay.activeBorder(this, true)
     }
 
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
+    override fun onClick(view: View) {
+        when (view.id) {
             binding.loginBtn.id -> login()
             binding.createAccBtn.id -> goToCreateAccountScreen()
+            binding.forgetPassBtn.id -> goToForgetPasswordActivity()
             binding.txtSkip.id -> finish() // return to MainActivity
         }
+    }
+
+    private fun goToForgetPasswordActivity() {
+        startActivity(Intent(this, ForgotPasswordActivity::class.java))
     }
 
     private fun goToCreateAccountScreen() {

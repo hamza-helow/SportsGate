@@ -40,6 +40,10 @@ class SharedPrefs(context: Context) {
         return Gson().fromJson(result, UserResponse::class.java).toEntity()
     }
 
+    fun clearUserInfo() {
+        put(PREF_USER_INFO, "")
+    }
+
     fun isLogin(): Boolean {
         return getToken().isNotEmpty()
     }
@@ -47,9 +51,8 @@ class SharedPrefs(context: Context) {
     fun getToken() = get(PREF_TOKEN, String::class.java)
 
     fun clear() {
-        sharedPref.edit().run {
-            remove(PREF_TOKEN)
-        }
+        saveToken("")
+        clearUserInfo()
     }
 
     private fun <T> get(key: String, clazz: Class<T>) =

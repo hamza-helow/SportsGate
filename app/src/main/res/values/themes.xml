@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <!-- Light-->
+    <style name="ThemeLight" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:spinnerMode">dropdown</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -13,6 +13,24 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="bottomNavColor">@color/white</item>
+
+    </style>
+
+    <!-- Night-->
+    <style name="ThemeNight" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="buttonStyle">@style/ButtonFillStyle</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/colorAccent
+        </item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+
+        <item name="bottomNavColor">@color/black</item>
 
     </style>
 
@@ -86,6 +104,15 @@
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">#000000</item>
     </style>
+
+    <style name="ThemeLight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

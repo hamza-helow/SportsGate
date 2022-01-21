@@ -1,4 +1,4 @@
-package com.souqApp.presentation.profile
+package com.souqApp.presentation.main.more.profile
 
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
@@ -74,6 +74,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initListener() {
         binding.imgProfile.setOnClickListener(this)
+        binding.btnLogout.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.etName.doAfterTextChanged {
             val name = it.toString()
@@ -132,12 +133,18 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         when (view.id) {
             binding.imgProfile.id -> requestPermissionReadStorageAndSelectImage()
             binding.btnSave.id -> updateProfile()
+            binding.btnLogout.id -> logout()
         }
+    }
+
+    private fun logout() {
+        sharedPrefs.clear()
+        finish()
     }
 
     private fun updateProfile() {
         val name = binding.etName.text.toString().trim()
-        viewModel.updateProfile(name, imageSelected?:"")
+        viewModel.updateProfile(name, imageSelected ?: "")
     }
 
     private fun requestPermissionReadStorageAndSelectImage() {

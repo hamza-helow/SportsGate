@@ -12,9 +12,9 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.register.remote.dto.RegisterRequest
-import com.souqApp.data.register.remote.dto.RegisterResponse
+import com.souqApp.data.common.remote.dto.TokenResponse
 import com.souqApp.databinding.ActivityRegisterBinding
-import com.souqApp.domain.register.entity.RegisterEntity
+import com.souqApp.domain.common.entity.TokenEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.verification.VerificationActivity
@@ -61,13 +61,13 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             is RegisterActivityState.ShowToast -> handleShowToast(state.message)
             is RegisterActivityState.IsLoading -> handleLoading(state.isLoading)
             is RegisterActivityState.ErrorRegister -> handleErrorRegister(state.rawResponse)
-            is RegisterActivityState.SuccessRegister -> handleSuccessRegister(state.registerEntity)
+            is RegisterActivityState.SuccessRegister -> handleSuccessRegister(state.tokenEntity)
             is RegisterActivityState.Init -> Unit
         }
     }
 
-    private fun handleSuccessRegister(registerEntity: RegisterEntity) {
-        sharedPrefs.saveToken(registerEntity.token)
+    private fun handleSuccessRegister(tokenEntity: TokenEntity) {
+        sharedPrefs.saveToken(tokenEntity.token)
         navigateToVerificationActivity()
     }
 
@@ -75,7 +75,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         startActivity(Intent(this, VerificationActivity::class.java))
     }
 
-    private fun handleErrorRegister(rawResponse: WrappedResponse<RegisterResponse>) {
+    private fun handleErrorRegister(rawResponse: WrappedResponse<TokenResponse>) {
         showGenericAlertDialog(rawResponse.formattedErrors())
     }
 

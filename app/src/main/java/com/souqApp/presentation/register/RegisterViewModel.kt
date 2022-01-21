@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.register.remote.dto.RegisterRequest
-import com.souqApp.data.register.remote.dto.RegisterResponse
+import com.souqApp.data.common.remote.dto.TokenResponse
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.register.entity.RegisterEntity
+import com.souqApp.domain.common.entity.TokenEntity
 import com.souqApp.domain.register.usecase.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -32,11 +32,11 @@ class RegisterViewModel @Inject constructor(private val registerUseCase: Registe
         state.value = RegisterActivityState.ShowToast(message)
     }
 
-    private fun successRegister(registerEntity: RegisterEntity) {
-        state.value = RegisterActivityState.SuccessRegister(registerEntity)
+    private fun successRegister(tokenEntity: TokenEntity) {
+        state.value = RegisterActivityState.SuccessRegister(tokenEntity)
     }
 
-    private fun errorRegister(rawResponse: WrappedResponse<RegisterResponse>) {
+    private fun errorRegister(rawResponse: WrappedResponse<TokenResponse>) {
         state.value = RegisterActivityState.ErrorRegister(rawResponse)
     }
 
@@ -63,7 +63,7 @@ sealed class RegisterActivityState {
     object Init : RegisterActivityState()
     data class IsLoading(val isLoading: Boolean) : RegisterActivityState()
     data class ShowToast(val message: String) : RegisterActivityState()
-    data class SuccessRegister(val registerEntity: RegisterEntity) : RegisterActivityState()
-    data class ErrorRegister(val rawResponse: WrappedResponse<RegisterResponse>) :
+    data class SuccessRegister(val tokenEntity: TokenEntity) : RegisterActivityState()
+    data class ErrorRegister(val rawResponse: WrappedResponse<TokenResponse>) :
         RegisterActivityState()
 }

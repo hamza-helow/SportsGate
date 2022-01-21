@@ -8,6 +8,9 @@ import android.widget.Toast
 import com.souqApp.R
 import android.content.Intent
 import android.net.Uri
+import android.app.Activity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 
 
 fun Context.showToast(message: String) {
@@ -20,6 +23,19 @@ fun Context.showGenericAlertDialog(message: String) {
         setMessage(message)
         setPositiveButton("ok") { d, _ -> d.cancel() }
     }.show()
+}
+
+fun Activity.hideKeyboard() {
+    val imm: InputMethodManager =
+        this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+    var view: View? = this.currentFocus
+    //If no view currently has focus, create a new one, just so we can grab a window token from it
+    if (view == null) {
+        view = View(this)
+    }
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+
 }
 
 var dialog: ProgressDialog? = null

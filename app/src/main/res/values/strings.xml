@@ -209,5 +209,16 @@
     <string name="instagram_link" translatable="false">https://instagram.com/sport_gate.jo?utm_medium</string>
     <string name="powered_name">SouqApp</string>
     <string name="show_all">show all</string>
+    <string name="title_activity_sub_category">SubCategoryActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="current_password">Current password</string>
+    <string name="submit">submit</string>
 
 </resources>

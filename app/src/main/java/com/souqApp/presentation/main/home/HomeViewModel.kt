@@ -30,8 +30,8 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
         state.value = HomeFragmentState.IsLoading(false)
     }
 
-    private fun showToast(message: String) {
-        state.value = HomeFragmentState.Error(message)
+    private fun showToast(error: Throwable) {
+        state.value = HomeFragmentState.Error(error)
     }
 
     private fun homeLoaded(homeEntity: HomeEntity) {
@@ -51,10 +51,11 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
                 .onStart { setLoading() }
                 .catch {
                     hideLoading()
-                    showToast(it.stackTraceToString())
+                    showToast(it)
                 }
                 .collect {
                     hideLoading()
+
                     when (it) {
                         is BaseResult.Success -> homeLoaded(it.data)
                         is BaseResult.Errors -> homeErrorLoaded(it.error)
@@ -68,7 +69,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
 sealed class HomeFragmentState {
     object Init : HomeFragmentState()
     data class IsLoading(val isLoading: Boolean) : HomeFragmentState()
-    data class Error(val message: String) : HomeFragmentState()
+    data class Error(val error: Throwable) : HomeFragmentState()
     data class HomeLoaded(val homeEntity: HomeEntity) : HomeFragmentState()
     data class HomeLoadedError(val rawResponse: WrappedResponse<HomeResponse>) : HomeFragmentState()
 

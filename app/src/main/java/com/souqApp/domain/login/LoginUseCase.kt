@@ -13,4 +13,6 @@ class LoginUseCase @Inject constructor(private val loginRepository: LoginReposit
     suspend fun invoke(loginRequest: LoginRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return loginRepository.login(loginRequest)
     }
+
+
 }

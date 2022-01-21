@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -96,7 +97,11 @@ class MainActivity : AppCompatActivity() {
 
         @BindingAdapter(value = ["networkImage", "placeholder"], requireAll = false)
         @JvmStatic
-        fun ImageView.setImageUrl(url: String, placeholder: Drawable? = null) {
+        fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null) {
+
+            if (url == null || url.isEmpty())
+                return
+
             Picasso
                 .get()
                 .load(url).apply {

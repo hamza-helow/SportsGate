@@ -3,7 +3,7 @@ package com.souqApp.presentation.main.category
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedListResponse
-import com.souqApp.data.main.home.remote.dto.CategoryResponse
+import com.souqApp.data.main.common.CategoryResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.categories.CategoriesUseCase
 import com.souqApp.domain.main.home.entity.CategoryEntity

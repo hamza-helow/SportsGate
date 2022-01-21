@@ -1,7 +1,6 @@
 package com.souqApp.presentation.main.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,9 +25,9 @@ import com.souqApp.presentation.common.CategoryAdapter
 import com.souqApp.presentation.common.ProgressDialog
 import com.souqApp.presentation.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
@@ -70,7 +69,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
 
     private fun handleState(state: HomeFragmentState) {
         when (state) {
-            is HomeFragmentState.Error -> handleShowToast(state.message)
+            is HomeFragmentState.Error -> handleUnexpectedError(state.error)
             is HomeFragmentState.IsLoading -> handleIsLoading(state.isLoading)
             is HomeFragmentState.Init -> Unit
             is HomeFragmentState.HomeLoaded -> handleHomeLoaded(state.homeEntity)
@@ -80,9 +79,10 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
 
     private fun handleHomeLoadedError(rawResponse: WrappedResponse<HomeResponse>) {
         progressBar.showLoader(false)
+
+        requireContext().showGenericAlertDialog("err")
         requireContext().showGenericAlertDialog(rawResponse.formattedErrors())
     }
-
 
 
     private fun handleIsLoading(loading: Boolean) {
@@ -135,9 +135,13 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
 
     }
 
-    private fun handleShowToast(message: String) {
-        context?.showToast(message)
+    private fun handleUnexpectedError(error: Throwable) {
         context?.showLoader(false)
+
+        if (error is SocketTimeoutException) {
+            requireContext().showToast("Unexpected error, try again later")
+        }
+
     }
 
     companion object {

@@ -8,31 +8,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.souqApp.R
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.databinding.FragmentHomeBinding
 import com.souqApp.domain.main.home.entity.HomeEntity
+import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.common.CategoryAdapter
 import com.souqApp.presentation.common.ProgressDialog
+import com.souqApp.presentation.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
+    // shared view model
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: FragmentHomeBinding
-
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var progressBar: ProgressDialog
 
@@ -48,14 +51,14 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         super.onViewCreated(view, savedInstanceState)
         binding.content.isVisible = false
         progressBar = ProgressDialog(requireContext())
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         initListeners()
         observer()
-
-
     }
 
     private fun initListeners() {
         binding.refreshSwiper.setOnRefreshListener(this)
+        binding.includeCategories.txtShowAll.setOnClickListener(this)
     }
 
     private fun observer() {
@@ -77,8 +80,10 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun handleHomeLoadedError(rawResponse: WrappedResponse<HomeResponse>) {
         progressBar.showLoader(false)
-
+        requireContext().showGenericAlertDialog(rawResponse.formattedErrors())
     }
+
+
 
     private fun handleIsLoading(loading: Boolean) {
         progressBar.showLoader(loading)
@@ -133,8 +138,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun handleShowToast(message: String) {
         context?.showToast(message)
         context?.showLoader(false)
-
-        Log.e("Ere", message)
     }
 
     companion object {
@@ -146,5 +149,17 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         viewModel.getHome()
         binding.refreshSwiper.isRefreshing = false
     }
+
+    override fun onClick(view: View) {
+
+        when (view.id) {
+            binding.includeCategories.txtShowAll.id -> navigateToCategoriesFragment()
+        }
+    }
+
+    private fun navigateToCategoriesFragment() {
+        mainViewModel.changeNavigation(R.id.categoriesFragment)
+    }
+
 
 }

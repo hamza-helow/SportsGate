@@ -2,13 +2,11 @@ package com.souqApp.presentation.main
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.marginEnd
 import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import com.souqApp.R
@@ -20,15 +18,20 @@ import androidx.navigation.ui.setupWithNavController
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.utils.KeepStateNavigator
 import android.view.ViewGroup.MarginLayoutParams
-
-
-
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val viewModel: MainViewModel by viewModels()
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,11 +59,38 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
     }
 
+    private fun observer() {
+        viewModel.mState
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { handleState(it) }
+            .launchIn(lifecycleScope)
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        observer()
+    }
+
+
+    private fun handleState(state: MainActivityState) {
+        when (state) {
+
+            is MainActivityState.Init -> Unit
+            is MainActivityState.OnNavigationChanged -> handleOnNavigationChanged(state.idNav)
+
+        }
+    }
+
+    private fun handleOnNavigationChanged(idNav: Int) {
+        binding.bottomNavigationView.selectedItemId = idNav
+    }
+
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
 
     companion object {
 
@@ -89,11 +119,10 @@ class MainActivity : AppCompatActivity() {
             val layoutParams = view.layoutParams as MarginLayoutParams
             layoutParams.setMargins(
                 layoutParams.leftMargin, layoutParams.topMargin,
-                layoutParams.rightMargin, Math.round(bottomMargin)
+                layoutParams.rightMargin, bottomMargin.roundToInt()
             )
             view.layoutParams = layoutParams
         }
-
 
         @BindingAdapter("isVisible")
         @JvmStatic

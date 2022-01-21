@@ -193,5 +193,6 @@
     <string name="cart">Cart</string>
     <string name="more">More</string>
     <string name="powered_name">SouqApp</string>
+    <string name="show_all">show all</string>
 
 </resources>

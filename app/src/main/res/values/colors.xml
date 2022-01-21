@@ -32,6 +32,7 @@
     <color name="gray_light_plus">#cedbe3e8</color>
     <color name="green">#ff37c47b</color>
     <color name="red">#ffec272d</color>
+    <color name="tool_bar_color">#4E4E4E</color>
 
 
     <!--    <color name="abc_input_method_navigation_guard">@android:color/black</color>-->

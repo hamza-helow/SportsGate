@@ -208,5 +208,6 @@
     <string name="tiktok_link" translatable="false">https://vm.tiktok.com/ZSeCSrgGV</string>
     <string name="instagram_link" translatable="false">https://instagram.com/sport_gate.jo?utm_medium</string>
     <string name="powered_name">SouqApp</string>
+    <string name="show_all">show all</string>
 
 </resources>

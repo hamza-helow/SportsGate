@@ -22,6 +22,10 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
         state.value = HomeFragmentState.IsLoading(true)
     }
 
+    private fun initState() {
+        state.value = HomeFragmentState.Init
+    }
+
     private fun hideLoading() {
         state.value = HomeFragmentState.IsLoading(false)
     }
@@ -41,6 +45,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
 
     @Inject
     fun getHome() {
+        initState()
         viewModelScope.launch {
             homeUseCase.home()
                 .onStart { setLoading() }
@@ -50,14 +55,11 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
                 }
                 .collect {
                     hideLoading()
-
                     when (it) {
                         is BaseResult.Success -> homeLoaded(it.data)
                         is BaseResult.Errors -> homeErrorLoaded(it.error)
                     }
-
                 }
-
         }
     }
 

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
+        <variable
+            name="appBarColor"
+            type="Integer" />
+
+        <variable
+            name="titleColor"
+            type="Integer" />
 
         <variable
             name="title"
@@ -14,7 +20,7 @@
         android:id="@+id/toolbar"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@{appBarColor??@color/white}"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,12 +28,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:textStyle="bold"
-            android:textSize="@dimen/_14sdp"
+            android:textColor="@{titleColor??@color/black}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text='@{title,default="title"}' />
+            android:text='@{title,default="title"}'
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>
 

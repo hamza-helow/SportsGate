@@ -28,7 +28,11 @@ fun TextInputLayout.activeBorder(context: Context, active: Boolean) {
         ContextCompat.getColor(context, if (active) R.color.green else R.color.red)
 }
 
-fun ActionBar.setup() {
+fun ActionBar.setup(
+    homeAsUpEnabled: Boolean = true,
+    showHomeEnabled: Boolean = true,
+    showTitleEnabled: Boolean = false,
+) {
     setDisplayHomeAsUpEnabled(true)
     setDisplayShowHomeEnabled(true)
     setDisplayShowTitleEnabled(false)

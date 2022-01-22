@@ -6,7 +6,7 @@ data class ProductEntity(
     val desc: String?,
     val smallDesc: String?,
     val firstImage: String?,
-    val regularPrice: Double?,
+    val regularPrice: Double? ,
     val onSale: Boolean?,
     val salePrice: Double?,
     val userFavourite: Boolean?,

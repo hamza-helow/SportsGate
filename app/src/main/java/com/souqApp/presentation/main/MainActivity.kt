@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -19,12 +18,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.utils.KeepStateNavigator
 import android.view.ViewGroup.MarginLayoutParams
-import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import android.widget.TextView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlin.math.roundToInt
 
 
@@ -32,7 +27,7 @@ import kotlin.math.roundToInt
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
+    lateinit var bottomNav: BottomNavigationView
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +37,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        bottomNav = binding.bottomNavigationView
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         // get fragment
@@ -59,34 +56,6 @@ class MainActivity : AppCompatActivity() {
         navController.setGraph(R.navigation.home_nav_graph)
         binding.bottomNavigationView.setupWithNavController(navController)
     }
-
-    private fun observer() {
-        viewModel.mState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { handleState(it) }
-            .launchIn(lifecycleScope)
-    }
-
-
-    override fun onStart() {
-        super.onStart()
-        observer()
-    }
-
-
-    private fun handleState(state: MainActivityState) {
-        when (state) {
-
-            is MainActivityState.Init -> Unit
-            is MainActivityState.OnNavigationChanged -> handleOnNavigationChanged(state.idNav)
-
-        }
-    }
-
-    private fun handleOnNavigationChanged(idNav: Int) {
-        binding.bottomNavigationView.selectedItemId = idNav
-    }
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -107,8 +76,12 @@ class MainActivity : AppCompatActivity() {
                 .load(url).apply {
                     if (placeholder != null) {
                         placeholder(placeholder)
-                    }
-                }.into(this)
+                    } else {
+                        placeholder(R.drawable.image_placeholder) }
+
+                }
+                .noFade()
+                .into(this)
         }
 
         @BindingAdapter("horizontalPadding")
@@ -134,5 +107,6 @@ class MainActivity : AppCompatActivity() {
         fun isVisible(view: View, isVisible: Boolean) {
             view.isVisible(isVisible)
         }
+
     }
 }

@@ -67,7 +67,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun handleSuccessRegister(tokenEntity: TokenEntity) {
-        sharedPrefs.saveToken(tokenEntity.token)
+        sharedPrefs.saveToken(tokenEntity.token, isLogin = false)
         navigateToVerificationActivity()
     }
 

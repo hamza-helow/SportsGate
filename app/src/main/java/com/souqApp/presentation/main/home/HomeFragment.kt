@@ -23,17 +23,13 @@ import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.common.CategoryAdapter
 import com.souqApp.presentation.common.ProgressDialog
-import com.souqApp.presentation.main.MainViewModel
+import com.souqApp.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
-    // shared view model
-    private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var progressBar: ProgressDialog
@@ -48,9 +44,9 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.content.isVisible = false
         progressBar = ProgressDialog(requireContext())
-        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         initListeners()
         observer()
     }
@@ -61,10 +57,15 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     }
 
     private fun observer() {
-        viewModel.mState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { handleState(it) }
-            .launchIn(lifecycleScope)
+
+        //get last fragment state
+        viewModel.mBundleFromFragment.observe(viewLifecycleOwner, Observer {
+            binding.mainScroll.y = it.getFloat("SCROLL_POSITION", 0f)
+        })
+
+        viewModel.mState.observe(viewLifecycleOwner, Observer {
+            handleState(it)
+        })
     }
 
     private fun handleState(state: HomeFragmentState) {
@@ -96,6 +97,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     private fun handleHomeLoaded(homeEntity: HomeEntity) {
         //visible content
         binding.content.isVisible = true
+
         //init adapters
         val bestSellingAdapter = ProductAdapter()
         val categoryAdapter = CategoryAdapter(verticalMode = false)
@@ -162,8 +164,12 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     }
 
     private fun navigateToCategoriesFragment() {
-        mainViewModel.changeNavigation(R.id.categoriesFragment)
+        (requireActivity() as MainActivity).bottomNav.selectedItemId = R.id.categoriesFragment
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.saveMainScrollState(binding.mainScroll.y)
+    }
 
 }

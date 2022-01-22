@@ -8,7 +8,7 @@ data class ProductResponse(
     @SerializedName("desc") val desc: String?,
     @SerializedName("small_desc") val smallDesc: String?,
     @SerializedName("first_image") val firstImage: String?,
-    @SerializedName("regularPrice") val regularPrice: Double?,
+    @SerializedName("regularPrice") val regularPrice: Double= 0.0,
     @SerializedName("on_sale") val onSale: Boolean?,
     @SerializedName("sale_price") val salePrice: Double?,
     @SerializedName("user_favourite") val userFavourite: Boolean?,

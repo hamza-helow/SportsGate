@@ -138,7 +138,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun logout() {
-        sharedPrefs.clear()
+        sharedPrefs.logout()
         finish()
     }
 

@@ -7,7 +7,6 @@ import com.souqApp.BuildConfig
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.domain.common.entity.UserEntity
-import org.json.JSONObject
 
 
 class SharedPrefs(context: Context) {
@@ -16,14 +15,16 @@ class SharedPrefs(context: Context) {
         private const val PREF = BuildConfig.APP_NAME
         private const val PREF_TOKEN = "user_token"
         private const val PREF_USER_INFO = "user_info"
+        private const val IS_LOGIN = "is_login"
     }
 
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
 
 
-    fun saveToken(token: String) {
+    fun saveToken(token: String, isLogin: Boolean = true) {
         put(PREF_TOKEN, token)
+        put(IS_LOGIN, isLogin)
     }
 
     fun saveUserInfo(userResponse: UserResponse) {
@@ -40,18 +41,18 @@ class SharedPrefs(context: Context) {
         return Gson().fromJson(result, UserResponse::class.java).toEntity()
     }
 
-    fun clearUserInfo() {
+    private fun clearUserInfo() {
         put(PREF_USER_INFO, "")
     }
 
     fun isLogin(): Boolean {
-        return getToken().isNotEmpty()
+        return getToken().isNotEmpty() && get(IS_LOGIN, Boolean::class.java)
     }
 
     fun getToken() = get(PREF_TOKEN, String::class.java)
 
-    fun clear() {
-        saveToken("")
+    fun logout() {
+        saveToken("", false)
         clearUserInfo()
     }
 

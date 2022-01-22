@@ -1,5 +1,10 @@
 package com.souqApp.presentation.main.home
 
+import android.os.Bundle
+import android.util.Log
+import androidx.core.os.bundleOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -15,8 +20,11 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : ViewModel() {
 
-    private val state = MutableStateFlow<HomeFragmentState>(HomeFragmentState.Init)
-    val mState: StateFlow<HomeFragmentState> get() = state
+    private val state = MutableLiveData<HomeFragmentState>(HomeFragmentState.Init)
+    val mState: LiveData<HomeFragmentState> get() = state
+
+    private val bundleFromFragment = MutableLiveData<Bundle>()
+    val mBundleFromFragment: LiveData<Bundle> get() = bundleFromFragment
 
     private fun setLoading() {
         state.value = HomeFragmentState.IsLoading(true)
@@ -40,6 +48,13 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
 
     private fun homeErrorLoaded(rawResponse: WrappedResponse<HomeResponse>) {
         state.value = HomeFragmentState.HomeLoadedError(rawResponse)
+    }
+
+
+    fun saveMainScrollState(y: Float) {
+        bundleFromFragment.value = bundleOf(
+            "SCROLL_POSITION" to y
+        )
     }
 
 

@@ -1,14 +1,19 @@
 package com.souqApp.infra.utils;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.souqApp.infra.listener.NeedLoadMoreListener;
 import com.souqApp.infra.listener.OnClickItemListener;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,9 +26,9 @@ public abstract class BaseRecyclerAdapter<Binding extends ViewDataBinding, Model
 
     private int visibleItemCount, totalItemCount, pastVisibleItems;
 
-    private int page = 0;
+    private int page = 1;
 
-    private int lastSizeList = 0;
+    private int lastSizeList = 1;
 
     private int idViewCLikable = -1;
 
@@ -139,7 +144,6 @@ public abstract class BaseRecyclerAdapter<Binding extends ViewDataBinding, Model
         if (list == null)
             return;
 
-
         this.list.clear();
 
         this.list.addAll(list);
@@ -188,7 +192,7 @@ public abstract class BaseRecyclerAdapter<Binding extends ViewDataBinding, Model
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
 
-        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager || recyclerView.getLayoutManager() instanceof GridLayoutManager) {
             LinearLayoutManager mLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -201,7 +205,7 @@ public abstract class BaseRecyclerAdapter<Binding extends ViewDataBinding, Model
                         pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
 
                         if (canLoading) {
-                            if (lastSizeList != list.size() || page == 0)
+                            if (lastSizeList != list.size() || page == 1)
                                 if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
 
                                     lastSizeList = list.size();

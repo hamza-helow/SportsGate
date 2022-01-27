@@ -36,6 +36,8 @@ fun ActionBar.setup(
     setDisplayHomeAsUpEnabled(true)
     setDisplayShowHomeEnabled(true)
     setDisplayShowTitleEnabled(false)
+
+
 }
 
 

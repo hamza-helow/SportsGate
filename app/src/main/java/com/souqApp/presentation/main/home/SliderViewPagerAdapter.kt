@@ -29,7 +29,8 @@ class SliderViewPagerAdapter(val context: Context, private val ads: List<Product
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val binding: ItemSliderBinding = ItemSliderBinding.inflate(inflater, container, false)
-        Picasso.get().load(ads[position].image).into(binding.image)
+       // Picasso.get().load(ads[position].image).into(binding.image)
+        binding.setImage(ads[position].image)
         container.addView(binding.root)
         return binding.root
     }

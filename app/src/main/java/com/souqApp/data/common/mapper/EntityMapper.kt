@@ -3,16 +3,21 @@ package com.souqApp.data.common.mapper
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.main.common.CategoryResponse
 import com.souqApp.data.main.home.remote.dto.ProductResponse
+import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
 import com.souqApp.data.sub_categories.remote.dto.SubCategoryResponse
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.main.home.entity.CategoryEntity
 import com.souqApp.domain.main.home.entity.ProductEntity
+import com.souqApp.domain.products_by_type.ProductsByTypeEntity
 import com.souqApp.domain.sub_categories.SubCategoryEntity
 
 
 fun UserResponse.toEntity() = UserEntity(id, name, email, phone, image, verified, token)
 
+fun ProductsByTypeResponse.toEntity() = ProductsByTypeEntity(hasMore, products)
+
 fun List<CategoryResponse>.toEntity() = this.map { CategoryEntity(it.id, it.name, it.logo) }
+
 
 @JvmName("toEntityProductResponse")
 fun List<ProductResponse>.toEntity() =
@@ -35,3 +40,4 @@ fun List<ProductResponse>.toEntity() =
 
 @JvmName("toEntitySubCategory")
 fun List<SubCategoryResponse>.toEntity() = map { SubCategoryEntity(it.id, it.name, it.logo) }
+

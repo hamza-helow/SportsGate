@@ -1,5 +1,6 @@
 package com.souqApp.presentation.main.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,9 +22,11 @@ import com.souqApp.domain.main.home.entity.HomeEntity
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.utils.PRODUCTS_TYPE
 import com.souqApp.presentation.common.CategoryAdapter
 import com.souqApp.presentation.common.ProgressDialog
 import com.souqApp.presentation.main.MainActivity
+import com.souqApp.presentation.products_by_type.ProductsByTypeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 
@@ -53,7 +56,9 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
 
     private fun initListeners() {
         binding.refreshSwiper.setOnRefreshListener(this)
-        binding.includeCategories.txtShowAll.setOnClickListener(this)
+        binding.txtShowAllRecommended.setOnClickListener(this)
+        binding.txtShowAllNewProducts.setOnClickListener(this)
+        binding.txtShowAllCategories.setOnClickListener(this)
     }
 
     private fun observer() {
@@ -112,26 +117,26 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         newProductAdapter.list = homeEntity.newProducts.toEntity()
 
         // set layout managers
-        binding.includeCategories.rec.layoutManager = generateLinearLayoutManager()
-        binding.includeBestSelling.rec.layoutManager = generateLinearLayoutManager()
-        binding.includeRecommended.rec.layoutManager = generateLinearLayoutManager()
-        binding.includeNewProducts.rec.layoutManager = GridLayoutManager(context, 3)
+        binding.recCategory.layoutManager = generateLinearLayoutManager()
+        binding.recBestSelling.layoutManager = generateLinearLayoutManager()
+        binding.recRecommended.layoutManager = generateLinearLayoutManager()
+        binding.recNewProducts.layoutManager = GridLayoutManager(context, 3)
 
         //set adapters
-        binding.includeCategories.rec.adapter = categoryAdapter
-        binding.includeBestSelling.rec.adapter = bestSellingAdapter
-        binding.includeRecommended.rec.adapter = recommendedAdapter
-        binding.includeNewProducts.rec.adapter = newProductAdapter
+        binding.recCategory.adapter = categoryAdapter
+        binding.recBestSelling.adapter = bestSellingAdapter
+        binding.recRecommended.adapter = recommendedAdapter
+        binding.recNewProducts.adapter = newProductAdapter
         binding.viewPager.adapter = sliderPagerAdapter
 
         //link viewpager with tabs layout
         binding.tabDots.setupWithViewPager(binding.viewPager)
 
         //viability
-        binding.includeNewProducts.root.isVisible = homeEntity.newProducts.isNotEmpty()
-        binding.includeRecommended.root.isVisible = homeEntity.recommendedProducts.isNotEmpty()
-        binding.includeBestSelling.root.isVisible = homeEntity.bestSellingProducts.isNotEmpty()
-        binding.includeCategories.root.isVisible = homeEntity.categories.isNotEmpty()
+        binding.cardNewProducts.isVisible = homeEntity.newProducts.isNotEmpty()
+        binding.cardRecommended.isVisible = homeEntity.recommendedProducts.isNotEmpty()
+        binding.cardBestSelling.isVisible = homeEntity.bestSellingProducts.isNotEmpty()
+        binding.cardCategories.isVisible = homeEntity.categories.isNotEmpty()
         binding.viewPager.isVisible = homeEntity.ads.isNotEmpty()
         binding.tabDots.isVisible = homeEntity.ads.isNotEmpty()
 
@@ -156,10 +161,21 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         binding.refreshSwiper.isRefreshing = false
     }
 
-    override fun onClick(view: View) {
+    private fun goToProductsByTypeScreen(type: Int) {
 
+        val intent = Intent(
+            requireContext(),
+            ProductsByTypeActivity::class.java
+        )
+        intent.putExtra(PRODUCTS_TYPE, type)
+        startActivity(intent)
+    }
+
+    override fun onClick(view: View) {
         when (view.id) {
-            binding.includeCategories.txtShowAll.id -> navigateToCategoriesFragment()
+            binding.txtShowAllCategories.id -> navigateToCategoriesFragment()
+            binding.txtShowAllRecommended.id -> goToProductsByTypeScreen(2)
+            binding.txtShowAllNewProducts.id -> goToProductsByTypeScreen(1)
         }
     }
 

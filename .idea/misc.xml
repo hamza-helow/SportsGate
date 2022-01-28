@@ -19,6 +19,8 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/circle_badge.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/divider.xml" value="0.19907407407407407" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_arrow_right.xml" value="0.19907407407407407" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.2361111111111111" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.2037037037037037" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_check_checkbox.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_dec.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_email_phone_switch.xml" value="0.21944444444444444" />
@@ -43,6 +45,7 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_forgot_password.xml" value="0.4" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_login.xml" value="0.176" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_product_details.xml" value="0.152" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_products_by_type.xml" value="0.16404077849860982" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_profile.xml" value="0.26275115919629055" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_register.xml" value="0.176" />
@@ -63,9 +66,11 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/home_section.xml" value="0.176" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_category.xml" value="0.176" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_product.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_product_grid.xml" value="0.264" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_product_grid.xml" value="0.2" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_product_relevant.xml" value="0.536" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_slider.xml" value="0.264" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_sub_category.xml" value="0.176" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/layout_progressbar.xml" value="0.22192028985507245" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/list_tile.xml" value="0.6" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/loader.xml" value="0.25" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/progress_bar.xml" value="0.21920289855072464" />

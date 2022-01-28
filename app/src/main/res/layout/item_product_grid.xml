@@ -19,7 +19,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_90sdp"
+            android:layout_height="@dimen/_80sdp"
             android:scaleType="fitXY"
             app:networkImage="@{product.firstImage}"
             tools:ignore="ContentDescription"

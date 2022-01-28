@@ -196,5 +196,6 @@
     <string name="show_all">show all</string>
     <string name="current_password">Current password</string>
     <string name="submit">submit</string>
+    <string name="relevant_products">Relevant products</string>
 
 </resources>

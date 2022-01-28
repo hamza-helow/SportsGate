@@ -5,15 +5,18 @@ import androidx.viewpager.widget.PagerAdapter
 import android.widget.LinearLayout
 import android.view.ViewGroup
 import android.content.Context
-import android.graphics.Color
+import android.content.Intent
 import android.view.LayoutInflater
-import com.souqApp.R
 import com.souqApp.data.main.home.remote.dto.ProductAdsResponse
 import com.souqApp.databinding.ItemSliderBinding
-import com.squareup.picasso.Picasso
-import java.util.*
+import com.souqApp.infra.utils.ID_PRODUCT
+import com.souqApp.presentation.product_details.ProductDetailsActivity
 
-class SliderViewPagerAdapter(val context: Context, private val ads: List<ProductAdsResponse>) :
+class SliderViewPagerAdapter(
+    val context: Context,
+    private val ads: List<ProductAdsResponse>,
+    private val viewOnly: Boolean = false
+) :
     PagerAdapter() {
 
     private val inflater: LayoutInflater =
@@ -29,9 +32,16 @@ class SliderViewPagerAdapter(val context: Context, private val ads: List<Product
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val binding: ItemSliderBinding = ItemSliderBinding.inflate(inflater, container, false)
-       // Picasso.get().load(ads[position].image).into(binding.image)
         binding.setImage(ads[position].image)
         container.addView(binding.root)
+
+        if (!viewOnly)
+            binding.root.setOnClickListener {
+                val intent = Intent(context, ProductDetailsActivity::class.java)
+                intent.putExtra(ID_PRODUCT, ads[position].id)
+                context.startActivity(intent)
+            }
+
         return binding.root
     }
 

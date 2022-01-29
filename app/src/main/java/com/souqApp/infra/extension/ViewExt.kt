@@ -48,6 +48,13 @@ fun View.isVisible(isVisible: Boolean) {
         View.GONE
 }
 
+fun View.inVisible(inVisible: Boolean) {
+    visibility = if (inVisible)
+        View.INVISIBLE
+    else
+        View.VISIBLE
+}
+
 fun ProgressBar.start(start: Boolean) {
     this.isVisible(start)
     if (start) {

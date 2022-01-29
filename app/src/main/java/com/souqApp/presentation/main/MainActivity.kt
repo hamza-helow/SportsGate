@@ -20,6 +20,7 @@ import com.souqApp.infra.utils.KeepStateNavigator
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.souqApp.infra.extension.inVisible
 import kotlin.math.roundToInt
 
 
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var bottomNav: BottomNavigationView
+
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +79,8 @@ class MainActivity : AppCompatActivity() {
                     if (placeholder != null) {
                         placeholder(placeholder)
                     } else {
-                        placeholder(R.drawable.image_placeholder) }
+                        placeholder(R.drawable.image_placeholder)
+                    }
 
                 }
                 .noFade()
@@ -106,6 +109,12 @@ class MainActivity : AppCompatActivity() {
         @JvmStatic
         fun isVisible(view: View, isVisible: Boolean) {
             view.isVisible(isVisible)
+        }
+
+        @BindingAdapter("inVisible")
+        @JvmStatic
+        fun inVisible(view: View, inVisible: Boolean) {
+            view.inVisible(inVisible)
         }
 
     }

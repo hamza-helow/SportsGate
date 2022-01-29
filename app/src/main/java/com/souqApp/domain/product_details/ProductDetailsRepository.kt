@@ -9,4 +9,6 @@ interface ProductDetailsRepository {
     suspend fun productDetails(productID: Int): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>>
 
     suspend fun addOrRemoveProduct(productId: Int): Flow<Boolean>
+
+    suspend fun addProductToCart(productId: Int): Flow<Boolean>
 }

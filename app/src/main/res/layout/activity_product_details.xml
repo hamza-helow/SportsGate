@@ -151,13 +151,35 @@
             app:isVisible="@{isLogin}"
             android:focusable="true">
 
-            <ImageView
-                android:id="@+id/img_favorite"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_gravity="end"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+            <LinearLayout
+                android:weightSum="1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <Button
+                    android:id="@+id/btn_add_to_cart"
+                    app:inVisible="@{!details.onSale}"
+                    android:visibility="invisible"
+                    android:text="@string/add_to_cart"
+                    android:layout_weight="0.8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </Button>
+
+                <ImageView
+                    android:layout_weight="0.2"
+                    android:id="@+id/img_favorite"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+            </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

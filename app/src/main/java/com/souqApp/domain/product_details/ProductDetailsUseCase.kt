@@ -16,4 +16,7 @@ class ProductDetailsUseCase @Inject constructor(private val productDetailsReposi
         return productDetailsRepository.addOrRemoveProduct(productId)
     }
 
+    suspend fun addProductToCart(productId: Int): Flow<Boolean> {
+        return productDetailsRepository.addProductToCart(productId)
+    }
 }

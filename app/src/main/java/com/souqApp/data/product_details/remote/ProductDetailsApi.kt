@@ -12,4 +12,8 @@ interface ProductDetailsApi {
     @FormUrlEncoded
     @POST("v1/users/favourites/addOrRemoveProduct")
     suspend fun addOrRemoveProduct(@Field("product_id") productId: Int): Response<WrappedResponse<Nothing>>
+
+    @FormUrlEncoded
+    @POST("v1/users/carts/addProductToCart")
+    suspend fun addProductToCart(@Field("product_id") productId: Int): Response<WrappedResponse<Nothing>>
 }

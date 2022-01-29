@@ -42,4 +42,16 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
             }
         }
     }
+
+    override suspend fun addProductToCart(productId: Int): Flow<Boolean> {
+        return flow {
+            val response = productsDetailsApi.addProductToCart(productId)
+            val isSuccessful = response.body()?.status
+            if (isSuccessful == true) {
+                emit(true)
+            } else {
+                emit(false)
+            }
+        }
+    }
 }

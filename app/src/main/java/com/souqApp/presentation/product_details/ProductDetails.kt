@@ -16,6 +16,7 @@ import com.souqApp.databinding.LayoutProgressbarBinding
 import com.souqApp.domain.product_details.ProductDetailsEntity
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.setup
+import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.utils.ID_PRODUCT
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.main.home.SliderViewPagerAdapter
@@ -29,6 +30,8 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     private val viewModel: ProductDetailsViewModel by viewModels()
 
+    private var idProduct = 0
+
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
@@ -36,7 +39,7 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         init()
 
-        val idProduct = intent.getIntExtra(ID_PRODUCT, 0)
+        idProduct = intent.getIntExtra(ID_PRODUCT, 0)
         viewModel.productDetails(idProduct)
 
         observer()
@@ -44,6 +47,7 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initListener() {
         binding.imgFavorite.setOnClickListener(this)
+        binding.btnAddToCart.setOnClickListener(this)
     }
 
     private fun init() {
@@ -68,8 +72,30 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
             is ProductDetailsActivityState.Error -> handleError(state.throwable)
             is ProductDetailsActivityState.DetailsErrorLoaded -> handleDetailsErrorLoaded(state.wrappedResponse)
             is ProductDetailsActivityState.DetailsLoaded -> handleDetailsLoaded(state.productDetailsEntity)
+            is ProductDetailsActivityState.AddedToCart -> handleAddedToCart(state.isAdded)
+            is ProductDetailsActivityState.AddingToCart -> handleAddingToCart(state.inProgress)
 
         }
+    }
+
+    private fun handleAddingToCart(inProgress: Boolean) {
+        binding.btnAddToCart.isEnabled = !inProgress
+
+        binding.btnAddToCart.text =
+            if (inProgress)
+                "Adding in progress"
+            else
+                getString(R.string.add_to_cart)
+
+    }
+
+    private fun handleAddedToCart(added: Boolean) {
+
+        if (added)
+            showToast("Added successfully")
+        else
+            showToast("Add failed,try later")
+
     }
 
     private fun handleToggleFavorite(favorite: Boolean) {
@@ -138,7 +164,8 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View) {
 
         when (view.id) {
-            binding.imgFavorite.id -> viewModel.toggleFavorite(intent.getIntExtra(ID_PRODUCT, 0))
+            binding.imgFavorite.id -> viewModel.toggleFavorite(idProduct)
+            binding.btnAddToCart.id -> viewModel.addProductToCart(idProduct)
         }
     }
 

@@ -1,5 +1,6 @@
 package com.souqApp.presentation.product_details
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,6 +45,15 @@ class ProductDetailsViewModel @Inject constructor(private val productDetailsUseC
         state.value = ProductDetailsActivityState.Error(throwable)
     }
 
+    private fun setAddedToCart(isAdded: Boolean) {
+        state.value = ProductDetailsActivityState.AddedToCart(isAdded)
+    }
+
+    private fun onAddingToCart(onProgress: Boolean) {
+
+        state.value = ProductDetailsActivityState.AddingToCart(onProgress)
+    }
+
     private fun handleToggleFavorite() {
         isFavorite = !isFavorite
         state.value = ProductDetailsActivityState.ToggleFavorite(isFavorite)
@@ -59,6 +69,32 @@ class ProductDetailsViewModel @Inject constructor(private val productDetailsUseC
                     handleToggleFavorite()
                 }
         }
+    }
+
+    fun addProductToCart(productId: Int) {
+
+        Log.e("ERer", "try add")
+
+        viewModelScope.launch {
+            productDetailsUseCase
+                .addProductToCart(productId)
+                .onStart {
+                    onAddingToCart(true)
+                }
+                .catch {
+                    onAddingToCart(false)
+                    onError(it)
+                }
+                .collect {
+                    onAddingToCart(false)
+                    when (it) {
+                        true -> setAddedToCart(true)
+                        false -> setAddedToCart(false)
+                    }
+                }
+        }
+
+
     }
 
     fun productDetails(productId: Int) {
@@ -96,5 +132,9 @@ sealed class ProductDetailsActivityState {
     data class Error(val throwable: Throwable) : ProductDetailsActivityState()
 
     data class ToggleFavorite(val isFavorite: Boolean) : ProductDetailsActivityState()
+
+    data class AddedToCart(val isAdded: Boolean) : ProductDetailsActivityState()
+
+    data class AddingToCart(val inProgress: Boolean) : ProductDetailsActivityState()
 
 }

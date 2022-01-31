@@ -1,90 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_8sdp">
+<layout>
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:scaleType="fitXY"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/gym_category_for_test" />
+    <data>
 
-    <TextView
-        android:id="@+id/txt_name_product"
-        android:layout_width="wrap_content"
+        <variable
+            name="product"
+            type="com.souqApp.data.main.cart.remote.dto.ProductInCartResponse" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="iPhone 12 Pro"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        android:layout_margin="@dimen/_8sdp">
 
-    <TextView
-        android:id="@+id/txt_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="14 JOD"
-        app:layout_constraintStart_toStartOf="@+id/txt_name_product"
-        app:layout_constraintTop_toBottomOf="@+id/txt_name_product" />
-
-    <TextView
-        android:id="@+id/label_quantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Quantity:"
-        app:layout_constraintStart_toStartOf="@+id/txt_price"
-        app:layout_constraintTop_toBottomOf="@+id/txt_price" />
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/label_quantity"
-        app:layout_constraintTop_toBottomOf="@+id/label_quantity">
-
-        <Button
-            android:id="@+id/btn_increase"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:text="+"
-            tools:layout_editor_absoluteX="146dp"
-            tools:layout_editor_absoluteY="92dp" />
-
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:scaleType="fitXY"
+            networkImage="@{product.firstImage}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/gym_category_for_test" />
 
         <TextView
-            android:id="@+id/txt_quantity"
+            android:id="@+id/txt_name_product"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_16sdp"
-            android:text="20" />
+            android:layout_marginStart="16dp"
+            android:text="@{product.name}"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            tools:text="iPhone 12 Pro" />
 
-        <Button
-            android:id="@+id/btn_decrease"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:text="-"
-            tools:layout_editor_absoluteX="226dp"
-            tools:layout_editor_absoluteY="92dp" />
+        <TextView
+            android:id="@+id/txt_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="2 JOD"
+            android:text='@{product.piecePrice +" "+ product.settingCurrency}'
+            app:layout_constraintStart_toStartOf="@+id/txt_name_product"
+            app:layout_constraintTop_toBottomOf="@+id/txt_name_product" />
 
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/btn_delete_product"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_delete_outline_24" />
+        <TextView
+            android:id="@+id/label_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Quantity:"
+            app:layout_constraintStart_toStartOf="@+id/txt_price"
+            app:layout_constraintTop_toBottomOf="@+id/txt_price" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/label_quantity"
+            app:layout_constraintTop_toBottomOf="@+id/label_quantity">
+
+            <Button
+                android:id="@+id/btn_increase"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:text="+"
+                tools:layout_editor_absoluteX="146dp"
+                tools:layout_editor_absoluteY="92dp" />
+
+
+            <TextView
+                android:id="@+id/txt_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                tools:text="20"
+                android:text="@{String.valueOf(product.qty)}"
+                />
+
+            <Button
+                android:id="@+id/btn_decrease"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:text="-"
+                tools:layout_editor_absoluteX="226dp"
+                tools:layout_editor_absoluteY="92dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_delete_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_baseline_delete_outline_24" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

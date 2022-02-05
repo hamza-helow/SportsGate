@@ -58,6 +58,28 @@ class CartFragmentViewModel @Inject constructor(private val cartUseCase: CartUse
         }
     }
 
+
+    fun updateProductQty(productId: Int, qty: Int) {
+        viewModelScope.launch {
+            cartUseCase.updateProductQty(productId, qty)
+                .catch {
+
+                    onError(it)
+                }.collect {
+
+                }
+        }
+    }
+
+    fun deleteProduct(productId: Int) {
+        viewModelScope.launch {
+            cartUseCase.deleteProductFromCart(productId)
+                .catch {
+                    onError(it)
+                }.collect {  }
+        }
+    }
+
 }
 
 sealed class CartFragmentState {

@@ -1,10 +1,7 @@
 package com.souqApp.data.main.cart.remote
 
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
-import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
-import com.souqApp.data.main.cart.remote.dto.CheckoutRequest
-import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
+import com.souqApp.data.main.cart.remote.dto.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -27,7 +24,7 @@ interface CartApi {
     suspend fun updateProductQty(
         @Query("product_id") productId: Int,
         @Query("qty") qty: Int
-    ): Response<WrappedResponse<Nothing>>
+    ): Response<WrappedResponse<UpdateProductQtyResponse>>
 
 
     @GET("v1/users/carts/checkCouponCode")

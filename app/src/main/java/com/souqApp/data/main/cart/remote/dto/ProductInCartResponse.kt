@@ -9,7 +9,7 @@ data class ProductInCartResponse(
     @SerializedName("first_image") val firstImage: String,
     @SerializedName("piece_price") val piecePrice: Double,
     @SerializedName("quantity_price") val quantityPrice: Int,
-    @SerializedName("qty") val qty: Int,
+    @SerializedName("qty") var qty: Int,
     @SerializedName("stock") val stock: Int,
     @SerializedName("user_favourite") val userFavourite: Boolean,
     @SerializedName("setting_currency") val settingCurrency: String,

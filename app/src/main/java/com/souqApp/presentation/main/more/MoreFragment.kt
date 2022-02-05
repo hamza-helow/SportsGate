@@ -10,6 +10,7 @@ import com.souqApp.R
 import com.souqApp.databinding.FragmentMoreBinding
 import com.souqApp.infra.extension.openUrl
 import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.presentation.addresses.AddressActivity
 import com.souqApp.presentation.login.LoginActivity
 import com.souqApp.presentation.main.more.changePassword.ChangePasswordActivity
 import com.souqApp.presentation.main.more.profile.ProfileActivity
@@ -46,6 +47,7 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         binding.includeCardChangePassword.root.setOnClickListener(this)
+        binding.cardAddresses.setOnClickListener(this)
         binding.imgFacebook.setOnClickListener(this)
         binding.imgTiktok.setOnClickListener(this)
         binding.imgInstagram.setOnClickListener(this)
@@ -66,7 +68,12 @@ class MoreFragment : Fragment(), View.OnClickListener {
             binding.includeLogin.root.id -> goToLoginActivity()
             binding.cardProfile.id -> goToProfileActivity()
             binding.includeCardChangePassword.root.id -> goToChangePasswordActivity()
+            binding.cardAddresses.id -> goToAddressActivity()
         }
+    }
+
+    private fun goToAddressActivity() {
+        startActivity(Intent(requireActivity(), AddressActivity::class.java))
     }
 
     private fun goToChangePasswordActivity() {

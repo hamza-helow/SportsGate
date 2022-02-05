@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/address_nav_graph"
+    app:startDestination="@id/addressesFragment">
+
+
+
+    <fragment
+        android:id="@+id/addressesFragment"
+        android:name="com.souqApp.presentation.addresses.addresses.AddressesFragment"
+        android:label="fragment_addresses"
+        tools:layout="@layout/fragment_addresses" >
+        <action
+            app:popUpTo="@id/addressesFragment"
+            android:id="@+id/action_addressesFragment_to_addressDetailsFragment"
+            app:destination="@id/addressDetailsFragment" />
+        <action
+            android:id="@+id/action_addressesFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/addAddressFragment"
+        android:name="com.souqApp.presentation.addresses.add_address.AddAddressFragment"
+        android:label="fragment_add_address"
+        tools:layout="@layout/fragment_add_address" >
+        <action
+            android:id="@+id/action_addAddressFragment_to_addressesFragment"
+            app:destination="@id/addressesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressDetailsFragment"
+        android:name="com.souqApp.presentation.addresses.address_details.AddressDetailsFragment"
+        android:label="fragment_address_details"
+        tools:layout="@layout/fragment_address_details" />
+</navigation>

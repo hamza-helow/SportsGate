@@ -8,9 +8,36 @@ import com.souqApp.databinding.ItemCartBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
 class CartAdapter : BaseRecyclerAdapter<ItemCartBinding, ProductInCartResponse>() {
+
+    lateinit var onChangeQTY: ((ProductInCartResponse) -> Unit)
+
+    lateinit var onDeleteProduct: (productId: Int) -> Unit
+
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
-        holder.bind(BR.product , getItemByPosition(position))
+        holder.bind(BR.product, getItemByPosition(position))
+
+
+        holder.binding.btnIncrease.setOnClickListener {
+            getItemByPosition(position).qty += 1
+            holder.binding.invalidateAll()
+            onChangeQTY(getItemByPosition(position))
+
+        }
+
+        holder.binding.btnDecrease.setOnClickListener {
+            if (getItemByPosition(position).qty > 1) {
+                getItemByPosition(position).qty -= 1
+                holder.binding.invalidateAll()
+                onChangeQTY(getItemByPosition(position))
+            }
+        }
+
+        holder.binding.btnDeleteProduct.setOnClickListener {
+            onDeleteProduct(getItemByPosition(position).id)
+            removeItem(position)
+
+        }
 
     }
 

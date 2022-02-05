@@ -1,14 +1,18 @@
 package com.souqApp.data.common.mapper
 
+import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
+import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
 import com.souqApp.data.main.common.CategoryResponse
 import com.souqApp.data.main.home.remote.dto.ProductResponse
 import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
 import com.souqApp.data.sub_categories.remote.dto.SubCategoryResponse
+import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
+import com.souqApp.domain.main.cart.entity.UpdateProductQtyEntity
 import com.souqApp.domain.main.home.entity.CategoryEntity
 import com.souqApp.domain.main.home.entity.ProductEntity
 import com.souqApp.domain.product_details.ProductDetailsEntity
@@ -19,6 +23,9 @@ import com.souqApp.domain.sub_categories.SubCategoryEntity
 fun UserResponse.toEntity() = UserEntity(id, name, email, phone, image, verified, token)
 
 fun ProductsByTypeResponse.toEntity() = ProductsByTypeEntity(hasMore, products)
+
+fun UpdateProductQtyResponse.toEntity() =
+    UpdateProductQtyEntity(subTotal, settingCurrency, cartProductsCount)
 
 fun ProductDetailsResponse.toEntity() = ProductDetailsEntity(
     id,
@@ -61,6 +68,9 @@ fun List<ProductResponse>.toEntity() =
 
 @JvmName("toEntitySubCategory")
 fun List<SubCategoryResponse>.toEntity() = map { SubCategoryEntity(it.id, it.name, it.logo) }
+
+@JvmName("toEntityAddressResponse")
+fun List<AddressResponse>.toEntity() = map { AddressEntity(it.id, it.fullAddress, it.isDefault) }
 
 
 fun CartDetailsResponse.toEntity() =

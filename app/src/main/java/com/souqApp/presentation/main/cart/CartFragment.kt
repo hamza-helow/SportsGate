@@ -32,6 +32,8 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getCartDetails()
         observer()
     }
 
@@ -62,10 +64,12 @@ class CartFragment : Fragment() {
     }
 
     private fun handleCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
+        binding.cart = cartDetailsEntity
 
         val cartAdapter = CartAdapter()
         cartAdapter.addList(cartDetailsEntity.products)
-
+        cartAdapter.onChangeQTY = { viewModel.updateProductQty(it.id, it.qty) }
+        cartAdapter.onDeleteProduct = { viewModel.deleteProduct(it) }
 
         binding.recProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.recProducts.adapter = cartAdapter
@@ -73,8 +77,6 @@ class CartFragment : Fragment() {
     }
 
     private fun handleError(throwable: Throwable) {
-
-        Log.e("Erer", throwable.stackTraceToString())
     }
 
     companion object {

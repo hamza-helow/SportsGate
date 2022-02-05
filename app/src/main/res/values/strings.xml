@@ -221,5 +221,6 @@
     <string name="current_password">Current password</string>
     <string name="submit">submit</string>
     <string name="relevant_products">Relevant products</string>
+    <string name="title_activity_maps">MapsActivity</string>
 
 </resources>

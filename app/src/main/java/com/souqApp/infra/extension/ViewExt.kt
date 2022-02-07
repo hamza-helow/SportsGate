@@ -1,6 +1,8 @@
 package com.souqApp.infra.extension
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -10,6 +12,10 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.souqApp.R
+import android.graphics.drawable.shapes.OvalShape
+
+import android.graphics.drawable.ShapeDrawable
+
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -38,6 +44,30 @@ fun ActionBar.setup(
     setDisplayShowTitleEnabled(false)
 
 
+}
+
+
+fun View.successBorder() {
+    background = rectangleShape(context = context, Color.GREEN)
+}
+
+fun View.errorBorder() {
+    background = rectangleShape(context = context, Color.RED)
+}
+
+fun View.noneBorder() {
+    background = rectangleShape(context = context,  ContextCompat.getColor(context, R.color.gray_light2))
+}
+
+
+
+fun rectangleShape(context: Context, borderColor: Int): GradientDrawable {
+    val shape = GradientDrawable()
+    shape.shape = GradientDrawable.RECTANGLE
+    shape.cornerRadius = 8f.dp(context)
+    shape.setColor(Color.WHITE)
+    shape.setStroke(3, borderColor)
+    return shape
 }
 
 

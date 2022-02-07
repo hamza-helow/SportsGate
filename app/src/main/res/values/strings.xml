@@ -222,5 +222,6 @@
     <string name="submit">submit</string>
     <string name="relevant_products">Relevant products</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="location_selected">The Location has been selected</string>
 
 </resources>

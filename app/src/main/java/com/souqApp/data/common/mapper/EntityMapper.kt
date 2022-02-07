@@ -1,6 +1,7 @@
 package com.souqApp.data.common.mapper
 
 import com.souqApp.data.addresses.remote.dto.AddressResponse
+import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
@@ -10,6 +11,8 @@ import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
 import com.souqApp.data.sub_categories.remote.dto.SubCategoryResponse
 import com.souqApp.domain.addresses.AddressEntity
+import com.souqApp.domain.addresses.AreaEntity
+import com.souqApp.domain.addresses.CityEntity
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductQtyEntity
@@ -75,3 +78,7 @@ fun List<AddressResponse>.toEntity() = map { AddressEntity(it.id, it.fullAddress
 
 fun CartDetailsResponse.toEntity() =
     CartDetailsEntity(subTotal, settingCurrency, allAvailableInStock, products)
+
+@JvmName("toEntityCityResponse")
+fun List<CityResponse>.toEntity() =
+    map { CityEntity(it.id, it.name, it.areas.map { area -> AreaEntity(area.id, area.name) }) }

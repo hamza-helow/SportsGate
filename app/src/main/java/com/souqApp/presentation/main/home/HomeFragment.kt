@@ -19,6 +19,7 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.databinding.FragmentHomeBinding
 import com.souqApp.domain.main.home.entity.HomeEntity
+import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
@@ -102,6 +103,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     private fun handleHomeLoaded(homeEntity: HomeEntity) {
         //visible content
         binding.content.isVisible = true
+        binding.imgServerError.isVisible = false
 
         //init adapters
         val bestSellingAdapter = ProductAdapter()
@@ -145,9 +147,13 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     private fun handleUnexpectedError(error: Throwable) {
         context?.showLoader(false)
 
+        binding.imgServerError.isVisible = true
+        binding.content.isVisible = false
+
         if (error is SocketTimeoutException) {
             requireContext().showToast("Unexpected error, try again later")
         }
+
 
     }
 

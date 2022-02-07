@@ -2,6 +2,7 @@ package com.souqApp.domain.addresses
 
 import com.souqApp.data.addresses.remote.dto.AddressRequest
 import com.souqApp.data.addresses.remote.dto.AddressResponse
+import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.domain.common.BaseResult
 import kotlinx.coroutines.flow.Flow
@@ -26,5 +27,10 @@ class AddressUseCase @Inject constructor(private val addressRepository: AddressR
     suspend fun delete(addressId: Int): Flow<Boolean> {
         return addressRepository.delete(addressId)
     }
+
+    suspend fun getCitiesHaveAreas(): Flow<BaseResult<List<CityEntity>, WrappedListResponse<CityResponse>>> {
+        return addressRepository.getCitiesHaveAreas()
+    }
+
 
 }

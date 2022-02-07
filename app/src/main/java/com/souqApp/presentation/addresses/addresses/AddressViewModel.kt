@@ -46,9 +46,11 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
             addressUseCase.getAll()
                 .onStart { setLoading(true) }
                 .catch {
+                    setLoading(false)
                     onError(it)
                 }
                 .collect {
+                    setLoading(false)
                     when (it) {
                         is BaseResult.Success -> onAddressesLoaded(it.data)
                         is BaseResult.Errors -> onAddressErrorLoad(it.error)

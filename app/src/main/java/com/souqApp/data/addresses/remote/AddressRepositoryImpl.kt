@@ -2,10 +2,12 @@ package com.souqApp.data.addresses.remote
 
 import com.souqApp.data.addresses.remote.dto.AddressRequest
 import com.souqApp.data.addresses.remote.dto.AddressResponse
+import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.domain.addresses.AddressRepository
+import com.souqApp.domain.addresses.CityEntity
 import com.souqApp.domain.common.BaseResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -78,6 +80,25 @@ class AddressRepositoryImpl @Inject constructor(private val addressApi: AddressA
 
                 emit(false)
             }
+        }
+    }
+
+    override suspend fun getCitiesHaveAreas(): Flow<BaseResult<List<CityEntity>, WrappedListResponse<CityResponse>>> {
+        return flow {
+
+            val response = addressApi.getCitiesHaveAreas()
+            val isSuccessful = response.body()?.status
+
+            if (isSuccessful == true) {
+
+                val data = response.body()!!.data!!
+                emit(BaseResult.Success(data = data.toEntity()))
+
+            } else {
+                emit(BaseResult.Errors(response.body()!!))
+            }
+
+
         }
     }
 }

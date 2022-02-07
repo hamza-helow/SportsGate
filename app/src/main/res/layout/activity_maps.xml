@@ -2,7 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <fragment xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
@@ -12,11 +13,20 @@
         tools:context=".presentation.addresses.map.MapsActivity" />
 
     <Button
-        android:enabled="false"
         android:layout_gravity="bottom"
         android:layout_margin="@dimen/_16sdp"
-        android:id="@+id/button2"
+        android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/submit" />
+
+    <ImageView
+        android:layout_marginBottom="@dimen/_40sdp"
+        app:tint="@color/colorAccent"
+        android:layout_gravity="center"
+        android:id="@+id/imageView6"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_40sdp"
+        map:srcCompat="@drawable/ic_map_marker" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -8,8 +8,16 @@ import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
 class AdapterAddress : BaseRecyclerAdapter<ItemAddressBinding, AddressEntity>() {
+
+    lateinit var onClickMoreButton: ((AddressEntity, Int) -> Unit)
+
+
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(BR.address, getItemByPosition(position))
+
+        holder.binding.imgMore.setOnClickListener {
+            onClickMoreButton(getItemByPosition(position), position)
+        }
 
     }
 

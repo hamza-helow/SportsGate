@@ -40,7 +40,10 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
         _state.value = AddressesFragmentState.AddressesErrorLoad(response)
     }
 
-    @Inject
+    private fun onDeleteAddress(deleted: Boolean, position: Int) {
+        _state.value = AddressesFragmentState.DeleteAddress(deleted, position)
+    }
+
     fun getAddresses() {
         viewModelScope.launch {
             addressUseCase.getAll()
@@ -59,6 +62,23 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
         }
     }
 
+    fun deleteAddress(addressId: Int, position: Int) {
+
+        viewModelScope.launch {
+
+            addressUseCase.delete(addressId)
+                .onStart { setLoading(true) }
+                .catch {
+                    setLoading(false)
+                    onError(it)
+                }
+                .collect {
+                    setLoading(false)
+                    onDeleteAddress(it, position)
+                }
+        }
+    }
+
 }
 
 sealed class AddressesFragmentState {
@@ -69,4 +89,6 @@ sealed class AddressesFragmentState {
     data class AddressesLoaded(val addressEntities: List<AddressEntity>) : AddressesFragmentState()
     data class AddressesErrorLoad(val response: WrappedListResponse<AddressResponse>) :
         AddressesFragmentState()
+
+    data class DeleteAddress(val deleted: Boolean, val position: Int) : AddressesFragmentState()
 }

@@ -3,9 +3,9 @@ package com.souqApp.data.addresses.remote.dto
 import com.google.gson.annotations.SerializedName
 
 data class AddressRequest(
-    @SerializedName("building") val building: Int,
+    @SerializedName("building") val building: String,
     @SerializedName("street") val street: String,
-    @SerializedName("floor") val floor: Int,
+    @SerializedName("floor") val floor: String,
     @SerializedName("notes") val notes: String,
     @SerializedName("area_id") val area_id: Int,
     @SerializedName("city_id") val city_id: Int,

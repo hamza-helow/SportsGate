@@ -6,24 +6,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.R
 import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
+import com.souqApp.infra.extension.isVisible
 import dagger.hilt.android.AndroidEntryPoint
+import com.souqApp.presentation.addresses.AddressActivityViewModel
+
 
 @AndroidEntryPoint
 class AddressesFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentAddressesBinding
     private lateinit var addressAdapter: AdapterAddress
+
+    private lateinit var mainViewModel: AddressActivityViewModel
 
     private val viewModel: AddressViewModel by viewModels()
 
@@ -42,12 +45,38 @@ class AddressesFragment : Fragment(), View.OnClickListener {
         binding.recAddresses.layoutManager = LinearLayoutManager(requireContext())
         binding.recAddresses.adapter = addressAdapter
 
+        addressAdapter.onClickMoreButton = { address, position ->
+            val bottomSheet = AddressOptionsBottomSheet(address.isPrimary)
+
+            bottomSheet.onClickDeleteButton = {
+                viewModel.deleteAddress(address.id, position)
+            }
+
+            bottomSheet.show(
+                requireActivity().supportFragmentManager,
+                ""
+            )
+        }
+
         initListener()
         observer()
+
+
     }
 
     private fun observer() {
         viewModel.state.observe(viewLifecycleOwner, { handleState(it) })
+
+        activity?.run {
+            mainViewModel = ViewModelProvider(this)[AddressActivityViewModel::class.java]
+        } ?: throw Throwable("invalid activity")
+
+        mainViewModel.updateActionBarTitle(getString(R.string.mange_addresses_str))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAddresses()  //reloadAddresses
     }
 
     private fun handleState(state: AddressesFragmentState) {
@@ -58,6 +87,16 @@ class AddressesFragment : Fragment(), View.OnClickListener {
             is AddressesFragmentState.Error -> handleError(state.throwable)
             is AddressesFragmentState.AddressesLoaded -> handleAddressesLoaded(state.addressEntities)
             is AddressesFragmentState.AddressesErrorLoad -> handleAddressesErrorLoad(state.response)
+            is AddressesFragmentState.DeleteAddress -> handleDeleteAddress(
+                state.deleted,
+                state.position
+            )
+        }
+    }
+
+    private fun handleDeleteAddress(deleted: Boolean, position: Int) {
+        if (deleted) {
+            addressAdapter.removeItem(position)
         }
     }
 
@@ -66,16 +105,17 @@ class AddressesFragment : Fragment(), View.OnClickListener {
     }
 
     private fun handleAddressesLoaded(addressEntities: List<AddressEntity>) {
-        addressAdapter.addList(addressEntities)
+        addressAdapter.list = addressEntities
     }
 
     private fun handleError(throwable: Throwable) {
 
-        Log.e("ereRr" , throwable.stackTraceToString())
+        Log.e("ereRr", throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {
-
+        binding.content.isVisible(!loading)
+        binding.progressBar.isVisible(loading)
     }
 
     private fun initListener() {

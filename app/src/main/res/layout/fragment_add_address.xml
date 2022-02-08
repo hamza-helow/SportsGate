@@ -13,6 +13,9 @@
         android:padding="@dimen/_16sdp"
         tools:context=".presentation.addresses.add_address.AddAddressFragment">
 
+        <include
+            android:id="@+id/loader"
+            layout="@layout/loader" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/card_pick_location"
@@ -186,12 +189,12 @@
             tools:ignore="LabelFor"
             tools:text="note" />
 
-
         <Button
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_44sdp"
             android:layout_marginVertical="@dimen/_16sdp"
+            android:enabled="false"
             android:text="@string/submit" />
 
     </LinearLayout>

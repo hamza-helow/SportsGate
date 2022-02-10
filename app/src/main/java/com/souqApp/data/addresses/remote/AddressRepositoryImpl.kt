@@ -26,13 +26,11 @@ class AddressRepositoryImpl @Inject constructor(private val addressApi: AddressA
             val isSuccessful = response.body()?.status
 
             if (isSuccessful == true) {
-
                 val data = response.body()!!.data!!.toEntity()
                 emit(BaseResult.Success(data))
             } else {
                 emit(BaseResult.Errors(response.body()!!))
             }
-
         }
     }
 

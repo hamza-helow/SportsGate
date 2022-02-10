@@ -22,17 +22,16 @@ import com.souqApp.data.addresses.remote.dto.AddressRequest
 import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddAddressBinding
+import com.souqApp.domain.addresses.AddressDetailsEntity
 import com.souqApp.domain.addresses.AreaEntity
 import com.souqApp.domain.addresses.CityEntity
-import com.souqApp.infra.extension.errorBorder
-import com.souqApp.infra.extension.noneBorder
-import com.souqApp.infra.extension.start
-import com.souqApp.infra.extension.successBorder
+import com.souqApp.infra.extension.*
+import com.souqApp.infra.utils.ADDRESS_DETAILS
 import com.souqApp.infra.utils.LOCATION_USER
 import com.souqApp.presentation.addresses.AddressActivityViewModel
 import com.souqApp.presentation.addresses.map.MapsActivity
 import dagger.hilt.android.AndroidEntryPoint
-
+import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
 class AddAddressFragment : Fragment(), View.OnClickListener {
@@ -43,27 +42,30 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mainViewModel: AddressActivityViewModel
 
-
     private val openMapActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 val latLng = result.data?.getParcelableExtra<LatLng>(LOCATION_USER)
-
                 if (latLng != null) {
                     viewModel.setUserLatLng(latLng)
                 }
             }
-
         }
+
+    // if update should be not null
+    private fun getAddressDetails(): AddressDetailsEntity? {
+        val address = arguments?.getSerializable(ADDRESS_DETAILS) ?: return null
+        return address as AddressDetailsEntity
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddAddressBinding.inflate(inflater, container, false)
-
         handleBack()
+        binding.addressDetails = getAddressDetails()
         return binding.root
     }
 
@@ -81,7 +83,6 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initListener()
         observer()
     }
@@ -105,7 +106,6 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
 
     private fun validate() {
         resetAllError()
-
         var isValid = true
 
         if (binding.txtBuildingNumber.text.isBlank()) {
@@ -155,16 +155,14 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
             Navigation
                 .findNavController(binding.root)
                 .popBackStack()
-
     }
 
     private fun handleCitiesErrLoad(response: WrappedListResponse<CityResponse>) {
-
-
+        binding.loader.loadingProgressBar.start(false)
+        requireContext().showGenericAlertDialog(response.formattedErrors())
     }
 
     private fun handleCitiesLoaded(cityEntities: List<CityEntity>) {
-
         val adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
@@ -173,8 +171,11 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         binding.spinnerCities.adapter = adapter
     }
 
-    private fun handleError(throwable: Throwable) {
-
+    private fun handleError(error: Throwable) {
+        binding.loader.loadingProgressBar.start(false)
+        if (error is SocketTimeoutException) {
+            requireContext().showToast("Unexpected error, try again later")
+        }
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -185,7 +186,6 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     private fun initListener() {
         binding.cardPickLocation.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
-
         binding.txtStreet.doAfterTextChanged { validate() }
         binding.txtBuildingNumber.doAfterTextChanged { validate() }
         binding.txtFloorNumber.doAfterTextChanged { validate() }
@@ -197,16 +197,13 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
                 p2: Int,
                 p3: Long
             ) {
-
                 val data = binding.spinnerCities.selectedItem as CityEntity
-
                 val adapterAreas = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_spinner_item,
                     data.areas
                 )
                 binding.spinnerAreas.adapter = adapterAreas
-
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -215,13 +212,11 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-
         @JvmStatic
         fun newInstance() = AddAddressFragment()
     }
 
     override fun onClick(view: View) {
-
         when (view.id) {
             binding.cardPickLocation.id -> goToMapActivity()
             binding.btnSubmit.id -> addAddress()
@@ -229,7 +224,6 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     }
 
     private fun addAddress() {
-
         val buildingNumber = binding.txtBuildingNumber.text.toString()
         val floorNumber = binding.txtFloorNumber.text.toString()
         val notes = binding.txtNotes.text.toString()
@@ -240,19 +234,8 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         val lng = viewModel.userLatLng.value?.longitude!!
 
         viewModel.addAddress(
-            AddressRequest(
-                buildingNumber,
-                street,
-                floorNumber,
-                notes,
-                idArea,
-                idCity,
-                lat,
-                lng
-            )
+            AddressRequest(buildingNumber, street, floorNumber, notes, idArea, idCity, lat, lng)
         )
-
-
     }
 
     private fun goToMapActivity() {

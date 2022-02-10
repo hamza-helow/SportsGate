@@ -1,5 +1,7 @@
 package com.souqApp.domain.addresses
 
+import java.io.Serializable
+
 data class AddressDetailsEntity(
     val area_id: Int,
     val area_name: String,
@@ -12,4 +14,4 @@ data class AddressDetailsEntity(
     val lng: Double,
     val notes: String,
     val street: String
-)
+) : Serializable

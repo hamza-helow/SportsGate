@@ -200,5 +200,6 @@
     <string name="location_selected">The Location has been selected</string>
     <string name="set_as_primary_delivery_address">Set As Primary Delivery Address</string>
     <string name="area">Area</string>
+    <string name="address_details">Address Details</string>
 
 </resources>

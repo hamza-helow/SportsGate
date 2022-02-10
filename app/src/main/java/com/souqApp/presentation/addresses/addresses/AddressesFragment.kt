@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -17,6 +18,7 @@ import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.start
+import com.souqApp.infra.utils.ID_ADDRESS
 import dagger.hilt.android.AndroidEntryPoint
 import com.souqApp.presentation.addresses.AddressActivityViewModel
 
@@ -45,20 +47,19 @@ class AddressesFragment : Fragment(), View.OnClickListener {
         binding.recAddresses.adapter = addressAdapter
 
         addressAdapter.onClickItem = {
-            Navigation.findNavController(requireView()).navigate(R.id.addressDetailsFragment)
+
+            val bundle = bundleOf(ID_ADDRESS to it)
+            Navigation.findNavController(requireView())
+                .navigate(R.id.addressDetailsFragment, bundle)
         }
 
+        setTitleAppBar()
         initListener()
         observer()
     }
 
     private fun observer() {
         viewModel.state.observe(viewLifecycleOwner, { handleState(it) })
-        activity?.run {
-            mainViewModel = ViewModelProvider(this)[AddressActivityViewModel::class.java]
-        } ?: throw Throwable("invalid activity")
-
-        mainViewModel.updateActionBarTitle(getString(R.string.mange_addresses_str))
 
         addressAdapter.onClickMoreButton = { address, position ->
             val bottomSheet = AddressOptionsBottomSheet(address.isPrimary)
@@ -76,6 +77,14 @@ class AddressesFragment : Fragment(), View.OnClickListener {
                 ""
             )
         }
+    }
+
+    private fun setTitleAppBar() {
+        activity?.run {
+            mainViewModel = ViewModelProvider(this)[AddressActivityViewModel::class.java]
+        } ?: throw Throwable("invalid activity")
+
+        mainViewModel.updateActionBarTitle(getString(R.string.mange_addresses_str))
     }
 
     override fun onResume() {

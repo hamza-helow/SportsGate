@@ -109,7 +109,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     private fun handleHomeLoadedError(rawResponse: WrappedResponse<HomeResponse>) {
         progressBar.showLoader(false)
 
-        requireContext().showGenericAlertDialog("err")
         requireContext().showGenericAlertDialog(rawResponse.formattedErrors())
     }
 
@@ -150,13 +149,11 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
 
     private fun handleUnexpectedError(error: Throwable) {
         context?.showLoader(false)
-
         binding.content.isVisible = false
 
         if (error is SocketTimeoutException) {
             requireContext().showToast("Unexpected error, try again later")
         }
-
 
     }
 

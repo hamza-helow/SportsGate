@@ -16,6 +16,7 @@ import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.extension.start
 import dagger.hilt.android.AndroidEntryPoint
 import com.souqApp.presentation.addresses.AddressActivityViewModel
 
@@ -25,7 +26,6 @@ class AddressesFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentAddressesBinding
     private lateinit var addressAdapter: AdapterAddress
-
     private lateinit var mainViewModel: AddressActivityViewModel
 
     private val viewModel: AddressViewModel by viewModels()
@@ -40,10 +40,25 @@ class AddressesFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         addressAdapter = AdapterAddress()
         binding.recAddresses.layoutManager = LinearLayoutManager(requireContext())
         binding.recAddresses.adapter = addressAdapter
+
+        addressAdapter.onClickItem = {
+            Navigation.findNavController(requireView()).navigate(R.id.addressDetailsFragment)
+        }
+
+        initListener()
+        observer()
+    }
+
+    private fun observer() {
+        viewModel.state.observe(viewLifecycleOwner, { handleState(it) })
+        activity?.run {
+            mainViewModel = ViewModelProvider(this)[AddressActivityViewModel::class.java]
+        } ?: throw Throwable("invalid activity")
+
+        mainViewModel.updateActionBarTitle(getString(R.string.mange_addresses_str))
 
         addressAdapter.onClickMoreButton = { address, position ->
             val bottomSheet = AddressOptionsBottomSheet(address.isPrimary)
@@ -52,26 +67,15 @@ class AddressesFragment : Fragment(), View.OnClickListener {
                 viewModel.deleteAddress(address.id, position)
             }
 
+            bottomSheet.onClickChangeDefault = {
+                viewModel.changeDefault(addressId = address.id)
+            }
+
             bottomSheet.show(
                 requireActivity().supportFragmentManager,
                 ""
             )
         }
-
-        initListener()
-        observer()
-
-
-    }
-
-    private fun observer() {
-        viewModel.state.observe(viewLifecycleOwner, { handleState(it) })
-
-        activity?.run {
-            mainViewModel = ViewModelProvider(this)[AddressActivityViewModel::class.java]
-        } ?: throw Throwable("invalid activity")
-
-        mainViewModel.updateActionBarTitle(getString(R.string.mange_addresses_str))
     }
 
     override fun onResume() {
@@ -87,10 +91,15 @@ class AddressesFragment : Fragment(), View.OnClickListener {
             is AddressesFragmentState.Error -> handleError(state.throwable)
             is AddressesFragmentState.AddressesLoaded -> handleAddressesLoaded(state.addressEntities)
             is AddressesFragmentState.AddressesErrorLoad -> handleAddressesErrorLoad(state.response)
-            is AddressesFragmentState.DeleteAddress -> handleDeleteAddress(
-                state.deleted,
-                state.position
-            )
+            is AddressesFragmentState.ChangeDefaultAddress -> handleChangeDefaultAddress(state.changed)
+            is AddressesFragmentState.DeleteAddress ->
+                handleDeleteAddress(state.deleted, state.position)
+        }
+    }
+
+    private fun handleChangeDefaultAddress(changed: Boolean) {
+        if (changed) {
+            viewModel.getAddresses() // reload addresses
         }
     }
 
@@ -109,13 +118,11 @@ class AddressesFragment : Fragment(), View.OnClickListener {
     }
 
     private fun handleError(throwable: Throwable) {
-
         Log.e("ereRr", throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {
-        binding.content.isVisible(!loading)
-        binding.progressBar.isVisible(loading)
+        binding.loader.loadingProgressBar.start(loading)
     }
 
     private fun initListener() {
@@ -132,7 +139,6 @@ class AddressesFragment : Fragment(), View.OnClickListener {
         when (view.id) {
             binding.fbAddAddress.id -> goToAddAddressFragment(view)
         }
-
     }
 
     private fun goToAddAddressFragment(view: View) {

@@ -1,9 +1,11 @@
 package com.souqApp.domain.addresses
 
+import com.souqApp.data.addresses.remote.dto.AddressDetailsResponse
 import com.souqApp.data.addresses.remote.dto.AddressRequest
 import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
 import kotlinx.coroutines.flow.Flow
 
@@ -30,6 +32,14 @@ class AddressUseCase @Inject constructor(private val addressRepository: AddressR
 
     suspend fun getCitiesHaveAreas(): Flow<BaseResult<List<CityEntity>, WrappedListResponse<CityResponse>>> {
         return addressRepository.getCitiesHaveAreas()
+    }
+
+    suspend fun changeDefault(addressId: Int): Flow<Boolean> {
+        return addressRepository.changeDefault(addressId)
+    }
+
+    suspend fun getDetails(addressId: Int): Flow<BaseResult<AddressDetailsEntity, WrappedResponse<AddressDetailsResponse>>> {
+        return addressRepository.getDetails(addressId)
     }
 
 

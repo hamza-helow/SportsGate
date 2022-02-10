@@ -1,5 +1,6 @@
 package com.souqApp.data.common.mapper
 
+import com.souqApp.data.addresses.remote.dto.AddressDetailsResponse
 import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.remote.dto.UserResponse
@@ -10,6 +11,7 @@ import com.souqApp.data.main.home.remote.dto.ProductResponse
 import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
 import com.souqApp.data.sub_categories.remote.dto.SubCategoryResponse
+import com.souqApp.domain.addresses.AddressDetailsEntity
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.domain.addresses.AreaEntity
 import com.souqApp.domain.addresses.CityEntity
@@ -29,6 +31,20 @@ fun ProductsByTypeResponse.toEntity() = ProductsByTypeEntity(hasMore, products)
 
 fun UpdateProductQtyResponse.toEntity() =
     UpdateProductQtyEntity(subTotal, settingCurrency, cartProductsCount)
+
+fun AddressDetailsResponse.toEntity() = AddressDetailsEntity(
+    areaId,
+    areaName,
+    building,
+    cityId,
+    cityName,
+    floor,
+    id,
+    lat,
+    lng,
+    notes,
+    street
+)
 
 fun ProductDetailsResponse.toEntity() = ProductDetailsEntity(
     id,

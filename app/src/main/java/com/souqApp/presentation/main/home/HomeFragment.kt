@@ -19,7 +19,6 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.databinding.FragmentHomeBinding
 import com.souqApp.domain.main.home.entity.HomeEntity
-import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
@@ -37,6 +36,10 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var progressBar: ProgressDialog
+    private lateinit var bestSellingAdapter: ProductAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var recommendedAdapter: ProductAdapter
+    private lateinit var newProductAdapter: ProductGridAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,11 +51,31 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.content.isVisible = false
         progressBar = ProgressDialog(requireContext())
         initListeners()
+        initAdapters()
         observer()
+    }
+
+    private fun initAdapters() {
+        bestSellingAdapter = ProductAdapter()
+        categoryAdapter = CategoryAdapter(verticalMode = false)
+        recommendedAdapter = ProductAdapter()
+        newProductAdapter = ProductGridAdapter()
+
+        // set layout managers
+        binding.recCategory.layoutManager = generateLinearLayoutManager()
+        binding.recBestSelling.layoutManager = generateLinearLayoutManager()
+        binding.recRecommended.layoutManager = generateLinearLayoutManager()
+        binding.recNewProducts.layoutManager = GridLayoutManager(context, 3)
+
+        //set adapters
+        binding.recCategory.adapter = categoryAdapter
+        binding.recBestSelling.adapter = bestSellingAdapter
+        binding.recRecommended.adapter = recommendedAdapter
+        binding.recNewProducts.adapter = newProductAdapter
+
     }
 
     private fun initListeners() {
@@ -63,7 +86,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     }
 
     private fun observer() {
-
         //get last fragment state
         viewModel.mBundleFromFragment.observe(viewLifecycleOwner, Observer {
             binding.mainScroll.y = it.getFloat("SCROLL_POSITION", 0f)
@@ -103,33 +125,15 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     private fun handleHomeLoaded(homeEntity: HomeEntity) {
         //visible content
         binding.content.isVisible = true
-        binding.imgServerError.isVisible = false
 
-        //init adapters
-        val bestSellingAdapter = ProductAdapter()
-        val categoryAdapter = CategoryAdapter(verticalMode = false)
-        val recommendedAdapter = ProductAdapter()
-        val newProductAdapter = ProductGridAdapter()
         val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.ads)
+        binding.viewPager.adapter = sliderPagerAdapter
 
         // set lists
         categoryAdapter.list = homeEntity.categories.toEntity()
         bestSellingAdapter.list = homeEntity.bestSellingProducts.toEntity()
         recommendedAdapter.list = homeEntity.recommendedProducts.toEntity()
         newProductAdapter.list = homeEntity.newProducts.toEntity()
-
-        // set layout managers
-        binding.recCategory.layoutManager = generateLinearLayoutManager()
-        binding.recBestSelling.layoutManager = generateLinearLayoutManager()
-        binding.recRecommended.layoutManager = generateLinearLayoutManager()
-        binding.recNewProducts.layoutManager = GridLayoutManager(context, 3)
-
-        //set adapters
-        binding.recCategory.adapter = categoryAdapter
-        binding.recBestSelling.adapter = bestSellingAdapter
-        binding.recRecommended.adapter = recommendedAdapter
-        binding.recNewProducts.adapter = newProductAdapter
-        binding.viewPager.adapter = sliderPagerAdapter
 
         //link viewpager with tabs layout
         binding.tabDots.setupWithViewPager(binding.viewPager)
@@ -147,7 +151,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     private fun handleUnexpectedError(error: Throwable) {
         context?.showLoader(false)
 
-        binding.imgServerError.isVisible = true
         binding.content.isVisible = false
 
         if (error is SocketTimeoutException) {

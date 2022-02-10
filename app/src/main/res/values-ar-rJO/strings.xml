@@ -199,5 +199,6 @@
     <string name="relevant_products">Relevant products</string>
     <string name="location_selected">The Location has been selected</string>
     <string name="set_as_primary_delivery_address">Set As Primary Delivery Address</string>
+    <string name="area">Area</string>
 
 </resources>

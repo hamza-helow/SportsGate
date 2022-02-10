@@ -17,7 +17,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase) :
+class
+AddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase) :
     ViewModel() {
 
     private val _state = MutableLiveData<AddressesFragmentState>()
@@ -42,6 +43,10 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
 
     private fun onDeleteAddress(deleted: Boolean, position: Int) {
         _state.value = AddressesFragmentState.DeleteAddress(deleted, position)
+    }
+
+    private fun onChangeDefault(changed: Boolean) {
+        _state.value = AddressesFragmentState.ChangeDefaultAddress(changed)
     }
 
     fun getAddresses() {
@@ -79,6 +84,23 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
         }
     }
 
+
+    fun changeDefault(addressId: Int) {
+        viewModelScope.launch {
+            addressUseCase
+                .changeDefault(addressId)
+                .onStart { setLoading(true) }
+                .catch {
+                    setLoading(false)
+                    onError(it)
+                }
+                .collect {
+                    setLoading(false)
+                    onChangeDefault(it)
+                }
+        }
+    }
+
 }
 
 sealed class AddressesFragmentState {
@@ -91,4 +113,6 @@ sealed class AddressesFragmentState {
         AddressesFragmentState()
 
     data class DeleteAddress(val deleted: Boolean, val position: Int) : AddressesFragmentState()
+
+    data class ChangeDefaultAddress(val changed: Boolean) : AddressesFragmentState()
 }

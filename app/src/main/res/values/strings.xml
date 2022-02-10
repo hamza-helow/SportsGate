@@ -118,9 +118,9 @@
     <string name="add_a_new_address_str">New Address</string>
     <string name="cur_loc_str">Current Location</string>
     <string name="notes_str">Notes</string>
-    <string name="floor_str">Floor number *</string>
-    <string name="building_str">Building number *</string>
-    <string name="street_str">Street *</string>
+    <string name="floor_str">Floor number</string>
+    <string name="building_str">Building number</string>
+    <string name="street_str">Street</string>
     <string name="validation_exceed_addresses_limit">Please remove old addresses before creating a new one</string>
     <string name="edit_address_str">Edit Address</string>
     <string name="get_my_location_str">Get My Location</string>
@@ -224,5 +224,6 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="location_selected">The Location has been selected</string>
     <string name="set_as_primary_delivery_address">Set As Primary Delivery Address</string>
+    <string name="area">Area</string>
 
 </resources>

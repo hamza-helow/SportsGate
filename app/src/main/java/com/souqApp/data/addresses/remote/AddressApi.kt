@@ -1,5 +1,6 @@
 package com.souqApp.data.addresses.remote
 
+import com.souqApp.data.addresses.remote.dto.AddressDetailsResponse
 import com.souqApp.data.addresses.remote.dto.AddressRequest
 import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.addresses.remote.dto.CityResponse
@@ -16,6 +17,9 @@ interface AddressApi {
     @GET("v1/users/addresses/getAll")
     suspend fun getAll(): Response<WrappedListResponse<AddressResponse>>
 
+    @GET("v1/users/addresses/getDetails")
+    suspend fun getDetails(@Query("address_id") addressId: Int): Response<WrappedResponse<AddressDetailsResponse>>
+
     @POST("v1/users/addresses/add")
     suspend fun add(@Body addressRequest: AddressRequest): Response<WrappedResponse<Nothing>>
 
@@ -26,5 +30,8 @@ interface AddressApi {
     suspend fun delete(@Query("address_id") addressId: Int): Response<WrappedResponse<Nothing>>
 
     @GET("v1/cities/getCitiesHaveAreas")
-    suspend fun  getCitiesHaveAreas() :Response<WrappedListResponse<CityResponse>>
+    suspend fun getCitiesHaveAreas(): Response<WrappedListResponse<CityResponse>>
+
+    @POST("v1/users/addresses/changeDefault")
+    suspend fun changeDefault(@Query("address_id") addressId: Int): Response<WrappedResponse<Nothing>>
 }

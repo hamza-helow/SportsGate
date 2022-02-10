@@ -1,10 +1,13 @@
 package com.souqApp.data.addresses.remote
 
+import com.souqApp.data.addresses.remote.dto.AddressDetailsResponse
 import com.souqApp.data.addresses.remote.dto.AddressRequest
 import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.domain.addresses.AddressDetailsEntity
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.domain.addresses.AddressRepository
 import com.souqApp.domain.addresses.CityEntity
@@ -15,6 +18,7 @@ import javax.inject.Inject
 
 class AddressRepositoryImpl @Inject constructor(private val addressApi: AddressApi) :
     AddressRepository {
+
     override suspend fun getAll(): Flow<BaseResult<List<AddressEntity>, WrappedListResponse<AddressResponse>>> {
         return flow {
 
@@ -23,6 +27,22 @@ class AddressRepositoryImpl @Inject constructor(private val addressApi: AddressA
 
             if (isSuccessful == true) {
 
+                val data = response.body()!!.data!!.toEntity()
+                emit(BaseResult.Success(data))
+            } else {
+                emit(BaseResult.Errors(response.body()!!))
+            }
+
+        }
+    }
+
+    override suspend fun getDetails(addressId: Int): Flow<BaseResult<AddressDetailsEntity, WrappedResponse<AddressDetailsResponse>>> {
+        return flow {
+
+            val response = addressApi.getDetails(addressId)
+            val isSuccessful = response.body()?.status
+
+            if (isSuccessful == true) {
                 val data = response.body()!!.data!!.toEntity()
                 emit(BaseResult.Success(data))
             } else {
@@ -99,6 +119,20 @@ class AddressRepositoryImpl @Inject constructor(private val addressApi: AddressA
             }
 
 
+        }
+    }
+
+    override suspend fun changeDefault(addressId: Int): Flow<Boolean> {
+        return flow {
+            val response = addressApi.changeDefault(addressId)
+            val isSuccessful = response.body()?.status
+            if (isSuccessful == true) {
+                emit(true)
+
+            } else {
+
+                emit(false)
+            }
         }
     }
 }

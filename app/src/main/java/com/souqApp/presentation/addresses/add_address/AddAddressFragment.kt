@@ -63,18 +63,20 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     ): View {
         binding = FragmentAddAddressBinding.inflate(inflater, container, false)
 
+        handleBack()
+        return binding.root
+    }
+
+    private fun handleBack() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 NavHostFragment.findNavController(this@AddAddressFragment).navigateUp()
             }
         }
-
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             onBackPressedCallback
         )
-
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -53,12 +53,6 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
             }
         }
 
-    // if update should be not null
-    private fun getAddressDetails(): AddressDetailsEntity? {
-        val address = arguments?.getSerializable(ADDRESS_DETAILS) ?: return null
-        return address as AddressDetailsEntity
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,6 +73,12 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
             viewLifecycleOwner,
             onBackPressedCallback
         )
+    }
+
+    // if update should be not null
+    private fun getAddressDetails(): AddressDetailsEntity? {
+        val address = arguments?.getSerializable(ADDRESS_DETAILS) ?: return null
+        return address as AddressDetailsEntity
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -131,7 +131,6 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
 
         binding.btnSubmit.isEnabled = isValid && viewModel.userLatLng.value != null
     }
-
 
     private fun resetAllError() {
         binding.btnSubmit.isEnabled = false

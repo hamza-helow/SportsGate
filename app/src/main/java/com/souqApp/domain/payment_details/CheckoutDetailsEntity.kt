@@ -1,4 +1,4 @@
-package com.souqApp.domain.main.cart.entity
+package com.souqApp.domain.payment_details
 
 
 data class CheckoutDetailsEntity(

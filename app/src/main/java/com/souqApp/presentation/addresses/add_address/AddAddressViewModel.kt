@@ -33,9 +33,12 @@ class AddAddressViewModel @Inject constructor(private val addressUseCase: Addres
         _userLatLng.value = latLng
     }
 
-
     private fun setLoading(isLoading: Boolean) {
         _state.value = AddAddressFragmentState.Loading(isLoading)
+    }
+
+    private fun onUpdateAddress(updated: Boolean) {
+        _state.value = AddAddressFragmentState.UpdateAddress.AddressUpdated(updated)
     }
 
     private fun onError(throwable: Throwable) {
@@ -93,6 +96,25 @@ class AddAddressViewModel @Inject constructor(private val addressUseCase: Addres
 
     }
 
+
+    fun updateAddress(addressRequest: AddressRequest) {
+
+        viewModelScope.launch {
+
+            addressUseCase
+                .update(addressRequest)
+                .onStart { setLoading(true) }
+                .catch {
+                    setLoading(false)
+                    onError(it)
+                }
+                .collect {
+                    setLoading(false)
+                    onUpdateAddress(it)
+                }
+        }
+    }
+
 }
 
 
@@ -109,6 +131,10 @@ sealed class AddAddressFragmentState {
 
     sealed class AddAddress {
         data class AddedAddress(val added: Boolean) : AddAddressFragmentState()
+    }
+
+    sealed class UpdateAddress {
+        data class AddressUpdated(val updated: Boolean) : AddAddressFragmentState()
     }
 
 

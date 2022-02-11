@@ -7,7 +7,6 @@ import com.souqApp.data.main.cart.remote.dto.*
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.CartRepository
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
-import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductQtyEntity
 import kotlinx.coroutines.flow.Flow
@@ -33,11 +32,11 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
         }
     }
 
-    override suspend fun getCheckoutDetails(): Flow<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun checkout(checkoutRequest: CheckoutRequest): Flow<BaseResult<CheckoutEntity, WrappedResponse<CheckoutResponse>>> {
+        TODO("Not yet implemented")
+    }
+    override suspend fun checkCouponCode(couponCode: String): Flow<BaseResult<Nothing, WrappedResponse<Nothing>>> {
         TODO("Not yet implemented")
     }
 
@@ -74,7 +73,5 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
     }
 
 
-    override suspend fun checkCouponCode(couponCode: String): Flow<BaseResult<Nothing, WrappedResponse<Nothing>>> {
-        TODO("Not yet implemented")
-    }
+
 }

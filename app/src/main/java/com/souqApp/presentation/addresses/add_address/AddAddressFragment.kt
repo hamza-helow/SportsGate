@@ -59,8 +59,16 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     ): View {
         binding = FragmentAddAddressBinding.inflate(inflater, container, false)
         handleBack()
-        binding.addressDetails = getAddressDetails()
+        fetchAddressDetailsIfExist()
+
         return binding.root
+    }
+
+    // when update address
+    private fun fetchAddressDetailsIfExist() {
+        val addressDetails = getAddressDetails() ?: return
+        binding.addressDetails = addressDetails
+        viewModel.setUserLatLng(LatLng(addressDetails.lat, addressDetails.lng))
     }
 
     private fun handleBack() {
@@ -145,12 +153,15 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
             is AddAddressFragmentState.Error -> handleError(state.throwable)
             is AddAddressFragmentState.LoadCities.CitiesLoaded -> handleCitiesLoaded(state.cityEntities)
             is AddAddressFragmentState.LoadCities.CitiesErrLoad -> handleCitiesErrLoad(state.response)
-            is AddAddressFragmentState.AddAddress.AddedAddress -> handleAddAddress(state.added)
+            is AddAddressFragmentState.AddAddress.AddedAddress -> handleAddOrUpdateAddress(state.added)
+            is AddAddressFragmentState.UpdateAddress.AddressUpdated -> handleAddOrUpdateAddress(
+                state.updated
+            )
         }
     }
 
-    private fun handleAddAddress(added: Boolean) {
-        if (added)
+    private fun handleAddOrUpdateAddress(success: Boolean) {
+        if (success)
             Navigation
                 .findNavController(binding.root)
                 .popBackStack()
@@ -218,11 +229,11 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             binding.cardPickLocation.id -> goToMapActivity()
-            binding.btnSubmit.id -> addAddress()
+            binding.btnSubmit.id -> addOrUpdateAddress()
         }
     }
 
-    private fun addAddress() {
+    private fun addOrUpdateAddress() {
         val buildingNumber = binding.txtBuildingNumber.text.toString()
         val floorNumber = binding.txtFloorNumber.text.toString()
         val notes = binding.txtNotes.text.toString()
@@ -231,10 +242,17 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         val idArea = (binding.spinnerAreas.selectedItem as AreaEntity).id
         val lat = viewModel.userLatLng.value?.latitude!!
         val lng = viewModel.userLatLng.value?.longitude!!
+        val addressId = if (getAddressDetails() == null) null else getAddressDetails()?.id
 
-        viewModel.addAddress(
-            AddressRequest(buildingNumber, street, floorNumber, notes, idArea, idCity, lat, lng)
+        val addressRequest = AddressRequest(
+            addressId, buildingNumber, street, floorNumber, notes, idArea, idCity, lat, lng
         )
+
+        if (addressId == null) {
+            viewModel.addAddress(addressRequest)
+        } else {
+            viewModel.updateAddress(addressRequest)
+        }
     }
 
     private fun goToMapActivity() {

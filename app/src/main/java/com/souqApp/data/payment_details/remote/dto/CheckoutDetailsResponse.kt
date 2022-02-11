@@ -1,4 +1,4 @@
-package com.souqApp.data.main.cart.remote.dto
+package com.souqApp.data.payment_details.remote.dto
 
 import com.google.gson.annotations.SerializedName
 

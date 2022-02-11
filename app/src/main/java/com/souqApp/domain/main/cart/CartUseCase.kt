@@ -28,7 +28,5 @@ class CartUseCase @Inject constructor(private val cartRepository: CartRepository
     }
 
 
-    suspend fun checkCouponCode(couponCode: String): Flow<BaseResult<Nothing, WrappedResponse<Nothing>>> {
-        return cartRepository.checkCouponCode(couponCode)
-    }
+
 }

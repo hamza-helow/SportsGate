@@ -13,10 +13,6 @@ interface CartApi {
     @GET("v1/users/carts/getCartDetails")
     suspend fun getCartDetails(): Response<WrappedResponse<CartDetailsResponse>>
 
-    suspend fun getCheckoutDetails(): Response<WrappedResponse<CheckoutDetailsResponse>>
-
-    suspend fun checkout(@Body checkoutRequest: CheckoutRequest): Response<WrappedResponse<CheckoutResponse>>
-
     @POST("v1/users/carts/deleteProductFromCart")
     suspend fun deleteProductFromCart(@Query("product_id") productId: Int): Response<WrappedResponse<Nothing>>
 
@@ -27,7 +23,5 @@ interface CartApi {
     ): Response<WrappedResponse<UpdateProductQtyResponse>>
 
 
-    @GET("v1/users/carts/checkCouponCode")
-    suspend fun checkCouponCode(@Query("coupon_code") couponCode: String): Response<WrappedResponse<Nothing>>
 
 }

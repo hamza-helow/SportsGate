@@ -3,6 +3,7 @@ package com.souqApp.data.addresses.remote.dto
 import com.google.gson.annotations.SerializedName
 
 data class AddressRequest(
+    @SerializedName("address_id") val address_id: Int? = null,
     @SerializedName("building") val building: String,
     @SerializedName("street") val street: String,
     @SerializedName("floor") val floor: String,

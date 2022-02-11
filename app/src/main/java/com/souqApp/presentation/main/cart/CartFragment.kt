@@ -1,25 +1,30 @@
 package com.souqApp.presentation.main.cart
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
+import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
 import com.souqApp.databinding.FragmentCartBinding
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
+import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.extension.showGenericAlertDialog
+import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.extension.start
+import com.souqApp.presentation.payment_details.PaymentDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
-class CartFragment : Fragment() {
+class CartFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentCartBinding
-
     private val viewModel: CartFragmentViewModel by viewModels()
 
     override fun onCreateView(
@@ -33,8 +38,14 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getCartDetails()
+        init()
         observer()
+    }
+
+    private fun init() {
+        viewModel.getCartDetails()
+
+        binding.btnCheckOut.setOnClickListener(this)
     }
 
     private fun observer() {
@@ -52,11 +63,33 @@ class CartFragment : Fragment() {
             is CartFragmentState.CartDetailsLoaded -> handleCartDetailsLoaded(state.cartDetailsEntity)
             is CartFragmentState.CartDetailsErrorLoaded -> handleCartDetailsErrorLoaded(state.wrappedResponse)
             is CartFragmentState.Loading -> handleLoading(state.isLoading)
+            is CartFragmentState.UpdateQuantity -> reloadCart()
+            is CartFragmentState.ProductDelete -> reloadCart()
+            is CartFragmentState.UpdatingCart -> handleUpdatingCart(state.updating)
+            is CartFragmentState.ErrorUpdateQuantity -> handleErrorUpdateQuantity(state.response)
         }
     }
 
-    private fun handleLoading(loading: Boolean) {
+    private fun handleErrorUpdateQuantity(response: WrappedResponse<UpdateProductQtyResponse>) {
+        requireContext().showGenericAlertDialog(response.formattedErrors())
+        reloadCart()
+    }
 
+    private fun handleUpdatingCart(updating: Boolean) {
+        if (updating)
+            binding.txtTotal.text = "..."
+        else
+            binding.txtTotal.text = "${binding.cart?.subTotal}"
+        binding.btnCheckOut.isEnabled = !updating
+    }
+
+    private fun reloadCart() {
+        viewModel.getCartDetails(isUpdate = true)
+    }
+
+    private fun handleLoading(loading: Boolean) {
+        binding.progressBar.start(loading)
+        binding.content.isVisible(!loading)
     }
 
     private fun handleCartDetailsErrorLoaded(wrappedResponse: WrappedResponse<CartDetailsResponse>) {
@@ -64,6 +97,9 @@ class CartFragment : Fragment() {
     }
 
     private fun handleCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
+        binding.content.isVisible(cartDetailsEntity.products.isNotEmpty())
+        binding.cardCartEmpty.isVisible(cartDetailsEntity.products.isEmpty())
+
         binding.cart = cartDetailsEntity
 
         val cartAdapter = CartAdapter()
@@ -77,10 +113,26 @@ class CartFragment : Fragment() {
     }
 
     private fun handleError(throwable: Throwable) {
+        binding.content.isVisible(false)
+        if (throwable is SocketTimeoutException) {
+            requireContext().showToast("Unexpected error, try again later")
+        }
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = CartFragment()
+    }
+
+    override fun onClick(view: View) {
+
+        when (view.id) {
+            binding.btnCheckOut.id -> navigateToPaymentDetails()
+        }
+
+    }
+
+    private fun navigateToPaymentDetails() {
+        startActivity(Intent(requireActivity(), PaymentDetailsActivity::class.java))
     }
 }

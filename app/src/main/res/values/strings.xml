@@ -216,15 +216,17 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="current_password">Current password</string>
-    <string name="submit">submit</string>
+    <string name="submit">Submit</string>
     <string name="relevant_products">Relevant products</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="location_selected">The Location has been selected</string>
     <string name="set_as_primary_delivery_address">Set As Primary Delivery Address</string>
     <string name="area">Area</string>
     <string name="address_details">Address Details</string>
+    <string name="title_activity_payment_details">PaymentDetailsActivity</string>
+    <string name="tax">Tax</string>
+    <string name="successfully_operation">Successfully operation</string>
+    <string name="coupon_not_valid">The selected coupon code is invalid</string>
 
 </resources>

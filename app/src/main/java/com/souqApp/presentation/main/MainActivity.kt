@@ -18,9 +18,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.utils.KeepStateNavigator
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.souqApp.infra.extension.inVisible
+import com.souqApp.infra.utils.SharedPrefs
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
 
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var bottomNav: BottomNavigationView
 
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,10 +62,10 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        val navController = findNavController(R.id.nav_host_fragment_content_main)
-//        return navController.navigateUp() || super.onSupportNavigateUp()
-//    }
+    override fun onResume() {
+        binding.bottomNavigationView.menu.getItem(2).isEnabled = sharedPrefs.isLogin()
+        super.onResume()
+    }
 
     companion object {
 

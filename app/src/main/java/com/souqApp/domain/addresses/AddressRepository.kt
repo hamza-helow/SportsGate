@@ -26,5 +26,4 @@ interface AddressRepository {
 
     suspend fun changeDefault(addressId: Int): Flow<Boolean>
 
-
 }

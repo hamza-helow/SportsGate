@@ -9,6 +9,7 @@ import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
 import com.souqApp.data.main.common.CategoryResponse
 import com.souqApp.data.main.home.remote.dto.ProductResponse
+import com.souqApp.data.orders.remote.OrderResponse
 import com.souqApp.data.payment_details.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
@@ -23,6 +24,7 @@ import com.souqApp.domain.main.cart.entity.CheckoutEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductQtyEntity
 import com.souqApp.domain.main.home.entity.CategoryEntity
 import com.souqApp.domain.main.home.entity.ProductEntity
+import com.souqApp.domain.orders.OrderEntity
 import com.souqApp.domain.payment_details.CheckoutDetailsEntity
 import com.souqApp.domain.product_details.ProductDetailsEntity
 import com.souqApp.domain.products_by_type.ProductsByTypeEntity
@@ -116,3 +118,17 @@ fun CartDetailsResponse.toEntity() =
 @JvmName("toEntityCityResponse")
 fun List<CityResponse>.toEntity() =
     map { CityEntity(it.id, it.name, it.areas.map { area -> AreaEntity(area.id, area.name) }) }
+
+
+@JvmName("toEntityOrderResponse")
+fun List<OrderResponse>.toEntity() =
+    map {
+        OrderEntity(
+            it.createdAt,
+            it.id,
+            it.number,
+            it.settingCurrency,
+            it.status,
+            it.totalPrice
+        )
+    }

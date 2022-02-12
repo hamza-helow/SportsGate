@@ -14,6 +14,7 @@ import com.souqApp.presentation.addresses.AddressActivity
 import com.souqApp.presentation.login.LoginActivity
 import com.souqApp.presentation.main.more.changePassword.ChangePasswordActivity
 import com.souqApp.presentation.main.more.profile.ProfileActivity
+import com.souqApp.presentation.orders.OrdersActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -47,6 +48,7 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         binding.includeCardChangePassword.root.setOnClickListener(this)
+        binding.cardOrders.setOnClickListener(this)
         binding.cardAddresses.setOnClickListener(this)
         binding.imgFacebook.setOnClickListener(this)
         binding.imgTiktok.setOnClickListener(this)
@@ -69,7 +71,12 @@ class MoreFragment : Fragment(), View.OnClickListener {
             binding.cardProfile.id -> goToProfileActivity()
             binding.includeCardChangePassword.root.id -> goToChangePasswordActivity()
             binding.cardAddresses.id -> goToAddressActivity()
+            binding.cardOrders.id -> goToOrdersActivity()
         }
+    }
+
+    private fun goToOrdersActivity() {
+        startActivity(Intent(requireActivity(), OrdersActivity::class.java))
     }
 
     private fun goToAddressActivity() {

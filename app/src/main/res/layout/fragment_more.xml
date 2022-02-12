@@ -93,10 +93,42 @@
                 app:isVisible="@{!sharedPrefs.login}"
                 app:title='@{@string/login}' />
 
-            <include
-                layout="@layout/list_tile"
-                app:isVisible="@{sharedPrefs.login}"
-                app:title='@{@string/my_orders_history_str}' />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/_2sdp"
+                android:weightSum="1"
+                app:isVisible="@{sharedPrefs.login}">
+
+                <TextView
+                    android:id="@+id/txt_address_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="0.9"
+                    android:text='@string/my_orders_history_str'
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_navigate_to_orders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -136,11 +168,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <!--            <include-->
-            <!--                layout="@layout/list_tile"-->
-            <!--                app:isVisible="@{sharedPrefs.login}"-->
-            <!--                app:title='@{@string/mange_addresses_str}' />-->
 
             <include
                 layout="@layout/list_tile"

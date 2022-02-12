@@ -4,6 +4,7 @@
         <item name="android:spinnerMode">dropdown</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:textSize">15.sp</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="buttonStyle">@style/ButtonFillStyle</item>
         <item name="android:textColor">@color/black</item>
@@ -113,7 +114,9 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="ThemeLight.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="ThemeLight.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 

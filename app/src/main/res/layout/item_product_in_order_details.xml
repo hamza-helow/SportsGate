@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="product"
-            type="com.souqApp.data.main.cart.remote.dto.ProductInCartResponse" />
+            name="productInOrder"
+            type="com.souqApp.data.order_details.remote.ProductInOrder" />
 
     </data>
 
@@ -18,10 +18,10 @@
 
         <ImageView
             android:id="@+id/imageView3"
+            networkImage="@{productInOrder.first_image}"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
             android:scaleType="fitXY"
-            networkImage="@{product.firstImage}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/gym_category_for_test" />
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@{product.name}"
+            android:text="@{productInOrder.name}"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toTopOf="@+id/imageView3"
             tools:text="iPhone 12 Pro" />
@@ -40,7 +40,7 @@
             android:id="@+id/txt_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{product.piecePrice +" "+ product.settingCurrency}'
+            android:text='@{productInOrder.piece_price +" "+ productInOrder.setting_currency}'
             android:textSize="@dimen/_16sdp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/txt_name_product"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginStart="16dp"
-            android:text="@{String.valueOf(product.qty)}"
+            android:text="@{String.valueOf(productInOrder.qty)}"
             app:layout_constraintBottom_toBottomOf="@+id/label_quantity"
             app:layout_constraintStart_toEndOf="@+id/label_quantity"
             app:layout_constraintTop_toTopOf="@+id/label_quantity"

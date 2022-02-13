@@ -27,6 +27,7 @@ import com.souqApp.presentation.common.CategoryAdapter
 import com.souqApp.presentation.common.ProgressDialog
 import com.souqApp.presentation.main.MainActivity
 import com.souqApp.presentation.products_by_type.ProductsByTypeActivity
+import com.souqApp.presentation.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 
@@ -83,6 +84,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         binding.txtShowAllRecommended.setOnClickListener(this)
         binding.txtShowAllNewProducts.setOnClickListener(this)
         binding.txtShowAllCategories.setOnClickListener(this)
+        binding.toolbar.cardSearch.setOnClickListener(this)
     }
 
     private fun observer() {
@@ -181,7 +183,12 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
             binding.txtShowAllCategories.id -> navigateToCategoriesFragment()
             binding.txtShowAllRecommended.id -> goToProductsByTypeScreen(2)
             binding.txtShowAllNewProducts.id -> goToProductsByTypeScreen(1)
+            binding.toolbar.cardSearch.id -> goToSearchActivity()
         }
+    }
+
+    private fun goToSearchActivity() {
+        startActivity(Intent(requireActivity(), SearchActivity::class.java))
     }
 
     private fun navigateToCategoriesFragment() {

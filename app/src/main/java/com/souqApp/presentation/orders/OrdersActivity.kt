@@ -9,7 +9,7 @@ import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.orders.remote.OrderResponse
 import com.souqApp.databinding.ActivityOrdersBinding
 import com.souqApp.domain.orders.OrderEntity
-import com.souqApp.infra.extension.setup
+import com.souqApp.infra.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,7 +54,7 @@ class OrdersActivity : AppCompatActivity() {
     }
 
     private fun handleOrdersErrorLoad(response: WrappedListResponse<OrderResponse>) {
-
+        showGenericAlertDialog(response.formattedErrors())
     }
 
     private fun handleOrdersLoaded(ordersEntity: List<OrderEntity>) {
@@ -62,11 +62,13 @@ class OrdersActivity : AppCompatActivity() {
     }
 
     private fun handleError(throwable: Throwable) {
-
+        if (throwable.message != null)
+            showToast(throwable.message!!)
     }
 
     private fun handleLoading(loading: Boolean) {
-
+        binding.recOrders.isVisible(!loading)
+        binding.progressBar.start(loading)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -10,7 +10,7 @@
 
         <variable
             name="category"
-            type="com.souqApp.domain.main.home.entity.CategoryEntity" />
+            type="com.souqApp.data.main.common.CategoryEntity" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

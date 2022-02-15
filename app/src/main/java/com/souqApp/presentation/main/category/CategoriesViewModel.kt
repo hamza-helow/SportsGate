@@ -3,10 +3,9 @@ package com.souqApp.presentation.main.category
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedListResponse
-import com.souqApp.data.main.common.CategoryResponse
+import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.categories.CategoriesUseCase
-import com.souqApp.domain.main.home.entity.CategoryEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -32,11 +31,11 @@ class CategoriesViewModel @Inject constructor(private val categoriesUseCase: Cat
         state.value = CategoriesFragmentState.ShowToast(message)
     }
 
-    fun categoriesLoaded(categories: List<CategoryEntity>) {
+    private fun categoriesLoaded(categories: List<CategoryEntity>) {
         state.value = CategoriesFragmentState.CategoriesLoaded(categories)
     }
 
-    fun categoriesLoadError(response: WrappedListResponse<CategoryResponse>) {
+    private fun categoriesLoadError(response: WrappedListResponse<CategoryEntity>) {
         state.value = CategoriesFragmentState.CategoriesError(response)
     }
 
@@ -68,6 +67,6 @@ sealed class CategoriesFragmentState {
     data class IsLoading(val isLoading: Boolean) : CategoriesFragmentState()
     data class ShowToast(val message: String) : CategoriesFragmentState()
     data class CategoriesLoaded(val categories: List<CategoryEntity>) : CategoriesFragmentState()
-    data class CategoriesError(val response: WrappedListResponse<CategoryResponse>) :
+    data class CategoriesError(val response: WrappedListResponse<CategoryEntity>) :
         CategoriesFragmentState()
 }

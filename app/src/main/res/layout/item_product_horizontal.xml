@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="productInSearch"
+            type="com.souqApp.data.main.home.remote.dto.ProductEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_12sdp">
+
+        <ImageView
+            android:id="@+id/img_product"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:networkImage="@{productInSearch.first_image}"
+            app:srcCompat="@drawable/gym_category_for_test" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/img_product"
+            app:layout_constraintTop_toTopOf="@+id/img_product">
+
+            <TextView
+                android:id="@+id/txt_name_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{productInSearch.name}"
+                tools:layout_editor_absoluteX="206dp"
+                tools:layout_editor_absoluteY="16dp"
+                tools:text="Flix" />
+
+            <TextView
+                android:id="@+id/txt_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="@{productInSearch.desc}"
+                android:textColor="@color/grey"
+                tools:layout_editor_absoluteX="107dp"
+                tools:layout_editor_absoluteY="42dp"
+                tools:text="The first name in the world" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

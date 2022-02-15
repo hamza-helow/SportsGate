@@ -2,8 +2,11 @@ package com.souqApp.presentation.main
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -18,8 +21,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.utils.KeepStateNavigator
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.souqApp.infra.extension.inVisible
+import com.souqApp.infra.extension.setLocale
 import com.souqApp.infra.utils.SharedPrefs
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -56,6 +62,8 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_host_fragment_content_main
         )
         navController.navigatorProvider += navigator
+
+        setLocale(sharedPrefs.getLanguage())
 
         // set navigation graph
         navController.setGraph(R.navigation.home_nav_graph)
@@ -96,6 +104,18 @@ class MainActivity : AppCompatActivity() {
             view.setPadding(0, 0, margin.toInt(), 0)
         }
 
+
+        @BindingAdapter("android:text")
+        @JvmStatic
+        fun setHtmlText(view: TextView, text: String) {
+            view.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
+            } else {
+                HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY);
+            }
+
+            view.movementMethod = LinkMovementMethod.getInstance();
+        }
 
         @BindingAdapter("layout_marginBottom")
         @JvmStatic

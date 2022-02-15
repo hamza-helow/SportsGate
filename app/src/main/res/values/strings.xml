@@ -228,5 +228,6 @@
     <string name="tax">Tax</string>
     <string name="successfully_operation">Successfully operation</string>
     <string name="coupon_not_valid">The selected coupon code is invalid</string>
+    <string name="name">Name</string>
 
 </resources>

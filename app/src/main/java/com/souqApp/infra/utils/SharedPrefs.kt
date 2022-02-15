@@ -16,11 +16,23 @@ class SharedPrefs(context: Context) {
         private const val PREF_TOKEN = "user_token"
         private const val PREF_USER_INFO = "user_info"
         private const val IS_LOGIN = "is_login"
+        private const val LANG = "lang_app"
     }
 
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
 
+
+    fun setLanguage(code: String) {
+        put(LANG, code)
+    }
+
+    fun getLanguage(): String {
+        val lang = get(LANG, String::class.java)
+        if (lang.isEmpty())
+            return "En"
+        return lang
+    }
 
     fun saveToken(token: String, isLogin: Boolean = true) {
         put(PREF_TOKEN, token)

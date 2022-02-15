@@ -30,6 +30,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".presentation.main.more.wish_list.WishListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.main.more.contact_us.ContactUsActivity"
+            android:exported="true" />
+        <activity
             android:name=".presentation.search.SearchActivity"
             android:exported="true" />
         <activity

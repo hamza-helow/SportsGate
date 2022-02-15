@@ -6,7 +6,7 @@
 
         <variable
             name="product"
-            type="com.souqApp.domain.main.home.entity.ProductEntity" />
+            type="com.souqApp.data.main.home.remote.dto.ProductEntity" />
 
     </data>
 
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_80sdp"
             android:scaleType="fitXY"
-            app:networkImage="@{product.firstImage}"
+            app:networkImage="@{product.first_image}"
             tools:ignore="ContentDescription"
             tools:srcCompat="@drawable/gym_category_for_test" />
 
@@ -44,9 +44,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{product.regularPrice+" "+product.settingCurrency,default="price"}'
+            android:text='@{product.regular_price+" "+product.setting_currency,default="price"}'
             android:textColor="@color/black"
-            app:isVisible="@{product.onSale}"
+            app:isVisible="@{product.on_sale}"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 </layout>

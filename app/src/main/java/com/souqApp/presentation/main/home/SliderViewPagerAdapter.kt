@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
-import com.souqApp.data.main.home.remote.dto.ProductAdsResponse
+import com.souqApp.data.main.home.remote.dto.ProductAdsEntity
 import com.souqApp.databinding.ItemSliderBinding
 import com.souqApp.infra.utils.ID_PRODUCT
 import com.souqApp.presentation.product_details.ProductDetailsActivity
 
 class SliderViewPagerAdapter(
     val context: Context,
-    private val ads: List<ProductAdsResponse>,
+    private val ads: List<ProductAdsEntity>,
     private val viewOnly: Boolean = false
 ) :
     PagerAdapter() {

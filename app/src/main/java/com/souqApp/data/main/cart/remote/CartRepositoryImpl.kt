@@ -1,6 +1,5 @@
 package com.souqApp.data.main.cart.remote
 
-import android.util.Log
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.*
@@ -44,8 +43,6 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
         return flow {
             val response = cartApi.deleteProductFromCart(productId)
             val isSuccessful = response.body()?.status
-
-            Log.e("ERer" , "qwewqe $isSuccessful")
 
             if (isSuccessful == true) {
                 emit(true)

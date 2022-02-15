@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeRequest
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
@@ -71,7 +70,7 @@ class ProductsByTypeActivity : AppCompatActivity() {
     }
 
     private fun handleProductsLoaded(productsByTypeEntity: ProductsByTypeEntity) {
-        productAdapter.addList(productsByTypeEntity.products.toEntity())
+        productAdapter.addList(productsByTypeEntity.products)
 
         productAdapter.listenerNeedLoadMore = {
             viewMode.loadProducts(ProductsByTypeRequest(type, 0, it))

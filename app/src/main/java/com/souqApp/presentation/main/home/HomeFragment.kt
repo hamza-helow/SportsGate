@@ -14,11 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.souqApp.R
-import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.main.home.remote.dto.HomeResponse
+import com.souqApp.data.main.home.remote.dto.HomeEntity
 import com.souqApp.databinding.FragmentHomeBinding
-import com.souqApp.domain.main.home.entity.HomeEntity
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
@@ -108,7 +106,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         }
     }
 
-    private fun handleHomeLoadedError(rawResponse: WrappedResponse<HomeResponse>) {
+    private fun handleHomeLoadedError(rawResponse: WrappedResponse<HomeEntity>) {
         progressBar.showLoader(false)
 
         requireContext().showGenericAlertDialog(rawResponse.formattedErrors())
@@ -127,25 +125,25 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         //visible content
         binding.content.isVisible = true
 
-        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.ads)
+        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.products_ads)
         binding.viewPager.adapter = sliderPagerAdapter
 
         // set lists
-        categoryAdapter.list = homeEntity.categories.toEntity()
-        bestSellingAdapter.list = homeEntity.bestSellingProducts.toEntity()
-        recommendedAdapter.list = homeEntity.recommendedProducts.toEntity()
-        newProductAdapter.list = homeEntity.newProducts.toEntity()
+        categoryAdapter.list = homeEntity.categories
+        bestSellingAdapter.list = homeEntity.best_selling_products
+        recommendedAdapter.list = homeEntity.recommended_products
+        newProductAdapter.list = homeEntity.new_products
 
         //link viewpager with tabs layout
         binding.tabDots.setupWithViewPager(binding.viewPager)
 
         //viability
-        binding.cardNewProducts.isVisible = homeEntity.newProducts.isNotEmpty()
-        binding.cardRecommended.isVisible = homeEntity.recommendedProducts.isNotEmpty()
-        binding.cardBestSelling.isVisible = homeEntity.bestSellingProducts.isNotEmpty()
+        binding.cardNewProducts.isVisible = homeEntity.new_products.isNotEmpty()
+        binding.cardRecommended.isVisible = homeEntity.recommended_products.isNotEmpty()
+        binding.cardBestSelling.isVisible = homeEntity.best_selling_products.isNotEmpty()
         binding.cardCategories.isVisible = homeEntity.categories.isNotEmpty()
-        binding.viewPager.isVisible = homeEntity.ads.isNotEmpty()
-        binding.tabDots.isVisible = homeEntity.ads.isNotEmpty()
+        binding.viewPager.isVisible = homeEntity.products_ads.isNotEmpty()
+        binding.tabDots.isVisible = homeEntity.products_ads.isNotEmpty()
 
     }
 

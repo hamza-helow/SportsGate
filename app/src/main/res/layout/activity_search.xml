@@ -7,6 +7,7 @@
     tools:context=".presentation.search.SearchActivity">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="@dimen/_44sdp"
         android:padding="@dimen/_16sdp"
@@ -34,6 +35,16 @@
             app:iconifiedByDefault="false"
             tools:targetApi="lollipop_mr1" />
     </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        tools:listitem="@layout/item_product_horizontal"
+        android:id="@+id/rec_products"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

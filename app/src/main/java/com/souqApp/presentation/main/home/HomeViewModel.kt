@@ -1,17 +1,15 @@
 package com.souqApp.presentation.main.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.main.home.remote.dto.HomeResponse
+import com.souqApp.data.main.home.remote.dto.HomeEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.home.HomeUseCase
-import com.souqApp.domain.main.home.entity.HomeEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -46,7 +44,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
         state.value = HomeFragmentState.HomeLoaded(homeEntity)
     }
 
-    private fun homeErrorLoaded(rawResponse: WrappedResponse<HomeResponse>) {
+    private fun homeErrorLoaded(rawResponse: WrappedResponse<HomeEntity>) {
         state.value = HomeFragmentState.HomeLoadedError(rawResponse)
     }
 
@@ -86,6 +84,6 @@ sealed class HomeFragmentState {
     data class IsLoading(val isLoading: Boolean) : HomeFragmentState()
     data class Error(val error: Throwable) : HomeFragmentState()
     data class HomeLoaded(val homeEntity: HomeEntity) : HomeFragmentState()
-    data class HomeLoadedError(val rawResponse: WrappedResponse<HomeResponse>) : HomeFragmentState()
+    data class HomeLoadedError(val rawResponse: WrappedResponse<HomeEntity>) : HomeFragmentState()
 
 }

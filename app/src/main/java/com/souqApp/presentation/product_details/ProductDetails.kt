@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.product_details.remote.ProductDetailsResponse
+import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.databinding.ActivityProductDetailsBinding
 import com.souqApp.databinding.LayoutProgressbarBinding
-import com.souqApp.domain.product_details.ProductDetailsEntity
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.setup
 import com.souqApp.infra.extension.showToast
@@ -134,11 +133,11 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.cardRelevantProducts.isVisible(productDetailsEntity.relevant.isNotEmpty())
 
-        handleToggleFavorite(productDetailsEntity.userFavourite)
+        handleToggleFavorite(productDetailsEntity.user_favourite)
 
     }
 
-    private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsResponse>) {
+    private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsEntity>) {
 
     }
 

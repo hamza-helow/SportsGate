@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ProductsByTypeByTypeRepositoryImpl @Inject constructor(val productsByTypeApi: ProductsByTypeApi) :
+class ProductsByTypeByTypeRepositoryImpl @Inject constructor(private val productsByTypeApi: ProductsByTypeApi) :
     ProductsByTypeRepository {
     override suspend fun getProductsByType(request: ProductsByTypeRequest): Flow<BaseResult<ProductsByTypeEntity, WrappedResponse<ProductsByTypeResponse>>> {
         return flow {

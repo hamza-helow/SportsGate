@@ -9,8 +9,11 @@ import com.souqApp.R
 import android.content.Intent
 import android.net.Uri
 import android.app.Activity
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import java.util.*
 
 
 fun Context.showToast(message: String) {
@@ -59,4 +62,13 @@ fun Context.openUrl(link: String) {
     this.startActivity(intent)
 }
 
+
+fun Context.setLocale(languageCode: String) {
+    val locale = Locale(languageCode)
+    Locale.setDefault(locale)
+    val resources: Resources = resources
+    val config: Configuration = resources.configuration
+    config.setLocale(locale)
+    resources.updateConfiguration(config, resources.displayMetrics)
+}
 

@@ -2,10 +2,9 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="product"
-            type="com.souqApp.domain.main.home.entity.ProductEntity" />
+            type="com.souqApp.data.main.home.remote.dto.ProductEntity" />
 
     </data>
 
@@ -21,7 +20,7 @@
             android:layout_width="@dimen/_160sdp"
             android:layout_height="@dimen/_120sdp"
             android:scaleType="fitXY"
-            app:networkImage="@{product.firstImage}"
+            app:networkImage="@{product.first_image}"
             tools:srcCompat="@drawable/gym_category_for_test" />
 
         <TextView

@@ -4,8 +4,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.souqApp.BR
+import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.ItemProductBinding
-import com.souqApp.domain.main.home.entity.ProductEntity
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 import com.souqApp.infra.utils.ID_PRODUCT
 import com.souqApp.presentation.product_details.ProductDetailsActivity

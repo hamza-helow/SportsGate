@@ -6,16 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.product_details.remote.ProductDetailsResponse
+import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.product_details.ProductDetailsEntity
 import com.souqApp.domain.product_details.ProductDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,7 +34,7 @@ class ProductDetailsViewModel @Inject constructor(private val productDetailsUseC
         state.value = ProductDetailsActivityState.DetailsLoaded(productDetailsEntity)
     }
 
-    private fun onDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsResponse>) {
+    private fun onDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsEntity>) {
         state.value = ProductDetailsActivityState.DetailsErrorLoaded(wrappedResponse)
     }
 
@@ -126,7 +124,7 @@ sealed class ProductDetailsActivityState {
     data class DetailsLoaded(val productDetailsEntity: ProductDetailsEntity) :
         ProductDetailsActivityState()
 
-    data class DetailsErrorLoaded(val wrappedResponse: WrappedResponse<ProductDetailsResponse>) :
+    data class DetailsErrorLoaded(val wrappedResponse: WrappedResponse<ProductDetailsEntity>) :
         ProductDetailsActivityState()
 
     data class Error(val throwable: Throwable) : ProductDetailsActivityState()

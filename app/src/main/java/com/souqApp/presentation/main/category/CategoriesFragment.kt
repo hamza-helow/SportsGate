@@ -11,9 +11,8 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedListResponse
-import com.souqApp.data.main.common.CategoryResponse
+import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.FragmentCategoriesBinding
-import com.souqApp.domain.main.home.entity.CategoryEntity
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.common.CategoryAdapter
@@ -59,7 +58,7 @@ class CategoriesFragment : Fragment() {
         }
     }
 
-    private fun handleErrorLoadCategories(response: WrappedListResponse<CategoryResponse>) {
+    private fun handleErrorLoadCategories(response: WrappedListResponse<CategoryEntity>) {
         progressBar.showLoader(false)
         requireContext().showGenericAlertDialog(response.formattedErrors())
     }

@@ -11,9 +11,12 @@ import com.souqApp.databinding.FragmentMoreBinding
 import com.souqApp.infra.extension.openUrl
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.addresses.AddressActivity
+import com.souqApp.presentation.common.ChangeLanguageDialog
 import com.souqApp.presentation.login.LoginActivity
 import com.souqApp.presentation.main.more.changePassword.ChangePasswordActivity
+import com.souqApp.presentation.main.more.contact_us.ContactUsActivity
 import com.souqApp.presentation.main.more.profile.ProfileActivity
+import com.souqApp.presentation.main.more.wish_list.WishListActivity
 import com.souqApp.presentation.orders.OrdersActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -55,6 +58,9 @@ class MoreFragment : Fragment(), View.OnClickListener {
         binding.imgInstagram.setOnClickListener(this)
         binding.includeLogin.root.setOnClickListener(this)
         binding.cardProfile.setOnClickListener(this)
+        binding.cardShareApp.setOnClickListener(this)
+        binding.cardContactUs.setOnClickListener(this)
+        binding.cardWishList.setOnClickListener(this)
     }
 
     companion object {
@@ -63,6 +69,15 @@ class MoreFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(p0: View) {
+
+        ChangeLanguageDialog(requireActivity(), language = sharedPrefs.getLanguage()).apply {
+            show()
+            onSave = {
+                requireActivity().recreate()
+                sharedPrefs.setLanguage(it)
+            }
+        }
+
         when (p0.id) {
             binding.imgFacebook.id -> requireContext().openUrl(getString(R.string.facebook_link))
             binding.imgTiktok.id -> requireContext().openUrl(getString(R.string.tiktok_link))
@@ -72,7 +87,27 @@ class MoreFragment : Fragment(), View.OnClickListener {
             binding.includeCardChangePassword.root.id -> goToChangePasswordActivity()
             binding.cardAddresses.id -> goToAddressActivity()
             binding.cardOrders.id -> goToOrdersActivity()
+            binding.cardShareApp.id -> shareApp()
+            binding.cardContactUs.id -> goToContactUsActivity()
+            binding.cardWishList.id -> goToWishListActivity()
         }
+    }
+
+    private fun goToWishListActivity() {
+        startActivity(Intent(requireActivity(), WishListActivity::class.java))
+    }
+
+    private fun goToContactUsActivity() {
+        startActivity(Intent(requireActivity(), ContactUsActivity::class.java))
+    }
+
+    private fun shareApp() {
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.type = "text/plain"
+        val shareBody = "Share App"
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here")
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
+        startActivity(Intent.createChooser(sharingIntent, "Share via"))
     }
 
     private fun goToOrdersActivity() {

@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.library.baseAdapters.BR
+import com.souqApp.BR
+import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.ItemCategoryBinding
-import com.souqApp.domain.main.home.entity.CategoryEntity
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 import com.souqApp.presentation.sub_categories.SubCategoriesActivity
 

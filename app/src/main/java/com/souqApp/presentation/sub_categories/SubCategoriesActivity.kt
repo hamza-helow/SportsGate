@@ -6,8 +6,8 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.ActivitySubCategoriesBinding
-import com.souqApp.domain.main.home.entity.CategoryEntity
 import com.souqApp.domain.sub_categories.SubCategoryEntity
 import com.souqApp.infra.extension.start
 import dagger.hilt.android.AndroidEntryPoint

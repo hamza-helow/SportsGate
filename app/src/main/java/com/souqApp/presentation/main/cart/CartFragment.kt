@@ -2,6 +2,7 @@ package com.souqApp.presentation.main.cart
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,8 +38,11 @@ class CartFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
+    }
+
+    override fun onResume() {
+        super.onResume()
         observer()
     }
 
@@ -93,10 +97,11 @@ class CartFragment : Fragment(), View.OnClickListener {
     }
 
     private fun handleCartDetailsErrorLoaded(wrappedResponse: WrappedResponse<CartDetailsResponse>) {
-
+        requireContext().showGenericAlertDialog(wrappedResponse.formattedErrors())
     }
 
     private fun handleCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
+
         binding.content.isVisible(cartDetailsEntity.products.isNotEmpty())
         binding.cardCartEmpty.isVisible(cartDetailsEntity.products.isEmpty())
 
@@ -117,6 +122,8 @@ class CartFragment : Fragment(), View.OnClickListener {
         if (throwable is SocketTimeoutException) {
             requireContext().showToast("Unexpected error, try again later")
         }
+
+        Log.e("ereRr" , throwable.stackTraceToString())
     }
 
     companion object {

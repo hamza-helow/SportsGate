@@ -34,9 +34,6 @@ class SubCategoriesActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshL
 
         viewModel.getSubCategories(categoryId = category.id)
 
-
-
-
         observer()
     }
 

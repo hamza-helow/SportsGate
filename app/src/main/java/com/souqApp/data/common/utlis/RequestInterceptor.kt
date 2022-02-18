@@ -9,9 +9,11 @@ class RequestInterceptor constructor(private val sharedPrefs: SharedPrefs) : Int
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = sharedPrefs.getToken()
 
+        val lang = if (sharedPrefs.getLanguage() == "En") "en" else "ar"
+
         val newRequest = chain.request()
             .newBuilder()
-            .addHeader("Accept-Language", "en")
+            .addHeader("Accept-Language", lang)
             .addHeader("Accept", "application/json")
             .addHeader("Authorization", "Bearer $token").build()
         return chain.proceed(newRequest)

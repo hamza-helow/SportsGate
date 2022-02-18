@@ -21,7 +21,7 @@
         <include
             android:id="@+id/include_app_bar"
             layout="@layout/app_bar"
-            app:title='@{"User Profile"}' />
+            app:title='@{@string/user_profile}' />
 
 
 

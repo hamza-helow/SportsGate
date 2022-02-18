@@ -13,9 +13,11 @@ import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.addresses.AddressActivity
 import com.souqApp.presentation.common.ChangeLanguageDialog
 import com.souqApp.presentation.login.LoginActivity
+import com.souqApp.presentation.main.more.about_us.AboutUsActivity
 import com.souqApp.presentation.main.more.changePassword.ChangePasswordActivity
 import com.souqApp.presentation.main.more.contact_us.ContactUsActivity
 import com.souqApp.presentation.main.more.profile.ProfileActivity
+import com.souqApp.presentation.main.more.terms_and_conditions.TermsAndConditionsActivity
 import com.souqApp.presentation.main.more.wish_list.WishListActivity
 import com.souqApp.presentation.orders.OrdersActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +36,6 @@ class MoreFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMoreBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -50,7 +51,7 @@ class MoreFragment : Fragment(), View.OnClickListener {
     }
 
     private fun init() {
-        binding.includeCardChangePassword.root.setOnClickListener(this)
+        binding.cardChangeLanguage.setOnClickListener(this)
         binding.cardOrders.setOnClickListener(this)
         binding.cardAddresses.setOnClickListener(this)
         binding.imgFacebook.setOnClickListener(this)
@@ -61,6 +62,10 @@ class MoreFragment : Fragment(), View.OnClickListener {
         binding.cardShareApp.setOnClickListener(this)
         binding.cardContactUs.setOnClickListener(this)
         binding.cardWishList.setOnClickListener(this)
+        binding.cardChangePassword.setOnClickListener(this)
+        binding.cardAboutUs.setOnClickListener(this)
+        binding.cardTermsAndConditions.setOnClickListener(this)
+
     }
 
     companion object {
@@ -70,6 +75,33 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(p0: View) {
 
+        when (p0.id) {
+            binding.imgFacebook.id -> requireContext().openUrl(getString(R.string.facebook_link))
+            binding.imgTiktok.id -> requireContext().openUrl(getString(R.string.tiktok_link))
+            binding.imgInstagram.id -> requireContext().openUrl(getString(R.string.instagram_link))
+            binding.includeLogin.root.id -> goToLoginActivity()
+            binding.cardProfile.id -> goToProfileActivity()
+            binding.cardChangePassword.id -> goToChangePasswordActivity()
+            binding.cardAddresses.id -> goToAddressActivity()
+            binding.cardOrders.id -> goToOrdersActivity()
+            binding.cardShareApp.id -> shareApp()
+            binding.cardContactUs.id -> goToContactUsActivity()
+            binding.cardWishList.id -> goToWishListActivity()
+            binding.cardChangeLanguage.id -> openChangeLanguageDialog()
+            binding.cardAboutUs.id -> openAboutUsActivity()
+            binding.cardTermsAndConditions.id -> openTermsAndConditionsActivity()
+        }
+    }
+
+    private fun openTermsAndConditionsActivity() {
+        startActivity(Intent(requireActivity(), TermsAndConditionsActivity::class.java))
+    }
+
+    private fun openAboutUsActivity() {
+        startActivity(Intent(requireActivity(), AboutUsActivity::class.java))
+    }
+
+    private fun openChangeLanguageDialog() {
         ChangeLanguageDialog(requireActivity(), language = sharedPrefs.getLanguage()).apply {
             show()
             onSave = {
@@ -78,19 +110,6 @@ class MoreFragment : Fragment(), View.OnClickListener {
             }
         }
 
-        when (p0.id) {
-            binding.imgFacebook.id -> requireContext().openUrl(getString(R.string.facebook_link))
-            binding.imgTiktok.id -> requireContext().openUrl(getString(R.string.tiktok_link))
-            binding.imgInstagram.id -> requireContext().openUrl(getString(R.string.instagram_link))
-            binding.includeLogin.root.id -> goToLoginActivity()
-            binding.cardProfile.id -> goToProfileActivity()
-            binding.includeCardChangePassword.root.id -> goToChangePasswordActivity()
-            binding.cardAddresses.id -> goToAddressActivity()
-            binding.cardOrders.id -> goToOrdersActivity()
-            binding.cardShareApp.id -> shareApp()
-            binding.cardContactUs.id -> goToContactUsActivity()
-            binding.cardWishList.id -> goToWishListActivity()
-        }
     }
 
     private fun goToWishListActivity() {

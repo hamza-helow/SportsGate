@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
+import com.souqApp.R
 import com.souqApp.data.contact_us.remote.ContactUsRequest
 import com.souqApp.databinding.ActivityContactUsBinding
 import com.souqApp.infra.extension.*
@@ -22,9 +23,19 @@ class ContactUsActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityContactUsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //setup tool bar
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setup(showTitleEnabled = true)
+        supportActionBar?.title = getString(R.string.contact_us_str)
+
         observer()
         initListener()
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun initListener() {

@@ -27,12 +27,17 @@ class CategoriesFragment : Fragment() {
     private lateinit var binding: FragmentCategoriesBinding
     private val viewModel: CategoriesViewModel by viewModels()
     private lateinit var progressBar: ProgressDialog
+    private val adapterCategory = CategoryAdapter(verticalMode = true)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCategoriesBinding.inflate(layoutInflater, container, false)
         progressBar = ProgressDialog(requireContext())
+        binding.recCategory.layoutManager = LinearLayoutManager(requireContext())
+        binding.recCategory.adapter = adapterCategory
+
         return binding.root
     }
 
@@ -67,16 +72,12 @@ class CategoriesFragment : Fragment() {
         requireContext().showToast(message)
     }
 
-
     private fun handleLoading(loading: Boolean) {
         progressBar.showLoader(loading)
     }
 
     private fun handleCategoriesLoaded(categories: List<CategoryEntity>) {
-        val adapterCategory = CategoryAdapter(verticalMode = true)
         adapterCategory.list = categories
-        binding.recCategory.adapter = adapterCategory
-        binding.recCategory.layoutManager = LinearLayoutManager(requireContext())
     }
 
     companion object {

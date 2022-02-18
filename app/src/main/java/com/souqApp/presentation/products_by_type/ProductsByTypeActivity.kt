@@ -11,6 +11,7 @@ import com.souqApp.databinding.ActivityProductsByTypeBinding
 import com.souqApp.domain.products_by_type.ProductsByTypeEntity
 import com.souqApp.infra.extension.setup
 import com.souqApp.infra.extension.start
+import com.souqApp.infra.utils.ID_SUBCATEGORY
 import com.souqApp.infra.utils.PRODUCTS_TYPE
 import com.souqApp.presentation.main.home.ProductGridAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,6 @@ class ProductsByTypeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductsByTypeBinding
     private val productAdapter = ProductGridAdapter()
 
-
     private var type: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +31,9 @@ class ProductsByTypeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         type = intent.getIntExtra(PRODUCTS_TYPE, -1)
+        val idSubCategory = intent.getIntExtra(ID_SUBCATEGORY, 0)
 
-        viewMode.loadProducts(ProductsByTypeRequest(type, 0, 1))
+        viewMode.loadProducts(ProductsByTypeRequest(type, idSubCategory, 1))
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setup()

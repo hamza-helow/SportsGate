@@ -4,13 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.ActivityWishListBinding
-import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showGenericAlertDialog
-import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.extension.start
+import com.souqApp.infra.extension.*
 import com.souqApp.presentation.common.ProductHorizontalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
@@ -26,6 +24,12 @@ class WishListActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.recProducts.layoutManager = LinearLayoutManager(this)
         binding.recProducts.adapter = adapter
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setup(
+            showTitleEnabled = true,
+        )
+        supportActionBar?.title = getString(R.string.wish_list)
 
         viewModel.state.observe(this, { handleState(it) })
     }
@@ -57,5 +61,10 @@ class WishListActivity : AppCompatActivity() {
         if (throwable is SocketTimeoutException) {
             showToast("Unexpected error, try again later")
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

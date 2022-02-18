@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="details"
+            name="productInOrder"
             type="com.souqApp.data.order_details.remote.OrderDetailsEntity" />
     </data>
 
@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{details.number}"
+                    android:text="@{String.valueOf(productInOrder.number)}"
                     tools:text="234545656" />
 
 
@@ -85,7 +85,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{details.status}"
+                    android:text="@{productInOrder.status}"
                     tools:text="Pending" />
 
 
@@ -99,7 +99,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{details.shipping_address}"
+                    android:text="@{productInOrder.shipping_address}"
                     tools:text="Amman, Tla’a Ali" />
 
 
@@ -143,7 +143,7 @@
                         android:id="@+id/txt_sub_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{details.sub_total +" "+details.setting_currency}'
+                        android:text='@{productInOrder.sub_total +" "+productInOrder.setting_currency}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -170,7 +170,7 @@
                         android:id="@+id/txt_delivery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{details.delivery_price +" "+details.setting_currency}'
+                        android:text='@{productInOrder.delivery_price +" "+productInOrder.setting_currency}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
 
@@ -198,7 +198,7 @@
                         android:id="@+id/txt_tax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{details.value_added_tax +" "+details.setting_currency}'
+                        android:text='@{productInOrder.value_added_tax +" "+productInOrder.setting_currency}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -226,7 +226,7 @@
                         android:id="@+id/txt_discount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{details.coupon_discount +" "+details.setting_currency}'
+                        android:text='@{productInOrder.coupon_discount +" "+productInOrder.setting_currency}'
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -253,7 +253,7 @@
                         android:id="@+id/txt_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{details.total_price +" "+details.setting_currency}'
+                        android:text='@{productInOrder.total_price +" "+productInOrder.setting_currency}'
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

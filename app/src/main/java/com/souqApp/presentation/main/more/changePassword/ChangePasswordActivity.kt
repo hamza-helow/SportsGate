@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
+import com.souqApp.R
 import com.souqApp.data.change_password.remote.dto.ChangePasswordRequest
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.ActivityChangePasswordBinding
@@ -26,8 +27,9 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         //setup tool bar
-        setSupportActionBar(binding.includeAppBar.toolbar)
-        supportActionBar?.setup()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setup(showTitleEnabled = true)
+        supportActionBar?.title = getString(R.string.change_password_str)
 
         initListener()
         observer()
@@ -36,7 +38,6 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
     private fun observer() {
 
         lifecycleScope.launchWhenCreated {
-
             viewModel.mState.collect { handleState(it) }
         }
     }
@@ -54,7 +55,7 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun handleError(throwable: Throwable) {
 
-        Log.e("Erer", throwable.stackTraceToString())
+        Log.e("TAG", throwable.stackTraceToString())
 
     }
 

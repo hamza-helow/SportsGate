@@ -58,7 +58,7 @@ class OrderDetailsActivity : AppCompatActivity() {
 
     private fun handleLoaded(orderDetailsEntity: OrderDetailsEntity) {
         productsOrderAdapter.addList(orderDetailsEntity.products)
-        binding.details = orderDetailsEntity
+        binding.productInOrder = orderDetailsEntity
     }
 
     private fun handleError(throwable: Throwable) {

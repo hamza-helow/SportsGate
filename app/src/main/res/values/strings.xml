@@ -209,25 +209,23 @@
     <string name="instagram_link" translatable="false">https://instagram.com/sport_gate.jo?utm_medium</string>
     <string name="powered_name">SouqApp</string>
     <string name="show_all">show all</string>
-    <string name="title_activity_sub_category">SubCategoryActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
     <string name="current_password">Current password</string>
     <string name="submit">Submit</string>
     <string name="relevant_products">Relevant products</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps" tools:ignore="MissingTranslation">MapsActivity</string>
     <string name="location_selected">The Location has been selected</string>
     <string name="set_as_primary_delivery_address">Set As Primary Delivery Address</string>
     <string name="area">Area</string>
     <string name="address_details">Address Details</string>
-    <string name="title_activity_payment_details">PaymentDetailsActivity</string>
     <string name="tax">Tax</string>
     <string name="successfully_operation">Successfully operation</string>
     <string name="coupon_not_valid">The selected coupon code is invalid</string>
     <string name="name">Name</string>
+    <string name="best_selling">Best selling</string>
+    <string name="recommended_products">Recommended Products</string>
+    <string name="new_products">New Products</string>
+    <string name="checkout">Checkout</string>
+    <string name="user_profile">user profile</string>
+    <string name="notification_not_found">No notifications found</string>
 
 </resources>

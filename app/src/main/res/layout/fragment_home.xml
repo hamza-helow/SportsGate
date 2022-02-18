@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:layoutDirection="ltr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -31,6 +32,7 @@
                     tools:context=".presentation.main.home.HomeFragment">
 
                     <androidx.viewpager.widget.ViewPager
+                        android:layoutDirection="ltr"
                         android:id="@+id/view_pager"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_140sdp"
@@ -38,6 +40,7 @@
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabDots"
+                        android:layoutDirection="ltr"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
@@ -84,8 +87,8 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rec_category"
 
+                            android:id="@+id/rec_category"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_8sdp"
@@ -118,7 +121,7 @@
                                 android:id="@+id/txt_title_best_selling"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Best selling"
+                                android:text="@string/best_selling"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -162,7 +165,7 @@
                                 android:id="@+id/txt_title_recommended"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Recommended Products"
+                                android:text="@string/recommended_products"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -212,7 +215,7 @@
                                 android:id="@+id/txt_title_new_Products"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="New Products"
+                                android:text="@string/new_products"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"

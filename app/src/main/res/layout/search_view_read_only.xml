@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="@dimen/_44sdp"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_44sdp"
     android:background="@color/tool_bar_color"
     android:gravity="center"
     android:orientation="horizontal"
     android:padding="@dimen/_8sdp"
     android:weightSum="1"
-    tools:ignore="UselessParent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    tools:ignore="UselessParent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -38,14 +38,14 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="search"
+                android:text="@string/search_str"
                 android:textColor="#C5C5C5"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <ImageView
-        android:id="@+id/imageButton"
+        android:id="@+id/img_notification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"

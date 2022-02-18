@@ -16,10 +16,8 @@ import com.souqApp.R
 import com.souqApp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.squareup.picasso.Picasso
-import androidx.navigation.plusAssign
 import androidx.navigation.ui.setupWithNavController
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.utils.KeepStateNavigator
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
@@ -44,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setLocale(sharedPrefs.getLanguage())
         installSplashScreen()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -52,18 +51,6 @@ class MainActivity : AppCompatActivity() {
         bottomNav = binding.bottomNavigationView
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // get fragment
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)!!
-
-        val navigator = KeepStateNavigator(
-            this,
-            navHostFragment.childFragmentManager,
-            R.id.nav_host_fragment_content_main
-        )
-        navController.navigatorProvider += navigator
-
-        setLocale(sharedPrefs.getLanguage())
 
         // set navigation graph
         navController.setGraph(R.navigation.home_nav_graph)
@@ -107,7 +94,12 @@ class MainActivity : AppCompatActivity() {
 
         @BindingAdapter("android:text")
         @JvmStatic
-        fun setHtmlText(view: TextView, text: String) {
+        fun setHtmlText(view: TextView, text: String?) {
+
+            if (text == null) {
+                return
+            }
+
             view.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
             } else {

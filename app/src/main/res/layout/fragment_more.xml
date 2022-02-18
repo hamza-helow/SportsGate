@@ -206,19 +206,118 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <include
-                android:id="@+id/include_card_change_password"
-                layout="@layout/list_tile"
-                app:isVisible="@{sharedPrefs.login}"
-                app:title='@{@string/change_pass_str}' />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card_change_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/_2sdp"
+                android:weightSum="1"
+                app:isVisible="@{sharedPrefs.login}">
 
-            <include
-                layout="@layout/list_tile"
-                app:title='@{@string/change_language_str}' />
+                <TextView
+                    android:id="@+id/txt_change_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="0.9"
+                    android:text='@string/change_pass_str'
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <include
-                layout="@layout/list_tile"
-                app:title='@{@string/terms_and_conditions_str}' />
+                <ImageView
+                    android:id="@+id/btn_navigate_change_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card_change_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/_2sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/txt_change_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="0.9"
+                    android:text='@string/change_language_sr'
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_navigate_change_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card_terms_and_conditions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/_2sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/txt_terms_and_conditions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="0.9"
+                    android:text='@string/terms_and_conditions_str'
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_navigate_terms_and_conditions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -229,8 +328,7 @@
                 android:layout_marginBottom="@dimen/_4sdp"
                 android:orientation="horizontal"
                 android:paddingVertical="@dimen/_2sdp"
-                android:weightSum="1"
-                app:isVisible="@{sharedPrefs.login}">
+                android:weightSum="1">
 
                 <TextView
                     android:id="@+id/txt_share_app"
@@ -259,9 +357,43 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <include
-                layout="@layout/list_tile"
-                app:title='@{@string/about_us_str}' />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card_about_us"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/_2sdp"
+                android:weightSum="1"
+                app:isVisible="@{sharedPrefs.login}">
+
+                <TextView
+                    android:id="@+id/txt_about_us"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="0.9"
+                    android:text='@string/about_us_str'
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_navigate_about_us"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/card_contact_us"

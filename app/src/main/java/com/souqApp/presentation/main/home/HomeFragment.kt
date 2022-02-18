@@ -2,6 +2,7 @@ package com.souqApp.presentation.main.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,10 +21,13 @@ import com.souqApp.databinding.FragmentHomeBinding
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.utils.ALL_PRODUCTS
 import com.souqApp.infra.utils.PRODUCTS_TYPE
+import com.souqApp.infra.utils.RECOMMENDED_PRODUCTS
 import com.souqApp.presentation.common.CategoryAdapter
 import com.souqApp.presentation.common.ProgressDialog
 import com.souqApp.presentation.main.MainActivity
+import com.souqApp.presentation.notification.NotificationActivity
 import com.souqApp.presentation.products_by_type.ProductsByTypeActivity
 import com.souqApp.presentation.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,14 +87,10 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         binding.txtShowAllNewProducts.setOnClickListener(this)
         binding.txtShowAllCategories.setOnClickListener(this)
         binding.toolbar.cardSearch.setOnClickListener(this)
+        binding.toolbar.imgNotification.setOnClickListener(this)
     }
 
     private fun observer() {
-        //get last fragment state
-        viewModel.mBundleFromFragment.observe(viewLifecycleOwner, Observer {
-            binding.mainScroll.y = it.getFloat("SCROLL_POSITION", 0f)
-        })
-
         viewModel.mState.observe(viewLifecycleOwner, Observer {
             handleState(it)
         })
@@ -151,6 +151,11 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         context?.showLoader(false)
         binding.content.isVisible = false
 
+        Log.e("ERer", throwable.message!!)
+
+        if (throwable.message != null)
+            requireContext().showGenericAlertDialog(throwable.message!!)
+
         if (throwable is SocketTimeoutException) {
             requireContext().showToast("Unexpected error, try again later")
         }
@@ -179,10 +184,15 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     override fun onClick(view: View) {
         when (view.id) {
             binding.txtShowAllCategories.id -> navigateToCategoriesFragment()
-            binding.txtShowAllRecommended.id -> goToProductsByTypeScreen(2)
-            binding.txtShowAllNewProducts.id -> goToProductsByTypeScreen(1)
+            binding.txtShowAllRecommended.id -> goToProductsByTypeScreen(RECOMMENDED_PRODUCTS)
+            binding.txtShowAllNewProducts.id -> goToProductsByTypeScreen(ALL_PRODUCTS)
             binding.toolbar.cardSearch.id -> goToSearchActivity()
+            binding.toolbar.imgNotification.id -> goToNotificationActivity()
         }
+    }
+
+    private fun goToNotificationActivity() {
+        startActivity(Intent(requireActivity(), NotificationActivity::class.java))
     }
 
     private fun goToSearchActivity() {
@@ -191,11 +201,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
 
     private fun navigateToCategoriesFragment() {
         (requireActivity() as MainActivity).bottomNav.selectedItemId = R.id.categoriesFragment
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.saveMainScrollState(binding.mainScroll.y)
     }
 
 }

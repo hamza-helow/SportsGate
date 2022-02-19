@@ -17,8 +17,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField 'String' , 'API_BASE_URL_PRODUCTION' , '"https://sportgate.2advanced.me/api/"'
-        buildConfigField 'String' , 'API_BASE_URL_DEV' , '"https://dev.2advanced.me/api/"'
+        buildConfigField 'String' , 'API_BASE_URL' , '"https://dev.2advanced.me/api/"'
         buildConfigField 'String' ,'APP_NAME' , '"Sports gate"'
         vectorDrawables.useSupportLibrary = true
 

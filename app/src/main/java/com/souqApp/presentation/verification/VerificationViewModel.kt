@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
+import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.verifcation.VerificationUseCase
@@ -28,16 +29,25 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
         state.value = VerificationActivityState.IsLoading(false)
     }
 
-    private fun showToast(message: String) {
-        state.value = VerificationActivityState.ShowToast(message)
+    private fun onError(throwable: Throwable) {
+        state.value = VerificationActivityState.Error(throwable)
     }
 
-    private fun successVerification(userEntity: UserEntity) {
-        state.value = VerificationActivityState.SuccessVerification(userEntity)
+    private fun successAccountVerification(userEntity: UserEntity) {
+        state.value = VerificationActivityState.SuccessAccountVerification(userEntity)
     }
 
-    private fun errorVerification(wrappedResponse: WrappedResponse<UserResponse>) {
-        state.value = VerificationActivityState.ErrorVerification(wrappedResponse)
+    private fun errorAccountVerification(wrappedResponse: WrappedResponse<UserResponse>) {
+        state.value = VerificationActivityState.ErrorAccountVerification(wrappedResponse)
+    }
+
+    private fun onSuccessResetVerification(createTokenResetPasswordEntity: CreateTokenResetPasswordEntity) {
+        state.value =
+            VerificationActivityState.SuccessResetVerification(createTokenResetPasswordEntity)
+    }
+
+    private fun onErrorResetVerification(response: WrappedResponse<CreateTokenResetPasswordEntity>) {
+        state.value = VerificationActivityState.ErrorResetVerification(response)
     }
 
 
@@ -48,13 +58,31 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
                     setLoading()
                 }.catch {
                     hideLoading()
-                    showToast(it.stackTraceToString())
+                    onError(it)
                 }.collect {
                     hideLoading()
                     when (it) {
 
-                        is BaseResult.Success -> successVerification(it.data)
-                        is BaseResult.Errors -> errorVerification(it.error)
+                        is BaseResult.Success -> successAccountVerification(it.data)
+                        is BaseResult.Errors -> errorAccountVerification(it.error)
+                    }
+                }
+        }
+    }
+
+    fun createTokenResetPassword(phone: String, code: String) {
+        viewModelScope.launch {
+            verificationUseCase.createTokenResetPassword(phone, code)
+                .onStart { setLoading() }
+                .catch {
+                    hideLoading()
+                    onError(it)
+                }
+                .collect {
+                    hideLoading()
+                    when (it) {
+                        is BaseResult.Success -> onSuccessResetVerification(it.data)
+                        is BaseResult.Errors -> onErrorResetVerification(it.error)
                     }
                 }
         }
@@ -64,8 +92,14 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
 sealed class VerificationActivityState {
     object Init : VerificationActivityState()
     data class IsLoading(val isLoading: Boolean) : VerificationActivityState()
-    data class ShowToast(val message: String) : VerificationActivityState()
-    data class SuccessVerification(val userEntity: UserEntity) : VerificationActivityState()
-    data class ErrorVerification(val wrappedResponse: WrappedResponse<UserResponse>) :
+    data class Error(val throwable: Throwable) : VerificationActivityState()
+    data class SuccessAccountVerification(val userEntity: UserEntity) : VerificationActivityState()
+    data class ErrorAccountVerification(val wrappedResponse: WrappedResponse<UserResponse>) :
+        VerificationActivityState()
+
+    data class SuccessResetVerification(val createTokenResetPasswordEntity: CreateTokenResetPasswordEntity) :
+        VerificationActivityState()
+
+    data class ErrorResetVerification(val response: WrappedResponse<CreateTokenResetPasswordEntity>) :
         VerificationActivityState()
 }

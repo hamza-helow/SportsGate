@@ -38,7 +38,7 @@ class ForgotPasswordViewModel @Inject constructor(private val forgotPasswordUseC
         state.value = ForgotPasswordActivityState.Error(throwable)
     }
 
-    private fun requestPasswordReset(phoneNumber: String) {
+    fun requestPasswordReset(phoneNumber: String) {
 
         viewModelScope.launch {
             forgotPasswordUseCase

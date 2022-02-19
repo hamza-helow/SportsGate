@@ -211,5 +211,7 @@
     <string name="checkout">Checkout</string>
     <string name="user_profile">صفحة المستخدم</string>
     <string name="notification_not_found">لم يتم العثور على اشعارات</string>
+    <string name="reset_pass_message">reset password</string>
+    <string name="password_changed">تم تغيير كلمة المرور بنجاح</string>
 
 </resources>

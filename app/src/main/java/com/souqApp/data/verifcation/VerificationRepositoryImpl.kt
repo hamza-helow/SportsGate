@@ -4,6 +4,7 @@ import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.VerificationApi
 import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
+import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.verifcation.VerificationRepository
@@ -34,6 +35,24 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
                 emit(BaseResult.Errors(response.body()!!))
             }
 
+        }
+    }
+
+    override suspend fun createTokenResetPassword(
+        phone: String,
+        code: String
+    ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>> {
+        return flow {
+
+            val response = verificationApi.createTokenResetPassword(phone, code)
+            val isSuccessful = response.body()?.status
+
+            if (isSuccessful == true) {
+                emit(BaseResult.Success(response.body()!!.data!!))
+
+            } else {
+                emit(BaseResult.Errors(response.body()!!))
+            }
         }
     }
 }

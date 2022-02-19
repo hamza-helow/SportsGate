@@ -2,7 +2,10 @@ package com.souqApp.data.common.module
 
 import com.souqApp.BuildConfig
 import com.souqApp.data.common.utlis.RequestInterceptor
+import com.souqApp.infra.utils.CONNECT_TIMEOUT
+import com.souqApp.infra.utils.READ_TIMEOUT
 import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.infra.utils.WRITE_TIMEOUT
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +25,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit
             .Builder().apply {
-                baseUrl(BuildConfig.API_BASE_URL_DEV)
+                baseUrl(BuildConfig.API_BASE_URL)
                 addConverterFactory(GsonConverterFactory.create())
                 client(okHttpClient)
             }.build()
@@ -33,9 +36,9 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(requestInterceptor: RequestInterceptor): OkHttpClient {
         return OkHttpClient.Builder().apply {
-            connectTimeout(30, TimeUnit.SECONDS)
-            readTimeout(30, TimeUnit.SECONDS)
-            writeTimeout(30, TimeUnit.SECONDS)
+            connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+            writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
             addInterceptor(requestInterceptor)
         }.build()
     }

@@ -30,6 +30,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".presentation.create_password.CreatePasswordActivity"
+            android:exported="true" />
+        <activity
             android:name=".presentation.notification.NotificationActivity"
             android:exported="true" />
         <activity

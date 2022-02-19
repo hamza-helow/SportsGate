@@ -12,7 +12,7 @@ import retrofit2.http.Query
 interface ForgotPasswordApi {
 
     @POST("v1/users/requestPasswordReset")
-    suspend fun requestPasswordReset(@Field("phone") phone: String): Response<WrappedResponse<Nothing>>
+    suspend fun requestPasswordReset(@Query("phone") phone: String): Response<WrappedResponse<Nothing>>
 
     @POST("v1/users/createTokenResetPassword")
     suspend fun createTokenResetPassword(@Body resetPasswordRequest: ResetPasswordRequest): Response<WrappedResponse<TokenResponse>>

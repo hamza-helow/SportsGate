@@ -227,5 +227,7 @@
     <string name="checkout">Checkout</string>
     <string name="user_profile">user profile</string>
     <string name="notification_not_found">No notifications found</string>
+    <string name="reset_pass_message">reset password</string>
+    <string name="password_changed">Password changed successfully</string>
 
 </resources>

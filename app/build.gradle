@@ -8,6 +8,7 @@ plugins {
 
 android {
     compileSdk 31
+    flavorDimensions "default"
 
     defaultConfig {
         applicationId "com.souqApp"
@@ -20,6 +21,13 @@ android {
         buildConfigField 'String' , 'API_BASE_URL' , '"https://dev.2advanced.me/api/"'
         buildConfigField 'String' ,'APP_NAME' , '"Sports gate"'
         vectorDrawables.useSupportLibrary = true
+
+    }
+
+    productFlavors {
+        create("sportGate") {
+            applicationId "com.sportsgate"
+        }
 
     }
 
@@ -54,6 +62,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.firebase:firebase-common-ktx:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:21.0.1'
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -98,4 +109,14 @@ dependencies {
 
     //circle image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // firebase
+    implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    implementation 'com.google.firebase:firebase-config'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-config-ktx:21.0.1'
+    implementation 'com.google.firebase:firebase-analytics-ktx:20.1.0'
+    implementation 'com.google.firebase:firebase-core:20.1.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

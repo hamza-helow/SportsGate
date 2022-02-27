@@ -48,12 +48,10 @@ class CartFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         viewModel.getCartDetails()
-
         binding.btnCheckOut.setOnClickListener(this)
     }
 
     private fun observer() {
-
         viewModel.state.observe(viewLifecycleOwner, {
             handleState(it)
         })
@@ -103,6 +101,7 @@ class CartFragment : Fragment(), View.OnClickListener {
     private fun handleCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
 
         binding.content.isVisible(cartDetailsEntity.products.isNotEmpty())
+        binding.cardCheckOut.isVisible(cartDetailsEntity.products.isNotEmpty())
         binding.cardCartEmpty.isVisible(cartDetailsEntity.products.isEmpty())
 
         binding.cart = cartDetailsEntity

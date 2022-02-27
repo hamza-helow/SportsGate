@@ -22,8 +22,10 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.infra.extension.inVisible
 import com.souqApp.infra.extension.setLocale
+import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
 import com.souqApp.infra.utils.SharedPrefs
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -31,6 +33,9 @@ import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var firebaseConfig: FirebaseRemoteConfig
 
     private lateinit var binding: ActivityMainBinding
     lateinit var bottomNav: BottomNavigationView
@@ -58,7 +63,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        binding.bottomNavigationView.menu.getItem(2).isEnabled = sharedPrefs.isLogin()
+        val isPurchaseEnabled = firebaseConfig.getBoolean(IS_PURCHASE_ENABLED)
+        binding.bottomNavigationView.menu.getItem(2).isEnabled =
+            sharedPrefs.isLogin() && !isPurchaseEnabled
         super.onResume()
     }
 

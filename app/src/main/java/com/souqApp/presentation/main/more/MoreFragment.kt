@@ -44,12 +44,6 @@ class MoreFragment : Fragment(), View.OnClickListener {
         init()
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.sharedPrefs = sharedPrefs
-        binding.user = sharedPrefs.getUserInfo()
-    }
-
     private fun init() {
         binding.cardChangeLanguage.setOnClickListener(this)
         binding.cardOrders.setOnClickListener(this)
@@ -65,6 +59,8 @@ class MoreFragment : Fragment(), View.OnClickListener {
         binding.cardChangePassword.setOnClickListener(this)
         binding.cardAboutUs.setOnClickListener(this)
         binding.cardTermsAndConditions.setOnClickListener(this)
+        binding.sharedPrefs = sharedPrefs
+        binding.user = sharedPrefs.getUserInfo()
 
     }
 

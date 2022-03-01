@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.search.remote.SearchEntity
 import com.souqApp.databinding.ActivitySearchBinding
+import com.souqApp.infra.extension.changeStatusBarColor
 import com.souqApp.presentation.common.ProductHorizontalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,6 +35,8 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         searchAdapter.listenerNeedLoadMore = {
             viewModel.search(binding.searchView.query.toString() , it)
         }
+
+        changeStatusBarColor(color = R.color.tool_bar_color)
 
     }
 

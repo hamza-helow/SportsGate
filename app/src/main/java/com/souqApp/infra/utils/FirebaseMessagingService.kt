@@ -13,23 +13,20 @@ import android.app.NotificationChannel
 import android.os.Build
 import com.souqApp.presentation.main.MainActivity
 import android.app.PendingIntent
+import android.util.Log
 
 
 class MFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         sendNotification(remoteMessage)
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        startService(
-            Intent(this, MFirebaseMessagingService::class.java)
-        )
+        Log.e("erRER", "notification")
     }
 
     override fun onNewToken(token: String) {
         //ToDo send token to server
+        Log.e("erRER", "new token $token")
 
     }
 
@@ -42,11 +39,14 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
         val title = getString(R.string.app_name)
         val body = data["body"] ?: ""
 
+        val intent =
+            getIntent(type = type, title = title, body = body, redirectId = redirectId) ?: return
+
         val pendingIntent =
             PendingIntent.getActivity(
                 this,
                 1001,
-                getIntent(type = type, title = title, body = body, redirectId = redirectId),
+                intent,
                 PendingIntent.FLAG_ONE_SHOT
             )
 

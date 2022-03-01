@@ -14,11 +14,16 @@
             android:orientation="vertical"
             tools:context=".presentation.sub_categories.SubCategoriesActivity">
 
-            <include
-                android:id="@+id/include_app_bar"
-                layout="@layout/app_bar"
-                app:appBarColor="@{@color/tool_bar_color}"
-                app:titleColor="@{@color/white}" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleCentered="true" />
 
             <include
                 android:id="@+id/include_loader"

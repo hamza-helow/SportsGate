@@ -41,39 +41,35 @@
                     android:id="@+id/circleImageView"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
+                    android:duplicateParentState="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:networkImage="@{user.image}"
                     app:placeholder="@{@drawable/ic_account_circle}"
                     tools:src="@drawable/ic_account_circle" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
                     app:layout_constraintStart_toEndOf="@+id/circleImageView"
                     app:layout_constraintTop_toTopOf="@+id/circleImageView">
 
                     <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text='@{user.phone,default="phone number"}'
-                        app:layout_constraintStart_toStartOf="@+id/textView"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-                    <TextView
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text='@{user.name,default="user name"}'
-                        android:textSize="@dimen/_16sdp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textSize="@dimen/_16sdp" />
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{user.phone,default="phone number"}' />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -244,7 +240,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/card_change_language"
                 android:layout_width="match_parent"
@@ -280,7 +275,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
             <androidx.constraintlayout.widget.ConstraintLayout

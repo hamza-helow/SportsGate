@@ -94,9 +94,6 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
 //        Log.e(tag, message)
     }
 
-
-
-
     private fun handleLoading(isLoading: Boolean) {
         binding.btnSendOtp.isEnabled = !isLoading
         binding.loader.loadingProgressBar.start(isLoading)

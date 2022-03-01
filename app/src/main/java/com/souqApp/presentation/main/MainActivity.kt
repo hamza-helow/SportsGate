@@ -17,18 +17,16 @@ import com.souqApp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.squareup.picasso.Picasso
 import androidx.navigation.ui.setupWithNavController
-import com.souqApp.infra.extension.isVisible
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.souqApp.infra.extension.inVisible
-import com.souqApp.infra.extension.setLocale
 import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
 import com.souqApp.infra.utils.SharedPrefs
 import javax.inject.Inject
 import kotlin.math.roundToInt
+import com.souqApp.infra.extension.*
 
 
 @AndroidEntryPoint
@@ -60,6 +58,8 @@ class MainActivity : AppCompatActivity() {
         // set navigation graph
         navController.setGraph(R.navigation.home_nav_graph)
         binding.bottomNavigationView.setupWithNavController(navController)
+
+        changeStatusBarColor(color = R.color.tool_bar_color)
     }
 
     override fun onResume() {
@@ -110,10 +110,10 @@ class MainActivity : AppCompatActivity() {
             view.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
             } else {
-                HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY);
+                HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
 
-            view.movementMethod = LinkMovementMethod.getInstance();
+            view.movementMethod = LinkMovementMethod.getInstance()
         }
 
         @BindingAdapter("layout_marginBottom")

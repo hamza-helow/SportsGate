@@ -12,7 +12,10 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import java.util.*
 
 
@@ -62,6 +65,13 @@ fun Context.openUrl(link: String) {
     this.startActivity(intent)
 }
 
+
+fun Activity.changeStatusBarColor(color:Int =R.color.white ){
+    val window: Window = this.window
+    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+    window.statusBarColor = ContextCompat.getColor(this, color)
+}
 
 fun Context.setLocale(languageCode: String) {
     val locale = Locale(languageCode)

@@ -86,9 +86,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
     private fun handleSuccessLogin(userEntity: UserEntity) {
         sharedPrefs.saveToken(userEntity.token ?: "")
         sharedPrefs.saveUserInfo(userEntity.toUserResponse())
-        if (userEntity.verified == 2)
+        if (userEntity.verified == 2) {
+            sharedPrefs.isNeedVerify(true)
             navigateToVerificationActivity()
-        else
+        } else
             navigateToMainActivity()
     }
 
@@ -140,7 +141,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
 
         if (viewModel.isPhoneEnable) {
             if (!username.isPhone()) {
-                // binding.phoneInputLay.activeBorder(this, false)
+                binding.includePhoneNumber.root.errorBorder()
                 return false
             }
 
@@ -163,7 +164,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
         binding.loginBtn.isEnabled = false
         binding.includePassword.passwordInputLay.activeBorder(this, true)
         binding.emailInputLay.activeBorder(this, true)
-        // binding.phoneInputLay.activeBorder(this, true)
+        binding.includePhoneNumber.root.successBorder()
     }
 
     override fun onClick(view: View) {

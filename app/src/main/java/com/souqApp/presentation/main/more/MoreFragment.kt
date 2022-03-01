@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.souqApp.R
 import com.souqApp.databinding.FragmentMoreBinding
+import com.souqApp.infra.extension.changeStatusBarColor
 import com.souqApp.infra.extension.openUrl
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.addresses.AddressActivity
@@ -41,10 +42,11 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
+        initListener()
+        initInfo()
     }
 
-    private fun init() {
+    private fun initListener() {
         binding.cardChangeLanguage.setOnClickListener(this)
         binding.cardOrders.setOnClickListener(this)
         binding.cardAddresses.setOnClickListener(this)
@@ -59,9 +61,6 @@ class MoreFragment : Fragment(), View.OnClickListener {
         binding.cardChangePassword.setOnClickListener(this)
         binding.cardAboutUs.setOnClickListener(this)
         binding.cardTermsAndConditions.setOnClickListener(this)
-        binding.sharedPrefs = sharedPrefs
-        binding.user = sharedPrefs.getUserInfo()
-
     }
 
     companion object {
@@ -143,5 +142,17 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
     private fun goToLoginActivity() {
         startActivity(Intent(activity, LoginActivity::class.java))
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().changeStatusBarColor()
+        initInfo()
+    }
+
+    private fun initInfo() {
+        binding.sharedPrefs = sharedPrefs
+        binding.user = sharedPrefs.getUserInfo()
     }
 }

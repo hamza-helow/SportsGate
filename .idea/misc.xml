@@ -65,6 +65,7 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_profile.xml" value="0.26275115919629055" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_register.xml" value="0.176" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_search.xml" value="0.264" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_splash.xml" value="0.2006340579710145" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_sub_categories.xml" value="0.19375" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_sub_category.xml" value="0.2078125" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_terms_and_conditions.xml" value="0.19322916666666667" />
@@ -85,7 +86,7 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/fragment_cart.xml" value="0.2" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/fragment_categories.xml" value="0.178125" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/fragment_home.xml" value="0.176" />
-        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/fragment_more.xml" value="0.136" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/fragment_more.xml" value="0.264" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/home_section.xml" value="0.176" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_address.xml" value="0.36505190311418684" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_cart.xml" value="0.4" />

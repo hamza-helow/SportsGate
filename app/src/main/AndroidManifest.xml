@@ -30,6 +30,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:theme="@style/splash"
+            android:name=".presentation.splash.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".presentation.create_password.CreatePasswordActivity"
             android:exported="true" />
         <activity
@@ -115,11 +125,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/ThemeLight"
             tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".presentation.login.LoginActivity"
@@ -139,6 +145,7 @@
 
         <service
             android:name=".infra.utils.MFirebaseMessagingService"
+            android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

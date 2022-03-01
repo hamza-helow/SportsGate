@@ -18,6 +18,7 @@ import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeEntity
 import com.souqApp.databinding.FragmentHomeBinding
+import com.souqApp.infra.extension.changeStatusBarColor
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
@@ -56,6 +57,8 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         super.onViewCreated(view, savedInstanceState)
         binding.content.isVisible = false
         progressBar = ProgressDialog(requireContext())
+        requireActivity().changeStatusBarColor(color = R.color.tool_bar_color)
+
         initListeners()
         initAdapters()
         observer()

@@ -9,6 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.ActivitySubCategoriesBinding
 import com.souqApp.domain.sub_categories.SubCategoryEntity
+import com.souqApp.infra.extension.setup
 import com.souqApp.infra.extension.start
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +29,11 @@ class SubCategoriesActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshL
         category =
             intent.getSerializableExtra(CategoryEntity::class.java.simpleName) as CategoryEntity
 
-        binding.includeAppBar.title = category.name
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setup(
+            showTitleEnabled = true,
+        )
+        supportActionBar?.title = category.name
 
         binding.refreshSwiper.setOnRefreshListener(this)
 
@@ -73,5 +78,10 @@ class SubCategoriesActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshL
     override fun onRefresh() {
         viewModel.getSubCategories(categoryId = category.id)
         binding.refreshSwiper.isRefreshing = false
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

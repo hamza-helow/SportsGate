@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -99,6 +100,13 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        @BindingAdapter("android:movementMethod")
+        @JvmStatic
+        fun enableMovementMethod(view: TextView, enable: Boolean?) {
+            if (enable == true)
+                view.movementMethod = LinkMovementMethod.getInstance()
+        }
+
         @BindingAdapter("android:text")
         @JvmStatic
         fun setHtmlText(view: TextView, text: String?) {
@@ -112,8 +120,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
-
-            view.movementMethod = LinkMovementMethod.getInstance()
         }
 
         @BindingAdapter("layout_marginBottom")

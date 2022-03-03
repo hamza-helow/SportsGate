@@ -2,6 +2,7 @@ package com.souqApp.presentation.orders
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.R
@@ -64,6 +65,8 @@ class OrdersActivity : AppCompatActivity() {
     private fun handleError(throwable: Throwable) {
         if (throwable.message != null)
             showToast(throwable.message!!)
+
+        Log.e("ERer" , throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {

@@ -6,5 +6,5 @@ data class OrderEntity(
     val number: String,
     val setting_currency: String,
     val status: String,
-    val total_price: Int
+    val total_price: Double
 )

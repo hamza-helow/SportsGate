@@ -45,7 +45,7 @@ class AboutUsActivity : AppCompatActivity() {
     }
 
     private fun onLoaded(contentEntity: ContentEntity) {
-        binding.txtContent.text = contentEntity.content
+        binding.content = contentEntity.content
     }
 
     private fun onErrorLoad(response: WrappedResponse<ContentEntity>) {

@@ -33,14 +33,13 @@ fun View.successBorder() {
 }
 
 fun View.errorBorder() {
-    background = rectangleShape(context = context,  ContextCompat.getColor(context, R.color.red))
+    background = rectangleShape(context = context, ContextCompat.getColor(context, R.color.red))
 }
 
 fun View.noneBorder() {
-    background = rectangleShape(context = context,  ContextCompat.getColor(context, R.color.gray_light2))
+    background =
+        rectangleShape(context = context, ContextCompat.getColor(context, R.color.gray_light2))
 }
-
-
 
 fun rectangleShape(context: Context, borderColor: Int): GradientDrawable {
     val shape = GradientDrawable()

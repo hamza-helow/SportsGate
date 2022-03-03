@@ -20,7 +20,6 @@ class TermsAndConditionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTermsAndConditionsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         //setup tool bar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setup(showTitleEnabled = true)
@@ -45,7 +44,7 @@ class TermsAndConditionsActivity : AppCompatActivity() {
     }
 
     private fun onLoaded(contentEntity: ContentEntity) {
-        binding.txtContent.text = contentEntity.content
+        binding.content = contentEntity.content
     }
 
     private fun onErrorLoad(response: WrappedResponse<ContentEntity>) {

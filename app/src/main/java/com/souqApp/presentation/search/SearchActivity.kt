@@ -33,7 +33,8 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         observer()
 
         searchAdapter.listenerNeedLoadMore = {
-            viewModel.search(binding.searchView.query.toString() , it)
+
+            viewModel.search(binding.searchView.query.toString(), it)
         }
 
         changeStatusBarColor(color = R.color.tool_bar_color)
@@ -41,7 +42,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     private fun observer() {
-
+        viewModel.search("", 1)
         viewModel.state.observe(this, { handleState(it) })
     }
 
@@ -76,10 +77,10 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextChange(text: String): Boolean {
 
-        if(text.isEmpty())
+        if (text.isEmpty())
             searchAdapter.clearList()
         else
-        viewModel.search(text, 1)
+            viewModel.search(text, 1)
         return true
     }
 }

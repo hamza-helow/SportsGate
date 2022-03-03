@@ -17,7 +17,7 @@ class ProductHorizontalAdapter : BaseRecyclerAdapter<ItemProductHorizontalBindin
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(BR.productInSearch, getItemByPosition(position))
 
-        holder.itemView.setOnClickListener {
+        holder.binding.root.setOnClickListener {
             val intent = Intent(holder.itemView.context, ProductDetailsActivity::class.java)
             intent.putExtra(ID_PRODUCT, getItemByPosition(position).id)
             holder.itemView.context.startActivity(intent)

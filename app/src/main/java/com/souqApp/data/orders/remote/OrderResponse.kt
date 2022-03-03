@@ -13,5 +13,5 @@ data class OrderResponse(
     @SerializedName("status")
     val status: String,
     @SerializedName("total_price")
-    val totalPrice: Int
+    val totalPrice: Double
 )

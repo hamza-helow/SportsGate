@@ -130,7 +130,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
             username = username.toPhoneNumber()
 
         if (validate()) {
-            viewModel.login(LoginRequest(code + username, password, 0, ""))
+            viewModel.login(LoginRequest(code + username, password, 0, sharedPrefs.firebaseToken()))
         }
     }
 

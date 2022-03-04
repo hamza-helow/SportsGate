@@ -16,8 +16,9 @@ import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
-import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
+import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.ID_ADDRESS
 import dagger.hilt.android.AndroidEntryPoint
 import com.souqApp.presentation.addresses.AddressActivityViewModel
@@ -119,7 +120,7 @@ class AddressesFragment : Fragment(), View.OnClickListener {
     }
 
     private fun handleAddressesErrorLoad(response: WrappedListResponse<AddressResponse>) {
-
+        requireContext().showGenericAlertDialog(response.formattedErrors())
     }
 
     private fun handleAddressesLoaded(addressEntities: List<AddressEntity>) {
@@ -127,7 +128,7 @@ class AddressesFragment : Fragment(), View.OnClickListener {
     }
 
     private fun handleError(throwable: Throwable) {
-        Log.e("ereRr", throwable.stackTraceToString())
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {

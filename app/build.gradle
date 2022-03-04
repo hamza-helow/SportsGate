@@ -18,8 +18,6 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField 'String' , 'API_BASE_URL' , '"https://dev.2advanced.me/api/"'
-        buildConfigField 'String' ,'APP_NAME' , '"Sports gate"'
         vectorDrawables.useSupportLibrary = true
 
     }
@@ -27,6 +25,14 @@ android {
     productFlavors {
         create("sportGate") {
             applicationId "com.sportsgate"
+            buildConfigField 'String', 'API_BASE_URL', '"https://sportgate.2advanced.me/api/"'
+            buildConfigField 'String', 'APP_NAME', '"Sports gate"'
+        }
+
+        create("dev") {
+            applicationId "com.sportsgate"
+            buildConfigField 'String', 'API_BASE_URL', '"https://dev.2advanced.me/api/"'
+            buildConfigField 'String', 'APP_NAME', '"Sports gate"'
         }
 
     }
@@ -117,6 +123,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx:21.0.1'
     implementation 'com.google.firebase:firebase-analytics-ktx:20.1.0'
     implementation 'com.google.firebase:firebase-core:20.1.0'
+
+    // kotlin reflect
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.31"
+
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

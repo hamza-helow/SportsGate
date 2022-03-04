@@ -15,6 +15,7 @@ import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.FragmentCategoriesBinding
 import com.souqApp.infra.extension.changeStatusBarColor
+import com.souqApp.infra.extension.setup
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.common.CategoryAdapter
@@ -39,8 +40,8 @@ class CategoriesFragment : Fragment() {
         progressBar = ProgressDialog(requireContext())
         binding.recCategory.layoutManager = LinearLayoutManager(requireContext())
         binding.recCategory.adapter = adapterCategory
-        requireActivity().changeStatusBarColor(color = R.color.tool_bar_color)
 
+        requireActivity().changeStatusBarColor(color = R.color.tool_bar_color)
 
         return binding.root
     }

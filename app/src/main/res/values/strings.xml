@@ -7,9 +7,6 @@
     <string name="time" translatable="false">0:%1$s</string>
     <string name="html_text" translatable="false"><![CDATA[%1$s]]></string>
 
-
-    <string name="app_name">Sport Gate</string>
-
     <string name="no_connect">No internet connection, please check the connection and try again later</string>
     <string name="connect_snackbar">Connect</string>
     <string name="server_down">An unexpected error, please try again later.</string>
@@ -151,7 +148,7 @@
     <string name="close_str">Close</string>
     <string name="wish_list">Wish List</string>
     <string name="login">Login</string>
-    <string name="app_version">App Version: %s</string>
+    <string name="app_version">App Version:</string>
     <string name="all_rights_reserved">All Rights Reserved</string>
     <string name="souqapp">SouqApp.</string>
     <string name="powered_by">Powered By: \t</string>
@@ -229,5 +226,6 @@
     <string name="notification_not_found">No notifications found</string>
     <string name="reset_pass_message">reset password</string>
     <string name="password_changed">Password changed successfully</string>
+    <string name="no_products_found">No products found</string>
 
 </resources>

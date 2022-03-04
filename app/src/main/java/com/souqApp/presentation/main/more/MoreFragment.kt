@@ -2,15 +2,22 @@ package com.souqApp.presentation.main.more
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.souqApp.R
+import android.widget.ImageView
+import androidx.fragment.app.viewModels
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.settings.remote.dto.SettingsEntity
 import com.souqApp.databinding.FragmentMoreBinding
 import com.souqApp.infra.extension.changeStatusBarColor
+import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.openUrl
-import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.infra.extension.showGenericAlertDialog
+import com.souqApp.infra.utils.*
 import com.souqApp.presentation.addresses.AddressActivity
 import com.souqApp.presentation.common.ChangeLanguageDialog
 import com.souqApp.presentation.login.LoginActivity
@@ -28,6 +35,10 @@ import javax.inject.Inject
 class MoreFragment : Fragment(), View.OnClickListener {
 
     lateinit var binding: FragmentMoreBinding
+    private val viewModel: MoreViewModel by viewModels()
+
+    @Inject
+    lateinit var firebaseConfig: FirebaseRemoteConfig
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
@@ -44,6 +55,38 @@ class MoreFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         initListener()
         initInfo()
+        observer()
+    }
+
+    private fun observer() {
+        viewModel.state.observe(this, { handleState(it) })
+    }
+
+    private fun handleState(state: MoreFragmentState) {
+        when (state) {
+            is MoreFragmentState.Error -> onError(state.throwable)
+            is MoreFragmentState.ErrorLoad -> onErrorLoad(state.response)
+            is MoreFragmentState.Loaded -> onLoaded(state.settingEntity)
+            is MoreFragmentState.Loading -> Unit
+        }
+    }
+
+    private fun onLoaded(settingEntity: SettingsEntity) {
+        binding.imgFacebook.contentDescription = settingEntity.facebook
+        binding.imgInstagram.contentDescription = settingEntity.instagram
+        binding.imgTiktok.contentDescription = settingEntity.tiktok
+    }
+
+    private fun onErrorLoad(response: WrappedResponse<SettingsEntity>) {
+        requireContext().showGenericAlertDialog(response.formattedErrors())
+
+        binding.imgTiktok.isVisible(false)
+        binding.imgInstagram.isVisible(false)
+        binding.imgFacebook.isVisible(false)
+    }
+
+    private fun onError(throwable: Throwable) {
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun initListener() {
@@ -71,29 +114,29 @@ class MoreFragment : Fragment(), View.OnClickListener {
     override fun onClick(p0: View) {
 
         when (p0.id) {
-            binding.imgFacebook.id -> requireContext().openUrl(getString(R.string.facebook_link))
-            binding.imgTiktok.id -> requireContext().openUrl(getString(R.string.tiktok_link))
-            binding.imgInstagram.id -> requireContext().openUrl(getString(R.string.instagram_link))
-            binding.includeLogin.root.id -> goToLoginActivity()
-            binding.cardProfile.id -> goToProfileActivity()
-            binding.cardChangePassword.id -> goToChangePasswordActivity()
-            binding.cardAddresses.id -> goToAddressActivity()
-            binding.cardOrders.id -> goToOrdersActivity()
+            binding.imgFacebook.id -> openLink(binding.imgFacebook)
+            binding.imgTiktok.id -> openLink(binding.imgTiktok)
+            binding.imgInstagram.id -> openLink(binding.imgInstagram)
+            binding.includeLogin.root.id -> goTo(LoginActivity::class.java)
+            binding.cardProfile.id -> goTo(ProfileActivity::class.java)
+            binding.cardChangePassword.id -> goTo(ChangePasswordActivity::class.java)
+            binding.cardAddresses.id -> goTo(AddressActivity::class.java)
+            binding.cardOrders.id -> goTo(OrdersActivity::class.java)
             binding.cardShareApp.id -> shareApp()
             binding.cardContactUs.id -> goToContactUsActivity()
-            binding.cardWishList.id -> goToWishListActivity()
+            binding.cardWishList.id -> goTo(WishListActivity::class.java)
             binding.cardChangeLanguage.id -> openChangeLanguageDialog()
-            binding.cardAboutUs.id -> openAboutUsActivity()
-            binding.cardTermsAndConditions.id -> openTermsAndConditionsActivity()
+            binding.cardAboutUs.id -> goTo(AboutUsActivity::class.java)
+            binding.cardTermsAndConditions.id -> goTo(TermsAndConditionsActivity::class.java)
         }
     }
 
-    private fun openTermsAndConditionsActivity() {
-        startActivity(Intent(requireActivity(), TermsAndConditionsActivity::class.java))
+    private fun <T> goTo(to: Class<T>) {
+        startActivity(Intent(requireActivity(), to))
     }
 
-    private fun openAboutUsActivity() {
-        startActivity(Intent(requireActivity(), AboutUsActivity::class.java))
+    private fun openLink(imageView: ImageView) {
+        requireContext().openUrl(imageView.contentDescription.toString())
     }
 
     private fun openChangeLanguageDialog() {
@@ -105,10 +148,6 @@ class MoreFragment : Fragment(), View.OnClickListener {
             }
         }
 
-    }
-
-    private fun goToWishListActivity() {
-        startActivity(Intent(requireActivity(), WishListActivity::class.java))
     }
 
     private fun goToContactUsActivity() {
@@ -124,27 +163,6 @@ class MoreFragment : Fragment(), View.OnClickListener {
         startActivity(Intent.createChooser(sharingIntent, "Share via"))
     }
 
-    private fun goToOrdersActivity() {
-        startActivity(Intent(requireActivity(), OrdersActivity::class.java))
-    }
-
-    private fun goToAddressActivity() {
-        startActivity(Intent(requireActivity(), AddressActivity::class.java))
-    }
-
-    private fun goToChangePasswordActivity() {
-        startActivity(Intent(requireActivity(), ChangePasswordActivity::class.java))
-    }
-
-    private fun goToProfileActivity() {
-        startActivity(Intent(requireActivity(), ProfileActivity::class.java))
-    }
-
-    private fun goToLoginActivity() {
-        startActivity(Intent(activity, LoginActivity::class.java))
-    }
-
-
     override fun onResume() {
         super.onResume()
         requireActivity().changeStatusBarColor()
@@ -154,5 +172,10 @@ class MoreFragment : Fragment(), View.OnClickListener {
     private fun initInfo() {
         binding.sharedPrefs = sharedPrefs
         binding.user = sharedPrefs.getUserInfo()
+        binding.enableCopyrights = firebaseConfig.getBoolean(SHOW_COPYRIGHTS)
+        binding.enableOrderHistory = firebaseConfig.getBoolean(ORDER_HISTORY_ANDROID)
+        binding.appVersion = firebaseConfig.getString(MIN_ANDROID_VERSION)
+
     }
 }
+

@@ -15,9 +15,52 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:fitsSystemWindows="true"
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+       >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/white"
+            app:contentPadding="@dimen/_8sdp"
+            app:isVisible="@{isLogin}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <Button
+                    android:id="@+id/btn_add_to_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:text="@string/add_to_cart"
+                    android:visibility="invisible"
+                    app:inVisible="@{!details.on_sale}">
+
+                </Button>
+
+                <ImageView
+                    android:id="@+id/img_favorite"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_weight="0.2"
+                    app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -31,42 +74,53 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/view_pager"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_140sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="SpeakableTextPresentCheck">
-
-                </androidx.viewpager.widget.ViewPager>
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabDots"
-                    android:layout_width="0dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/slider"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_pager"
-                    app:tabBackground="@drawable/tab_selector"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_200sdp"
+                        android:layoutDirection="ltr"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabDots"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layoutDirection="ltr"
+                        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="0dp"
-
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:background="@color/white"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tabDots">
+                    app:layout_constraintTop_toBottomOf="@+id/slider">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -97,8 +151,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         android:layout_marginBottom="@dimen/_16sdp"
+                        android:movementMethod="@{true}"
                         android:text="@{details.desc}"
-                        android:movementMethod ="@{true}"
                         tools:text="desc" />
                 </LinearLayout>
 
@@ -131,6 +185,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_24sdp"
                     android:background="@android:color/transparent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -139,48 +194,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="@dimen/_60sdp"
-            app:cardBackgroundColor="@color/white"
-            app:contentPadding="@dimen/_8sdp"
-            app:isVisible="@{isLogin}">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-
-                <Button
-                    android:id="@+id/btn_add_to_cart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    android:text="@string/add_to_cart"
-                    android:visibility="invisible"
-                    app:inVisible="@{!details.on_sale}">
-
-                </Button>
-
-                <ImageView
-                    android:id="@+id/img_favorite"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:layout_weight="0.2"
-                    app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

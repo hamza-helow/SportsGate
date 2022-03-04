@@ -11,23 +11,30 @@ import android.app.NotificationManager
 import android.content.Context
 import android.app.NotificationChannel
 import android.os.Build
-import com.souqApp.presentation.main.MainActivity
 import android.app.PendingIntent
 import android.util.Log
+import com.souqApp.presentation.order_details.OrderDetailsActivity
+import com.souqApp.presentation.product_details.ProductDetailsActivity
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class MFirebaseMessagingService : FirebaseMessagingService() {
+
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         sendNotification(remoteMessage)
-
-        Log.e("erRER", "notification")
+        Log.e(APP_TAG, "notification")
     }
 
     override fun onNewToken(token: String) {
         //ToDo send token to server
-        Log.e("erRER", "new token $token")
+        Log.e(APP_TAG, "new token $token")
 
+        sharedPrefs.firebaseToken(token)
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
@@ -35,14 +42,15 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
 
         val data = remoteMessage.data
         val type = data["notify_type"]
-        val redirectId = data["redirectId"] ?: ""
-        val title = getString(R.string.app_name)
-        val body = data["body"] ?: ""
+        val redirectId = data["redirect_id"] ?: ""
+        val title = remoteMessage.notification?.body.toString()
+        val body = ""
 
-        val intent =
-            getIntent(type = type, title = title, body = body, redirectId = redirectId) ?: return
+        Log.e(APP_TAG, data.toString())
 
-        val pendingIntent =
+        val intent = getIntent(type = type, redirectId = redirectId)
+
+        val pendingIntent = if (intent == null) null else
             PendingIntent.getActivity(
                 this,
                 1001,
@@ -58,7 +66,8 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
                 setContentTitle(title)
                 setContentText(body)
                 setAutoCancel(true)
-                setContentIntent(pendingIntent)
+                if (pendingIntent != null)
+                    setContentIntent(pendingIntent)
             }
 
         val notificationManager =
@@ -77,42 +86,28 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(1, notificationBuilder.build())
     }
 
-    private fun getIntent(type: String?, title: String, body: String, redirectId: String): Intent? {
+    private fun getIntent(type: String?, redirectId: String): Intent? {
         return when (type) {
-            "1" -> generalIntent(title, body, redirectId)  //general
-            "2" -> couponIntent(title, body, redirectId)  //coupon
-            "3" -> orderIntent(title, body, redirectId)  //order
-            "4" -> productIntent(title, body, redirectId)  //product
+            //  "1" -> generalIntent(title, body, redirectId)  //general
+            // "2" -> couponIntent(title, body, redirectId)  //coupon
+            "3" -> orderIntent(redirectId)  //order
+            "4" -> productIntent(redirectId)  //product
             else -> null
         }
     }
 
-    private fun productIntent(title: String, body: String, redirectId: String): Intent {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("BODY", title)
-        intent.putExtra("MESSAGE", body)
+    private fun productIntent(redirectId: String): Intent {
+        val intent = Intent(this, ProductDetailsActivity::class.java)
+        intent.putExtra(ID_PRODUCT, redirectId.toInt())
         return intent
     }
 
-    private fun orderIntent(title: String, body: String, redirectId: String): Intent {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("BODY", title)
-        intent.putExtra("MESSAGE", body)
-        return intent
-    }
+    private fun orderIntent(redirectId: String): Intent {
+        val intent = Intent(this, OrderDetailsActivity::class.java)
+        intent.putExtra(ID_ORDER, redirectId.toInt())
 
-    private fun couponIntent(title: String, body: String, redirectId: String): Intent {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("BODY", title)
-        intent.putExtra("MESSAGE", body)
-        return intent
-    }
-
-    private fun generalIntent(title: String, body: String, redirectId: String): Intent {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("BODY", title)
-        intent.putExtra("MESSAGE", body)
         return intent
     }
 
 }
+

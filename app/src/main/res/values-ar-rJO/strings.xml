@@ -143,7 +143,7 @@
     <string name="close_str">خروج</string>
     <string name="wish_list">المفضلة</string>
     <string name="login">تسجيل الدخول</string>
-    <string name="app_version">اصدار التطبيق: %s</string>
+    <string name="app_version">اصدار التطبيق:</string>
     <string name="all_rights_reserved">جميع الحقوق محفوظة</string>
     <string name="souqapp">SouqApp.</string>
     <string name="powered_by">بدعم من: \t</string>
@@ -213,5 +213,6 @@
     <string name="notification_not_found">لم يتم العثور على اشعارات</string>
     <string name="reset_pass_message">reset password</string>
     <string name="password_changed">تم تغيير كلمة المرور بنجاح</string>
+    <string name="no_products_found">No products found</string>
 
 </resources>

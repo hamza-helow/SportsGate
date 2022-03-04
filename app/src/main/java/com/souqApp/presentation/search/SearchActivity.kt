@@ -2,6 +2,7 @@ package com.souqApp.presentation.search
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +11,8 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.search.remote.SearchEntity
 import com.souqApp.databinding.ActivitySearchBinding
 import com.souqApp.infra.extension.changeStatusBarColor
+import com.souqApp.infra.extension.showGenericAlertDialog
+import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.common.ProductHorizontalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,23 +55,21 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             is SearchActivityState.Error -> handleError(state.throwable)
             is SearchActivityState.ErrorLoad -> handleErrorLoad(state.response)
             is SearchActivityState.Loaded -> handleLoaded(state.searchEntity)
-            is SearchActivityState.Loading -> handleLoading(state.isLoading)
+            is SearchActivityState.Loading -> Unit
         }
     }
 
-    private fun handleLoading(loading: Boolean) {
-    }
 
     private fun handleLoaded(searchEntity: SearchEntity) {
-        searchAdapter.list = searchEntity.products
+        searchAdapter.addList(searchEntity.products)
     }
 
     private fun handleErrorLoad(response: WrappedResponse<SearchEntity>) {
-
+        showGenericAlertDialog(response.formattedErrors())
     }
 
     private fun handleError(throwable: Throwable) {
-
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -76,10 +77,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextChange(text: String): Boolean {
-
-        if (text.isEmpty())
             searchAdapter.clearList()
-        else
             viewModel.search(text, 1)
         return true
     }

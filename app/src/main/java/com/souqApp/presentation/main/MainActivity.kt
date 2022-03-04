@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -21,6 +20,7 @@ import androidx.navigation.ui.setupWithNavController
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
@@ -66,12 +66,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         val isPurchaseEnabled = firebaseConfig.getBoolean(IS_PURCHASE_ENABLED)
         binding.bottomNavigationView.menu.getItem(2).isEnabled =
-            sharedPrefs.isLogin() && !isPurchaseEnabled
+            sharedPrefs.isLogin() && isPurchaseEnabled
         super.onResume()
     }
 
     companion object {
 
+        @SuppressLint("CheckResult")
         @BindingAdapter(value = ["networkImage", "placeholder"], requireAll = false)
         @JvmStatic
         fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null) {
@@ -79,18 +80,28 @@ class MainActivity : AppCompatActivity() {
             if (url == null || url.isEmpty())
                 return
 
-            Picasso
-                .get()
-                .load(url).apply {
-                    if (placeholder != null) {
-                        placeholder(placeholder)
-                    } else {
-                        placeholder(R.drawable.image_placeholder)
-                    }
 
+            Glide.with(this)
+                .load(url)
+                .apply {
+                    if(placeholder != null)
+                    placeholder(R.drawable.image_placeholder)
                 }
-                .noFade()
                 .into(this)
+
+//            Picasso
+//                .get()
+//                .load(url).apply {
+//                    if (placeholder != null) {
+//                        placeholder(placeholder)
+//                    } else {
+//                        placeholder(R.drawable.image_placeholder)
+//                    }
+//
+//
+//                }
+//                .noFade()
+//                .into(this)
         }
 
         @BindingAdapter("horizontalPadding")
@@ -135,13 +146,13 @@ class MainActivity : AppCompatActivity() {
 
         @BindingAdapter("isVisible")
         @JvmStatic
-        fun isVisible(view: View, isVisible: Boolean) {
-            view.isVisible(isVisible)
+        fun View.setIsVisible(isVisible: Boolean) {
+            this.isVisible(isVisible)
         }
 
         @BindingAdapter("inVisible")
         @JvmStatic
-        fun inVisible(view: View, inVisible: Boolean) {
+        fun setInVisible(view: View, inVisible: Boolean) {
             view.inVisible(inVisible)
         }
 

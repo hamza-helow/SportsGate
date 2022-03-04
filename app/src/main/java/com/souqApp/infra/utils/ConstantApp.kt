@@ -1,5 +1,8 @@
 package com.souqApp.infra.utils
 
+const val APP_TAG = "app_tag"
+
+
 const val ID_ORDER = "id_order"
 const val ID_PRODUCT = "id_products"
 const val ID_ADDRESS = "id_address"
@@ -20,8 +23,9 @@ const val WRITE_TIMEOUT: Long = 30
 
 
 //firebase config
-
 const val IS_PURCHASE_ENABLED = "Is_Purchase_Enabled"
-
+const val SHOW_COPYRIGHTS = "Show_SouqApp_Copyrights"
+const val ORDER_HISTORY_ANDROID = "Order_history_Android"
+const val MIN_ANDROID_VERSION = "Min_Android_Version"
 
 

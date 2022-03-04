@@ -2,9 +2,7 @@ package com.souqApp.presentation.addresses
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.souqApp.databinding.ActivityAddressBinding
 import com.souqApp.infra.extension.setup
 import dagger.hilt.android.AndroidEntryPoint

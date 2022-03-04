@@ -1,5 +1,6 @@
 package com.souqApp.presentation.payment_details
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,8 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import com.souqApp.R
+import com.souqApp.data.addresses.remote.dto.AddressResponse
+import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutRequest
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
@@ -16,6 +19,9 @@ import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
 import com.souqApp.domain.payment_details.CheckoutDetailsEntity
 import com.souqApp.infra.extension.*
+import com.souqApp.infra.utils.ID_ORDER
+import com.souqApp.presentation.main.MainActivity
+import com.souqApp.presentation.order_details.OrderDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,7 +68,12 @@ class PaymentDetailsActivity : AppCompatActivity(), View.OnClickListener {
             is PaymentDetailsActivityState.CheckoutSuccess -> handleCheckoutSuccess(state.checkoutEntity)
             is PaymentDetailsActivityState.CheckoutError -> handleCheckoutError(state.response)
             is PaymentDetailsActivityState.CheckCouponCode -> handleCheckCouponCode(state.valid)
+            is PaymentDetailsActivityState.AddressesErrorLoad -> handleAddressesErrorLoad(state.response)
         }
+    }
+
+    private fun handleAddressesErrorLoad(response: WrappedListResponse<AddressResponse>) {
+        showGenericAlertDialog(response.formattedErrors())
     }
 
     private fun handleCheckCouponCode(valid: Boolean) {
@@ -77,12 +88,18 @@ class PaymentDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun handleCheckoutError(response: WrappedResponse<CheckoutResponse>) {
         showGenericAlertDialog(response.formattedErrors())
-        Log.e("ERer", "handleCheckoutSuccess")
     }
 
     private fun handleCheckoutSuccess(checkoutEntity: CheckoutEntity) {
         showToast(getString(R.string.successfully_operation))
 
+        val mainIntent = Intent(this, MainActivity::class.java)
+        mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(mainIntent)
+
+        val orderDetailsIntent = Intent(this, OrderDetailsActivity::class.java)
+        orderDetailsIntent.putExtra(ID_ORDER, checkoutEntity.orderId)
+        startActivity(orderDetailsIntent)
     }
 
     private fun handleAddressesLoaded(addressEntities: List<AddressEntity>) {

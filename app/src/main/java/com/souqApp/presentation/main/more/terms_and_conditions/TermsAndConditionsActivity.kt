@@ -2,13 +2,16 @@ package com.souqApp.presentation.main.more.terms_and_conditions
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.settings.remote.dto.ContentEntity
 import com.souqApp.databinding.ActivityTermsAndConditionsBinding
 import com.souqApp.infra.extension.setup
+import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
+import com.souqApp.infra.utils.APP_TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,11 +51,11 @@ class TermsAndConditionsActivity : AppCompatActivity() {
     }
 
     private fun onErrorLoad(response: WrappedResponse<ContentEntity>) {
-
+        showGenericAlertDialog(response.formattedErrors())
     }
 
     private fun onError(throwable: Throwable) {
-
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     override fun onSupportNavigateUp(): Boolean {

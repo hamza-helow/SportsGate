@@ -33,7 +33,6 @@ class OrderDetailsActivity : AppCompatActivity() {
 
         binding.recProducts.layoutManager = LinearLayoutManager(this)
         binding.recProducts.adapter = productsOrderAdapter
-
         observer()
     }
 
@@ -43,7 +42,6 @@ class OrderDetailsActivity : AppCompatActivity() {
     }
 
     private fun handleState(state: OrderDetailsActivityState) {
-
         when (state) {
             is OrderDetailsActivityState.Loading -> handleLoading(state.isLoading)
             is OrderDetailsActivityState.Error -> handleError(state.throwable)

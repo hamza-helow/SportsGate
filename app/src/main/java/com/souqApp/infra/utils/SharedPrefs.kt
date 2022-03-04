@@ -8,7 +8,6 @@ import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.domain.common.entity.UserEntity
 
-
 class SharedPrefs(context: Context) {
 
     companion object {
@@ -18,11 +17,20 @@ class SharedPrefs(context: Context) {
         private const val IS_LOGIN = "is_login"
         private const val LANG = "lang_app"
         private const val NEED_VERIFY_ACCOUNT = "need_verify_account"
+        private const val FIREBASE_TOKEN = "firebase_token"
     }
 
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
 
+
+    fun firebaseToken(token: String) {
+        put(FIREBASE_TOKEN, token)
+    }
+
+    fun firebaseToken(): String {
+        return get(FIREBASE_TOKEN, String::class.java)
+    }
 
     fun isNeedVerify(needVerify: Boolean) {
         put(NEED_VERIFY_ACCOUNT, needVerify)

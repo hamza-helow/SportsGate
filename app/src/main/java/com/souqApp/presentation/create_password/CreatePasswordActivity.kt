@@ -3,6 +3,7 @@ package com.souqApp.presentation.create_password
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
@@ -12,6 +13,7 @@ import com.souqApp.infra.extension.activeBorder
 import com.souqApp.infra.extension.isPasswordValid
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
+import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.RESET_TOKEN
 import com.souqApp.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +51,7 @@ class CreatePasswordActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onError(throwable: Throwable) {
-
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun onCreatePassword(created: Boolean) {
@@ -71,7 +73,7 @@ class CreatePasswordActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun save() {
         val password = binding.passwordEdt.text.toString()
-        val resetToken = intent.getStringExtra(RESET_TOKEN)?:""
+        val resetToken = intent.getStringExtra(RESET_TOKEN) ?: ""
         viewModel.createPassword(password, resetToken)
     }
 

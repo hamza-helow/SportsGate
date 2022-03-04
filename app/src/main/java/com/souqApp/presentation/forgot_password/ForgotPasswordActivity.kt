@@ -9,10 +9,8 @@ import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.ActivityForgotPasswordBinding
-import com.souqApp.infra.extension.isPhone
-import com.souqApp.infra.extension.setup
-import com.souqApp.infra.extension.start
-import com.souqApp.infra.extension.toPhoneNumber
+import com.souqApp.infra.extension.*
+import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.PHONE_NUMBER
 import com.souqApp.presentation.verification.VerificationActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +45,6 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onCodeSent() {
-
         val phoneNumber = binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber()
         val code = "+962"
 
@@ -57,12 +54,11 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onError(throwable: Throwable) {
-
-        Log.e("ErerR", throwable.stackTraceToString())
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun onErrorSendCode(response: WrappedResponse<Nothing>) {
-
+        showGenericAlertDialog(response.formattedErrors())
     }
 
     private fun onLoading(isLoading: Boolean) {
@@ -96,11 +92,8 @@ class ForgotPasswordActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun sendOtp() {
-
         val phoneNumber = binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber()
         val code = "+962"
-
         viewModel.requestPasswordReset(code + phoneNumber)
-
     }
 }

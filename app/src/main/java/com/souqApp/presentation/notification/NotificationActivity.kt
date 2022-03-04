@@ -6,16 +6,17 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.R
-import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.notification.remote.NotificationEntities
-import com.souqApp.data.notification.remote.NotificationEntity
 import com.souqApp.databinding.ActivityNotificationBinding
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.setup
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
+import com.souqApp.infra.utils.APP_TAG
+import com.souqApp.infra.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NotificationActivity : AppCompatActivity() {
@@ -23,6 +24,9 @@ class NotificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotificationBinding
     private val viewModel: NotificationViewModel by viewModels()
     private val notificationAdapter = NotificationAdapter()
+
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +40,6 @@ class NotificationActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setup(showTitleEnabled = true)
         supportActionBar?.title = getString(R.string.notifications_str)
-
 
         viewModel.state.observe(this, { handleState(it) })
 
@@ -57,20 +60,16 @@ class NotificationActivity : AppCompatActivity() {
 
     private fun onLoaded(notifications: NotificationEntities) {
         notificationAdapter.list = notifications.notifications
-
         binding.cardNoNotification.isVisible(notifications.notifications.isEmpty())
     }
 
     private fun onErrorLoad(response: WrappedResponse<NotificationEntities>) {
-
         showGenericAlertDialog(response.formattedErrors())
-
     }
 
     private fun onError(throwable: Throwable) {
-
-        Log.e("ERer", throwable.stackTraceToString())
-
+        binding.cardNoNotification.isVisible(true)
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     override fun onSupportNavigateUp(): Boolean {

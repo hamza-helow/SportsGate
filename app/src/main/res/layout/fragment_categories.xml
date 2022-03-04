@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="@dimen/_4sdp"
+        android:id="@+id/rec_category"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include
-            layout="@layout/app_bar"
-            app:appBarColor="@{@color/tool_bar_color}"
-            app:title='@{@string/categories}'
-            app:titleColor="@{@color/white}" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="@dimen/_4sdp"
-            android:id="@+id/rec_category"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/_4sdp" />
-
-    </LinearLayout>
+        android:padding="@dimen/_4sdp" />
 </layout>

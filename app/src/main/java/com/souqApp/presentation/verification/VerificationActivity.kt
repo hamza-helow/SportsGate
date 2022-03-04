@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.souqApp.databinding.ActivityVerificationBinding
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
@@ -19,6 +20,7 @@ import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
+import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.PHONE_NUMBER
 import com.souqApp.infra.utils.RESET_TOKEN
 import com.souqApp.infra.utils.SharedPrefs
@@ -90,8 +92,7 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun onError(throwable: Throwable) {
-//        showToast(message)
-//        Log.e(tag, message)
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun handleLoading(isLoading: Boolean) {
@@ -172,4 +173,5 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
             return false
         return true
     }
+
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +14,8 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.databinding.ActivityProductDetailsBinding
 import com.souqApp.databinding.LayoutProgressbarBinding
-import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.setup
-import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.extension.*
+import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.ID_PRODUCT
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.main.home.SliderViewPagerAdapter
@@ -42,6 +42,7 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.productDetails(idProduct)
 
         observer()
+
     }
 
     private fun initListener() {
@@ -50,6 +51,12 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+
+
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
         initListener()
         setContentView(binding.root)
@@ -58,7 +65,6 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun observer() {
-
         viewModel.mState.observe(this, { handleState(it) })
     }
 
@@ -138,13 +144,11 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsEntity>) {
-
+        showGenericAlertDialog(wrappedResponse.formattedErrors())
     }
 
     private fun handleError(throwable: Throwable) {
-
-        Log.e("ERer", throwable.stackTraceToString())
-
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {

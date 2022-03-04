@@ -112,7 +112,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         validate()
     }
 
-    private fun validate() {
+    private fun validate(): Boolean {
         resetAllError()
         var isValid = true
 
@@ -138,6 +138,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         }
 
         binding.btnSubmit.isEnabled = isValid && viewModel.userLatLng.value != null
+        return isValid
     }
 
     private fun resetAllError() {
@@ -190,7 +191,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
 
     private fun handleLoading(loading: Boolean) {
         binding.loader.loadingProgressBar.start(loading)
-        binding.btnSubmit.isEnabled = !loading
+        binding.btnSubmit.isEnabled = !loading && validate()
     }
 
     private fun initListener() {

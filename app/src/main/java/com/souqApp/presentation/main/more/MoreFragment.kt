@@ -143,8 +143,10 @@ class MoreFragment : Fragment(), View.OnClickListener {
         ChangeLanguageDialog(requireActivity(), language = sharedPrefs.getLanguage()).apply {
             show()
             onSave = {
+                dismiss()
                 requireActivity().recreate()
                 sharedPrefs.setLanguage(it)
+
             }
         }
 

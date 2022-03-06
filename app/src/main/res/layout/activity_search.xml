@@ -16,24 +16,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <SearchView
-            android:id="@+id/search_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:layout_marginVertical="@dimen/_16sdp"
-            android:background="@drawable/bg_rounded"
-            android:closeIcon="@drawable/close_icon"
-            android:iconifiedByDefault="false"
-            android:queryBackground="@drawable/bg_rounded"
-            android:queryHint="@string/search_str"
+            android:layout_height="match_parent">
 
-            android:searchHintIcon="@drawable/ic_search"
-            android:searchIcon="@drawable/ic_search"
-            android:submitBackground="@drawable/bg_rounded"
-            app:iconifiedByDefault="false"
-            tools:targetApi="lollipop_mr1" />
+            <SearchView
+                android:id="@+id/search_view"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginVertical="@dimen/_16sdp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_rounded"
+                android:closeIcon="@drawable/close_icon"
+                android:iconifiedByDefault="false"
+
+                android:queryBackground="@drawable/bg_rounded"
+                android:queryHint="@string/search_str"
+                android:searchHintIcon="@drawable/ic_search"
+                android:searchIcon="@drawable/ic_search"
+                android:submitBackground="@drawable/bg_rounded"
+                app:iconifiedByDefault="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/img_sort"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:targetApi="lollipop_mr1" />
+
+            <ImageView
+                android:id="@+id/img_sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_sort" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView

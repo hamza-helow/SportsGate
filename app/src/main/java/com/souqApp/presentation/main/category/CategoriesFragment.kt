@@ -43,6 +43,8 @@ class CategoriesFragment : Fragment() {
 
         requireActivity().changeStatusBarColor(color = R.color.tool_bar_color)
 
+
+
         return binding.root
     }
 

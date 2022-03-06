@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/_4sdp"
-        android:id="@+id/rec_category"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/_4sdp" />
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tool_bar_color"
+            android:minHeight="?attr/actionBarSize"
+            app:title="@string/categories"
+            app:titleTextColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@color/tool_bar_color"
+            app:titleCentered="true" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_4sdp"
+            android:id="@+id/rec_category"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_4sdp" />
+    </LinearLayout>
 </layout>

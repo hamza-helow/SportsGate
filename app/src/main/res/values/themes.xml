@@ -14,6 +14,10 @@
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="bottomNavColor">@color/white</item>
         <item name="navigationIcon">@drawable/ic_circle_back</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="android:windowLightStatusBar">true</item>
+
 
     </style>
 
@@ -106,6 +110,5 @@
     <style name="ThemeLight.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="ThemeLight.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 
 </resources>

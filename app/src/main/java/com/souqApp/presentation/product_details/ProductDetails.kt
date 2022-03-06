@@ -51,12 +51,6 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun init() {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
-
-
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
         initListener()
         setContentView(binding.root)
@@ -83,8 +77,20 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+    }
+
     private fun handleAddingToCart(inProgress: Boolean) {
         binding.btnAddToCart.isEnabled = !inProgress
+
 
         binding.btnAddToCart.text =
             if (inProgress)
@@ -172,4 +178,9 @@ class ProductDetailsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    fun FullScreencall() {
+        // lower api
+        val v = this.window.decorView
+        v.systemUiVisibility = View.GONE
+    }
 }

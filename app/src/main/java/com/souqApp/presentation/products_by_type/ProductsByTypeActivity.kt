@@ -80,7 +80,9 @@ class ProductsByTypeActivity : AppCompatActivity() {
         binding.cardEmpty.isVisible = productAdapter.list.isEmpty()
 
         productAdapter.listenerNeedLoadMore = {
-            viewMode.loadProducts(ProductsByTypeRequest(type, 0, it))
+
+            val idSubCategory = intent.getIntExtra(ID_SUBCATEGORY, 0)
+            viewMode.loadProducts(ProductsByTypeRequest(type, idSubCategory, it))
         }
 
     }

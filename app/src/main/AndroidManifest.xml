@@ -35,7 +35,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -84,6 +83,7 @@
         <activity
             android:name=".presentation.product_details.ProductDetailsActivity"
             android:exported="true"
+            android:theme="@style/FullScreen"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

@@ -36,6 +36,7 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_facebook_logo.xml" value="0.19907407407407407" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_forward_arrow.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_instagram_logo.xml" value="0.19907407407407407" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_map_marker.xml" value="0.23148148148148148" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_menu_categories.xml" value="0.26296296296296295" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_notifications.xml" value="0.1921875" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_notify.xml" value="0.18541666666666667" />
@@ -44,6 +45,7 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_splashscreen.xml" value="0.2064814814814815" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/ic_tiktok_logo.xml" value="0.19907407407407407" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/item_bottom_nav_selector.xml" value="0.21481481481481482" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/recycler_mode.xml" value="0.23425925925925925" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/round_gray.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/search_view_read_only.xml" value="0.1921875" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/drawable/spalsh.xml" value="0.26296296296296295" />
@@ -66,8 +68,8 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_order_details.xml" value="0.22541966426858512" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_orders.xml" value="0.176" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_payment_details.xml" value="0.264" />
-        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_product_details.xml" value="0.176" />
-        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_products_by_type.xml" value="0.3063063063063063" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_product_details.xml" value="0.2" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_products_by_type.xml" value="0.264" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_profile.xml" value="0.26275115919629055" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_register.xml" value="0.176" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/activity_search.xml" value="0.4" />
@@ -106,17 +108,19 @@
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_product_relevant.xml" value="0.536" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_search.xml" value="0.264" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_slider.xml" value="0.264" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_spinner.xml" value="0.21467391304347827" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_sub_category.xml" value="0.176" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/item_wish.xml" value="0.20018115942028986" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/layout_progressbar.xml" value="0.22192028985507245" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/list_tile.xml" value="0.6" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/loader.xml" value="0.25" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/progress_bar.xml" value="0.21920289855072464" />
-        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/search_view_read_only.xml" value="0.264" />
+        <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/layout/search_view_read_only.xml" value="0.2" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/menu/home_bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/xml/file_paths.xml" value="0.21467391304347827" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/main/res/xml/remote_config_defaults.xml" value="0.175" />
         <entry key="..\:/Users/hamzi/AndroidStudioProjects/examples/souqApp/app/src/sportGate/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26296296296296295" />
+        <entry key="..\:/Users/hamzi/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.21467391304347827" />
       </map>
     </option>
   </component>

@@ -1,5 +1,6 @@
 package com.souqApp.presentation.main.home
 
+import android.R.attr
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -33,6 +34,8 @@ import com.souqApp.presentation.products_by_type.ProductsByTypeActivity
 import com.souqApp.presentation.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
+import android.R.attr.spacing
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
@@ -75,6 +78,8 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         binding.recBestSelling.layoutManager = generateLinearLayoutManager()
         binding.recRecommended.layoutManager = generateLinearLayoutManager()
         binding.recNewProducts.layoutManager = GridLayoutManager(context, 3)
+        binding.recNewProducts.addItemDecoration(GridSpacingItemDecoration(3, 30, false))
+
 
         //set adapters
         binding.recCategory.adapter = categoryAdapter

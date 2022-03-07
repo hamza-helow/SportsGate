@@ -176,7 +176,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     private fun handleCitiesLoaded(cityEntities: List<CityEntity>) {
         val adapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_item,
+            R.layout.item_spinner,
             cityEntities
         )
         binding.spinnerCities.adapter = adapter

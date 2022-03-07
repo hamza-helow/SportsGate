@@ -15,7 +15,6 @@ import androidx.navigation.findNavController
 import com.souqApp.R
 import com.souqApp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import com.squareup.picasso.Picasso
 import androidx.navigation.ui.setupWithNavController
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
@@ -61,7 +60,9 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
         changeStatusBarColor(color = R.color.tool_bar_color)
+
     }
+
 
     override fun onResume() {
         val isPurchaseEnabled = firebaseConfig.getBoolean(IS_PURCHASE_ENABLED)
@@ -89,19 +90,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 .into(this)
 
-//            Picasso
-//                .get()
-//                .load(url).apply {
-//                    if (placeholder != null) {
-//                        placeholder(placeholder)
-//                    } else {
-//                        placeholder(R.drawable.image_placeholder)
-//                    }
-//
-//
-//                }
-//                .noFade()
-//                .into(this)
         }
 
         @BindingAdapter("horizontalPadding")

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:layoutDirection="ltr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -102,17 +101,18 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-
                             android:id="@+id/rec_category"
                             android:layout_width="match_parent"
+
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_8sdp"
                             android:clipToPadding="false"
                             android:orientation="horizontal"
-                            app:horizontalPadding='@{@dimen/_32sdp}'
+                            android:paddingEnd="@dimen/_32sdp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:itemCount="10"
-                            tools:listitem="@layout/item_product" />
+                            tools:listitem="@layout/item_product"
+                            tools:ignore="RtlSymmetry" />
 
                     </LinearLayout>
 
@@ -151,8 +151,9 @@
                             android:layout_marginStart="@dimen/_8sdp"
                             android:clipToPadding="false"
                             android:orientation="horizontal"
-                            app:horizontalPadding='@{@dimen/_32sdp}'
+                            android:paddingEnd="@dimen/_32sdp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:ignore="RtlSymmetry"
                             tools:itemCount="10"
                             tools:listitem="@layout/item_product" />
 
@@ -204,8 +205,9 @@
                             android:layout_marginStart="@dimen/_8sdp"
                             android:clipToPadding="false"
                             android:orientation="horizontal"
-                            app:horizontalPadding='@{@dimen/_32sdp}'
+                            android:paddingEnd="@dimen/_32sdp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:ignore="RtlSymmetry"
                             tools:itemCount="10"
                             tools:listitem="@layout/item_product" />
 
@@ -213,10 +215,10 @@
 
                     <!-- New Products-->
                     <LinearLayout
-                        android:layout_marginTop="@dimen/_16sdp"
                         android:id="@+id/card_new_Products"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_16sdp"
                         android:background="@color/white"
                         android:orientation="vertical">
 
@@ -249,6 +251,7 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:padding="@dimen/_8sdp"
                             android:id="@+id/rec_new_Products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

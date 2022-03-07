@@ -14,12 +14,14 @@
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="bottomNavColor">@color/white</item>
         <item name="navigationIcon">@drawable/ic_circle_back</item>
-        <item name="android:windowTranslucentStatus">true</item>
-
-        <item name="android:windowLightStatusBar">true</item>
-
-
     </style>
+
+
+    <style name="FullScreen" parent="@style/ThemeLight">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+
 
     <!-- Night-->
     <style name="ThemeNight" parent="@style/Theme.AppCompat.DayNight.NoActionBar">

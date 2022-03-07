@@ -3,9 +3,11 @@ package com.souqApp.presentation.products_by_type
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.CompoundButton
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeRequest
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
@@ -19,9 +21,19 @@ import com.souqApp.infra.utils.ID_SUBCATEGORY
 import com.souqApp.infra.utils.PRODUCTS_TYPE
 import com.souqApp.presentation.main.home.ProductGridAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.animation.AnimationUtils
+
+import android.view.animation.LayoutAnimationController
+
+import androidx.recyclerview.widget.RecyclerView
+import com.souqApp.R
+import com.souqApp.infra.extension.changeStatusBarColor
+
 
 @AndroidEntryPoint
-class ProductsByTypeActivity : AppCompatActivity() {
+class ProductsByTypeActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener {
 
     private val viewMode: ProductsByTypeVM by viewModels()
     private lateinit var binding: ActivityProductsByTypeBinding
@@ -46,6 +58,9 @@ class ProductsByTypeActivity : AppCompatActivity() {
         binding.recProducts.adapter = productAdapter
 
         observer()
+        changeStatusBarColor(R.color.tool_bar_color)
+        binding.switchTypeRec.setOnCheckedChangeListener(this)
+
     }
 
     private fun observer() {
@@ -96,4 +111,24 @@ class ProductsByTypeActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onCheckedChanged(p0: CompoundButton?, selected: Boolean) {
+
+        if (selected)
+            binding.recProducts.layoutManager = LinearLayoutManager(this)
+        else
+            binding.recProducts.layoutManager = GridLayoutManager(this, 2)
+
+        runLayoutAnimation(binding.recProducts);
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun runLayoutAnimation(recyclerView: RecyclerView) {
+        val context: Context = recyclerView.context
+        val controller: LayoutAnimationController =
+            AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
+        recyclerView.layoutAnimation = controller
+        recyclerView.adapter!!.notifyDataSetChanged()
+        recyclerView.scheduleLayoutAnimation()
+    }
 }

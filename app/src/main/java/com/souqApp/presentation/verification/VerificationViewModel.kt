@@ -21,6 +21,10 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
     private val state = MutableStateFlow<VerificationActivityState>(VerificationActivityState.Init)
     val mState: StateFlow<VerificationActivityState> get() = state
 
+    fun resetState() {
+        state.value = VerificationActivityState.Init
+    }
+
     private fun setLoading() {
         state.value = VerificationActivityState.IsLoading(true)
     }
@@ -85,6 +89,24 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
                         is BaseResult.Errors -> onErrorResetVerification(it.error)
                     }
                 }
+        }
+    }
+
+    fun requestPasswordReset(phoneNumber: String) {
+        viewModelScope.launch {
+            verificationUseCase
+                .requestPasswordReset(phoneNumber)
+                .catch { onError(it) }
+                .collect()
+        }
+    }
+
+    fun resendActivationCode() {
+        viewModelScope.launch {
+            verificationUseCase
+                .resendActivationCode()
+                .catch { onError(it) }
+                .collect()
         }
     }
 }

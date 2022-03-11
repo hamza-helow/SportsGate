@@ -30,7 +30,7 @@ android {
         }
 
         create("dev") {
-            applicationId "com.sportsgate"
+            applicationId "advanced.devsouqApp"
             buildConfigField 'String', 'API_BASE_URL', '"https://dev.2advanced.me/api/"'
             buildConfigField 'String', 'APP_NAME', '"Sports gate"'
         }

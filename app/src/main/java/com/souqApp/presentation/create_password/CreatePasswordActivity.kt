@@ -14,8 +14,9 @@ import com.souqApp.infra.extension.isPasswordValid
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
+import com.souqApp.infra.utils.LOGIN_AFTER_RESET_PASSWORD
 import com.souqApp.infra.utils.RESET_TOKEN
-import com.souqApp.presentation.main.MainActivity
+import com.souqApp.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -56,13 +57,12 @@ class CreatePasswordActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun onCreatePassword(created: Boolean) {
         if (created) {
-            val i = Intent(this, MainActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(i)
-
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent.putExtra(LOGIN_AFTER_RESET_PASSWORD , true)
+            startActivity(intent)
             showToast(getString(R.string.password_changed))
         }
-
     }
 
     override fun onClick(view: View) {
@@ -103,5 +103,11 @@ class CreatePasswordActivity : AppCompatActivity(), View.OnClickListener {
         binding.passwordInputLay.activeBorder(this, true)
         binding.confirmPasswordInputLay.activeBorder(this, true)
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
 
 }

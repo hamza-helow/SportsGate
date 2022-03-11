@@ -36,13 +36,12 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initListeners()
         observe()
     }
 
     private fun observe() {
-        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
             .onEach { state -> handleState(state) }
             .launchIn(lifecycleScope)
     }
@@ -154,6 +153,12 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.registerBtn.isEnabled = true
         return true
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.resetState()
     }
 
 

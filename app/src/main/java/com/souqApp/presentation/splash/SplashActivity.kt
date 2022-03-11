@@ -34,8 +34,6 @@ class SplashActivity : AppCompatActivity() {
         if (sharedPrefs.isNeedVerify())
             sharedPrefs.logout()
 
-        Log.e(APP_TAG, sharedPrefs.firebaseToken())
-
         GlobalScope.launch {
             delay(2000)
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))

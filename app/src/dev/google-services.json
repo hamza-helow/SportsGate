@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:765088804052:android:a4a9573dc56dbecfebdf41",
+        "mobilesdk_app_id": "1:765088804052:android:11bd74c4162a5615ebdf41",
         "android_client_info": {
-          "package_name": "com.sportsgate"
+          "package_name": "advanced.devsouqApp"
         }
       },
       "oauth_client": [

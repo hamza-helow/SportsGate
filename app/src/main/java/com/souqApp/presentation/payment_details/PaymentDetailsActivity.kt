@@ -19,6 +19,7 @@ import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
 import com.souqApp.domain.payment_details.CheckoutDetailsEntity
 import com.souqApp.infra.extension.*
+import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.ID_ORDER
 import com.souqApp.presentation.main.MainActivity
 import com.souqApp.presentation.order_details.OrderDetailsActivity
@@ -43,7 +44,6 @@ class PaymentDetailsActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.title = getString(R.string.payment_details)
 
         initListener()
-
         observer()
     }
 
@@ -105,7 +105,7 @@ class PaymentDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private fun handleAddressesLoaded(addressEntities: List<AddressEntity>) {
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item,
+            R.layout.item_spinner,
             addressEntities
         )
         binding.spinnerAddresses.adapter = adapter
@@ -120,7 +120,7 @@ class PaymentDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun handleError(throwable: Throwable) {
-        Log.e("ERer", throwable.stackTraceToString())
+        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {

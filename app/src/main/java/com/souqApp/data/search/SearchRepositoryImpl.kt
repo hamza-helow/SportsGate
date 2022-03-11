@@ -1,6 +1,5 @@
 package com.souqApp.data.search
 
-import android.util.Log
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.search.remote.SearchApi
 import com.souqApp.data.search.remote.SearchEntity
@@ -22,9 +21,6 @@ class SearchRepositoryImpl @Inject constructor(private val searchApi: SearchApi)
 
             val response = searchApi.getSearchProducts(product_name, sort_type, page)
             val isSuccessful = response.body()?.status
-
-            Log.e("ERer" , "${response.code()}")
-
             if (isSuccessful == true) {
                 val data = response.body()!!.data!!
                 emit(BaseResult.Success(data))

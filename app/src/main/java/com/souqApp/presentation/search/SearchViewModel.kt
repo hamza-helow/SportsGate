@@ -38,10 +38,10 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
         _state.value = SearchActivityState.ErrorLoad(response)
     }
 
-    fun search(productName: String, page: Int) {
+    fun search(productName: String, page: Int , type:Int = 1) {
 
         viewModelScope.launch {
-            searchUseCase.getSearchProducts(productName, 1, page)
+            searchUseCase.getSearchProducts(productName, type, page)
                 .onStart { setLoading(true) }
                 .catch {
                     setLoading(false)

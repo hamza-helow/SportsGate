@@ -27,6 +27,9 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
         state.value = LoginActivityState.LoginByPhone(loginByPhone)
     }
 
+    fun resetState() {
+        state.value = LoginActivityState.Init
+    }
 
     private fun setLoading() {
         state.value = LoginActivityState.IsLoading(true)

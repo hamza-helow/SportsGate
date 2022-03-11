@@ -13,6 +13,8 @@ import android.app.NotificationChannel
 import android.os.Build
 import android.app.PendingIntent
 import android.util.Log
+import androidx.annotation.RequiresApi
+import com.souqApp.presentation.main.MainActivity
 import com.souqApp.presentation.order_details.OrderDetailsActivity
 import com.souqApp.presentation.product_details.ProductDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +27,7 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         sendNotification(remoteMessage)
         Log.e(APP_TAG, "notification")
@@ -37,6 +40,7 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
         sharedPrefs.firebaseToken(token)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("UnspecifiedImmutableFlag")
     private fun sendNotification(remoteMessage: RemoteMessage) {
 
@@ -62,12 +66,13 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
         RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(this, channelId).apply {
-                setSmallIcon(R.drawable.close_icon)
                 setContentTitle(title)
                 setContentText(body)
                 setAutoCancel(true)
                 if (pendingIntent != null)
                     setContentIntent(pendingIntent)
+
+                setSmallIcon(R.drawable.ic_launcher_foreground)
             }
 
         val notificationManager =
@@ -86,14 +91,20 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(1, notificationBuilder.build())
     }
 
+
+
     private fun getIntent(type: String?, redirectId: String): Intent? {
         return when (type) {
-            //  "1" -> generalIntent(title, body, redirectId)  //general
-            // "2" -> couponIntent(title, body, redirectId)  //coupon
+            "1" -> mainIntent() //general
+            "2" -> mainIntent()  //coupon
             "3" -> orderIntent(redirectId)  //order
             "4" -> productIntent(redirectId)  //product
             else -> null
         }
+    }
+
+    private fun mainIntent(): Intent {
+        return Intent(this, MainActivity::class.java)
     }
 
     private fun productIntent(redirectId: String): Intent {

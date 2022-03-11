@@ -20,6 +20,11 @@ class RegisterViewModel @Inject constructor(private val registerUseCase: Registe
     private val state = MutableStateFlow<RegisterActivityState>(RegisterActivityState.Init)
     val mState: StateFlow<RegisterActivityState> get() = state
 
+
+    fun resetState(){
+        state.value = RegisterActivityState.Init
+    }
+
     private fun setLoading() {
         state.value = RegisterActivityState.IsLoading(true)
     }

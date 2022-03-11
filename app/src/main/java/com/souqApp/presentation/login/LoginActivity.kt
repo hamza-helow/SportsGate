@@ -19,8 +19,10 @@ import com.souqApp.data.login.remote.dto.LoginRequest
 import com.souqApp.databinding.ActivityLoginBinding
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.*
+import com.souqApp.infra.utils.LOGIN_AFTER_RESET_PASSWORD
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.forgot_password.ForgotPasswordActivity
+import com.souqApp.presentation.main.MainActivity
 import com.souqApp.presentation.register.RegisterActivity
 import com.souqApp.presentation.verification.VerificationActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +44,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initListener()
         observe()
     }
@@ -58,7 +59,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun observe() {
-        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
             .onEach { state -> handleState(state) }
             .launchIn(lifecycleScope)
     }
@@ -98,7 +99,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun navigateToMainActivity() {
-        finish()
+        if (!intent.getBooleanExtra(LOGIN_AFTER_RESET_PASSWORD, false))
+            finish()
+        else {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun handleErrorLogin(rawResponse: WrappedResponse<UserResponse>) {
@@ -191,5 +198,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener,
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
         loginByPhoneToggle()
         binding.loginBtn.isEnabled = validate()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.resetState()
     }
 }

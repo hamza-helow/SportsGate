@@ -14,9 +14,22 @@ interface VerificationApi {
     @POST("v1/users/activeAccount")
     suspend fun activeAccount(@Body activeAccountRequest: ActiveAccountRequest): Response<WrappedResponse<UserResponse>>
 
+
     @POST("v1/users/createTokenResetPassword")
     suspend fun createTokenResetPassword(
         @Query("phone") phone: String,
         @Query("reset_code") code: String
     ): Response<WrappedResponse<CreateTokenResetPasswordEntity>>
+
+    @POST("v1/users/resetPassword")
+    suspend fun resetPassword(@Query("new_password") newPassword: String)
+
+
+    @POST("v1/users/requestPasswordReset")
+    suspend fun requestPasswordReset(@Query("phone") phone: String): Response<WrappedResponse<Nothing>>
+
+
+    @POST("v1/users/resendActivationCode")
+    suspend fun resendActivationCode(): Response<WrappedResponse<Nothing>>
+
 }

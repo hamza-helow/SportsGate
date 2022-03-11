@@ -48,7 +48,7 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
 
         phoneNumber = intent.getStringExtra(PHONE_NUMBER)
         binding.isResetPassword = phoneNumber != null
-
+        sendCode()
         startTimer()
         initListener()
         observer()
@@ -79,11 +79,12 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onSuccessResetVerification(createTokenResetPasswordEntity: CreateTokenResetPasswordEntity) {
-
+        sharedPrefs.isNeedVerify(false)
         val intent = Intent(this, CreatePasswordActivity::class.java)
         intent.putExtra(PHONE_NUMBER, phoneNumber)
         intent.putExtra(RESET_TOKEN, createTokenResetPasswordEntity.token)
         startActivity(intent)
+        viewModel.resetState()
     }
 
     private fun onErrorResetVerification(response: WrappedResponse<CreateTokenResetPasswordEntity>) {
@@ -142,9 +143,22 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            binding.txtResend.id -> startTimer()
+            binding.txtResend.id -> resendCode()
             binding.btnSendOtp.id -> submit()
         }
+    }
+
+    private fun resendCode() {
+        binding.otpView.text?.clear()
+        sendCode()
+        startTimer()
+    }
+
+    private fun sendCode() {
+        if (phoneNumber != null)
+            viewModel.requestPasswordReset(phoneNumber!!)
+        else
+            viewModel.resendActivationCode()
     }
 
     private fun submit() {
@@ -165,6 +179,7 @@ class VerificationActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun createResetPasswordToken() {
+        Log.e(APP_TAG, "$phoneNumber")
         viewModel.createTokenResetPassword(phoneNumber!!, binding.otpView.text!!.toString())
     }
 

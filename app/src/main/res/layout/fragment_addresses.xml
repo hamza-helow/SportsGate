@@ -7,17 +7,36 @@
     android:padding="@dimen/_16sdp"
     tools:context=".presentation.addresses.addresses.AddressesFragment">
 
-
-
     <include
         android:id="@+id/loader"
-        layout="@layout/loader"
-        />
+        layout="@layout/loader" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/card_empty_address"
+            android:visibility="gone"
+            android:padding="@dimen/_32sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_addresses_empty" />
+
+            <TextView
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/you_do_not_have_any_previous_addresses_please_add_an_address_str" />
+
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fb_add_address"

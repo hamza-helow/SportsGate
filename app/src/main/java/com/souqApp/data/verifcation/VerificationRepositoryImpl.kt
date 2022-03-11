@@ -1,11 +1,14 @@
 package com.souqApp.data.verifcation
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.VerificationApi
 import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.common.entity.EmptyEntity
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.verifcation.VerificationRepository
 import kotlinx.coroutines.flow.Flow
@@ -53,6 +56,40 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
             } else {
                 emit(BaseResult.Errors(response.body()!!))
             }
+        }
+    }
+
+    override suspend fun requestPasswordReset(phone: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
+        return flow {
+            val response = verificationApi.requestPasswordReset(phone)
+
+            if (response.isSuccessful) {
+                emit(BaseResult.Success(EmptyEntity()))
+            } else {
+
+                val type = object : TypeToken<WrappedResponse<Nothing>>() {}.type
+                val error: WrappedResponse<Nothing> =
+                    Gson().fromJson(response.errorBody()!!.charStream(), type)
+                emit(BaseResult.Errors(error))
+            }
+
+        }
+    }
+
+    override suspend fun resendActivationCode(): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
+        return flow {
+            val response = verificationApi.resendActivationCode()
+
+            if (response.isSuccessful) {
+                emit(BaseResult.Success(EmptyEntity()))
+            } else {
+
+                val type = object : TypeToken<WrappedResponse<Nothing>>() {}.type
+                val error: WrappedResponse<Nothing> =
+                    Gson().fromJson(response.errorBody()!!.charStream(), type)
+                emit(BaseResult.Errors(error))
+            }
+
         }
     }
 }

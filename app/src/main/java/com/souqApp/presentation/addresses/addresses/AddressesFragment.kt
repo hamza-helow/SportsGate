@@ -16,6 +16,7 @@ import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
+import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
@@ -116,6 +117,7 @@ class AddressesFragment : Fragment(), View.OnClickListener {
     private fun handleDeleteAddress(deleted: Boolean, position: Int) {
         if (deleted) {
             addressAdapter.removeItem(position)
+            checkEmptyAddresses()
         }
     }
 
@@ -125,6 +127,12 @@ class AddressesFragment : Fragment(), View.OnClickListener {
 
     private fun handleAddressesLoaded(addressEntities: List<AddressEntity>) {
         addressAdapter.list = addressEntities
+        checkEmptyAddresses()
+    }
+
+    private fun checkEmptyAddresses() {
+        binding.cardEmptyAddress.isVisible(addressAdapter.list.isEmpty())
+
     }
 
     private fun handleError(throwable: Throwable) {
@@ -145,7 +153,6 @@ class AddressesFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View) {
-
         when (view.id) {
             binding.fbAddAddress.id -> goToAddAddressFragment(view)
         }

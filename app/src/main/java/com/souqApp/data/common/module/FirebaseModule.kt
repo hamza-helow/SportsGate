@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class FirebaseModule {
-
     @Provides
     @Singleton
     fun firebaseConfigProvide(): FirebaseRemoteConfig {

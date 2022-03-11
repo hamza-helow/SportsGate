@@ -17,6 +17,5 @@ interface ForgotPasswordApi {
     @POST("v1/users/createTokenResetPassword")
     suspend fun createTokenResetPassword(@Body resetPasswordRequest: ResetPasswordRequest): Response<WrappedResponse<TokenResponse>>
 
-    @POST("v1/users/resetPassword")
-    suspend fun resetPassword(@Query("new_password") newPassword: String)
+
 }

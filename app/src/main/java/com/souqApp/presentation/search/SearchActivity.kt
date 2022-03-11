@@ -23,6 +23,8 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     private val searchAdapter = ProductHorizontalAdapter()
 
+    lateinit var filterBottomSheet: FilterBottomSheet
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -30,17 +32,26 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
         binding.recProducts.layoutManager = LinearLayoutManager(this)
         binding.recProducts.adapter = searchAdapter
-
         binding.searchView.setOnQueryTextListener(this)
 
+        filterBottomSheet = FilterBottomSheet()
+
+        filterBottomSheet.onSelectItem = {
+            searchAdapter.clearList()
+            viewModel.search(binding.searchView.query.toString(), 1, it.type)
+        }
         observer()
 
         searchAdapter.listenerNeedLoadMore = {
-
             viewModel.search(binding.searchView.query.toString(), it)
         }
 
         changeStatusBarColor(color = R.color.tool_bar_color)
+
+        binding.imgSort.setOnClickListener {
+            filterBottomSheet.show(supportFragmentManager, "")
+        }
+
 
     }
 
@@ -77,8 +88,8 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextChange(text: String): Boolean {
-            searchAdapter.clearList()
-            viewModel.search(text, 1)
+        searchAdapter.clearList()
+        viewModel.search(text, 1)
         return true
     }
 }

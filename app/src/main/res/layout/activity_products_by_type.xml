@@ -30,7 +30,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:titleCentered="true" />
 
-
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_type_rec"
                 android:layout_width="wrap_content"

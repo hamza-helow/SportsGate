@@ -13,9 +13,6 @@ import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeRequest
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
 import com.souqApp.databinding.ActivityProductsByTypeBinding
 import com.souqApp.domain.products_by_type.ProductsByTypeEntity
-import com.souqApp.infra.extension.setup
-import com.souqApp.infra.extension.showGenericAlertDialog
-import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.ID_SUBCATEGORY
 import com.souqApp.infra.utils.PRODUCTS_TYPE
@@ -24,12 +21,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.animation.AnimationUtils
-
 import android.view.animation.LayoutAnimationController
-
 import androidx.recyclerview.widget.RecyclerView
 import com.souqApp.R
-import com.souqApp.infra.extension.changeStatusBarColor
+import com.souqApp.infra.extension.*
+import com.souqApp.presentation.main.home.GridSpacingItemDecoration
 
 
 @AndroidEntryPoint
@@ -54,8 +50,7 @@ class ProductsByTypeActivity : AppCompatActivity(), CompoundButton.OnCheckedChan
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setup()
 
-        binding.recProducts.layoutManager = GridLayoutManager(this, 2)
-        binding.recProducts.adapter = productAdapter
+        initRecycler()
 
         observer()
         changeStatusBarColor(R.color.tool_bar_color)
@@ -63,8 +58,14 @@ class ProductsByTypeActivity : AppCompatActivity(), CompoundButton.OnCheckedChan
 
     }
 
-    private fun observer() {
+    private fun initRecycler() {
+        binding.recProducts.adapter = productAdapter
+        binding.recProducts.layoutManager = GridLayoutManager(this, 2)
+        binding.recProducts.addItemDecoration(GridSpacingItemDecoration(2, 30, false))
 
+    }
+
+    private fun observer() {
         viewMode.mState.observe(this, {
             handleState(it)
         })
@@ -93,13 +94,12 @@ class ProductsByTypeActivity : AppCompatActivity(), CompoundButton.OnCheckedChan
     private fun handleProductsLoaded(productsByTypeEntity: ProductsByTypeEntity) {
         productAdapter.addList(productsByTypeEntity.products)
         binding.cardEmpty.isVisible = productAdapter.list.isEmpty()
-
         productAdapter.listenerNeedLoadMore = {
-
             val idSubCategory = intent.getIntExtra(ID_SUBCATEGORY, 0)
             viewMode.loadProducts(ProductsByTypeRequest(type, idSubCategory, it))
-        }
+            Log.e(APP_TAG, "Page $it")
 
+        }
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -112,13 +112,12 @@ class ProductsByTypeActivity : AppCompatActivity(), CompoundButton.OnCheckedChan
     }
 
     override fun onCheckedChanged(p0: CompoundButton?, selected: Boolean) {
-
         if (selected)
             binding.recProducts.layoutManager = LinearLayoutManager(this)
         else
             binding.recProducts.layoutManager = GridLayoutManager(this, 2)
 
-        runLayoutAnimation(binding.recProducts);
+       runLayoutAnimation(binding.recProducts);
     }
 
 

@@ -9,6 +9,8 @@ import com.souqApp.infra.utils.WRITE_TIMEOUT
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,11 +19,11 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class CreatePasswordModule {
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun createPasswordApiProvide(): CreatePasswordApi {
         val retrofit = Retrofit
             .Builder().apply {
@@ -38,7 +40,7 @@ class CreatePasswordModule {
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun createPasswordRepositoryProvide(createPasswordApi: CreatePasswordApi): CreatePasswordRepository {
         return CreatePasswordRepositoryImpl(createPasswordApi)
     }

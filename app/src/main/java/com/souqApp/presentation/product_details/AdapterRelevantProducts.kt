@@ -15,7 +15,7 @@ class AdapterRelevantProducts :
         holder.bind(BR.relevantProduct, getItemByPosition(position))
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, ProductDetailsActivity::class.java)
+            val intent = Intent(holder.itemView.context, ProductDetailsFragment::class.java)
             intent.putExtra(ID_PRODUCT, getItemByPosition(position).id)
             holder.itemView.context.startActivity(intent)
 

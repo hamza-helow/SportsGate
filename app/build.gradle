@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 
@@ -32,6 +33,12 @@ android {
         create("dev") {
             applicationId "advanced.devsouqApp"
             buildConfigField 'String', 'API_BASE_URL', '"https://dev.2advanced.me/api/"'
+            buildConfigField 'String', 'APP_NAME', '"Sports gate"'
+        }
+
+        create("icestore") {
+            applicationId "advanced.devsouqApp"
+            buildConfigField 'String', 'API_BASE_URL', '"http://icestore.2advanced.me/api/"'
             buildConfigField 'String', 'APP_NAME', '"Sports gate"'
         }
 
@@ -68,8 +75,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
-    implementation 'com.google.firebase:firebase-common-ktx:20.0.0'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.0'
+    implementation 'com.google.firebase:firebase-common-ktx:20.1.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.2'
     implementation 'com.google.android.gms:play-services-cast-framework:21.0.1'
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -103,7 +110,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
     //splashscreen core
-    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
 
     //sdp
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
@@ -120,17 +127,17 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.1.0')
     implementation 'com.google.firebase:firebase-config'
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-config-ktx:21.0.1'
-    implementation 'com.google.firebase:firebase-analytics-ktx:20.1.0'
-    implementation 'com.google.firebase:firebase-core:20.1.0'
+    implementation 'com.google.firebase:firebase-config-ktx:21.0.2'
+    implementation 'com.google.firebase:firebase-analytics-ktx:20.1.2'
+    implementation 'com.google.firebase:firebase-core:20.1.2'
 
     // kotlin reflect
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.31"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.0"
 
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
-    implementation "androidx.core:core-ktx:1.9.0-alpha01"
+    implementation "androidx.core:core-ktx:1.9.0-alpha02"
 
 }
 

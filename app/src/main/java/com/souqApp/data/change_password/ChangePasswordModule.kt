@@ -6,24 +6,28 @@ import com.souqApp.domain.change_password.ChangePasswordRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class ChangePasswordModule {
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun changePasswordApiProvide(retrofit: Retrofit): ChangePasswordApi {
         return retrofit.create(ChangePasswordApi::class.java)
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun changePasswordRepositoryProvide(changePasswordApi: ChangePasswordApi): ChangePasswordRepository {
         return ChangePasswordRepositoryImpl(changePasswordApi)
     }
 
 }
+
+

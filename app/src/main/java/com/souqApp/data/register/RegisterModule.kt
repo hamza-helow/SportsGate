@@ -6,22 +6,24 @@ import com.souqApp.domain.register.RegisterRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class RegisterModule {
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun registerApiProvide(retrofit: Retrofit): RegisterApi {
         return retrofit.create(RegisterApi::class.java)
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun registerRepositoryProvide(registerApi: RegisterApi): RegisterRepository {
         return RegisterRepositoryImpl(registerApi)
     }

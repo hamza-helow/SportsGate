@@ -8,7 +8,7 @@ import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.ItemProductHorizontalBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 import com.souqApp.infra.utils.ID_PRODUCT
-import com.souqApp.presentation.product_details.ProductDetailsActivity
+import com.souqApp.presentation.product_details.ProductDetailsFragment
 
 class ProductHorizontalAdapter : BaseRecyclerAdapter<ItemProductHorizontalBinding, ProductEntity>() {
 
@@ -18,7 +18,7 @@ class ProductHorizontalAdapter : BaseRecyclerAdapter<ItemProductHorizontalBindin
         holder.bind(BR.productInSearch, getItemByPosition(position))
 
         holder.binding.root.setOnClickListener {
-            val intent = Intent(holder.itemView.context, ProductDetailsActivity::class.java)
+            val intent = Intent(holder.itemView.context, ProductDetailsFragment::class.java)
             intent.putExtra(ID_PRODUCT, getItemByPosition(position).id)
             holder.itemView.context.startActivity(intent)
 

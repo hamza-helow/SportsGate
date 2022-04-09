@@ -8,7 +8,7 @@ import com.souqApp.data.order_details.remote.ProductInOrder
 import com.souqApp.databinding.ItemProductInOrderDetailsBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 import com.souqApp.infra.utils.ID_PRODUCT
-import com.souqApp.presentation.product_details.ProductDetailsActivity
+import com.souqApp.presentation.product_details.ProductDetailsFragment
 
 class ProductsOrderAdapter :
     BaseRecyclerAdapter<ItemProductInOrderDetailsBinding, ProductInOrder>() {
@@ -16,7 +16,7 @@ class ProductsOrderAdapter :
         holder.bind(BR.productInOrder, getItemByPosition(position))
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context , ProductDetailsActivity::class.java)
+            val intent = Intent(holder.itemView.context , ProductDetailsFragment::class.java)
             intent.putExtra(ID_PRODUCT, getItemByPosition(position).id)
             holder.itemView.context.startActivity(intent)
         }

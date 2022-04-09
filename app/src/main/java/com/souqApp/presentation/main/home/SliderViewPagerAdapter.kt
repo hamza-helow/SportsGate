@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import com.souqApp.data.main.home.remote.dto.ProductAdsEntity
 import com.souqApp.databinding.ItemSliderBinding
 import com.souqApp.infra.utils.ID_PRODUCT
-import com.souqApp.presentation.product_details.ProductDetailsActivity
+import com.souqApp.presentation.product_details.ProductDetailsFragment
 
 class SliderViewPagerAdapter(
     val context: Context,
@@ -37,7 +37,7 @@ class SliderViewPagerAdapter(
 
         if (!viewOnly)
             binding.root.setOnClickListener {
-                val intent = Intent(context, ProductDetailsActivity::class.java)
+                val intent = Intent(context, ProductDetailsFragment::class.java)
                 intent.putExtra(ID_PRODUCT, ads[position].id)
                 context.startActivity(intent)
             }

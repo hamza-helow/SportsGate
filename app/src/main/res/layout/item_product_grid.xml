@@ -8,14 +8,17 @@
             name="product"
             type="com.souqApp.data.main.home.remote.dto.ProductEntity" />
 
+        <variable
+            name="showPrice"
+            type="Boolean" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:useDefaultMargins="true"
         android:paddingBottom="@dimen/_16sdp"
+        android:useDefaultMargins="true"
         tools:ignore="RtlSymmetry">
 
         <ImageView
@@ -30,8 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:text='@{product.name,default="product name"}'
-            android:textColor="@color/black" />
+            android:text='@{product.name}'
+            android:textColor="@color/black"
+            tools:text="product name" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,15 +43,19 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:scrollHorizontally="true"
-            android:text='@{product.desc,default="product desc"}'
-            android:textColor="@color/grey" />
+            android:text='@{product.small_desc}'
+            android:textColor="@color/grey"
+            tools:text="product desc" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{product.regular_price+" "+product.setting_currency,default="price"}'
+            android:text='@{product.regular_price+" "+product.setting_currency}'
             android:textColor="@color/black"
-            app:isVisible="@{product.on_sale}"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            tools:text="price"
+            app:isVisible="@{showPrice}"
+            />
+
     </LinearLayout>
 </layout>

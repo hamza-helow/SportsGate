@@ -6,22 +6,24 @@ import com.souqApp.domain.login.LoginRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class LoginModule {
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun loginApiProvide(retrofit: Retrofit): LoginApi {
         return retrofit.create(LoginApi::class.java)
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun loginRepositoryProvide(loginApi: LoginApi): LoginRepository {
         return LoginRepositoryImpl(loginApi)
     }

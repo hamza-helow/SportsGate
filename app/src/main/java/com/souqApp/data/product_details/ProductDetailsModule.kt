@@ -5,22 +5,24 @@ import com.souqApp.domain.product_details.ProductDetailsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class ProductDetailsModule {
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun productDetailsApiProvide(retrofit: Retrofit): ProductDetailsApi {
         return retrofit.create(ProductDetailsApi::class.java)
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun productDetailsRepository(productDetailsApi: ProductDetailsApi): ProductDetailsRepository {
         return ProductDetailsRepositoryImpl(productDetailsApi)
     }

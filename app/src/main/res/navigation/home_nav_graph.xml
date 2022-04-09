@@ -5,12 +5,21 @@
     android:id="@+id/home_nav_graph"
     app:startDestination="@id/homeFragment">
 
-
     <keep_state_fragment
         android:id="@+id/homeFragment"
         android:name="com.souqApp.presentation.main.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_to_HomeProductDetails"
+            app:destination="@id/HomeProductDetails" >
+            <argument
+                android:name="idProduct"
+                android:defaultValue="0"
+                app:argType="integer"
+                />
+        </action>
+    </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/cartFragment"
         android:name="com.souqApp.presentation.main.cart.CartFragment"
@@ -26,4 +35,10 @@
         android:name="com.souqApp.presentation.main.more.MoreFragment"
         android:label="fragment_more"
         tools:layout="@layout/fragment_more" />
+
+
+    <activity
+        android:id="@+id/HomeProductDetails"
+        tools:layout="@layout/activity_home_product_details" />
+
 </navigation>

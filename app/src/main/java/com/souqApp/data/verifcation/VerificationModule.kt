@@ -5,22 +5,24 @@ import com.souqApp.domain.verifcation.VerificationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class VerificationModule {
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun verificationApi(retrofit: Retrofit): VerificationApi {
         return retrofit.create(VerificationApi::class.java)
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun verificationRepository(verificationApi: VerificationApi): VerificationRepository {
         return VerificationRepositoryImpl(verificationApi)
     }

@@ -8,3 +8,5 @@ data class SearchEntity(
     val products: List<ProductEntity>
 )
 
+
+

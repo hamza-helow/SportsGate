@@ -23,3 +23,6 @@ class NotificationAdapter : BaseRecyclerAdapter<ItemNotificationBinding, Notific
     override fun needLoadMore(page: Int) {
     }
 }
+
+
+//TODO click to notification

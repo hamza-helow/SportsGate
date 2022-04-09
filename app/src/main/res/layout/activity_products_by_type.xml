@@ -30,24 +30,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:titleCentered="true" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_type_rec"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:background="@drawable/recycler_mode"
-                android:backgroundTint="@color/white"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:thumb="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/toolbar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:track="@null"
-                tools:ignore="InefficientWeight" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

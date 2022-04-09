@@ -22,7 +22,6 @@
     </style>
 
 
-
     <!-- Night-->
     <style name="ThemeNight" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:spinnerMode">dropdown</item>

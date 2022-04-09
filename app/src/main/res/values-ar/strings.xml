@@ -214,5 +214,10 @@
     <string name="reset_pass_message">reset password</string>
     <string name="password_changed">تم تغيير كلمة المرور بنجاح</string>
     <string name="no_products_found">No products found</string>
+    <string name="adding_in_progress">Adding in progress</string>
+    <string name="added_successfully">Added successfully</string>
+    <string name="add_failed">Add failed,try later</string>
+    <string name="added_to_your_cart_successfully">Added to your cart successfully!</string>
+    <string name="show_cart">Show cart</string>
 
 </resources>

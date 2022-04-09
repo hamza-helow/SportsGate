@@ -1,6 +1,5 @@
 package com.souqApp.presentation.main.home
 
-import android.R.attr
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -34,7 +33,7 @@ import com.souqApp.presentation.products_by_type.ProductsByTypeActivity
 import com.souqApp.presentation.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
-import android.R.attr.spacing
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -46,7 +45,9 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     private lateinit var bestSellingAdapter: ProductAdapter
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var recommendedAdapter: ProductAdapter
-    private lateinit var newProductAdapter: ProductGridAdapter
+
+    @Inject
+    lateinit var newProductAdapter: ProductGridAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +72,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         bestSellingAdapter = ProductAdapter()
         categoryAdapter = CategoryAdapter(verticalMode = false)
         recommendedAdapter = ProductAdapter()
-        newProductAdapter = ProductGridAdapter()
 
         // set layout managers
         binding.recCategory.layoutManager = generateLinearLayoutManager()
@@ -86,6 +86,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         binding.recBestSelling.adapter = bestSellingAdapter
         binding.recRecommended.adapter = recommendedAdapter
         binding.recNewProducts.adapter = newProductAdapter
+
 
     }
 

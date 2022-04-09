@@ -10,6 +10,10 @@
             type="Boolean" />
 
         <variable
+            name="showAddToCart"
+            type="Boolean" />
+
+        <variable
             name="details"
             type="com.souqApp.data.product_details.remote.ProductDetailsEntity" />
     </data>
@@ -46,7 +50,7 @@
                     android:layout_weight="0.8"
                     android:text="@string/add_to_cart"
                     android:visibility="invisible"
-                    app:inVisible="@{!details.on_sale}">
+                    app:isVisible="@{showAddToCart}">
 
                 </Button>
 
@@ -182,15 +186,6 @@
 
                 </LinearLayout>
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_24sdp"
-                    android:background="@android:color/transparent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

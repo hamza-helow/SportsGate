@@ -16,7 +16,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.souqApp.presentation.main.MainActivity
 import com.souqApp.presentation.order_details.OrderDetailsActivity
-import com.souqApp.presentation.product_details.ProductDetailsActivity
+import com.souqApp.presentation.product_details.ProductDetailsFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -108,7 +108,7 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun productIntent(redirectId: String): Intent {
-        val intent = Intent(this, ProductDetailsActivity::class.java)
+        val intent = Intent(this, ProductDetailsFragment::class.java)
         intent.putExtra(ID_PRODUCT, redirectId.toInt())
         return intent
     }

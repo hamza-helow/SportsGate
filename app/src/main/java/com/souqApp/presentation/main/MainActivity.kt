@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
         navController.setGraph(R.navigation.home_nav_graph)
         binding.bottomNavigationView.setupWithNavController(navController)
 
-
         changeStatusBarColor(color = R.color.tool_bar_color)
 
     }
@@ -80,8 +79,12 @@ class MainActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
                 return true
             }
         }
-
         return false
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
 }

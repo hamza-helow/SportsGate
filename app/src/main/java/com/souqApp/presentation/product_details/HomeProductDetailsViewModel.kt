@@ -1,10 +1,13 @@
-package com.souqApp.presentation.addresses
+package com.souqApp.presentation.product_details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class AddressActivityViewModel : ViewModel() {
+@HiltViewModel
+class HomeProductDetailsViewModel @Inject constructor() : ViewModel() {
     private val _title = MutableLiveData<String>()
     val title: LiveData<String>
         get() = _title

@@ -2,11 +2,7 @@ package com.souqApp.presentation.main.cart
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -14,27 +10,16 @@ import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
 import com.souqApp.databinding.FragmentCartBinding
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
-import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showGenericAlertDialog
-import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.extension.start
+import com.souqApp.infra.extension.*
+import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.payment_details.PaymentDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
-class CartFragment : Fragment(), View.OnClickListener {
+class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::inflate), View.OnClickListener {
 
-    private lateinit var binding: FragmentCartBinding
     private val viewModel: CartFragmentViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentCartBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,8 +42,7 @@ class CartFragment : Fragment(), View.OnClickListener {
         })
     }
 
-    private fun handleState(state: CartFragmentState?) {
-
+    private fun handleState(state: CartFragmentState) {
         when (state) {
             is CartFragmentState.Init -> Unit
             is CartFragmentState.Error -> handleError(state.throwable)
@@ -121,8 +105,6 @@ class CartFragment : Fragment(), View.OnClickListener {
         if (throwable is SocketTimeoutException) {
             requireContext().showToast("Unexpected error, try again later")
         }
-
-        Log.e("ereRr" , throwable.stackTraceToString())
     }
 
     companion object {

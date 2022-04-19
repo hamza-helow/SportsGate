@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="google_maps_Api_Key" translatable="false">AIzaSyBCtO6-15WHCAA5lFyIz339WB1MTHzqLbg</string>
+    <string name="google_maps_Api_Key" translatable="false" tools:ignore="Typos">AIzaSyBCtO6-15WHCAA5lFyIz339WB1MTHzqLbg</string>
     <string name="default_notification_channel_id" translatable="false">com.com.icestores.General</string>
     <string name="navigation_drawer_open" translatable="false">Drawer Open</string>
     <string name="navigation_drawer_close" translatable="false">Drawer Close</string>
@@ -193,7 +193,6 @@
     <string name="phone_otp_message">An SMS has been sent to your mobile number enter below to verify your phone number and complete your registration</string>
     <string name="verify_phone_number">Verify Phone Number</string>
     <string name="resend_code_after">Resend code after %1$d sec </string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" tools:ignore="MissingTranslation">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="categories">Categories</string>

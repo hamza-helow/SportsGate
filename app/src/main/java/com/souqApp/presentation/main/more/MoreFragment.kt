@@ -3,10 +3,7 @@ package com.souqApp.presentation.main.more
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -19,6 +16,7 @@ import com.souqApp.infra.extension.openUrl
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.utils.*
 import com.souqApp.presentation.addresses.AddressActivity
+import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.ChangeLanguageDialog
 import com.souqApp.presentation.login.LoginActivity
 import com.souqApp.presentation.main.more.about_us.AboutUsActivity
@@ -32,9 +30,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MoreFragment : Fragment(), View.OnClickListener {
+class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::inflate), View.OnClickListener {
 
-    lateinit var binding: FragmentMoreBinding
     private val viewModel: MoreViewModel by viewModels()
 
     @Inject
@@ -42,14 +39,6 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMoreBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

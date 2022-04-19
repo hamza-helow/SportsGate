@@ -2,10 +2,7 @@ package com.souqApp.presentation.addresses.addresses
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -23,24 +20,16 @@ import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.ID_ADDRESS
 import dagger.hilt.android.AndroidEntryPoint
 import com.souqApp.presentation.addresses.AddressActivityViewModel
+import com.souqApp.presentation.base.BaseFragment
 
 
 @AndroidEntryPoint
-class AddressesFragment : Fragment(), View.OnClickListener {
+class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddressesBinding::inflate), View.OnClickListener {
 
-    private lateinit var binding: FragmentAddressesBinding
     private lateinit var addressAdapter: AdapterAddress
     private lateinit var mainViewModel: AddressActivityViewModel
 
     private val viewModel: AddressViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentAddressesBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,7 +38,6 @@ class AddressesFragment : Fragment(), View.OnClickListener {
         binding.recAddresses.adapter = addressAdapter
 
         addressAdapter.onClickItem = {
-
             val bundle = bundleOf(ID_ADDRESS to it)
             Navigation.findNavController(requireView())
                 .navigate(R.id.addressDetailsFragment, bundle)

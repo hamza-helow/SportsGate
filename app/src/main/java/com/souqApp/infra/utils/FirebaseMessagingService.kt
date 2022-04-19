@@ -34,9 +34,6 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-        //ToDo send token to server
-        Log.e(APP_TAG, "new token $token")
-
         sharedPrefs.firebaseToken(token)
     }
 

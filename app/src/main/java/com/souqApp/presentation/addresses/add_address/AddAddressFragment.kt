@@ -2,20 +2,15 @@ package com.souqApp.presentation.addresses.add_address
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.maps.model.LatLng
 import com.souqApp.R
 import com.souqApp.data.addresses.remote.dto.AddressRequest
@@ -30,13 +25,12 @@ import com.souqApp.infra.utils.ADDRESS_DETAILS
 import com.souqApp.infra.utils.LOCATION_USER
 import com.souqApp.presentation.addresses.AddressActivityViewModel
 import com.souqApp.presentation.addresses.map.MapsActivity
+import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
-class AddAddressFragment : Fragment(), View.OnClickListener {
-
-    private lateinit var binding: FragmentAddAddressBinding
+class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAddressBinding::inflate), View.OnClickListener {
 
     private val viewModel: AddAddressViewModel by viewModels()
 
@@ -53,34 +47,11 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
             }
         }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentAddAddressBinding.inflate(inflater, container, false)
-        handleBack()
-        fetchAddressDetailsIfExist()
-
-        return binding.root
-    }
-
     // when update address
     private fun fetchAddressDetailsIfExist() {
         val addressDetails = getAddressDetails() ?: return
         binding.addressDetails = addressDetails
         viewModel.setUserLatLng(LatLng(addressDetails.lat, addressDetails.lng))
-    }
-
-    private fun handleBack() {
-        val onBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                NavHostFragment.findNavController(this@AddAddressFragment).navigateUp()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            onBackPressedCallback
-        )
     }
 
     // if update should be not null
@@ -92,6 +63,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListener()
+        fetchAddressDetailsIfExist()
         observer()
     }
 
@@ -148,7 +120,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         binding.txtStreet.noneBorder()
     }
 
-    private fun handleState(state: AddAddressFragmentState?) {
+    private fun handleState(state: AddAddressFragmentState) {
         when (state) {
             is AddAddressFragmentState.Loading -> handleLoading(state.isLoading)
             is AddAddressFragmentState.Error -> handleError(state.throwable)

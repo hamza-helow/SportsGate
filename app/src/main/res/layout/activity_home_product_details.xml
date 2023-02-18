@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment_product_details"
         android:name="com.souqApp.infra.utils.CustomNavHostFragment"
         android:layout_width="match_parent"

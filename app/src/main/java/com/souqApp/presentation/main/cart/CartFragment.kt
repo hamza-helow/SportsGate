@@ -37,9 +37,9 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun observer() {
-        viewModel.state.observe(viewLifecycleOwner, {
+        viewModel.state.observe(viewLifecycleOwner) {
             handleState(it)
-        })
+        }
     }
 
     private fun handleState(state: CartFragmentState) {

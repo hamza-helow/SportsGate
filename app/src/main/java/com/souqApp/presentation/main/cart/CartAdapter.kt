@@ -17,7 +17,6 @@ class CartAdapter : BaseRecyclerAdapter<ItemCartBinding, ProductInCartResponse>(
 
         holder.bind(BR.product, getItemByPosition(position))
 
-
         holder.binding.btnIncrease.setOnClickListener {
             getItemByPosition(position).qty += 1
             holder.binding.invalidateAll()

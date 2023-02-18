@@ -41,7 +41,7 @@ class OrdersActivity : AppCompatActivity() {
 
     private fun observer() {
 
-        viewModel.state.observe(this, { handleState(it) })
+        viewModel.state.observe(this) { handleState(it) }
     }
 
     private fun handleState(state: OrdersActivityState?) {
@@ -65,8 +65,6 @@ class OrdersActivity : AppCompatActivity() {
     private fun handleError(throwable: Throwable) {
         if (throwable.message != null)
             showToast(throwable.message!!)
-
-        Log.e("ERer" , throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {

@@ -159,11 +159,8 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     private fun handleUnexpectedError(throwable: Throwable) {
         context?.showLoader(false)
         binding.content.isVisible = false
-
-        Log.e("ERer", throwable.message!!)
-
         if (throwable.message != null)
-            requireContext().showGenericAlertDialog(throwable.message!!)
+            requireContext().showGenericAlertDialog(throwable.message.orEmpty())
 
         if (throwable is SocketTimeoutException) {
             requireContext().showToast("Unexpected error, try again later")

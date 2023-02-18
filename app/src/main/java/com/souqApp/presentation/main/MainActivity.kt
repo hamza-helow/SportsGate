@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         // set navigation graph
-        navController.setGraph(R.navigation.home_nav_graph)
+        navController.setGraph(R.navigation.main_nav_graph)
         binding.bottomNavigationView.setupWithNavController(navController)
 
         changeStatusBarColor(color = R.color.tool_bar_color)

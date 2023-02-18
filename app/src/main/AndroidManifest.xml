@@ -50,6 +50,11 @@
         <activity
             android:name=".presentation.notification.NotificationActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".presentation.product_details.ProductDetailsFragment"
+            android:exported="true" />
+
         <activity
             android:name=".presentation.main.more.terms_and_conditions.TermsAndConditionsActivity"
             android:exported="true" />

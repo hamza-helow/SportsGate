@@ -14,8 +14,8 @@ import android.os.Build
 import android.app.PendingIntent
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.souqApp.presentation.main.MainActivity
-import com.souqApp.presentation.order_details.OrderDetailsActivity
+import com.souqApp.presentation.activity.MainActivity
+import com.souqApp.presentation.order_details.OrderDetailsFragment
 import com.souqApp.presentation.product_details.ProductDetailsFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -111,11 +111,9 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun orderIntent(redirectId: String): Intent {
-        val intent = Intent(this, OrderDetailsActivity::class.java)
+        val intent = Intent(this, OrderDetailsFragment::class.java)
         intent.putExtra(ID_ORDER, redirectId.toInt())
-
         return intent
     }
-
 }
 

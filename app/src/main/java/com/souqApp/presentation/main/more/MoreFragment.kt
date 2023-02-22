@@ -6,31 +6,25 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.settings.remote.dto.SettingsEntity
 import com.souqApp.databinding.FragmentMoreBinding
-import com.souqApp.infra.extension.changeStatusBarColor
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.openUrl
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.utils.*
-import com.souqApp.presentation.addresses.AddressActivity
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.ChangeLanguageDialog
-import com.souqApp.presentation.login.LoginActivity
-import com.souqApp.presentation.main.more.about_us.AboutUsActivity
-import com.souqApp.presentation.main.more.changePassword.ChangePasswordActivity
-import com.souqApp.presentation.main.more.contact_us.ContactUsActivity
-import com.souqApp.presentation.main.more.profile.ProfileActivity
-import com.souqApp.presentation.main.more.terms_and_conditions.TermsAndConditionsActivity
-import com.souqApp.presentation.main.more.wish_list.WishListActivity
-import com.souqApp.presentation.orders.OrdersActivity
+import com.souqApp.presentation.main.more.contact_us.ContactUsFragment
+import com.souqApp.presentation.orders.OrdersFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::inflate), View.OnClickListener {
+class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::inflate),
+    View.OnClickListener {
 
     private val viewModel: MoreViewModel by viewModels()
 
@@ -40,6 +34,8 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
+    override fun showAppBar() = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListener()
@@ -48,8 +44,9 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     }
 
     private fun observer() {
-        viewModel.state.observe(this, { handleState(it) })
+        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
     }
+
 
     private fun handleState(state: MoreFragmentState) {
         when (state) {
@@ -106,17 +103,38 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
             binding.imgFacebook.id -> openLink(binding.imgFacebook)
             binding.imgTiktok.id -> openLink(binding.imgTiktok)
             binding.imgInstagram.id -> openLink(binding.imgInstagram)
-            binding.includeLogin.root.id -> goTo(LoginActivity::class.java)
-            binding.cardProfile.id -> goTo(ProfileActivity::class.java)
-            binding.cardChangePassword.id -> goTo(ChangePasswordActivity::class.java)
-            binding.cardAddresses.id -> goTo(AddressActivity::class.java)
-            binding.cardOrders.id -> goTo(OrdersActivity::class.java)
+            binding.includeLogin.root.id -> {
+                navigate(MoreFragmentDirections.toAuthGraph())
+            }
+            binding.cardProfile.id -> {
+                navigate(MoreFragmentDirections.toProfileFragment())
+            }
+            binding.cardChangePassword.id -> {
+                navigate(MoreFragmentDirections.toChangePasswordFragment())
+
+            }
+            binding.cardAddresses.id -> {
+                navigate(MoreFragmentDirections.toAddressesGraph())
+            }
+            binding.cardOrders.id -> {
+                navigate(MoreFragmentDirections.toOrdersGraph())
+            }
             binding.cardShareApp.id -> shareApp()
-            binding.cardContactUs.id -> goToContactUsActivity()
-            binding.cardWishList.id -> goTo(WishListActivity::class.java)
+            binding.cardContactUs.id -> {
+                navigate(MoreFragmentDirections.toContactUsFragment())
+
+            }
+            binding.cardWishList.id -> {
+                navigate(MoreFragmentDirections.toWishListFragment())
+            }
             binding.cardChangeLanguage.id -> openChangeLanguageDialog()
-            binding.cardAboutUs.id -> goTo(AboutUsActivity::class.java)
-            binding.cardTermsAndConditions.id -> goTo(TermsAndConditionsActivity::class.java)
+            binding.cardAboutUs.id -> {
+                navigate(MoreFragmentDirections.toAboutUsFragment())
+
+            }
+            binding.cardTermsAndConditions.id -> {
+                navigate(MoreFragmentDirections.toTermsAndConditionsFragment())
+            }
         }
     }
 
@@ -142,7 +160,7 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     }
 
     private fun goToContactUsActivity() {
-        startActivity(Intent(requireActivity(), ContactUsActivity::class.java))
+        startActivity(Intent(requireActivity(), ContactUsFragment::class.java))
     }
 
     private fun shareApp() {
@@ -156,7 +174,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
 
     override fun onResume() {
         super.onResume()
-        requireActivity().changeStatusBarColor()
         initInfo()
     }
 

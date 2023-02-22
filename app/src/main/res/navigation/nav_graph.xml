@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/home_graph">
+
+    <action
+        android:id="@+id/to_productDetailsFragment"
+        app:destination="@id/productDetailsFragment" />
+
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="com.souqApp.presentation.product_details.ProductDetailsFragment"
+        tools:layout="@layout/fragment_product_details">
+
+        <argument
+            android:name="productId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/to_self"
+            app:destination="@id/productDetailsFragment" />
+
+    </fragment>
+
+
+    <include app:graph="@navigation/home_graph" />
+
+    <include app:graph="@navigation/categories_graph" />
+
+    <include app:graph="@navigation/cart_graph" />
+
+    <include app:graph="@navigation/more_graph" />
+
+</navigation>

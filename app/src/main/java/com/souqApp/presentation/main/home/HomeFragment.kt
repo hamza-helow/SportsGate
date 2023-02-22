@@ -2,76 +2,63 @@ package com.souqApp.presentation.main.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.souqApp.R
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeEntity
 import com.souqApp.databinding.FragmentHomeBinding
-import com.souqApp.infra.extension.changeStatusBarColor
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.utils.ALL_PRODUCTS
 import com.souqApp.infra.utils.PRODUCTS_TYPE
 import com.souqApp.infra.utils.RECOMMENDED_PRODUCTS
+import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.CategoryAdapter
 import com.souqApp.presentation.common.ProgressDialog
-import com.souqApp.presentation.main.MainActivity
-import com.souqApp.presentation.notification.NotificationActivity
-import com.souqApp.presentation.products_by_type.ProductsByTypeActivity
-import com.souqApp.presentation.search.SearchActivity
+import com.souqApp.presentation.products_by_type.ProductsByTypeFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
-class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
+    SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
-    private lateinit var binding: FragmentHomeBinding
+    @Inject
+    lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var progressBar: ProgressDialog
     private lateinit var bestSellingAdapter: ProductAdapter
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var recommendedAdapter: ProductAdapter
+    private lateinit var newProductAdapter: ProductGridAdapter
 
-    @Inject
-    lateinit var newProductAdapter: ProductGridAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
+    override fun showAppBar() = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.content.isVisible = false
         progressBar = ProgressDialog(requireContext())
-        requireActivity().changeStatusBarColor(color = R.color.tool_bar_color)
-
         initListeners()
         initAdapters()
         observer()
     }
 
     private fun initAdapters() {
-        bestSellingAdapter = ProductAdapter()
-        categoryAdapter = CategoryAdapter(verticalMode = false)
-        recommendedAdapter = ProductAdapter()
+        bestSellingAdapter = ProductAdapter(::navigateToProductDetails)
+        categoryAdapter = CategoryAdapter(verticalMode = false) {
+            navigate(HomeFragmentDirections.toSubCategoriesGraph(it.name ?: "", it.id))
+        }
+        recommendedAdapter = ProductAdapter(::navigateToProductDetails)
+        newProductAdapter = ProductGridAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
 
         // set layout managers
         binding.recCategory.layoutManager = generateLinearLayoutManager()
@@ -80,14 +67,16 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         binding.recNewProducts.layoutManager = GridLayoutManager(context, 3)
         binding.recNewProducts.addItemDecoration(GridSpacingItemDecoration(3, 30, false))
 
-
         //set adapters
         binding.recCategory.adapter = categoryAdapter
         binding.recBestSelling.adapter = bestSellingAdapter
         binding.recRecommended.adapter = recommendedAdapter
         binding.recNewProducts.adapter = newProductAdapter
 
+    }
 
+    private fun navigateToProductDetails(productId: Int) {
+        navigate(NavGraphDirections.toProductDetailsFragment(productId))
     }
 
     private fun initListeners() {
@@ -100,9 +89,9 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
     }
 
     private fun observer() {
-        viewModel.mState.observe(viewLifecycleOwner, Observer {
+        viewModel.mState.observe(viewLifecycleOwner) {
             handleState(it)
-        })
+        }
     }
 
     private fun handleState(state: HomeFragmentState) {
@@ -167,10 +156,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = HomeFragment()
-    }
 
     override fun onRefresh() {
         viewModel.getHome()
@@ -181,7 +166,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
 
         val intent = Intent(
             requireContext(),
-            ProductsByTypeActivity::class.java
+            ProductsByTypeFragment::class.java
         )
         intent.putExtra(PRODUCTS_TYPE, type)
         startActivity(intent)
@@ -192,21 +177,21 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnCl
             binding.txtShowAllCategories.id -> navigateToCategoriesFragment()
             binding.txtShowAllRecommended.id -> goToProductsByTypeScreen(RECOMMENDED_PRODUCTS)
             binding.txtShowAllNewProducts.id -> goToProductsByTypeScreen(ALL_PRODUCTS)
-            binding.toolbar.cardSearch.id -> goToSearchActivity()
-            binding.toolbar.imgNotification.id -> goToNotificationActivity()
+            binding.toolbar.cardSearch.id -> navigateToSearchFragment()
+            binding.toolbar.imgNotification.id -> navigateToNotificationFragment()
         }
     }
 
-    private fun goToNotificationActivity() {
-        startActivity(Intent(requireActivity(), NotificationActivity::class.java))
+    private fun navigateToNotificationFragment() {
+        navigate(HomeFragmentDirections.toNotificationFragment())
     }
 
-    private fun goToSearchActivity() {
-        startActivity(Intent(requireActivity(), SearchActivity::class.java))
+    private fun navigateToSearchFragment() {
+        navigate(HomeFragmentDirections.toSearchFragment())
     }
 
     private fun navigateToCategoriesFragment() {
-        (requireActivity() as MainActivity).bottomNav.selectedItemId = R.id.categoriesFragment
+        navigate(HomeFragmentDirections.toCategoriesGraph())
     }
 
 }

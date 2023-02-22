@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.souqApp.presentation.main.home.HomeFragment"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/to_categories_graph"
+            app:destination="@+id/categories_graph" />
+        <action
+            android:id="@+id/to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+
+        <action
+            android:id="@+id/to_subCategoriesGraph"
+            app:destination="@id/sub_category_graph" >
+            <argument
+                android:name="categoryName"
+                app:argType="string" />
+
+            <argument
+                android:name="categoryId"
+                app:argType="integer" />
+
+        </action>
+        <action
+            android:id="@+id/to_searchFragment"
+            app:destination="@id/searchFragment" />
+
+    </fragment>
+
+    <include app:graph="@navigation/categories_graph" />
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.souqApp.presentation.notification.NotificationFragment"
+        android:label="@string/notifications_str"
+        tools:layout="@layout/fragment_notification" />
+
+
+    <include app:graph="@navigation/sub_category_graph" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.souqApp.presentation.search.SearchFragment"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+
+
+</navigation>

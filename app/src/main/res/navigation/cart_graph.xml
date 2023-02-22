@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cart_graph"
+    app:startDestination="@id/cartFragment">
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.souqApp.presentation.main.cart.CartFragment"
+        tools:layout="@layout/fragment_cart">
+        <action
+            android:id="@+id/to_paymentDetailsFragment"
+            app:destination="@id/paymentDetailsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/paymentDetailsFragment"
+        android:name="com.souqApp.presentation.payment_details.PaymentDetailsFragment"
+        tools:layout="@layout/fragment_payment_details">
+
+        <action
+            android:id="@+id/to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="com.souqApp.presentation.order_details.OrderDetailsFragment"
+        android:label="@string/order_details"
+        tools:layout="@layout/fragment_order_details">
+
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
+
+    </fragment>
+</navigation>

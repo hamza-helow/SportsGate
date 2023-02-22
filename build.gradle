@@ -2,25 +2,25 @@
 buildscript {
 
     //kotlin
-    ext.kotlin_version = "1.5.31"
+    ext.kotlin_version = "1.7.10"
 
     // http
     ext.retrofit_version = "2.9.0"
-    ext.okhttp_logging_version = "4.9.0"
+    ext.okhttp_logging_version = "5.0.0-alpha.10"
 
     // coroutine
-    ext.coroutine_version = "1.4.1"
+    ext.coroutine_version = "1.6.4"
 
     // dagger hilt
-    ext.dagger_hilt_version = "2.37"
+    ext.dagger_hilt_version = "2.43.2"
     ext.dagger_hilt_viewmodel_version = "1.0.0-alpha03"
 
     // activiy ktx
-    ext.activity_ktx_version = "1.4.0"
-    ext.lifecycle_version = "2.4.1"
+    ext.activity_ktx_version = "1.6.1"
+    ext.lifecycle_version = "2.5.1"
 
     //navigation
-    ext.nav_version = "2.4.1"
+    ext.nav_version = "2.5.3"
 
     //junit
     ext.junit_version ="4.13.2"
@@ -36,16 +36,25 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_hilt_version"
-        classpath 'com.google.gms:google-services:4.3.10'
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_hilt_version"
+        classpath 'com.google.gms:google-services:4.3.15'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 
+}
+
+
+plugins {
+    id 'com.android.application' version '7.2.0' apply false
+    id 'com.android.library' version '7.2.0' apply false
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.0' apply false
 }
 
 

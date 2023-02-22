@@ -1,16 +1,13 @@
 package com.souqApp.presentation.common
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.souqApp.BR
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.ItemProductHorizontalBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
-import com.souqApp.infra.utils.ID_PRODUCT
-import com.souqApp.presentation.product_details.HomeProductDetailsActivity
 
-class ProductHorizontalAdapter : BaseRecyclerAdapter<ItemProductHorizontalBinding, ProductEntity>() {
+class ProductHorizontalAdapter (val onClickItem:(Int)->Unit): BaseRecyclerAdapter<ItemProductHorizontalBinding, ProductEntity>() {
 
     lateinit var listenerNeedLoadMore: ((Int) -> Unit)
 
@@ -18,10 +15,7 @@ class ProductHorizontalAdapter : BaseRecyclerAdapter<ItemProductHorizontalBindin
         holder.bind(BR.productInSearch, getItemByPosition(position))
 
         holder.binding.root.setOnClickListener {
-            val intent = Intent(holder.itemView.context, HomeProductDetailsActivity::class.java)
-            intent.putExtra(ID_PRODUCT, getItemByPosition(position).id)
-            holder.itemView.context.startActivity(intent)
-
+            onClickItem(getItemByPosition(position).id)
         }
     }
 

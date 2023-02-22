@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sub_category_graph"
+    app:startDestination="@id/subCategoriesFragment">
+
+    <argument
+        android:name="categoryName"
+        app:argType="string" />
+
+    <argument
+        android:name="categoryId"
+        app:argType="integer" />
+
+    <fragment
+        android:id="@+id/subCategoriesFragment"
+        android:name="com.souqApp.presentation.sub_categories.SubCategoriesFragment"
+        tools:layout="@layout/fragment_sub_categories">
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/to_productsByTypeFragment"
+            app:destination="@id/productsByTypeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productsByTypeFragment"
+        android:name="com.souqApp.presentation.products_by_type.ProductsByTypeFragment"
+        tools:layout="@layout/fragment_products_by_type">
+
+        <argument
+            android:name="type"
+            app:argType="integer" />
+
+        <argument
+            android:name="idSubCategory"
+            app:argType="integer" />
+
+    </fragment>
+</navigation>

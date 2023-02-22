@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.souqApp.presentation.login.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+        <action
+            android:id="@+id/to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.souqApp.presentation.forgot_password.ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password">
+        <action
+            android:id="@+id/to_verificationFragment"
+            app:destination="@id/verificationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/verificationFragment"
+        android:name="com.souqApp.presentation.verification.VerificationFragment"
+        tools:layout="@layout/fragment_verification">
+
+        <argument
+            android:name="phoneNumber"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/to_createPasswordFragment"
+            app:destination="@id/createPasswordFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/createPasswordFragment"
+        android:name="com.souqApp.presentation.create_password.CreatePasswordFragment"
+        tools:layout="@layout/fragment_create_password">
+
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+
+        <argument
+            android:name="resetToken"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.souqApp.presentation.register.RegisterFragment"
+        tools:layout="@layout/fragment_register" />
+</navigation>

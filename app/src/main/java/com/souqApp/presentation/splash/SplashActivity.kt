@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.souqApp.databinding.ActivitySplashBinding
-import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.SharedPrefs
-import com.souqApp.presentation.main.MainActivity
+import com.souqApp.presentation.activity.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope

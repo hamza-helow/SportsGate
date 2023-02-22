@@ -1,6 +1,5 @@
 package com.souqApp.presentation.main.cart
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -10,14 +9,17 @@ import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
 import com.souqApp.databinding.FragmentCartBinding
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
-import com.souqApp.infra.extension.*
+import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.extension.showGenericAlertDialog
+import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.extension.start
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.payment_details.PaymentDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
-class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::inflate), View.OnClickListener {
+class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::inflate),
+    View.OnClickListener {
 
     private val viewModel: CartFragmentViewModel by viewModels()
 
@@ -25,6 +27,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         super.onViewCreated(view, savedInstanceState)
         init()
     }
+
+    override fun showAppBar() = false
 
     override fun onResume() {
         super.onResume()
@@ -121,6 +125,6 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun navigateToPaymentDetails() {
-        startActivity(Intent(requireActivity(), PaymentDetailsActivity::class.java))
+        navigate(CartFragmentDirections.toPaymentDetailsFragment())
     }
 }

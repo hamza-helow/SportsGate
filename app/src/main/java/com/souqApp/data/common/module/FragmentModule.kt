@@ -13,10 +13,6 @@ import dagger.hilt.android.scopes.FragmentScoped
 @InstallIn(FragmentComponent::class)
 class FragmentModule {
 
-    @Provides
-    @FragmentScoped
-    fun productGridAdapterProvide(firebaseConfig: FirebaseRemoteConfig): ProductGridAdapter {
-        return ProductGridAdapter(firebaseConfig)
-    }
+
 
 }

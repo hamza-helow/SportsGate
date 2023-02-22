@@ -2,13 +2,11 @@ package com.souqApp.presentation.product_details
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -16,23 +14,25 @@ import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.databinding.FragmentProductDetailsBinding
-import com.souqApp.infra.extension.*
+import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.extension.showGenericAlertDialog
+import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.utils.APP_TAG
-import com.souqApp.infra.utils.ID_PRODUCT
 import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
 import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.main.home.SliderViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ProductDetailsFragment : Fragment(), View.OnClickListener {
+class ProductDetailsFragment :
+    BaseFragment<FragmentProductDetailsBinding>(FragmentProductDetailsBinding::inflate),
+    View.OnClickListener {
 
-    private lateinit var binding: FragmentProductDetailsBinding
+    private val args: ProductDetailsFragmentArgs by navArgs()
 
     private val viewModel: ProductDetailsViewModel by viewModels()
-
-    private var idProduct = 0
 
     @Inject
     lateinit var firebaseConfig: FirebaseRemoteConfig
@@ -41,15 +41,6 @@ class ProductDetailsFragment : Fragment(), View.OnClickListener {
     lateinit var sharedPrefs: SharedPrefs
 
     private lateinit var successAddToCartBottomSheet: SuccessAddToCartBottomSheet
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentProductDetailsBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,16 +59,15 @@ class ProductDetailsFragment : Fragment(), View.OnClickListener {
     private fun init() {
         successAddToCartBottomSheet = SuccessAddToCartBottomSheet()
 
-        idProduct = requireActivity().intent.getIntExtra(ID_PRODUCT, 0)
         initListener()
         binding.isLogin = sharedPrefs.isLogin()
         binding.showAddToCart = firebaseConfig.getBoolean(IS_PURCHASE_ENABLED)
-        viewModel.productDetails(idProduct)
+        viewModel.productDetails(args.productId)
 
     }
 
     private fun observer() {
-        viewModel.mState.observe(this, { handleState(it) })
+        viewModel.mState.observe(viewLifecycleOwner) { handleState(it) }
     }
 
     private fun handleState(state: ProductDetailsActivityState) {
@@ -114,7 +104,6 @@ class ProductDetailsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun handleToggleFavorite(favorite: Boolean) {
-
         binding.imgFavorite.setImageDrawable(
             ContextCompat.getDrawable(
                 requireContext(),
@@ -133,7 +122,9 @@ class ProductDetailsFragment : Fragment(), View.OnClickListener {
             SliderViewPagerAdapter(requireContext(), productDetailsEntity.images, viewOnly = true)
         binding.viewPager.adapter = sliderPagerAdapter
 
-        val adapterRelevantProducts = AdapterRelevantProducts()
+        val adapterRelevantProducts = AdapterRelevantProducts {
+            navigate(ProductDetailsFragmentDirections.toSelf(it.id))
+        }
         adapterRelevantProducts.addList(productDetailsEntity.relevant)
 
         binding.recRelevant.layoutManager =
@@ -164,10 +155,8 @@ class ProductDetailsFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            binding.imgFavorite.id -> viewModel.toggleFavorite(idProduct)
-            binding.btnAddToCart.id -> viewModel.addProductToCart(idProduct)
+            binding.imgFavorite.id -> viewModel.toggleFavorite(args.productId)
+            binding.btnAddToCart.id -> viewModel.addProductToCart(args.productId)
         }
     }
-
-
 }

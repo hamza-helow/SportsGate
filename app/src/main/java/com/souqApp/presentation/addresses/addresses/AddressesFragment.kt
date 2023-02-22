@@ -3,10 +3,7 @@ package com.souqApp.presentation.addresses.addresses
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.R
 import com.souqApp.data.addresses.remote.dto.AddressResponse
@@ -17,19 +14,15 @@ import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
-import com.souqApp.infra.utils.ID_ADDRESS
-import dagger.hilt.android.AndroidEntryPoint
-import com.souqApp.presentation.addresses.AddressActivityViewModel
 import com.souqApp.presentation.base.BaseFragment
-
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddressesBinding::inflate), View.OnClickListener {
+class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddressesBinding::inflate),
+    View.OnClickListener {
 
     private lateinit var addressAdapter: AdapterAddress
-    private lateinit var mainViewModel: AddressActivityViewModel
-
-    private val viewModel: AddressViewModel by viewModels()
+    private val viewModel: AddressViewModel by navGraphViewModels(R.id.addresses_graph) { defaultViewModelProviderFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,18 +31,14 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
         binding.recAddresses.adapter = addressAdapter
 
         addressAdapter.onClickItem = {
-            val bundle = bundleOf(ID_ADDRESS to it)
-            Navigation.findNavController(requireView())
-                .navigate(R.id.addressDetailsFragment, bundle)
+            navigate(AddressesFragmentDirections.toAddressDetailsFragment(it))
         }
-
-        setTitleAppBar()
         initListener()
         observer()
     }
 
     private fun observer() {
-        viewModel.state.observe(viewLifecycleOwner, { handleState(it) })
+        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
 
         addressAdapter.onClickMoreButton = { address, position ->
             val bottomSheet = AddressOptionsBottomSheet(address.isPrimary)
@@ -69,21 +58,8 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
         }
     }
 
-    private fun setTitleAppBar() {
-        activity?.run {
-            mainViewModel = ViewModelProvider(this)[AddressActivityViewModel::class.java]
-        } ?: throw Throwable("invalid activity")
-
-        mainViewModel.updateActionBarTitle(getString(R.string.mange_addresses_str))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getAddresses()  //reloadAddresses
-    }
 
     private fun handleState(state: AddressesFragmentState) {
-
         when (state) {
             is AddressesFragmentState.Init -> Unit
             is AddressesFragmentState.Loading -> handleLoading(state.isLoading)
@@ -142,12 +118,11 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
 
     override fun onClick(view: View) {
         when (view.id) {
-            binding.fbAddAddress.id -> goToAddAddressFragment(view)
+            binding.fbAddAddress.id -> goToAddAddressFragment()
         }
     }
 
-    private fun goToAddAddressFragment(view: View) {
-        Navigation.findNavController(view)
-            .navigate(R.id.action_addressesFragment_to_addAddressFragment)
+    private fun goToAddAddressFragment() {
+        navigate(AddressesFragmentDirections.toAddAddressFragment())
     }
 }

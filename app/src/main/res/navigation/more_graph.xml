@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/more_graph"
+    app:startDestination="@id/moreFragment">
+
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.souqApp.presentation.main.more.MoreFragment"
+        tools:layout="@layout/fragment_more">
+
+        <action
+            android:id="@+id/to_auth_graph"
+            app:destination="@+id/auth_graph" />
+
+        <action
+            android:id="@+id/to_orders_graph"
+            app:destination="@+id/orders_graph" />
+
+        <action
+            android:id="@+id/to_addresses_graph"
+            app:destination="@+id/addresses_graph" />
+        <action
+            android:id="@+id/to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/to_aboutUsFragment"
+            app:destination="@id/aboutUsFragment" />
+        <action
+            android:id="@+id/to_contactUsFragment"
+            app:destination="@id/contactUsFragment" />
+        <action
+            android:id="@+id/to_termsAndConditionsFragment"
+            app:destination="@id/termsAndConditionsFragment" />
+        <action
+            android:id="@+id/to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/to_wishListFragment"
+            app:destination="@id/wishListFragment" />
+
+    </fragment>
+
+
+    <include app:graph="@navigation/auth_graph" />
+
+    <include app:graph="@navigation/addresses_graph" />
+
+    <include app:graph="@navigation/orders_graph" />
+
+
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.souqApp.presentation.main.more.changePassword.ChangePasswordFragment"
+        android:label="@string/change_password_str"
+        tools:layout="@layout/fragment_change_password" />
+
+    <fragment
+        android:id="@+id/aboutUsFragment"
+        android:name="com.souqApp.presentation.main.more.about_us.AboutUsFragment"
+        android:label="@string/about_us_str"
+        tools:layout="@layout/fragment_about_us" />
+
+
+    <fragment
+        android:id="@+id/contactUsFragment"
+        android:name="com.souqApp.presentation.main.more.contact_us.ContactUsFragment"
+        android:label="@string/contact_us_str"
+        tools:layout="@layout/fragment_contact_us" />
+
+    <fragment
+        tools:layout="@layout/fragment_terms_and_conditions"
+        android:id="@+id/termsAndConditionsFragment"
+        android:name="com.souqApp.presentation.main.more.terms_and_conditions.TermsAndConditionsFragment"
+        android:label="@string/terms_and_conditions_str" />
+
+
+    <fragment
+        tools:layout="@layout/fragment_profile"
+        android:id="@+id/profileFragment"
+        android:name="com.souqApp.presentation.main.more.profile.ProfileFragment"
+        android:label="@string/user_profile" />
+
+    <fragment
+        android:id="@+id/wishListFragment"
+        android:name="com.souqApp.presentation.main.more.wish_list.WishListFragment"
+        android:label="@string/wish_list"
+        tools:layout="@layout/fragment_wish_list" />
+
+</navigation>

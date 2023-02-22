@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/home_graph"
         android:icon="@drawable/ic_menu_home"
         android:title="@string/home" />
 
     <item
-        android:id="@+id/categoriesFragment"
+        android:id="@+id/categories_graph"
         android:icon="@drawable/ic_menu_categories"
         android:title="@string/categories" />
 
     <item
-        app:showAsAction="withText"
-        android:id="@+id/cartFragment"
+        android:id="@+id/cart_graph"
         android:enabled="true"
         android:icon="@drawable/ic_menu_cart"
         android:title="@string/cart" />
 
-
     <item
-        android:id="@+id/moreFragment"
+        android:id="@+id/more_graph"
         android:icon="@drawable/ic_menu_more"
         android:title="@string/more" />
 </menu>

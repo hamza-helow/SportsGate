@@ -30,10 +30,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
-            android:name=".presentation.product_details.HomeProductDetailsActivity"
-            android:exported="true"
-            android:theme="@style/FullScreen"
-            />
+            android:name=".presentation.activity.MainActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <activity
             android:name=".presentation.splash.SplashActivity"
             android:exported="true"
@@ -44,41 +47,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".presentation.create_password.CreatePasswordActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.notification.NotificationActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".presentation.product_details.ProductDetailsFragment"
-            android:exported="true" />
-
-        <activity
-            android:name=".presentation.main.more.terms_and_conditions.TermsAndConditionsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.main.more.about_us.AboutUsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.main.more.wish_list.WishListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.main.more.contact_us.ContactUsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.search.SearchActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.order_details.OrderDetailsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.orders.OrdersActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.payment_details.PaymentDetailsActivity"
-            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -88,54 +56,6 @@
             android:name=".presentation.addresses.map.MapsActivity"
             android:exported="true"
             android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".presentation.addresses.AddressActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".presentation.products_by_type.ProductsByTypeActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".presentation.main.more.changePassword.ChangePasswordActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".presentation.sub_categories.SubCategoriesActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".presentation.main.more.profile.ProfileActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".presentation.verification.VerificationActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".presentation.forgot_password.ForgotPasswordActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.register.RegisterActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".presentation.main.MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/ThemeLight"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".presentation.login.LoginActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -12,7 +12,7 @@ class HomeProductDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeProductDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+      //  setContentView(binding.root)
     }
 
     override fun onSupportNavigateUp(): Boolean {

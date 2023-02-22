@@ -4,12 +4,13 @@
         <item name="android:spinnerMode">dropdown</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:textSize">15.sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="buttonStyle">@style/ButtonFillStyle</item>
         <item name="android:textColor">@color/black</item>
         <item name="backgroundBaseScreen">@color/gray_background</item>
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:statusBarColor">@color/tool_bar_color</item>
         <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="bottomNavColor">@color/white</item>
@@ -34,7 +35,6 @@
         <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="bottomNavColor">@color/black</item>
-
     </style>
 
 

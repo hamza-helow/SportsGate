@@ -9,7 +9,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.android.gms.maps.model.LatLng
 import com.souqApp.R
@@ -23,7 +22,6 @@ import com.souqApp.domain.addresses.CityEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.ADDRESS_DETAILS
 import com.souqApp.infra.utils.LOCATION_USER
-import com.souqApp.presentation.addresses.AddressActivityViewModel
 import com.souqApp.presentation.addresses.map.MapsActivity
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,8 +31,6 @@ import java.net.SocketTimeoutException
 class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAddressBinding::inflate), View.OnClickListener {
 
     private val viewModel: AddAddressViewModel by viewModels()
-
-    private lateinit var mainViewModel: AddressActivityViewModel
 
     private val openMapActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -68,14 +64,8 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAd
     }
 
     private fun observer() {
-        viewModel.state.observe(viewLifecycleOwner, { handleState(it) })
-        viewModel.userLatLng.observe(viewLifecycleOwner, { whenUserSetLatLng() })
-
-        activity?.run {
-            mainViewModel = ViewModelProvider(this)[AddressActivityViewModel::class.java]
-        } ?: throw Throwable("invalid activity")
-
-        mainViewModel.updateActionBarTitle(getString(R.string.add_a_new_address_str))
+        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
+        viewModel.userLatLng.observe(viewLifecycleOwner) { whenUserSetLatLng() }
     }
 
     private fun whenUserSetLatLng() {

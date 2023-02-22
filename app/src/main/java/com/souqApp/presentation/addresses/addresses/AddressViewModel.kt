@@ -17,8 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class
-AddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase) :
+class AddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase) :
     ViewModel() {
 
     private val _state = MutableLiveData<AddressesFragmentState>()
@@ -49,6 +48,7 @@ AddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase)
         _state.value = AddressesFragmentState.ChangeDefaultAddress(changed)
     }
 
+    @Inject
     fun getAddresses() {
         viewModelScope.launch {
             addressUseCase.getAll()

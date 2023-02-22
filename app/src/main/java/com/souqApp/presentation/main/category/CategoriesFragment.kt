@@ -7,11 +7,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.FragmentCategoriesBinding
-import com.souqApp.infra.extension.changeStatusBarColor
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
@@ -27,14 +25,17 @@ class CategoriesFragment :
 
     private val viewModel: CategoriesViewModel by viewModels()
     private lateinit var progressBar: ProgressDialog
-    private val adapterCategory = CategoryAdapter(verticalMode = true)
+    private val adapterCategory by lazy {
+        CategoryAdapter(verticalMode = true) {
+            navigate(CategoriesFragmentDirections.toSubCategoriesGraph(it.name ?: "", it.id))
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progressBar = ProgressDialog(requireContext())
         binding.recCategory.layoutManager = LinearLayoutManager(requireContext())
         binding.recCategory.adapter = adapterCategory
-        requireActivity().changeStatusBarColor(color = R.color.tool_bar_color)
         observe()
     }
 

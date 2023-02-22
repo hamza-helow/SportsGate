@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_16sdp"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_32sdp"
+                android:gravity="center"
+                android:text="@string/sign_up"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_22sdp"
+                android:textStyle="bold" />
+
+
+            <include
+                android:id="@+id/loader"
+                layout="@layout/loader" />
+
+
+
+            <include
+                android:id="@+id/include_full_name"
+                layout="@layout/edit_text"
+                app:hintText="@{@string/full_name_str}" />
+
+            <include
+                android:id="@+id/include_email"
+                layout="@layout/edit_text"
+                app:hintText="@{@string/email_str}" />
+
+            <include
+                android:id="@+id/include_phone_number"
+                layout="@layout/edit_text_phone_number" />
+
+            <include
+                android:id="@+id/include_password"
+                layout="@layout/edit_text_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp"
+                app:hintText="@{@string/password_str}" />
+
+
+            <include
+                android:id="@+id/include_confirm_password"
+                layout="@layout/edit_text_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintText="@{@string/confirm_password_str}" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/register_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:enabled="false"
+                android:text="@string/sign_up"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/checkBox"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</layout>

@@ -1,21 +1,19 @@
 package com.souqApp.presentation.main.home
 
-import android.view.View
-import androidx.viewpager.widget.PagerAdapter
-import android.widget.LinearLayout
-import android.view.ViewGroup
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.viewpager.widget.PagerAdapter
 import com.souqApp.data.main.home.remote.dto.ProductAdsEntity
 import com.souqApp.databinding.ItemSliderBinding
-import com.souqApp.infra.utils.ID_PRODUCT
-import com.souqApp.presentation.product_details.ProductDetailsFragment
 
 class SliderViewPagerAdapter(
     val context: Context,
     private val ads: List<ProductAdsEntity>,
-    private val viewOnly: Boolean = false
+    private val viewOnly: Boolean = false ,
+    val onClickItem:(Int)->Unit ={}
 ) :
     PagerAdapter() {
 
@@ -37,9 +35,7 @@ class SliderViewPagerAdapter(
 
         if (!viewOnly)
             binding.root.setOnClickListener {
-                val intent = Intent(context, ProductDetailsFragment::class.java)
-                intent.putExtra(ID_PRODUCT, ads[position].id)
-                context.startActivity(intent)
+                onClickItem(ads[position].id)
             }
 
         return binding.root

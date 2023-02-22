@@ -1,35 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#ffffffff</color>
     <color name="colorAccent">#ffcc0000</color>
 
 
-    <color name="yellow">#ffe2e328</color>
-    <color name="yellow_light">#fff8fbca</color>
-    <color name="yellow_light2">#ffcddb0c</color>
-    <color name="yellow_light3">#32cddb0c</color>
-    <color name="yellow_light4">#fffafbd6</color>
-
-
     <color name="grey">#FF979797</color>
     <color name="gray_background">#fff2f6f8</color>
-    <color name="gray_light">#ff3c474e</color>
     <color name="gray_light2">#ffabb9c3</color>
     <color name="gray_light3">#ffdee7ed</color>
-    <color name="gray_light4">#ffb4b8bc</color>
-    <color name="gray_light5">#ff8d949a</color>
-    <color name="gray_light6">#ffd9dcdf</color>
-    <color name="gray_light8">#ff9ca0a3</color>
-    <color name="gray_light_6">#ffa2a2a2</color>
-    <color name="gray_light_7">#ff485359</color>
-    <color name="gray_light_plus">#cedbe3e8</color>
     <color name="green">#ff37c47b</color>
     <color name="red">#ffec272d</color>
     <color name="tool_bar_color">#4E4E4E</color>

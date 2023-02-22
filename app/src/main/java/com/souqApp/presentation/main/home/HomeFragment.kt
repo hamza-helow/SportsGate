@@ -123,7 +123,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //visible content
         binding.content.isVisible = true
 
-        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.products_ads)
+        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.products_ads){
+            navigate(NavGraphDirections.toProductDetailsFragment(it))
+        }
         binding.viewPager.adapter = sliderPagerAdapter
 
         // set lists

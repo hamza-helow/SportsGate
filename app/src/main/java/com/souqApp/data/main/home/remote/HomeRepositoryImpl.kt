@@ -1,6 +1,5 @@
 package com.souqApp.data.main.home.remote
 
-import android.util.Log
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeEntity
 import com.souqApp.domain.common.BaseResult
@@ -15,14 +14,12 @@ class HomeRepositoryImpl @Inject constructor(private val homeApi: HomeApi) : Hom
             val response = homeApi.getHome()
             val isSuccessful = response.body()?.status
 
-            Log.e("ererR", "${response.code()}")
-
             if (isSuccessful == true) {
                 val body = response.body()!!.data!!
                 val homeEntity = HomeEntity(
                     body.cart_products_count,
                     body.show_location,
-                    body.products_ads,
+                    body.promotions,
                     body.categories,
                     body.new_products,
                     body.best_selling_products,

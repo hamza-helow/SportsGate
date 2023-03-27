@@ -5,7 +5,7 @@
     </entry>
     <entry>
         <key>Is_Purchase_Enabled</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
     <entry>
         <key>Order_history_Android</key>

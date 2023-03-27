@@ -23,7 +23,7 @@ class CategoriesViewModel @Inject constructor(private val categoriesUseCase: Cat
         state.value = CategoriesFragmentState.IsLoading(true)
     }
 
-    fun hideLoading() {
+    private fun hideLoading() {
         state.value = CategoriesFragmentState.IsLoading(false)
     }
 

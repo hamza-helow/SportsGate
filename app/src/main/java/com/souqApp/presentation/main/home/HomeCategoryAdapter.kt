@@ -1,20 +1,18 @@
-package com.souqApp.presentation.common
+package com.souqApp.presentation.main.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.souqApp.BR
 import com.souqApp.data.main.common.CategoryEntity
-import com.souqApp.databinding.ItemCategoryBinding
+import com.souqApp.databinding.ItemHomeCategoryBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
-/**
- * @param verticalMode  when use  LinearLayoutManager HORIZONTAL set verticalMode true else false
- * */
-class CategoryAdapter(
+
+class HomeCategoryAdapter(
     private val verticalMode: Boolean = true,
     val onClickItem: (CategoryEntity) -> Unit
 ) :
-    BaseRecyclerAdapter<ItemCategoryBinding, CategoryEntity>() {
+    BaseRecyclerAdapter<ItemHomeCategoryBinding, CategoryEntity>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(BR.category, getItemByPosition(position))
         holder.bind(BR.verticalMode, verticalMode)
@@ -23,8 +21,8 @@ class CategoryAdapter(
         }
     }
 
-    override fun getBinding(parent: ViewGroup, viewType: Int): ItemCategoryBinding {
-        return ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun getBinding(parent: ViewGroup, viewType: Int): ItemHomeCategoryBinding {
+        return ItemHomeCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 
     override fun enableAddItem(): Boolean {
@@ -32,6 +30,5 @@ class CategoryAdapter(
     }
 
     override fun needLoadMore(page: Int) {
-
     }
 }

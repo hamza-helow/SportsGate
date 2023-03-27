@@ -1,6 +1,8 @@
 package com.souqApp.infra.utils
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -13,6 +15,7 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.souqApp.R
 import com.souqApp.infra.extension.inVisible
 import com.souqApp.infra.extension.isVisible
@@ -26,6 +29,7 @@ fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null) {
         return
     Glide.with(this)
         .load(url)
+        .centerInside()
         .apply {
             if (placeholder != null)
                 placeholder(R.drawable.image_placeholder)
@@ -86,5 +90,18 @@ fun setBold(view: TextView, isBold: Boolean) {
         view.setTypeface(null, Typeface.BOLD)
     } else {
         view.setTypeface(null, Typeface.NORMAL)
+    }
+}
+
+@BindingAdapter("isDiscountPrice")
+fun TextView.discountTextView(isDiscountPrice: Boolean) {
+    if (isDiscountPrice) {
+        paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        setTextColor(Color.RED)
+        typeface = Typeface.DEFAULT
+    } else {
+        setTextColor(Color.BLACK)
+        typeface = Typeface.DEFAULT_BOLD
+        paintFlags = 0
     }
 }

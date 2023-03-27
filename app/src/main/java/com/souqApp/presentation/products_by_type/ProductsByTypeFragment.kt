@@ -28,8 +28,10 @@ class ProductsByTypeFragment :
     @Inject
     lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     private val viewMode: ProductsByTypeVM by viewModels()
-    lateinit var productAdapter: ProductGridAdapter
+    private lateinit var productAdapter: ProductGridAdapter
     private val args: ProductsByTypeFragmentArgs by navArgs()
+
+    override fun updateTitleBar(): String = args.subCategoryName
 
     override fun onResume() {
         super.onResume()
@@ -86,5 +88,4 @@ class ProductsByTypeFragment :
     private fun handleLoading(loading: Boolean) {
         binding.includeLoader.loadingProgressBar.start(loading && productAdapter.list.isEmpty())
     }
-
 }

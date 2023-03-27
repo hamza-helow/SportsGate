@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
 }
 
 
@@ -37,7 +38,7 @@ android {
 
         create("dev") {
             applicationId "advanced.devsouqApp"
-            buildConfigField 'String', 'API_BASE_URL', '"https://dev.2advanced.me/api/"'
+            buildConfigField 'String', 'API_BASE_URL', '"https://souqapp.co/api/"'
             buildConfigField 'String', 'APP_NAME', '"Sports gate"'
         }
 
@@ -149,8 +150,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
     implementation "androidx.core:core-ktx:1.10.0-alpha02"
-
-
 
 }
 

@@ -13,7 +13,6 @@ import com.souqApp.databinding.FragmentCategoriesBinding
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.common.CategoryAdapter
 import com.souqApp.presentation.common.ProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -25,9 +24,13 @@ class CategoriesFragment :
 
     private val viewModel: CategoriesViewModel by viewModels()
     private lateinit var progressBar: ProgressDialog
+
     private val adapterCategory by lazy {
-        CategoryAdapter(verticalMode = true) {
-            navigate(CategoriesFragmentDirections.toSubCategoriesGraph(it.name ?: "", it.id))
+        CategoryAdapter {
+            if (it.children == null)
+                navigate(CategoriesFragmentDirections.toSubCategoriesGraph(it.name ?: "", it.id))
+            else
+                navigate(CategoriesFragmentDirections.toCategoryChildrenFragment(it.children.toTypedArray()))
         }
     }
 

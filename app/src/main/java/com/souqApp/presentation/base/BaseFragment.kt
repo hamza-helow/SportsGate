@@ -38,6 +38,10 @@ abstract class BaseFragment<V : ViewBinding>(
         else
             appBarConfig().hideAppBar()
 
+        if(updateTitleBar() != null){
+            appBarConfig().updateTitleBar(updateTitleBar().orEmpty())
+        }
+
         return binding.root
     }
 
@@ -67,8 +71,7 @@ abstract class BaseFragment<V : ViewBinding>(
                 if (popUpTo != null)
                     setPopUpTo(popUpTo, false)
             }
-            .setEnterAnim(R.anim.fade_in)
-            .setExitAnim(R.anim.fade_out)
+            .setEnterAnim(android.R.anim.slide_in_left)
             .build()
 
         findNavController().navigate(navDirections, navOptions)
@@ -80,5 +83,7 @@ abstract class BaseFragment<V : ViewBinding>(
     }
 
     open fun showAppBar(): Boolean = true
+
+    open fun updateTitleBar(): String? = null
 
 }

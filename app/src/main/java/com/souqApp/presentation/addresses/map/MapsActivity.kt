@@ -29,11 +29,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
     private lateinit var locationManager: LocationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        handlerPermissions()
+    }
+
+    override fun onResume() {
+        super.onResume()
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -47,17 +50,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
             finish()
         }
 
-        handlerPermissions()
 
     }
 
     private fun handlerPermissions() {
         val requestMultiplePermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-
                 var granted = 0
                 permissions.entries.forEach {
-                    Log.e("DEBUG", "${it.key} = ${it.value}")
                     if (it.value)
                         granted++
                 }
@@ -93,7 +93,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
 
     @SuppressLint("MissingPermission")
     private fun getDeviceLocation() {
-        mMap.isMyLocationEnabled = true
+       // mMap.isMyLocationEnabled = true
 
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationProviderClient.lastLocation.addOnCompleteListener {

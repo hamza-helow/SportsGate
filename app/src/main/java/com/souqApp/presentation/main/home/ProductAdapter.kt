@@ -2,17 +2,27 @@ package com.souqApp.presentation.main.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.BR
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.ItemProductBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
+import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
 
-class ProductAdapter(val onClickItem: (Int) -> Unit) : BaseRecyclerAdapter<ItemProductBinding, ProductEntity>() {
+class ProductAdapter(
+    private val firebaseConfig: FirebaseRemoteConfig,
+    val onClickItem: (Int) -> Unit
+
+) : BaseRecyclerAdapter<ItemProductBinding, ProductEntity>() {
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(BR.product, getItemByPosition(position))
+        val product = getItemByPosition(position)
+
+        holder.bind(BR.product, product)
+        holder.bind(BR.showPrice, firebaseConfig.getBoolean(IS_PURCHASE_ENABLED))
+
         holder.itemView.setOnClickListener {
-            onClickItem(getItemByPosition(position).id)
+            onClickItem(product.id)
         }
     }
 

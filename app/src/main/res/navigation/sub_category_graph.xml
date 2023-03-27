@@ -35,6 +35,10 @@
         tools:layout="@layout/fragment_products_by_type">
 
         <argument
+            android:name="subCategoryName"
+            app:argType="string" />
+
+        <argument
             android:name="type"
             app:argType="integer" />
 

@@ -3,6 +3,7 @@ package com.souqApp.presentation.main.more.profile
 import android.Manifest
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,6 +15,7 @@ import com.souqApp.databinding.FragmentProfileBinding
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
+import com.souqApp.infra.utils.PathUtil
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,13 +25,31 @@ import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate), View.OnClickListener {
+class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate),
+    View.OnClickListener {
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     private lateinit var cameraCachePath: File
-    private lateinit var requestCameraPermission: ActivityResultLauncher<String>
-    private lateinit var getImageContent: ActivityResultLauncher<String>
+
+    private val requestCameraPermission: ActivityResultLauncher<String> = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { permissionGranted ->
+        if (permissionGranted) {
+            getImageContent.launch("image/*")
+        }
+    }
+
+    private val getImageContent: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                imageSelected = PathUtil.getPath(requireContext(), uri)
+                binding.imgProfile.setImageURI(uri)
+                viewModel.setProfileChanged(true)
+            }
+        }
+
+
     private var imageSelected: String? = null
     val viewModel: ProfileViewModel by viewModels()
 
@@ -37,35 +57,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         super.onResume()
         init()
         initListener()
-        initResultLaunchers()
-
     }
 
     override fun onStart() {
         super.onStart()
         observe()
-    }
-
-    private fun initResultLaunchers() {
-//        requestCameraPermission = activityResultRegistry
-//            .register("requestCameraPermission",
-//                this, ActivityResultContracts.RequestPermission()
-//            ) { isGranted ->
-//                if (isGranted) {
-//                    getImageContent.launch("image/*")
-//                }
-//            }
-//
-//        getImageContent = activityResultRegistry.register("getImageContent",
-//            this, ActivityResultContracts.GetContent()
-//        ) { uri ->
-//            //check image is selected
-//            if (uri != null) {
-//                imageSelected = PathUtil.getPath(baseContext, uri)
-//                binding.imgProfile.setImageURI(uri)
-//                viewModel.setProfileChanged(true)
-//            }
-//        }
     }
 
     private fun initListener() {
@@ -127,7 +123,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun logout() {
         sharedPrefs.logout()
-       findNavController().popBackStack()
+        findNavController().popBackStack()
     }
 
     private fun updateProfile() {
@@ -141,7 +137,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     override fun onDestroy() {
         super.onDestroy()
-       // requestCameraPermission.unregister()
-      //  getImageContent.unregister()
+        requestCameraPermission.unregister()
+        getImageContent.unregister()
     }
 }

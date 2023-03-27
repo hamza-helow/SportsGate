@@ -30,6 +30,20 @@
                     android:paddingBottom="@dimen/_32sdp"
                     tools:context=".presentation.main.home.HomeFragment">
 
+                    <!-- Categories-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_marginBottom="@dimen/_16sdp"
+                        android:id="@+id/rec_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingEnd="@dimen/_32sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/item_home_category"
+                        tools:ignore="RtlSymmetry" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -62,58 +76,6 @@
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!-- Categories-->
-                    <LinearLayout
-                        android:id="@+id/card_categories"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:background="@color/white"
-                        android:orientation="vertical">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginBottom="@dimen/_8sdp">
-
-                            <TextView
-                                android:id="@+id/txt_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text='@string/categories'
-                                android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/txt_show_all_categories"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:text="@string/show_all"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rec_category"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_8sdp"
-                            android:clipToPadding="false"
-                            android:orientation="horizontal"
-                            android:paddingEnd="@dimen/_32sdp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:itemCount="10"
-                            tools:listitem="@layout/item_product"
-                            tools:ignore="RtlSymmetry" />
-
-                    </LinearLayout>
 
                     <!-- Best selling-->
                     <LinearLayout
@@ -218,7 +180,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_16sdp"
-                        android:background="@color/white"
                         android:orientation="vertical">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -257,6 +218,8 @@
                             android:orientation="horizontal"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             tools:itemCount="10"
+                            android:horizontalSpacing="@dimen/_10sdp"
+                            android:stretchMode="spacingWidth"
                             tools:listitem="@layout/item_product_grid" />
 
                     </LinearLayout>

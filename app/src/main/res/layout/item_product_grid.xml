@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -11,51 +12,102 @@
         <variable
             name="showPrice"
             type="Boolean" />
+
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/_16sdp"
-        android:useDefaultMargins="true"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:paddingVertical="@dimen/_8sdp"
         tools:ignore="RtlSymmetry">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
-            android:scaleType="fitXY"
-            app:networkImage="@{product.first_image}"
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/cardImageProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:padding="@dimen/_8sdp"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:networkImage="@{product.thumb}"
             tools:ignore="ContentDescription"
             tools:srcCompat="@drawable/gym_category_for_test" />
 
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:background="@drawable/circle"
+            app:cardBackgroundColor="@color/red"
+            app:cardCornerRadius="@dimen/_50sdp"
+            app:isVisible="@{product.discount_percentage> 0.0}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cardImageProduct">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text='@{"-" + String.valueOf(product.discount_percentage) + "%" }'
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                tools:text="50%" />
+
+        </androidx.cardview.widget.CardView>
+
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txtProductName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text='@{product.name}'
             android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/cardImageProduct"
+            app:layout_constraintStart_toStartOf="@+id/cardImageProduct"
+            app:layout_constraintTop_toBottomOf="@+id/cardImageProduct"
             tools:text="product name" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:scrollHorizontally="true"
-            android:text='@{product.small_desc}'
-            android:textColor="@color/grey"
-            tools:text="product desc" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_marginTop="@dimen/_4sdp"
+            android:id="@+id/cardPrice"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text='@{product.regular_price+" "+product.setting_currency}'
-            android:textColor="@color/black"
-            tools:ignore="HardcodedText"
-            tools:text="price"
-            app:isVisible="@{showPrice}"
-            />
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cardImageProduct"
+            app:layout_constraintStart_toStartOf="@+id/txtProductName"
+            app:layout_constraintTop_toBottomOf="@+id/txtProductName">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/txtPriceBeforeDiscount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{product.price}"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:isDiscountPrice="@{product.discount_percentage > 0}"
+                app:isVisible="@{showPrice}"
+                tools:text="price before discount" />
+
+            <TextView
+                android:id="@+id/txtPriceAfterDiscount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{product.discounted_product_price}"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:isVisible="@{product.discount_percentage > 0}"
+                tools:text="price after discount" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

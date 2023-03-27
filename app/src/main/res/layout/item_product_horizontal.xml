@@ -23,7 +23,7 @@
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:networkImage="@{productInSearch.first_image}"
+            app:networkImage="@{productInSearch.thumb}"
             app:srcCompat="@drawable/gym_category_for_test" />
 
         <LinearLayout

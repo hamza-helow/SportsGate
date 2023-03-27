@@ -5,6 +5,6 @@ import com.souqApp.data.main.common.CategoryEntity
 import retrofit2.http.GET
 
 interface CategoriesApi {
-    @GET("v1/categories/getAll")
+    @GET("v2/categories/getCategoriesTree")
     suspend fun categories(): WrappedListResponse<CategoryEntity>
 }

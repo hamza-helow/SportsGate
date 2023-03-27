@@ -19,6 +19,10 @@ class SubCategoriesFragment :
     private val args: SubCategoriesFragmentArgs by navArgs()
     private val viewModel: SubCategoriesViewModel by viewModels()
 
+    override fun updateTitleBar(): String {
+        return args.categoryName
+    }
+
     override fun onResume() {
         super.onResume()
         binding.refreshSwiper.setOnRefreshListener(this)
@@ -51,6 +55,7 @@ class SubCategoriesFragment :
         val subCategoriesAdapter = SubCategoriesAdapter {
             navigate(
                 SubCategoriesFragmentDirections.toProductsByTypeFragment(
+                    it.name.orEmpty(),
                     PRODUCT_BY_SUB_CATEGORY,
                     it.id
                 )

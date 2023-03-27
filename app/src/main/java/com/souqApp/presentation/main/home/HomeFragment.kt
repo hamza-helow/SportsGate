@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.NavGraphDirections
@@ -21,7 +21,6 @@ import com.souqApp.infra.utils.ALL_PRODUCTS
 import com.souqApp.infra.utils.PRODUCTS_TYPE
 import com.souqApp.infra.utils.RECOMMENDED_PRODUCTS
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.common.CategoryAdapter
 import com.souqApp.presentation.common.ProgressDialog
 import com.souqApp.presentation.products_by_type.ProductsByTypeFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +36,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var progressBar: ProgressDialog
     private lateinit var bestSellingAdapter: ProductAdapter
-    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var homeCategoryAdapter: HomeCategoryAdapter
     private lateinit var recommendedAdapter: ProductAdapter
     private lateinit var newProductAdapter: ProductGridAdapter
 
@@ -53,22 +52,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun initAdapters() {
-        bestSellingAdapter = ProductAdapter(::navigateToProductDetails)
-        categoryAdapter = CategoryAdapter(verticalMode = false) {
+        bestSellingAdapter = ProductAdapter(firebaseRemoteConfig,::navigateToProductDetails)
+        homeCategoryAdapter = HomeCategoryAdapter(verticalMode = false) {
             navigate(HomeFragmentDirections.toSubCategoriesGraph(it.name ?: "", it.id))
         }
-        recommendedAdapter = ProductAdapter(::navigateToProductDetails)
+        recommendedAdapter = ProductAdapter(firebaseRemoteConfig,::navigateToProductDetails)
         newProductAdapter = ProductGridAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
 
         // set layout managers
         binding.recCategory.layoutManager = generateLinearLayoutManager()
         binding.recBestSelling.layoutManager = generateLinearLayoutManager()
         binding.recRecommended.layoutManager = generateLinearLayoutManager()
-        binding.recNewProducts.layoutManager = GridLayoutManager(context, 3)
-        binding.recNewProducts.addItemDecoration(GridSpacingItemDecoration(3, 30, false))
+        binding.recNewProducts.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+        binding.recNewProducts.addItemDecoration(SpacesItemDecoration(20))
 
         //set adapters
-        binding.recCategory.adapter = categoryAdapter
+        binding.recCategory.adapter = homeCategoryAdapter
         binding.recBestSelling.adapter = bestSellingAdapter
         binding.recRecommended.adapter = recommendedAdapter
         binding.recNewProducts.adapter = newProductAdapter
@@ -83,7 +82,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.refreshSwiper.setOnRefreshListener(this)
         binding.txtShowAllRecommended.setOnClickListener(this)
         binding.txtShowAllNewProducts.setOnClickListener(this)
-        binding.txtShowAllCategories.setOnClickListener(this)
+        binding.recCategory.setOnClickListener(this)
         binding.toolbar.cardSearch.setOnClickListener(this)
         binding.toolbar.imgNotification.setOnClickListener(this)
     }
@@ -123,13 +122,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //visible content
         binding.content.isVisible = true
 
-        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.products_ads){
+        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.promotions){
             navigate(NavGraphDirections.toProductDetailsFragment(it))
         }
         binding.viewPager.adapter = sliderPagerAdapter
 
         // set lists
-        categoryAdapter.list = homeEntity.categories
+        homeCategoryAdapter.list = homeEntity.categories
         bestSellingAdapter.list = homeEntity.best_selling_products
         recommendedAdapter.list = homeEntity.recommended_products
         newProductAdapter.list = homeEntity.new_products
@@ -141,9 +140,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.cardNewProducts.isVisible = homeEntity.new_products.isNotEmpty()
         binding.cardRecommended.isVisible = homeEntity.recommended_products.isNotEmpty()
         binding.cardBestSelling.isVisible = homeEntity.best_selling_products.isNotEmpty()
-        binding.cardCategories.isVisible = homeEntity.categories.isNotEmpty()
-        binding.viewPager.isVisible = homeEntity.products_ads.isNotEmpty()
-        binding.tabDots.isVisible = homeEntity.products_ads.isNotEmpty()
+        binding.recCategory.isVisible = homeEntity.categories.isNotEmpty()
+        binding.viewPager.isVisible = homeEntity.promotions.isNotEmpty()
+        binding.tabDots.isVisible = homeEntity.promotions.isNotEmpty()
 
     }
 
@@ -176,7 +175,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun onClick(view: View) {
         when (view.id) {
-            binding.txtShowAllCategories.id -> navigateToCategoriesFragment()
             binding.txtShowAllRecommended.id -> goToProductsByTypeScreen(RECOMMENDED_PRODUCTS)
             binding.txtShowAllNewProducts.id -> goToProductsByTypeScreen(ALL_PRODUCTS)
             binding.toolbar.cardSearch.id -> navigateToSearchFragment()

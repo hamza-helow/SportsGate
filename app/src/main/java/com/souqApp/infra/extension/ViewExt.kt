@@ -2,9 +2,12 @@ package com.souqApp.infra.extension
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
@@ -73,3 +76,5 @@ fun ProgressBar.start(start: Boolean) {
         this.progress = 0
     }
 }
+
+

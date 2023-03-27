@@ -1,6 +1,7 @@
 package com.souqApp.presentation.activity
 
 import android.os.Bundle
+import android.view.Gravity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -8,11 +9,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
+import androidx.transition.Fade
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.souqApp.R
 import com.souqApp.databinding.ActivityMainBinding
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.utils.AppBarConfig
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), AppBarConfig {
@@ -62,6 +68,12 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
     }
 
     override fun showAppBar() {
+
+        val transition: Transition = Slide(Gravity.LEFT)
+        transition.duration = 400
+        TransitionManager.beginDelayedTransition(binding.root, transition)
+        transition.addTarget(R.id.toolbar)
+
         binding.toolbar.isVisible = true
     }
 }

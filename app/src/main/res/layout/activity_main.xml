@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     tools:context=".presentation.activity.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -34,15 +33,13 @@
         app:menu="@menu/home_bottom_nav_menu" />
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:backgroundTint="@color/tool_bar_color"
         app:titleCentered="true"
         app:title="@string/app_name"
-        app:titleTextColor="@color/white"
+        app:titleTextColor="@color/black"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
+        android:background="@color/white"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

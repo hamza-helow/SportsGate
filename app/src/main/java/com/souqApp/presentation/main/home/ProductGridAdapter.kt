@@ -18,11 +18,11 @@ class ProductGridAdapter(
     lateinit var listenerNeedLoadMore: ((Int) -> Unit)
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-
-        holder.bind(BR.product, getItemByPosition(position))
+        val product = getItemByPosition(position)
+        holder.bind(BR.product, product)
         holder.bind(BR.showPrice, firebaseConfig.getBoolean(IS_PURCHASE_ENABLED))
         holder.itemView.setOnClickListener {
-            onClickItem(getItemByPosition(position).id)
+            onClickItem(product.id)
         }
     }
 

@@ -8,7 +8,9 @@ import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
 import com.souqApp.data.orders.remote.OrderResponse
-import com.souqApp.data.payment_details.remote.dto.CheckoutDetailsResponse
+import com.souqApp.data.checkout_details.remote.dto.CheckoutDetailsResponse
+import com.souqApp.data.checkout_details.remote.dto.DeliveryOptionResponse
+import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
 import com.souqApp.data.sub_categories.remote.dto.SubCategoryResponse
 import com.souqApp.domain.addresses.AddressDetailsEntity
@@ -20,7 +22,9 @@ import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductQtyEntity
 import com.souqApp.domain.orders.OrderEntity
-import com.souqApp.domain.payment_details.CheckoutDetailsEntity
+import com.souqApp.domain.checkout_details.CheckoutDetailsEntity
+import com.souqApp.domain.checkout_details.DeliveryOptionEntity
+import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import com.souqApp.domain.products_by_type.ProductsByTypeEntity
 import com.souqApp.domain.sub_categories.SubCategoryEntity
 
@@ -49,15 +53,41 @@ fun AddressDetailsResponse.toEntity() = AddressDetailsEntity(
 
 
 fun CheckoutDetailsResponse.toEntity() = CheckoutDetailsEntity(
-    userDefaultAddress,
-    userDefaultAddressId,
-    subTotal,
-    valueAddedTax,
-    deliveryPrice,
-    couponDiscount,
-    totalPrice,
-    settingCurrency
+    subTotal = subTotal,
+    valueAddedTax = valueAddedTax,
+    deliveryPrice = deliveryPrice,
+    couponDiscount = couponDiscount,
+    totalPrice = totalPrice,
+    settingCurrency = settingCurrency,
+    userAddress = userAddress?.toEntity(),
+    hasDelivery = hasDelivery == true,
+    hasDiscount = hasDiscount == true,
+    hasTax = hasTax == true,
+    deliveryOptions = availableDeliveryOptions.toEntity(),
+    deliveryOptionId = deliveryOptionId ?: 1
 )
+
+
+fun VariationProductPriceInfoResponse.toEntity(): VariationProductPriceInfoEntity {
+    return VariationProductPriceInfoEntity(
+        combinationId = combinationId ?: 0,
+        discountPercentage = discountPercentage ?: 0.0,
+        discountPrice = discountPrice ?: "-",
+        lastPrice = lastPrice ?: "-",
+        price = price ?: "-",
+        qty = qty ?: 0,
+        currency = currency ?: "-"
+    )
+}
+
+@JvmName("toDeliveryOptionEntity")
+fun List<DeliveryOptionResponse>.toEntity() = map {
+    DeliveryOptionEntity(
+        id = it.id ?: 0,
+        name = it.name ?: "-",
+        price = it.price ?: "-"
+    )
+}
 
 
 @JvmName("toEntitySubCategory")
@@ -66,9 +96,11 @@ fun List<SubCategoryResponse>.toEntity() = map { SubCategoryEntity(it.id, it.nam
 @JvmName("toEntityAddressResponse")
 fun List<AddressResponse>.toEntity() = map { AddressEntity(it.id, it.fullAddress, it.isDefault) }
 
+fun AddressResponse.toEntity() = AddressEntity(id, fullAddress, isDefault)
+
 
 fun CartDetailsResponse.toEntity() =
-    CartDetailsEntity(subTotal, settingCurrency, allAvailableInStock, products)
+    CartDetailsEntity(subTotal, currency, products)
 
 @JvmName("toEntityCityResponse")
 fun List<CityResponse>.toEntity() =

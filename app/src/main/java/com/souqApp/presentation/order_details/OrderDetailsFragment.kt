@@ -1,6 +1,5 @@
 package com.souqApp.presentation.order_details
 
-import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,7 +9,6 @@ import com.souqApp.databinding.FragmentOrderDetailsBinding
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.extension.start
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,13 +20,12 @@ class OrderDetailsFragment :
     private val viewModel: OrderDetailsViewModel by viewModels()
     private val productsOrderAdapter = ProductsOrderAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         binding.recProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.recProducts.adapter = productsOrderAdapter
         observer()
     }
-
     private fun observer() {
         viewModel.getOrderDetails(args.orderId)
         viewModel.state.observe(this) { handleState(it) }
@@ -60,6 +57,6 @@ class OrderDetailsFragment :
 
     private fun handleLoading(loading: Boolean) {
         binding.content.isVisible(!loading)
-        binding.progressBar.start(loading)
+        showLoading(loading)
     }
 }

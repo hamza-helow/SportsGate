@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.souqApp.NavGraphDirections
 import com.souqApp.databinding.FragmentCategoriesBinding
 import com.souqApp.presentation.base.BaseFragment
 
@@ -14,7 +15,7 @@ class CategoryChildrenFragment :
 
     private val adapterCategory by lazy {
         CategoryAdapter {
-            navigate(CategoryChildrenFragmentDirections.toSubCategoriesGraph(it.name ?: "", it.id))
+            navigate(NavGraphDirections.toProductsFragment(it.name ?: "", it.id))
         }.apply {
             list = args.categories.toList()
         }
@@ -25,7 +26,7 @@ class CategoryChildrenFragment :
 
         binding.recCategory.layoutManager = LinearLayoutManager(requireContext())
         binding.recCategory.adapter = adapterCategory
-
-
     }
+
+    override fun updateTitleBar() = args.name
 }

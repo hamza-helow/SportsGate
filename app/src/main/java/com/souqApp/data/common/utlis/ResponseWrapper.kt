@@ -7,7 +7,9 @@ data class WrappedListResponse<T>(
     @SerializedName("message") var message: String,
     @SerializedName("status") var status: Boolean,
     @SerializedName("errors") var errors: List<String>? = null,
-    @SerializedName("data") var data: List<T>? = null
+    @SerializedName("data") var data: List<T>? = null ,
+
+    
 ) {
     //convert array of errors to formatted text
     fun formattedErrors(): String {

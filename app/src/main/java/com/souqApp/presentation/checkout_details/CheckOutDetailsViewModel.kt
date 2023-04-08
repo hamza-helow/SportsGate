@@ -1,23 +1,19 @@
-package com.souqApp.presentation.payment_details
+package com.souqApp.presentation.checkout_details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.souqApp.data.addresses.remote.dto.AddressResponse
-import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.checkout_details.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutRequest
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
-import com.souqApp.data.payment_details.remote.dto.CheckoutDetailsResponse
-import com.souqApp.domain.addresses.AddressEntity
+import com.souqApp.domain.checkout_details.CheckoutDetailsEntity
+import com.souqApp.domain.checkout_details.PaymentDetailsUseCase
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
-import com.souqApp.domain.payment_details.CheckoutDetailsEntity
-import com.souqApp.domain.payment_details.PaymentDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,6 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class PaymentDetailsViewModel @Inject constructor(private val paymentDetailsUseCase: PaymentDetailsUseCase) :
     ViewModel() {
+
+    var selectedIdAddress: Int? = null
+    var selectedDeliveryOptionId: Int? = null
 
     private val _state = MutableLiveData<PaymentDetailsActivityState>()
     val state: LiveData<PaymentDetailsActivityState> get() = _state
@@ -47,13 +46,6 @@ class PaymentDetailsViewModel @Inject constructor(private val paymentDetailsUseC
         _state.value = PaymentDetailsActivityState.CheckoutDetailsErrorLoad(response)
     }
 
-    private fun onAddressesLoaded(addressEntities: List<AddressEntity>) {
-        _state.value = PaymentDetailsActivityState.AddressesLoaded(addressEntities)
-    }
-
-    private fun onAddressErrorLoad(response: WrappedListResponse<AddressResponse>) {
-        _state.value = PaymentDetailsActivityState.AddressesErrorLoad(response)
-    }
 
     private fun onCheckCouponCode(valid: Boolean) {
         _state.value = PaymentDetailsActivityState.CheckCouponCode(valid)
@@ -67,12 +59,14 @@ class PaymentDetailsViewModel @Inject constructor(private val paymentDetailsUseC
         _state.value = PaymentDetailsActivityState.CheckoutError(response)
     }
 
+    init {
+        getCheckoutDetails()
+    }
 
-    @Inject
-    fun getCheckoutDetails() {
+    fun getCheckoutDetails(deliveryOptionId: Int? = null) {
         viewModelScope.launch {
             paymentDetailsUseCase
-                .getCheckoutDetails()
+                .getCheckoutDetails(deliveryOptionId)
                 .onStart { setLoading(true) }
                 .catch {
                     setLoading(false)
@@ -88,30 +82,14 @@ class PaymentDetailsViewModel @Inject constructor(private val paymentDetailsUseC
         }
     }
 
-    @Inject
-    fun getAddresses() {
-        viewModelScope.launch {
-            paymentDetailsUseCase.getAddresses()
-                .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
-                .collect {
-                    setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onAddressesLoaded(it.data)
-                        is BaseResult.Errors -> onAddressErrorLoad(it.error)
-                    }
-                }
-        }
-    }
-
-    fun checkout(checkoutRequest: CheckoutRequest) {
-
+    fun checkout(couponCode: String) {
         viewModelScope.launch {
             paymentDetailsUseCase
-                .checkout(checkoutRequest)
+                .checkout(
+                    couponCode = couponCode,
+                    addressId = selectedIdAddress,
+                    deliveryOptionId = selectedDeliveryOptionId
+                )
                 .onStart { setLoading(true) }
                 .catch {
                     setLoading(false)
@@ -157,11 +135,6 @@ sealed class PaymentDetailsActivityState {
     data class CheckoutDetailsErrorLoad(val response: WrappedResponse<CheckoutDetailsResponse>) :
         PaymentDetailsActivityState()
 
-    data class AddressesLoaded(val addressEntities: List<AddressEntity>) :
-        PaymentDetailsActivityState()
-
-    data class AddressesErrorLoad(val response: WrappedListResponse<AddressResponse>) :
-        PaymentDetailsActivityState()
 
     data class CheckCouponCode(val valid: Boolean) : PaymentDetailsActivityState()
 

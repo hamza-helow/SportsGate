@@ -1,6 +1,5 @@
 package com.souqApp.presentation.product_details
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,16 +7,20 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.product_details.GetVariationProductPriceInfoUseCase
 import com.souqApp.domain.product_details.ProductDetailsUseCase
+import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductDetailsViewModel @Inject constructor(private val productDetailsUseCase: ProductDetailsUseCase) :
+class ProductDetailsViewModel @Inject constructor(
+    private val productDetailsUseCase: ProductDetailsUseCase,
+    private val getVariationProductPriceInfoUseCase: GetVariationProductPriceInfoUseCase
+) :
     ViewModel() {
 
     private var isFavorite = false
@@ -25,12 +28,16 @@ class ProductDetailsViewModel @Inject constructor(private val productDetailsUseC
     private val state = MutableLiveData<ProductDetailsActivityState>()
     val mState: LiveData<ProductDetailsActivityState> get() = state
 
+    private var variationCombinationId: Int? = null
+
 
     private fun setLoading(isLoading: Boolean) {
         state.value = ProductDetailsActivityState.Loading(isLoading)
     }
 
     private fun onDetailsLoaded(productDetailsEntity: ProductDetailsEntity) {
+        variationCombinationId = productDetailsEntity.variation_compaination_id
+
         state.value = ProductDetailsActivityState.DetailsLoaded(productDetailsEntity)
     }
 
@@ -48,7 +55,6 @@ class ProductDetailsViewModel @Inject constructor(private val productDetailsUseC
     }
 
     private fun onAddingToCart(onProgress: Boolean) {
-
         state.value = ProductDetailsActivityState.AddingToCart(onProgress)
     }
 
@@ -58,7 +64,6 @@ class ProductDetailsViewModel @Inject constructor(private val productDetailsUseC
     }
 
     fun toggleFavorite(idProduct: Int) {
-
         viewModelScope.launch {
             productDetailsUseCase.addOrRemoveProduct(idProduct)
                 .catch {
@@ -69,13 +74,32 @@ class ProductDetailsViewModel @Inject constructor(private val productDetailsUseC
         }
     }
 
+    fun getVariationProductPriceInfo(productId: Int, label: String) {
+        viewModelScope.launch {
+            getVariationProductPriceInfoUseCase.execute(productId, label).onStart {
+                setLoading(true)
+            }.catch {
+                setLoading(false)
+                onError(it)
+            }.collect {
+                setLoading(false)
+                when (it) {
+                    is BaseResult.Errors -> Unit
+                    is BaseResult.Success -> {
+                        variationCombinationId = it.data.combinationId
+                        state.value =
+                            ProductDetailsActivityState.VariationProductPriceLoaded(it.data)
+                    }
+                }
+
+            }
+        }
+    }
+
     fun addProductToCart(productId: Int) {
-
-        Log.e("ERer", "try add")
-
         viewModelScope.launch {
             productDetailsUseCase
-                .addProductToCart(productId)
+                .addProductToCart(productId, variationCombinationId)
                 .onStart {
                     onAddingToCart(true)
                 }
@@ -91,8 +115,6 @@ class ProductDetailsViewModel @Inject constructor(private val productDetailsUseC
                     }
                 }
         }
-
-
     }
 
     fun productDetails(productId: Int) {
@@ -104,7 +126,6 @@ class ProductDetailsViewModel @Inject constructor(private val productDetailsUseC
                     onError(it)
                 }.collect {
                     setLoading(false)
-
                     when (it) {
                         is BaseResult.Success -> onDetailsLoaded(it.data)
                         is BaseResult.Errors -> onDetailsErrorLoaded(it.error)
@@ -134,5 +155,8 @@ sealed class ProductDetailsActivityState {
     data class AddedToCart(val isAdded: Boolean) : ProductDetailsActivityState()
 
     data class AddingToCart(val inProgress: Boolean) : ProductDetailsActivityState()
+
+    data class VariationProductPriceLoaded(val variationProductPriceInfoEntity: VariationProductPriceInfoEntity) :
+        ProductDetailsActivityState()
 
 }

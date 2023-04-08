@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,22 +11,22 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_8sdp">
+        android:background="@color/white"
+        android:padding="@dimen/_8sdp">
 
         <ImageView
             android:id="@+id/imageView3"
-            networkImage="@{product.firstImage}"
+            networkImage="@{product.thumb}"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/gym_category_for_test" />
+            app:srcCompat="@drawable/gym_category_for_test"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/txt_name_product"
@@ -37,10 +39,11 @@
             tools:text="iPhone 12 Pro" />
 
         <TextView
+            android:textStyle="bold"
             android:id="@+id/txt_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{product.piecePrice +" "+ product.settingCurrency}'
+            android:text='@{product.totalPrice}'
             app:layout_constraintStart_toStartOf="@+id/txt_name_product"
             app:layout_constraintTop_toBottomOf="@+id/txt_name_product"
             tools:text="2 JOD" />
@@ -69,7 +72,8 @@
                 android:layout_height="@dimen/_25sdp"
                 android:text="+"
                 tools:layout_editor_absoluteX="146dp"
-                tools:layout_editor_absoluteY="92dp" />
+                tools:layout_editor_absoluteY="92dp"
+                tools:ignore="HardcodedText" />
 
 
             <TextView
@@ -86,19 +90,10 @@
                 android:layout_height="@dimen/_25sdp"
                 android:text="-"
                 tools:layout_editor_absoluteX="226dp"
-                tools:layout_editor_absoluteY="92dp" />
+                tools:layout_editor_absoluteY="92dp"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/btn_delete_product"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_baseline_delete_outline_24" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,195 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="details"
-            type="com.souqApp.domain.payment_details.CheckoutDetailsEntity" />
+            type="com.souqApp.domain.checkout_details.CheckoutDetailsEntity" />
+
+
+        <variable
+            name="deliveryOptionOne"
+            type="com.souqApp.domain.checkout_details.DeliveryOptionEntity" />
+
+        <variable
+            name="deliveryOptionTwo"
+            type="com.souqApp.domain.checkout_details.DeliveryOptionEntity" />
+
+        <variable
+            name="selectedFullAddress"
+            type="String" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
+        android:layout_height="wrap_content">
 
-        android:orientation="vertical">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:titleCentered="true" />
+            android:orientation="vertical"
+            tools:context=".presentation.checkout_details.CheckOutDetailsFragment">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:animateLayoutChanges="true"
+                android:background="#F2F1F6"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/_32sdp"
-                tools:context=".presentation.payment_details.PaymentDetailsFragment">
+                android:padding="@dimen/_16sdp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp">
+                    app:label="@string/sub_total_str"
+                    app:value="@{details.subTotal}"
+                    tools:value="100 JOD" />
 
-                    <TextView
-                        android:id="@+id/txt_sub_total_lable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sub_total_str"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txt_sub_total"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text='@{details.subTotal + " " + details.settingCurrency }'
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="140 JOD" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <include layout="@layout/divider" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp">
+                    app:isVisible="@{details.hasDelivery}"
+                    app:label="@string/delivery_str"
+                    app:value="@{details.deliveryPrice}"
+                    tools:value="100 JOD" />
 
-                    <TextView
-                        android:id="@+id/txt_delivery_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/delivery_str"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txt_delivery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text='@{details.deliveryPrice + " " + details.settingCurrency }'
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="1 JOD" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <include layout="@layout/divider" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp">
+                    app:isVisible="@{details.hasTax}"
+                    app:label="@string/tax"
+                    app:value="@{details.valueAddedTax}"
+                    tools:value="100 JOD" />
 
-                    <TextView
-                        android:id="@+id/txt_tax_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tax"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txt_tax"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text='@{details.valueAddedTax + " " + details.settingCurrency }'
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-
-                        tools:text="1 JOD" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <include layout="@layout/divider" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp">
+                    app:isVisible="@{details.hasDiscount}"
+                    app:label="@string/discount_str"
+                    app:value="@{details.couponDiscount}"
+                    tools:value="100 JOD" />
 
-                    <TextView
-                        android:id="@+id/txt_discount_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/discount_str"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txt_discount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text='@{details.couponDiscount + " " + details.settingCurrency }'
-                        android:textSize="@dimen/_14sdp"
-
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="1 JOD" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <include layout="@layout/divider" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp">
+                    android:layout_marginTop="@dimen/_8sdp"
+                    app:boldValue="true"
+                    app:hasDivider="false"
+                    app:label="@string/order_total_str"
+                    app:value="@{details.totalPrice}"
+                    tools:value="100 JOD" />
 
-                    <TextView
-                        android:id="@+id/txt_total_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_total_str"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    <TextView
-                        android:id="@+id/txt_total"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text='@{details.totalPrice + " " + details.settingCurrency }'
-                        android:textSize="@dimen/_14sdp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-
-                        tools:text="1 JOD" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <include layout="@layout/divider" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp"
+                android:paddingBottom="@dimen/_32sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
                     android:text="@string/delivery_address"
                     android:textSize="@dimen/_17sdp"
                     android:textStyle="bold" />
@@ -200,26 +105,56 @@
                     android:text="@string/select_delivery_address_sub_str"
                     android:textColor="@color/grey" />
 
-                <FrameLayout
+                <RadioButton
+                    android:id="@+id/radioButtonHomeDelivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:checked="true"
+                    android:text="@{deliveryOptionOne.name}"
+                    app:isVisible="@{deliveryOptionOne != null }"
+                    tools:text="Option one" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_address"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/border_bg"
-                    android:orientation="horizontal">
+                    android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_edit_address"
+                    android:focusable="false"
+                    android:padding="@dimen/_8sdp"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_15sdp"
+                    android:text="@{selectedFullAddress ?? details.userAddress.fullAddress}"
+                    android:textAlignment="viewStart"
+                    app:isVisible="@{deliveryOptionOne != null }"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/txt_submit_promo_code"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <Spinner
-                        android:id="@+id/spinner_addresses"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        tools:ignore="SpeakableTextPresentCheck" />
+                <RadioButton
+                    android:id="@+id/radioButtonSitePickup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:checked="false"
+                    android:text="@{deliveryOptionTwo.name}"
+                    app:isVisible="@{deliveryOptionTwo != null }"
+                    tools:text="Option two" />
 
-                </FrameLayout>
+                <View
+                    style="@style/Divider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="@dimen/_8sdp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/select_payment_method_str"
                     android:textSize="@dimen/_17sdp"
                     android:textStyle="bold" />
@@ -243,24 +178,26 @@
                         android:checked="true"
                         android:text="@string/cash_str" />
 
-                    <View
-                        style="@style/Divider"
-                        android:layout_width="wrap_content"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="@dimen/_8sdp" />
-
                     <RadioButton
                         android:id="@+id/radioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:enabled="false"
                         android:text="@string/credit_str" />
                 </RadioGroup>
 
+                <View
+                    style="@style/Divider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="@dimen/_8sdp" />
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/promo_code_str"
                     android:textSize="@dimen/_17sdp"
                     android:textStyle="bold" />
@@ -303,15 +240,16 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                 <Button
                     android:id="@+id/btn_buy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@string/buy" />
+                    android:text="@string/submit" />
 
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </LinearLayout>
+    </ScrollView>
 </layout>

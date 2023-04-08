@@ -1,6 +1,5 @@
 package com.souqApp.presentation.main.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -17,12 +16,8 @@ import com.souqApp.databinding.FragmentHomeBinding
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.utils.ALL_PRODUCTS
-import com.souqApp.infra.utils.PRODUCTS_TYPE
-import com.souqApp.infra.utils.RECOMMENDED_PRODUCTS
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.ProgressDialog
-import com.souqApp.presentation.products_by_type.ProductsByTypeFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 import javax.inject.Inject
@@ -54,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun initAdapters() {
         bestSellingAdapter = ProductAdapter(firebaseRemoteConfig,::navigateToProductDetails)
         homeCategoryAdapter = HomeCategoryAdapter(verticalMode = false) {
-            navigate(HomeFragmentDirections.toSubCategoriesGraph(it.name ?: "", it.id))
+            navigate(NavGraphDirections.toProductsFragment(it.name ?: "", it.id))
         }
         recommendedAdapter = ProductAdapter(firebaseRemoteConfig,::navigateToProductDetails)
         newProductAdapter = ProductGridAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
@@ -80,8 +75,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun initListeners() {
         binding.refreshSwiper.setOnRefreshListener(this)
-        binding.txtShowAllRecommended.setOnClickListener(this)
-        binding.txtShowAllNewProducts.setOnClickListener(this)
         binding.recCategory.setOnClickListener(this)
         binding.toolbar.cardSearch.setOnClickListener(this)
         binding.toolbar.imgNotification.setOnClickListener(this)
@@ -163,20 +156,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.refreshSwiper.isRefreshing = false
     }
 
-    private fun goToProductsByTypeScreen(type: Int) {
-
-        val intent = Intent(
-            requireContext(),
-            ProductsByTypeFragment::class.java
-        )
-        intent.putExtra(PRODUCTS_TYPE, type)
-        startActivity(intent)
-    }
-
     override fun onClick(view: View) {
         when (view.id) {
-            binding.txtShowAllRecommended.id -> goToProductsByTypeScreen(RECOMMENDED_PRODUCTS)
-            binding.txtShowAllNewProducts.id -> goToProductsByTypeScreen(ALL_PRODUCTS)
             binding.toolbar.cardSearch.id -> navigateToSearchFragment()
             binding.toolbar.imgNotification.id -> navigateToNotificationFragment()
         }
@@ -189,9 +170,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun navigateToSearchFragment() {
         navigate(HomeFragmentDirections.toSearchFragment())
     }
-
-    private fun navigateToCategoriesFragment() {
-        navigate(HomeFragmentDirections.toCategoriesGraph())
-    }
-
 }

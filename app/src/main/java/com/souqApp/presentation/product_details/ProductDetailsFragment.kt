@@ -1,34 +1,36 @@
 package com.souqApp.presentation.product_details
 
-import android.os.Bundle
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
+import android.webkit.WebView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.databinding.FragmentProductDetailsBinding
-import com.souqApp.infra.extension.isVisible
+import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.main.home.SliderViewPagerAdapter
+import com.souqApp.presentation.product_details.variations.VariationsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class ProductDetailsFragment :
     BaseFragment<FragmentProductDetailsBinding>(FragmentProductDetailsBinding::inflate),
     View.OnClickListener {
+
+    private lateinit var variationsAdapter: VariationsAdapter
 
     private val args: ProductDetailsFragmentArgs by navArgs()
 
@@ -42,8 +44,8 @@ class ProductDetailsFragment :
 
     private lateinit var successAddToCartBottomSheet: SuccessAddToCartBottomSheet
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         observer()
         init()
     }
@@ -52,18 +54,16 @@ class ProductDetailsFragment :
         binding.imgFavorite.setOnClickListener(this)
         binding.btnAddToCart.setOnClickListener(this)
         successAddToCartBottomSheet.showCart = {
-            Navigation.findNavController(requireView()).navigate(R.id.cartFragment)
+            navigate(ProductDetailsFragmentDirections.toCartGraph())
         }
     }
 
     private fun init() {
         successAddToCartBottomSheet = SuccessAddToCartBottomSheet()
-
         initListener()
         binding.isLogin = sharedPrefs.isLogin()
         binding.showAddToCart = firebaseConfig.getBoolean(IS_PURCHASE_ENABLED)
         viewModel.productDetails(args.productId)
-
     }
 
     private fun observer() {
@@ -80,16 +80,23 @@ class ProductDetailsFragment :
             is ProductDetailsActivityState.DetailsLoaded -> handleDetailsLoaded(state.productDetailsEntity)
             is ProductDetailsActivityState.AddedToCart -> handleAddedToCart(state.isAdded)
             is ProductDetailsActivityState.AddingToCart -> handleAddingToCart(state.inProgress)
-
+            is ProductDetailsActivityState.VariationProductPriceLoaded -> handleVariationProductPriceLoaded(
+                state.variationProductPriceInfoEntity
+            )
         }
+    }
+
+    private fun handleVariationProductPriceLoaded(priceInfoEntity: VariationProductPriceInfoEntity) {
+        binding.price = priceInfoEntity.price
+        binding.priceAfterDiscount = priceInfoEntity.discountPrice
+        binding.discount = priceInfoEntity.discountPercentage
     }
 
     private fun handleAddingToCart(inProgress: Boolean) {
         binding.btnAddToCart.isEnabled = !inProgress
-
         binding.btnAddToCart.text =
             if (inProgress)
-                "Adding in progress"
+                getString(R.string.adding_in_progress)
             else
                 getString(R.string.add_to_cart)
 
@@ -115,11 +122,28 @@ class ProductDetailsFragment :
         )
     }
 
+
+    @SuppressLint("SetJavaScriptEnabled")
     private fun handleDetailsLoaded(productDetailsEntity: ProductDetailsEntity) {
         binding.details = productDetailsEntity
+        binding.webView.wvSetContent(productDetailsEntity.desc)
+
+        binding.price = productDetailsEntity.price
+        binding.priceAfterDiscount = productDetailsEntity.discount_price
+        binding.discount = productDetailsEntity.discount_percentage
+
+        variationsAdapter = VariationsAdapter(
+            productDetailsEntity.variations,
+            productDetailsEntity.combination_options
+        ) {
+            viewModel.getVariationProductPriceInfo(productDetailsEntity.id, it)
+        }
+        binding.recVariations.layoutManager = LinearLayoutManager(requireContext())
+        binding.recVariations.adapter = variationsAdapter
+
 
         val sliderPagerAdapter =
-            SliderViewPagerAdapter(requireContext(), productDetailsEntity.images, viewOnly = true)
+            ProductImagesViewPagerAdapter(requireContext(), productDetailsEntity.media)
         binding.viewPager.adapter = sliderPagerAdapter
 
         val adapterRelevantProducts = AdapterRelevantProducts {
@@ -127,18 +151,8 @@ class ProductDetailsFragment :
         }
         adapterRelevantProducts.addList(productDetailsEntity.relevant)
 
-        binding.recRelevant.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-
-        binding.recRelevant.adapter = adapterRelevantProducts
-
-        //link viewpager with tabs layout
         binding.tabDots.setupWithViewPager(binding.viewPager)
-
-        binding.cardRelevantProducts.isVisible(productDetailsEntity.relevant.isNotEmpty())
-
         handleToggleFavorite(productDetailsEntity.user_favourite)
-
     }
 
     private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsEntity>) {
@@ -150,7 +164,7 @@ class ProductDetailsFragment :
     }
 
     private fun handleLoading(loading: Boolean) {
-
+        showLoading(loading)
     }
 
     override fun onClick(view: View) {
@@ -159,4 +173,17 @@ class ProductDetailsFragment :
             binding.btnAddToCart.id -> viewModel.addProductToCart(args.productId)
         }
     }
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+fun WebView.wvSetContent(content: String?) {
+    this.isFocusable = true
+    this.isFocusableInTouchMode = true
+    this.settings.javaScriptEnabled = true
+    this.settings.loadsImagesAutomatically = true
+
+    this.loadDataWithBaseURL(
+        null,
+        "<style>img{max-width: 100%}</style>$content", "text/html", "UTF-8", null
+    )
 }

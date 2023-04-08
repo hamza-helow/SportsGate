@@ -16,14 +16,25 @@
         <variable
             name="details"
             type="com.souqApp.data.product_details.remote.ProductDetailsEntity" />
+
+        <variable
+            name="discount"
+            type="Double" />
+
+        <variable
+            name="price"
+            type="String" />
+
+        <variable
+            name="priceAfterDiscount"
+            type="String" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:fitsSystemWindows="false"
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       >
+        android:fitsSystemWindows="false">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -40,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="1">
-
 
                 <Button
                     android:id="@+id/btn_add_to_cart"
@@ -60,7 +70,8 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:layout_weight="0.2"
-                    app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+                    app:srcCompat="@drawable/ic_baseline_favorite_border_24"
+                    tools:ignore="ContentDescription" />
 
             </LinearLayout>
 
@@ -72,7 +83,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:paddingBottom="@dimen/_64sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -111,13 +122,12 @@
                         app:tabIndicatorHeight="0dp"
                         tools:ignore="SpeakableTextPresentCheck" />
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="16dp"
                     android:background="@color/white"
                     android:orientation="vertical"
@@ -131,57 +141,42 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_16sdp"
                         android:text='@{details.name}'
                         tools:text="product_name" />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_marginBottom="@dimen/_8sdp"
-                        android:background="?android:attr/listDivider" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_16sdp"
-                        android:text="@string/specifications"
-                        android:textColor="@color/grey" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_16sdp"
-                        android:movementMethod="@{true}"
-                        android:text="@{details.desc}"
-                        tools:text="desc" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/card_relevant_products"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:text="@string/relevant_products"
-                        android:textColor="@color/grey" />
+                        android:text='@{price}'
+                        app:isDiscountPrice="@{discount >0.0}"
+                        tools:text="original price" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rec_relevant"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_product_relevant" />
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:textStyle="bold"
+                        android:text='@{priceAfterDiscount}'
+                        app:isVisible="@{discount >0.0}"
+                        tools:text="price after discount" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rec_variations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_variation" />
+
+                    <WebView
+                        android:id="@+id/webView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_16sdp" />
 
                 </LinearLayout>
 

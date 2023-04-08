@@ -15,7 +15,6 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.souqApp.R
 import com.souqApp.infra.extension.inVisible
 import com.souqApp.infra.extension.isVisible
@@ -57,11 +56,7 @@ fun setHtmlText(view: TextView, text: String?) {
         return
     }
 
-    view.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
-    } else {
-        HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
-    }
+    view.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }
 
 @BindingAdapter("layout_marginBottom")

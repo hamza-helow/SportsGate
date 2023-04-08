@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="selected"
+            type="Boolean" />
+
+        <variable
+            name="imageUrl"
+            type="String" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_margin="@dimen/_4sdp"
+        android:background="@{selected ? @drawable/rectangle_border :null}"
+        tools:background="@drawable/rectangle_border">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="true"
+            android:scaleType="fitXY"
+            android:layout_margin="@dimen/_4sdp"
+            tools:src="@tools:sample/avatars"
+            app:networkImage="@{imageUrl}"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+
+</layout>

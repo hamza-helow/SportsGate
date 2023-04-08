@@ -10,13 +10,13 @@ import retrofit2.http.Query
 
 interface CartApi {
 
-    @GET("v1/users/carts/getCartDetails")
+    @GET("v2/users/carts/getCartDetails")
     suspend fun getCartDetails(): Response<WrappedResponse<CartDetailsResponse>>
 
-    @POST("v1/users/carts/deleteProductFromCart")
+    @POST("v2/users/carts/deleteProductFromCart")
     suspend fun deleteProductFromCart(@Query("product_id") productId: Int): Response<WrappedResponse<Nothing>>
 
-    @POST("v1/users/carts/updateProductQty")
+    @POST("v2/users/carts/updateProductQty")
     suspend fun updateProductQty(
         @Query("product_id") productId: Int,
         @Query("qty") qty: Int

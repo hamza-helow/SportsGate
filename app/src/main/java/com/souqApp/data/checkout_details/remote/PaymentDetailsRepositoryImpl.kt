@@ -1,17 +1,16 @@
-package com.souqApp.data.payment_details.remote
+package com.souqApp.data.checkout_details.remote
 
 import com.souqApp.data.addresses.remote.dto.AddressResponse
+import com.souqApp.data.checkout_details.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.main.cart.remote.dto.CheckoutRequest
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
-import com.souqApp.data.payment_details.remote.dto.CheckoutDetailsResponse
 import com.souqApp.domain.addresses.AddressEntity
+import com.souqApp.domain.checkout_details.CheckoutDetailsEntity
+import com.souqApp.domain.checkout_details.PaymentDetailsRepository
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
-import com.souqApp.domain.payment_details.CheckoutDetailsEntity
-import com.souqApp.domain.payment_details.PaymentDetailsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -21,10 +20,10 @@ class PaymentDetailsRepositoryImpl @Inject constructor(
 ) :
     PaymentDetailsRepository {
 
-    override suspend fun getCheckoutDetails(): Flow<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> {
+    override suspend fun getCheckoutDetails(deliveryOptionId: Int?): Flow<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> {
 
         return flow {
-            val response = paymentDetailsApi.getCheckoutDetails()
+            val response = paymentDetailsApi.getCheckoutDetails(deliveryOptionId)
             val isSuccessful = response.body()?.status
 
             if (isSuccessful == true) {
@@ -52,10 +51,14 @@ class PaymentDetailsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun checkout(checkoutRequest: CheckoutRequest): Flow<BaseResult<CheckoutEntity, WrappedResponse<CheckoutResponse>>> {
+    override suspend fun checkout(
+        couponCode: String?,
+        addressId: Int?,
+        deliveryOptionId: Int?
+    ): Flow<BaseResult<CheckoutEntity, WrappedResponse<CheckoutResponse>>> {
         return flow {
 
-            val response = paymentDetailsApi.checkout(checkoutRequest)
+            val response = paymentDetailsApi.checkout(couponCode, addressId, deliveryOptionId)
             val isSuccessful = response.body()?.status
 
             if (isSuccessful == true) {

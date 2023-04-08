@@ -51,7 +51,8 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val isBottomNavigationItem = bottomNavigationItems.contains(destination.id)
             binding.bottomNavigationView.isVisible(isBottomNavigationItem)
-            binding.toolbar.title = destination.label
+            if (destination.label != null)
+                binding.toolbar.title = destination.label
         }
     }
 
@@ -68,8 +69,7 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
     }
 
     override fun showAppBar() {
-
-        val transition: Transition = Slide(Gravity.LEFT)
+        val transition: Transition = Slide(Gravity.START)
         transition.duration = 400
         TransitionManager.beginDelayedTransition(binding.root, transition)
         transition.addTarget(R.id.toolbar)

@@ -6,8 +6,16 @@
     app:startDestination="@id/home_graph">
 
     <action
+        android:id="@+id/to_productsFragment"
+        app:destination="@id/productsFragment" />
+
+    <action
         android:id="@+id/to_productDetailsFragment"
         app:destination="@id/productDetailsFragment" />
+
+    <action
+        android:id="@+id/to_loading_dialog_fragment"
+        app:destination="@id/loadingDialogFragment" />
 
     <fragment
         android:id="@+id/productDetailsFragment"
@@ -21,6 +29,10 @@
             android:id="@+id/to_self"
             app:destination="@id/productDetailsFragment" />
 
+        <action
+            android:id="@+id/to_cart_graph"
+            app:destination="@+id/cart_graph" />
+
     </fragment>
 
 
@@ -31,5 +43,28 @@
     <include app:graph="@navigation/cart_graph" />
 
     <include app:graph="@navigation/more_graph" />
+
+
+    <dialog
+        android:id="@+id/loadingDialogFragment"
+        android:name="com.souqApp.presentation.dialog.LoadingDialogFragment"
+        tools:layout="@layout/fragment_loading_dialog" />
+
+
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.souqApp.presentation.products.ProductsFragment"
+        tools:layout="@layout/fragment_products">
+
+        <argument
+            android:name="name"
+            app:argType="string" />
+
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+
+    </fragment>
+
 
 </navigation>

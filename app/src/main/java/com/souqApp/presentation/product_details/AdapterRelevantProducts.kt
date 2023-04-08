@@ -1,14 +1,11 @@
 package com.souqApp.presentation.product_details
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.library.baseAdapters.BR
-import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.data.product_details.remote.RelevantProductResponse
 import com.souqApp.databinding.ItemProductRelevantBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
-import com.souqApp.infra.utils.ID_PRODUCT
 
 class AdapterRelevantProducts(val onClickItem: (RelevantProductResponse) -> Unit) :
     BaseRecyclerAdapter<ItemProductRelevantBinding, RelevantProductResponse>() {

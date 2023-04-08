@@ -1,6 +1,7 @@
 package com.souqApp.presentation.main.cart
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +29,6 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         init()
     }
 
-    override fun showAppBar() = false
 
     override fun onResume() {
         super.onResume()
@@ -87,17 +87,13 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun handleCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
-
         binding.content.isVisible(cartDetailsEntity.products.isNotEmpty())
         binding.cardCheckOut.isVisible(cartDetailsEntity.products.isNotEmpty())
         binding.cardCartEmpty.isVisible(cartDetailsEntity.products.isEmpty())
-
         binding.cart = cartDetailsEntity
-
         val cartAdapter = CartAdapter()
         cartAdapter.addList(cartDetailsEntity.products)
         cartAdapter.onChangeQTY = { viewModel.updateProductQty(it.id, it.qty) }
-        cartAdapter.onDeleteProduct = { viewModel.deleteProduct(it) }
 
         binding.recProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.recProducts.adapter = cartAdapter

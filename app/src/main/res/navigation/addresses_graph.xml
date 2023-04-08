@@ -5,6 +5,11 @@
     android:id="@+id/addresses_graph"
     app:startDestination="@id/addressesFragment">
 
+    <argument
+        android:defaultValue="false"
+        android:name="selectedMode"
+        app:argType="boolean" />
+
     <fragment
         android:id="@+id/addressesFragment"
         android:name="com.souqApp.presentation.addresses.addresses.AddressesFragment"
@@ -16,6 +21,11 @@
         <action
             android:id="@+id/to_addAddressFragment"
             app:destination="@id/addAddressFragment" />
+
+        <argument
+            android:defaultValue="false"
+            android:name="selectedMode"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
@@ -32,8 +42,8 @@
 
 
     <fragment
-        tools:layout="@layout/fragment_add_address"
         android:id="@+id/addAddressFragment"
         android:name="com.souqApp.presentation.addresses.add_address.AddAddressFragment"
-        android:label="@string/add_a_new_address_str" />
+        android:label="@string/add_a_new_address_str"
+        tools:layout="@layout/fragment_add_address" />
 </navigation>

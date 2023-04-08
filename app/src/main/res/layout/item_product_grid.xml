@@ -78,7 +78,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_marginTop="@dimen/_4sdp"
             android:id="@+id/cardPrice"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"

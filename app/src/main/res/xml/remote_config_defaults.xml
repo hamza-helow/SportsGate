@@ -1,7 +1,7 @@
 <defaultsMap>
     <entry>
         <key>Show_SouqApp_Copyrights</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
     <entry>
         <key>Is_Purchase_Enabled</key>
@@ -9,7 +9,7 @@
     </entry>
     <entry>
         <key>Order_history_Android</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
     <entry>
         <key>Min_Android_Version</key>

@@ -1,16 +1,14 @@
-package com.souqApp.data.payment_details
+package com.souqApp.data.checkout_details
 
-import com.souqApp.data.payment_details.remote.PaymentDetailsApi
-import com.souqApp.data.payment_details.remote.PaymentDetailsRepositoryImpl
-import com.souqApp.domain.payment_details.PaymentDetailsRepository
+import com.souqApp.data.checkout_details.remote.PaymentDetailsApi
+import com.souqApp.data.checkout_details.remote.PaymentDetailsRepositoryImpl
+import com.souqApp.domain.checkout_details.PaymentDetailsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)

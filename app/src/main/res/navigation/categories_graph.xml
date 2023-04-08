@@ -11,24 +11,10 @@
         android:label="@string/categories"
         tools:layout="@layout/fragment_categories">
         <action
-            android:id="@+id/to_subCategoriesGraph"
-            app:destination="@id/sub_category_graph">
-            <argument
-                android:name="categoryName"
-                app:argType="string" />
-
-            <argument
-                android:name="categoryId"
-                app:argType="integer" />
-
-        </action>
-        <action
             android:id="@+id/to_categoryChildrenFragment"
             app:destination="@id/categoryChildrenFragment" />
     </fragment>
 
-
-    <include app:graph="@navigation/sub_category_graph" />
 
     <fragment
         android:id="@+id/categoryChildrenFragment"
@@ -37,22 +23,12 @@
         tools:layout="@layout/fragment_categories">
 
         <argument
+            android:name="name"
+            app:argType="string" />
+
+        <argument
             android:name="categories"
             app:argType="com.souqApp.data.main.common.CategoryEntity[]" />
-
-        <action
-            android:id="@+id/to_subCategoriesGraph"
-            app:destination="@id/sub_category_graph">
-            <argument
-                android:name="categoryName"
-                app:argType="string" />
-
-            <argument
-                android:name="categoryId"
-                app:argType="integer" />
-
-        </action>
     </fragment>
-
 
 </navigation>

@@ -7,6 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface SubCategoriesApi {
-    @GET("v1/categories/getSubCategories")
+    @GET("v2/products/gerProducts")
     suspend fun subCategories(@Query("category_id") categoryId: Int): Response<WrappedListResponse<SubCategoryResponse>>
 }

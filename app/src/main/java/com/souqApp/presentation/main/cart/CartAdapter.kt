@@ -11,8 +11,6 @@ class CartAdapter : BaseRecyclerAdapter<ItemCartBinding, ProductInCartResponse>(
 
     lateinit var onChangeQTY: ((ProductInCartResponse) -> Unit)
 
-    lateinit var onDeleteProduct: (productId: Int) -> Unit
-
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
         holder.bind(BR.product, getItemByPosition(position))
@@ -32,11 +30,6 @@ class CartAdapter : BaseRecyclerAdapter<ItemCartBinding, ProductInCartResponse>(
             }
         }
 
-        holder.binding.btnDeleteProduct.setOnClickListener {
-            onDeleteProduct(getItemByPosition(position).id)
-            removeItem(position)
-
-        }
 
     }
 

@@ -21,29 +21,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-        <LinearLayout
+        <TextView
+            android:visibility="gone"
+            android:drawablePadding="@dimen/_8sdp"
             android:id="@+id/card_cart_empty"
+            app:drawableTopCompat="@drawable/ic_cart_empty_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_cart_empty_cart" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_32sdp"
-                android:text="@string/your_cart_is_empty"
-                android:textSize="@dimen/_17sdp" />
-
-        </LinearLayout>
+            android:layout_marginTop="@dimen/_32sdp"
+            android:text="@string/your_cart_is_empty"
+            android:textSize="@dimen/_17sdp" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/content"
@@ -52,7 +40,7 @@
             tools:context=".presentation.main.cart.CartFragment">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:paddingTop="@dimen/_16sdp"
+                tools:itemCount="2"
                 android:id="@+id/rec_products"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -11,7 +11,7 @@ class AdapterAddress : BaseRecyclerAdapter<ItemAddressBinding, AddressEntity>() 
 
     lateinit var onClickMoreButton: ((AddressEntity, Int) -> Unit)
 
-    lateinit var onClickItem: ((Int) -> Unit)
+    lateinit var onClickItem: ((AddressEntity) -> Unit)
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(BR.address, getItemByPosition(position))
@@ -21,7 +21,7 @@ class AdapterAddress : BaseRecyclerAdapter<ItemAddressBinding, AddressEntity>() 
         }
 
         holder.binding.root.setOnClickListener {
-            onClickItem(getItemByPosition(position).id)
+            onClickItem(getItemByPosition(position))
         }
 
 

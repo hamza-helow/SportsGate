@@ -24,7 +24,6 @@ class ProductsByTypeByTypeRepositoryImpl @Inject constructor(private val product
             val isSuccessful = response.body()?.status
 
             if (isSuccessful == true) {
-
                 val data = response.body()!!.data!!
                 emit(BaseResult.Success(data.toEntity()))
 

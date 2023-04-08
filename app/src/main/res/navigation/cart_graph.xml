@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.souqApp.presentation.main.cart.CartFragment"
+        android:label="Shopping Cart"
         tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/to_paymentDetailsFragment"
@@ -17,8 +18,37 @@
 
     <fragment
         android:id="@+id/paymentDetailsFragment"
-        android:name="com.souqApp.presentation.payment_details.PaymentDetailsFragment"
+        android:name="com.souqApp.presentation.checkout_details.CheckOutDetailsFragment"
+        android:label="@string/payment_details"
         tools:layout="@layout/fragment_payment_details">
+
+        <action
+            android:id="@+id/to_addresses_graph"
+            app:destination="@+id/addresses_graph">
+
+            <argument
+                android:name="selectedMode"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/to_checkoutCompleted"
+            app:destination="@id/checkoutCompleted" />
+
+    </fragment>
+
+
+    <include app:graph="@navigation/addresses_graph" />
+
+
+    <fragment
+        tools:layout="@layout/fragment_checkout_completed"
+        android:id="@+id/checkoutCompleted"
+        android:name="com.souqApp.presentation.checkout_details.CheckoutCompletedFragment">
+
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
 
         <action
             android:id="@+id/to_orderDetailsFragment"

@@ -12,6 +12,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.souqApp.NavGraphDirections
 import com.souqApp.R
 import com.souqApp.infra.utils.AppBarConfig
 
@@ -24,6 +25,8 @@ abstract class BaseFragment<V : ViewBinding>(
 
     private lateinit var _binding: V
     val binding get() = _binding
+
+    var isLoading = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +41,7 @@ abstract class BaseFragment<V : ViewBinding>(
         else
             appBarConfig().hideAppBar()
 
-        if(updateTitleBar() != null){
+        if (updateTitleBar() != null) {
             appBarConfig().updateTitleBar(updateTitleBar().orEmpty())
         }
 
@@ -77,6 +80,16 @@ abstract class BaseFragment<V : ViewBinding>(
         findNavController().navigate(navDirections, navOptions)
     }
 
+    fun showLoading(show: Boolean) {
+        if (isLoading.not() && show) {
+            isLoading = true
+            navigate(NavGraphDirections.toLoadingDialogFragment())
+        } else {
+            isLoading = false
+            findNavController().popBackStack()
+        }
+
+    }
 
     private fun appBarConfig(): AppBarConfig {
         return requireActivity() as AppBarConfig

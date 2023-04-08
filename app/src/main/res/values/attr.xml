@@ -4,4 +4,12 @@
     <attr name="bottomNavColor" format="color" />
 
 
+    <declare-styleable name="labelWithValue">
+        <attr name="label" format="string|reference" />
+        <attr name="value" format="string|reference" />
+        <attr name="boldValue" format="boolean" />
+        <attr name="hasDivider" format="boolean" />
+    </declare-styleable>
+
+
 </resources>

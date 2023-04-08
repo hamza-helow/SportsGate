@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.FragmentCategoriesBinding
@@ -28,9 +29,14 @@ class CategoriesFragment :
     private val adapterCategory by lazy {
         CategoryAdapter {
             if (it.children == null)
-                navigate(CategoriesFragmentDirections.toSubCategoriesGraph(it.name ?: "", it.id))
+                navigate(NavGraphDirections.toProductsFragment(it.name ?: "", it.id))
             else
-                navigate(CategoriesFragmentDirections.toCategoryChildrenFragment(it.children.toTypedArray()))
+                navigate(
+                    CategoriesFragmentDirections.toCategoryChildrenFragment(
+                        it.name.orEmpty(),
+                        it.children.toTypedArray()
+                    )
+                )
         }
     }
 

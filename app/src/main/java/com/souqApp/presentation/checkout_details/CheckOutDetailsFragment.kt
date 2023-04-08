@@ -1,32 +1,27 @@
-package com.souqApp.presentation.payment_details
+package com.souqApp.presentation.checkout_details
 
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.CompoundButton
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.souqApp.R
-import com.souqApp.data.addresses.remote.dto.AddressResponse
-import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.checkout_details.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.main.cart.remote.dto.CheckoutRequest
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
-import com.souqApp.data.payment_details.remote.dto.CheckoutDetailsResponse
 import com.souqApp.databinding.FragmentPaymentDetailsBinding
-import com.souqApp.domain.addresses.AddressEntity
+import com.souqApp.domain.checkout_details.CheckoutDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
-import com.souqApp.domain.payment_details.CheckoutDetailsEntity
-import com.souqApp.infra.extension.errorBorder
-import com.souqApp.infra.extension.showGenericAlertDialog
-import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.extension.successBorder
+import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.APP_TAG
+import com.souqApp.presentation.addresses.addresses.AddressesFragment
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PaymentDetailsFragment :
+class CheckOutDetailsFragment :
     BaseFragment<FragmentPaymentDetailsBinding>(FragmentPaymentDetailsBinding::inflate),
-    View.OnClickListener {
+    View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private val viewModel: PaymentDetailsViewModel by viewModels()
 
@@ -34,11 +29,14 @@ class PaymentDetailsFragment :
         super.onResume()
         initListener()
         observer()
+        binding.radioButtonHomeDelivery.setOnCheckedChangeListener(this)
+        binding.radioButtonSitePickup.setOnCheckedChangeListener(this)
     }
 
     private fun initListener() {
         binding.btnBuy.setOnClickListener(this)
         binding.txtSubmitPromoCode.setOnClickListener(this)
+        binding.etAddress.setOnClickListener(this)
     }
 
     private fun observer() {
@@ -53,17 +51,12 @@ class PaymentDetailsFragment :
                 handleCheckoutDetailsLoaded(state.checkoutDetailsEntity)
             is PaymentDetailsActivityState.CheckoutDetailsErrorLoad ->
                 handleCheckoutDetailsErrorLoad(state.response)
-            is PaymentDetailsActivityState.AddressesLoaded -> handleAddressesLoaded(state.addressEntities)
             is PaymentDetailsActivityState.CheckoutSuccess -> handleCheckoutSuccess(state.checkoutEntity)
             is PaymentDetailsActivityState.CheckoutError -> handleCheckoutError(state.response)
             is PaymentDetailsActivityState.CheckCouponCode -> handleCheckCouponCode(state.valid)
-            is PaymentDetailsActivityState.AddressesErrorLoad -> handleAddressesErrorLoad(state.response)
         }
     }
 
-    private fun handleAddressesErrorLoad(response: WrappedListResponse<AddressResponse>) {
-        requireContext().showGenericAlertDialog(response.formattedErrors())
-    }
 
     private fun handleCheckCouponCode(valid: Boolean) {
         if (!valid) {
@@ -80,21 +73,12 @@ class PaymentDetailsFragment :
     }
 
     private fun handleCheckoutSuccess(checkoutEntity: CheckoutEntity) {
-        requireContext().showToast(getString(R.string.successfully_operation))
         navigate(
-            PaymentDetailsFragmentDirections.toOrderDetailsFragment(checkoutEntity.orderId),
+            CheckOutDetailsFragmentDirections.toCheckoutCompleted(checkoutEntity.orderId),
             popUpTo = R.id.homeFragment
         )
     }
 
-    private fun handleAddressesLoaded(addressEntities: List<AddressEntity>) {
-        val adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.item_spinner,
-            addressEntities
-        )
-        binding.spinnerAddresses.adapter = adapter
-    }
 
     private fun handleCheckoutDetailsErrorLoad(response: WrappedResponse<CheckoutDetailsResponse>) {
         requireContext().showGenericAlertDialog(response.formattedErrors())
@@ -102,6 +86,10 @@ class PaymentDetailsFragment :
 
     private fun handleCheckoutDetailsLoaded(checkoutDetailsEntity: CheckoutDetailsEntity) {
         binding.details = checkoutDetailsEntity
+        viewModel.selectedIdAddress = checkoutDetailsEntity.userAddress?.id
+        viewModel.selectedDeliveryOptionId = checkoutDetailsEntity.deliveryOptionId
+        binding.deliveryOptionOne = checkoutDetailsEntity.deliveryOptions.firstOrNull()
+        binding.deliveryOptionTwo = checkoutDetailsEntity.deliveryOptions.secondOrNull()
     }
 
     private fun handleError(throwable: Throwable) {
@@ -109,6 +97,7 @@ class PaymentDetailsFragment :
     }
 
     private fun handleLoading(loading: Boolean) {
+        showLoading(loading)
         binding.btnBuy.isEnabled = !loading
     }
 
@@ -116,7 +105,26 @@ class PaymentDetailsFragment :
         when (view.id) {
             binding.btnBuy.id -> checkout()
             binding.txtSubmitPromoCode.id -> checkPromoCode()
+            binding.etAddress.id -> navigateToAddressesFragment()
         }
+    }
+
+    private fun navigateToAddressesFragment() {
+        navigate(CheckOutDetailsFragmentDirections.toAddressesGraph().apply {
+            this.selectedMode = true
+        })
+
+        observeToAddressesFragmentResult()
+    }
+
+    private fun observeToAddressesFragmentResult() {
+        setFragmentResultListener(AddressesFragment::class.java.simpleName) { _, bundle ->
+            val id = bundle.getInt(AddressesFragment.ADDRESS_ID, -1)
+            val name = bundle.getString(AddressesFragment.ADDRESS_NAME).orEmpty()
+            binding.selectedFullAddress = name
+            viewModel.selectedIdAddress = id
+        }
+
     }
 
     private fun checkPromoCode() {
@@ -124,8 +132,20 @@ class PaymentDetailsFragment :
     }
 
     private fun checkout() {
-        val addressId = (binding.spinnerAddresses.selectedItem as AddressEntity).id
-        val code = binding.promoCodeEdt.text.toString()
-        viewModel.checkout(CheckoutRequest("$addressId", code))
+        viewModel.checkout(couponCode = binding.promoCodeEdt.text.toString())
+    }
+
+    override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
+        if (isChecked) {
+            if (buttonView.id == binding.radioButtonHomeDelivery.id) {
+                binding.radioButtonSitePickup.isChecked = false
+                binding.etAddress.isEnabled = true
+                binding.deliveryOptionOne?.let { viewModel.getCheckoutDetails(it.id) }
+            } else {
+                binding.radioButtonHomeDelivery.isChecked = false
+                binding.etAddress.isEnabled = false
+                binding.deliveryOptionTwo?.let { viewModel.getCheckoutDetails(it.id) }
+            }
+        }
     }
 }

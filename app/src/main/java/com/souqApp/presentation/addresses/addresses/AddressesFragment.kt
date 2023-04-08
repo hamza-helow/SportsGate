@@ -3,6 +3,10 @@ package com.souqApp.presentation.addresses.addresses
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.R
@@ -21,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddressesBinding::inflate),
     View.OnClickListener {
 
+    private val args: AddressesFragmentArgs by navArgs()
     private lateinit var addressAdapter: AdapterAddress
     private val viewModel: AddressViewModel by navGraphViewModels(R.id.addresses_graph) { defaultViewModelProviderFactory }
 
@@ -31,7 +36,18 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
         binding.recAddresses.adapter = addressAdapter
 
         addressAdapter.onClickItem = {
-            navigate(AddressesFragmentDirections.toAddressDetailsFragment(it))
+            if (args.selectedMode) {
+                setFragmentResult(
+                    AddressesFragment::class.java.simpleName, bundleOf(
+                        ADDRESS_ID to it.id,
+                        ADDRESS_NAME to it.fullAddress
+                    )
+                )
+                findNavController().popBackStack()
+            } else {
+                navigate(AddressesFragmentDirections.toAddressDetailsFragment(it.id))
+            }
+
         }
         initListener()
         observer()
@@ -112,8 +128,8 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
     }
 
     companion object {
-        @JvmStatic
-        fun newInstance() = AddressesFragment()
+        const val ADDRESS_ID = "address_id"
+        const val ADDRESS_NAME = "address_name"
     }
 
     override fun onClick(view: View) {

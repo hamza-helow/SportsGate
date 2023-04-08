@@ -110,5 +110,9 @@
     <string name="no_products_found">No products found</string>
     <string name="added_to_your_cart_successfully">Added to your cart successfully!</string>
     <string name="show_cart">Show cart</string>
+    <string name="thank_you">Thank you.</string>
+    <string name="your_order_has_been_submitted_and_will_be_delivered_within_4_working_days">Your order has been submitted and will be delivered within 4 working days</string>
+    <string name="done">Done</string>
+    <string name="adding_in_progress">Adding in progress</string>
 
 </resources>

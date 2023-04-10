@@ -1,4 +1,4 @@
-package com.souqApp.presentation.main.cart
+package com.souqApp.presentation.main.cart.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -11,7 +11,6 @@ data class ProductDetailsEntity(
     val discount_percentage: Double,
     val on_sale: Boolean,
     val stock: Int,
-    val user_favourite: Boolean,
     val percent_added_tax: Double,
     val setting_currency: String,
     val setting_percent_added_tax: Double,
@@ -19,7 +18,8 @@ data class ProductDetailsEntity(
     val relevant: List<RelevantProductResponse>,
     val variations: List<Variation>,
     val combination_options: List<CombinationOption>,
-    val variation_compaination_id: Int
+    val variation_compaination_id: Int,
+    val is_favorite: Boolean
 )
 
 data class CombinationOption(

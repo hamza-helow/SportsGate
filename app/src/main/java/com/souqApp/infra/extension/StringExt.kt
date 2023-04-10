@@ -23,3 +23,7 @@ fun String.toPhoneNumber(): String {
     }
     return this
 }
+
+fun String?.orDash():String{
+    return this.orEmpty().ifEmpty { "-" }
+}

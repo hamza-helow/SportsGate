@@ -127,7 +127,6 @@ class ProductDetailsFragment :
     private fun handleDetailsLoaded(productDetailsEntity: ProductDetailsEntity) {
         binding.details = productDetailsEntity
         binding.webView.wvSetContent(productDetailsEntity.desc)
-
         binding.price = productDetailsEntity.price
         binding.priceAfterDiscount = productDetailsEntity.discount_price
         binding.discount = productDetailsEntity.discount_percentage
@@ -150,9 +149,10 @@ class ProductDetailsFragment :
             navigate(ProductDetailsFragmentDirections.toSelf(it.id))
         }
         adapterRelevantProducts.addList(productDetailsEntity.relevant)
-
         binding.tabDots.setupWithViewPager(binding.viewPager)
-        handleToggleFavorite(productDetailsEntity.user_favourite)
+
+        handleToggleFavorite(productDetailsEntity.is_favorite)
+
     }
 
     private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsEntity>) {

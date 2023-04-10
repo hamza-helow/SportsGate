@@ -19,7 +19,6 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
     private val state = MutableLiveData<HomeFragmentState>(HomeFragmentState.Init)
     val mState: LiveData<HomeFragmentState> get() = state
 
-
     private fun setLoading() {
         state.value = HomeFragmentState.IsLoading(true)
     }

@@ -1,4 +1,4 @@
-package com.souqApp.presentation.checkout_details
+package com.souqApp.presentation.main.cart.checkout_details
 
 import android.util.Log
 import android.view.View
@@ -10,7 +10,7 @@ import com.souqApp.data.checkout_details.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
 import com.souqApp.databinding.FragmentPaymentDetailsBinding
-import com.souqApp.domain.checkout_details.CheckoutDetailsEntity
+import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.APP_TAG

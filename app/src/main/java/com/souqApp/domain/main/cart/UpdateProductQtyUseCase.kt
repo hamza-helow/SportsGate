@@ -9,18 +9,9 @@ import com.souqApp.domain.main.cart.entity.UpdateProductQtyEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class CartUseCase @Inject constructor(private val cartRepository: CartRepository) {
+class UpdateProductQtyUseCase @Inject constructor(private val cartRepository: CartRepository) {
 
-
-    suspend fun getCartDetails(): Flow<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>> {
-        return cartRepository.getCartDetails()
-    }
-
-    suspend fun deleteProductFromCart(productId: Int): Flow<Boolean> {
-        return cartRepository.deleteProductFromCart(productId)
-    }
-
-    suspend fun updateProductQty(
+    suspend fun execute(
         productId: Int,
         qty: Int
     ): Flow<BaseResult<UpdateProductQtyEntity, WrappedResponse<UpdateProductQtyResponse>>> {

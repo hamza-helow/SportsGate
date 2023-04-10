@@ -37,7 +37,7 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".presentation.main.cart.CartFragment">
+            tools:context=".presentation.main.cart.home.CartFragment">
 
             <androidx.recyclerview.widget.RecyclerView
                 tools:itemCount="2"
@@ -82,7 +82,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView6"
                         tools:text="100 JOD" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_check_out"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

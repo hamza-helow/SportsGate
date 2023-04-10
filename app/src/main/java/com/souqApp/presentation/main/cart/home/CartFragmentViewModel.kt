@@ -1,4 +1,4 @@
-package com.souqApp.presentation.main.cart
+package com.souqApp.presentation.main.cart.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,18 +8,26 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.main.cart.CartUseCase
+import com.souqApp.domain.main.cart.DeleteProductUseCase
+import com.souqApp.domain.main.cart.GetCartDetailsUseCase
+import com.souqApp.domain.main.cart.UpdateProductQtyUseCase
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductQtyEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CartFragmentViewModel @Inject constructor(private val cartUseCase: CartUseCase) :
+class CartFragmentViewModel @Inject constructor(
+
+    private val getCartDetailsUseCase: GetCartDetailsUseCase ,
+    private val updateProductQtyUseCase: UpdateProductQtyUseCase,
+    private val deleteProductUseCase: DeleteProductUseCase
+
+
+    ) :
     ViewModel() {
 
     private val _state: MutableLiveData<CartFragmentState> = MutableLiveData(CartFragmentState.Init)
@@ -59,7 +67,7 @@ class CartFragmentViewModel @Inject constructor(private val cartUseCase: CartUse
 
     fun getCartDetails(isUpdate: Boolean = false) {
         viewModelScope.launch {
-            cartUseCase.getCartDetails()
+            getCartDetailsUseCase.execute()
                 .onStart {
                     if (isUpdate)
                         setUpdatingCart(true)
@@ -88,7 +96,7 @@ class CartFragmentViewModel @Inject constructor(private val cartUseCase: CartUse
 
     fun updateProductQty(productId: Int, qty: Int) {
         viewModelScope.launch {
-            cartUseCase.updateProductQty(productId, qty)
+            updateProductQtyUseCase.execute(productId, qty)
                 .onStart { setUpdatingCart(true) }
                 .catch {
                     setUpdatingCart(false)
@@ -106,7 +114,7 @@ class CartFragmentViewModel @Inject constructor(private val cartUseCase: CartUse
 
     fun deleteProduct(productId: Int) {
         viewModelScope.launch {
-            cartUseCase.deleteProductFromCart(productId)
+            deleteProductUseCase.execute(productId)
                 .onStart { setUpdatingCart(true) }
                 .catch {
                     setUpdatingCart(false)

@@ -1,5 +1,6 @@
-package com.souqApp.presentation.orders
+package com.souqApp.presentation.orders.home
 
+import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedListResponse
@@ -8,8 +9,6 @@ import com.souqApp.databinding.FragmentOrdersBinding
 import com.souqApp.domain.orders.OrderEntity
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showGenericAlertDialog
-import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.extension.start
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +27,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>(FragmentOrdersBinding
         binding.recOrders.layoutManager = LinearLayoutManager(requireContext())
         binding.recOrders.adapter = ordersAdapter
         observer()
-
     }
 
     private fun observer() {
@@ -55,13 +53,12 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>(FragmentOrdersBinding
     }
 
     private fun handleError(throwable: Throwable) {
-        if (throwable.message != null)
-            requireContext().showToast(throwable.message!!)
+        Log.e("TAG" , throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {
         binding.recOrders.isVisible(!loading)
-        binding.progressBar.start(loading)
+        showLoading(loading)
     }
 
 }

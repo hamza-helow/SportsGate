@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.souqApp.presentation.main.cart.CartFragment"
+        android:name="com.souqApp.presentation.main.cart.home.CartFragment"
         android:label="CartFragment"
         tools:layout="@layout/fragment_cart" />
     <fragment

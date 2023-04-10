@@ -1,4 +1,4 @@
-package com.souqApp.presentation.checkout_details
+package com.souqApp.presentation.main.cart.checkout_details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,11 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.checkout_details.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.main.cart.remote.dto.CheckoutRequest
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
-import com.souqApp.domain.checkout_details.CheckoutDetailsEntity
-import com.souqApp.domain.checkout_details.PaymentDetailsUseCase
+import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.main.cart.CheckCouponUseCase
+import com.souqApp.domain.main.cart.CheckoutUseCase
+import com.souqApp.domain.main.cart.GetCheckoutDetailsUseCase
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -19,7 +20,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PaymentDetailsViewModel @Inject constructor(private val paymentDetailsUseCase: PaymentDetailsUseCase) :
+class PaymentDetailsViewModel @Inject constructor(
+
+    private val getCheckoutDetailsUseCase: GetCheckoutDetailsUseCase ,
+    private val checkoutUseCase: CheckoutUseCase ,
+    private val checkCouponUseCase: CheckCouponUseCase
+
+    ) :
     ViewModel() {
 
     var selectedIdAddress: Int? = null
@@ -65,8 +72,8 @@ class PaymentDetailsViewModel @Inject constructor(private val paymentDetailsUseC
 
     fun getCheckoutDetails(deliveryOptionId: Int? = null) {
         viewModelScope.launch {
-            paymentDetailsUseCase
-                .getCheckoutDetails(deliveryOptionId)
+            getCheckoutDetailsUseCase
+                .execute(deliveryOptionId)
                 .onStart { setLoading(true) }
                 .catch {
                     setLoading(false)
@@ -84,8 +91,8 @@ class PaymentDetailsViewModel @Inject constructor(private val paymentDetailsUseC
 
     fun checkout(couponCode: String) {
         viewModelScope.launch {
-            paymentDetailsUseCase
-                .checkout(
+            checkoutUseCase
+                .execute(
                     couponCode = couponCode,
                     addressId = selectedIdAddress,
                     deliveryOptionId = selectedDeliveryOptionId
@@ -108,9 +115,8 @@ class PaymentDetailsViewModel @Inject constructor(private val paymentDetailsUseC
 
     fun checkCouponCode(code: String) {
         viewModelScope.launch {
-
-            paymentDetailsUseCase
-                .checkCouponCode(code)
+            checkCouponUseCase
+                .execute(code)
                 .onStart { setLoading(true) }
                 .catch {
                     setLoading(false)

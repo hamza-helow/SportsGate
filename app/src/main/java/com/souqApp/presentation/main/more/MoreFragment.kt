@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.settings.remote.dto.SettingsEntity
@@ -18,7 +17,6 @@ import com.souqApp.infra.utils.*
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.ChangeLanguageDialog
 import com.souqApp.presentation.main.more.contact_us.ContactUsFragment
-import com.souqApp.presentation.orders.OrdersFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

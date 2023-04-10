@@ -1,4 +1,4 @@
-package com.souqApp.presentation.orders
+package com.souqApp.presentation.orders.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

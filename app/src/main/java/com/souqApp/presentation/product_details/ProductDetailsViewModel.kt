@@ -23,13 +23,10 @@ class ProductDetailsViewModel @Inject constructor(
 ) :
     ViewModel() {
 
+    private var variationCombinationId: Int? = null
     private var isFavorite = false
-
     private val state = MutableLiveData<ProductDetailsActivityState>()
     val mState: LiveData<ProductDetailsActivityState> get() = state
-
-    private var variationCombinationId: Int? = null
-
 
     private fun setLoading(isLoading: Boolean) {
         state.value = ProductDetailsActivityState.Loading(isLoading)

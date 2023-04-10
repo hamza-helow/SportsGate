@@ -17,7 +17,6 @@ import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.common.ProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 import javax.inject.Inject
@@ -29,7 +28,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     @Inject
     lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     private val viewModel: HomeViewModel by viewModels()
-    private lateinit var progressBar: ProgressDialog
+
+    // private val progressBar: ProgressDialog by lazy {  ProgressDialog(requireContext()) }
     private lateinit var bestSellingAdapter: ProductAdapter
     private lateinit var homeCategoryAdapter: HomeCategoryAdapter
     private lateinit var recommendedAdapter: ProductAdapter
@@ -40,25 +40,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.content.isVisible = false
-        progressBar = ProgressDialog(requireContext())
         initListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
         initAdapters()
         observer()
     }
 
     private fun initAdapters() {
-        bestSellingAdapter = ProductAdapter(firebaseRemoteConfig,::navigateToProductDetails)
+        bestSellingAdapter = ProductAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
         homeCategoryAdapter = HomeCategoryAdapter(verticalMode = false) {
             navigate(NavGraphDirections.toProductsFragment(it.name ?: "", it.id))
         }
-        recommendedAdapter = ProductAdapter(firebaseRemoteConfig,::navigateToProductDetails)
+        recommendedAdapter = ProductAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
         newProductAdapter = ProductGridAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
 
         // set layout managers
         binding.recCategory.layoutManager = generateLinearLayoutManager()
         binding.recBestSelling.layoutManager = generateLinearLayoutManager()
         binding.recRecommended.layoutManager = generateLinearLayoutManager()
-        binding.recNewProducts.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+        binding.recNewProducts.layoutManager =
+            StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         binding.recNewProducts.addItemDecoration(SpacesItemDecoration(20))
 
         //set adapters
@@ -97,14 +101,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun handleHomeLoadedError(rawResponse: WrappedResponse<HomeEntity>) {
-        progressBar.showLoader(false)
-
+        handleIsLoading(false)
         requireContext().showGenericAlertDialog(rawResponse.formattedErrors())
     }
 
-
     private fun handleIsLoading(loading: Boolean) {
-        progressBar.showLoader(loading)
+        binding.shimmerViewContainer.isVisible = loading
+        binding.refreshSwiper.isVisible = loading.not()
     }
 
     private fun generateLinearLayoutManager(): RecyclerView.LayoutManager {
@@ -115,7 +118,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //visible content
         binding.content.isVisible = true
 
-        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.promotions){
+        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.promotions) {
             navigate(NavGraphDirections.toProductDetailsFragment(it))
         }
         binding.viewPager.adapter = sliderPagerAdapter

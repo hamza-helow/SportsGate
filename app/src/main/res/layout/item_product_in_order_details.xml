@@ -7,7 +7,7 @@
 
         <variable
             name="productInOrder"
-            type="com.souqApp.data.order_details.remote.ProductInOrder" />
+            type="com.souqApp.domain.orders.ProductInOrderEntity" />
 
     </data>
 
@@ -18,13 +18,14 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            networkImage="@{productInOrder.first_image}"
+            networkImage="@{productInOrder.thumb}"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/gym_category_for_test" />
+            app:srcCompat="@drawable/gym_category_for_test"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/txt_name_product"
@@ -40,7 +41,7 @@
             android:id="@+id/txt_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{productInOrder.piece_price +" "+ productInOrder.setting_currency}'
+            android:text='@{productInOrder.lastPrice}'
             android:textSize="@dimen/_16sdp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/txt_name_product"

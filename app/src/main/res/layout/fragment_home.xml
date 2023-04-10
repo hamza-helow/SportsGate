@@ -6,211 +6,282 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/search_view_read_only" />
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/refresh_swiper"
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/main_scroll"
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_140sdp"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:background="@color/grey" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_24sdp"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:background="@color/grey" />
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alignmentMode="alignBounds"
+                        android:columnCount="3"
+                        android:lineSpacingExtra="@dimen/_16sdp"
+                        android:rowCount="2"
+                        android:useDefaultMargins="true">
+
+                        <include
+                            layout="@layout/item_product_shimmer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1" />
+
+                        <include
+                            layout="@layout/item_product_shimmer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1" />
+
+                        <include
+                            layout="@layout/item_product_shimmer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1" />
+
+                        <include
+                            layout="@layout/item_product_shimmer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1" />
+
+                    </GridLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/refresh_swiper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/content"
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/main_scroll"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/_32sdp"
-                    tools:context=".presentation.main.home.HomeFragment">
+                    android:layout_height="wrap_content">
 
-                    <!-- Categories-->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_marginBottom="@dimen/_16sdp"
-                        android:id="@+id/rec_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_8sdp"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        android:paddingEnd="@dimen/_32sdp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="10"
-                        tools:listitem="@layout/item_home_category"
-                        tools:ignore="RtlSymmetry" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <androidx.viewpager.widget.ViewPager
-                            android:id="@+id/view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_140sdp"
-                            android:layoutDirection="ltr"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="SpeakableTextPresentCheck" />
-
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/tabDots"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:layoutDirection="ltr"
-                            app:layout_constraintBottom_toBottomOf="@+id/view_pager"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:tabBackground="@drawable/tab_selector"
-                            app:tabGravity="center"
-                            app:tabIndicatorHeight="0dp"
-                            tools:ignore="SpeakableTextPresentCheck" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!-- Best selling-->
                     <LinearLayout
-                        android:id="@+id/card_best_selling"
+                        android:id="@+id/content"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:background="@color/white"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/_32sdp"
+                        tools:context=".presentation.main.home.HomeFragment">
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginBottom="@dimen/_8sdp">
-
-                            <TextView
-                                android:id="@+id/txt_title_best_selling"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/best_selling"
-                                android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
+                        <!-- Categories-->
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rec_best_selling"
+                            android:id="@+id/rec_category"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_marginBottom="@dimen/_16sdp"
                             android:clipToPadding="false"
                             android:orientation="horizontal"
                             android:paddingEnd="@dimen/_32sdp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:ignore="RtlSymmetry"
                             tools:itemCount="10"
-                            tools:listitem="@layout/item_product" />
-
-                    </LinearLayout>
-
-                    <!-- Recommended Products-->
-                    <LinearLayout
-                        android:id="@+id/card_recommended"
-                        android:layout_width="match_parent"
-
-                        android:layout_height="match_parent"
-
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:background="@color/white"
-                        android:orientation="vertical">
+                            tools:listitem="@layout/item_home_category" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginBottom="@dimen/_8sdp">
+                            android:layout_height="wrap_content">
 
-                            <TextView
-                                android:id="@+id/txt_title_recommended"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/recommended_products"
-                                android:textStyle="bold"
+                            <androidx.viewpager.widget.ViewPager
+                                android:id="@+id/view_pager"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_140sdp"
+                                android:layoutDirection="ltr"
                                 app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="SpeakableTextPresentCheck" />
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rec_recommended"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_8sdp"
-                            android:clipToPadding="false"
-                            android:orientation="horizontal"
-                            android:paddingEnd="@dimen/_32sdp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:ignore="RtlSymmetry"
-                            tools:itemCount="10"
-                            tools:listitem="@layout/item_product" />
-
-                    </LinearLayout>
-
-                    <!-- New Products-->
-                    <LinearLayout
-                        android:id="@+id/card_new_Products"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:orientation="vertical">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginBottom="@dimen/_8sdp">
-
-                            <TextView
-                                android:id="@+id/txt_title_new_Products"
-                                android:layout_width="wrap_content"
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/tabDots"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/new_products"
-                                android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_gravity="bottom"
+                                android:layoutDirection="ltr"
+                                app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:tabBackground="@drawable/tab_selector"
+                                app:tabGravity="center"
+                                app:tabIndicatorHeight="0dp"
+                                tools:ignore="SpeakableTextPresentCheck" />
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:padding="@dimen/_8sdp"
-                            android:id="@+id/rec_new_Products"
+                        <!-- Best selling-->
+                        <LinearLayout
+                            android:id="@+id/card_best_selling"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                            tools:itemCount="10"
-                            android:horizontalSpacing="@dimen/_10sdp"
-                            android:stretchMode="spacingWidth"
-                            tools:listitem="@layout/item_product_grid" />
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:background="@color/white"
+                            android:orientation="vertical">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_marginBottom="@dimen/_8sdp">
+
+                                <TextView
+                                    android:id="@+id/txt_title_best_selling"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/best_selling"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rec_best_selling"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_8sdp"
+                                android:clipToPadding="false"
+                                android:orientation="horizontal"
+                                android:paddingEnd="@dimen/_32sdp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                tools:ignore="RtlSymmetry"
+                                tools:itemCount="10"
+                                tools:listitem="@layout/item_product" />
+
+                        </LinearLayout>
+
+                        <!-- Recommended Products-->
+                        <LinearLayout
+                            android:id="@+id/card_recommended"
+                            android:layout_width="match_parent"
+
+                            android:layout_height="match_parent"
+
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:background="@color/white"
+                            android:orientation="vertical">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_marginBottom="@dimen/_8sdp">
+
+                                <TextView
+                                    android:id="@+id/txt_title_recommended"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/recommended_products"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rec_recommended"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_8sdp"
+                                android:clipToPadding="false"
+                                android:orientation="horizontal"
+                                android:paddingEnd="@dimen/_32sdp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                tools:ignore="RtlSymmetry"
+                                tools:itemCount="10"
+                                tools:listitem="@layout/item_product" />
+
+                        </LinearLayout>
+
+                        <!-- New Products-->
+                        <LinearLayout
+                            android:id="@+id/card_new_Products"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:orientation="vertical">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_marginBottom="@dimen/_8sdp">
+
+                                <TextView
+                                    android:id="@+id/txt_title_new_Products"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/new_products"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rec_new_Products"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:horizontalSpacing="@dimen/_10sdp"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/_8sdp"
+                                android:stretchMode="spacingWidth"
+                                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                                tools:itemCount="10"
+                                tools:listitem="@layout/item_product_grid" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
 
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </FrameLayout>
+
 
     </LinearLayout>
 

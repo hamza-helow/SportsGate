@@ -1,10 +1,11 @@
-package com.souqApp.presentation.order_details
+package com.souqApp.presentation.orders.details
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.order_details.remote.OrderDetailsEntity
+import com.souqApp.data.orders.remote.OrderDetailsResponse
+import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.databinding.FragmentOrderDetailsBinding
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showGenericAlertDialog
@@ -40,13 +41,13 @@ class OrderDetailsFragment :
         }
     }
 
-    private fun handleErrorLoad(response: WrappedResponse<OrderDetailsEntity>) {
+    private fun handleErrorLoad(response: WrappedResponse<OrderDetailsResponse>) {
         requireContext().showGenericAlertDialog(response.formattedErrors())
     }
 
     private fun handleLoaded(orderDetailsEntity: OrderDetailsEntity) {
         productsOrderAdapter.addList(orderDetailsEntity.products)
-        binding.productInOrder = orderDetailsEntity
+        binding.details = orderDetailsEntity
     }
 
     private fun handleError(throwable: Throwable) {

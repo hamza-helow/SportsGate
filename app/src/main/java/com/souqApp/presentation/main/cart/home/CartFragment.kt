@@ -1,7 +1,6 @@
-package com.souqApp.presentation.main.cart
+package com.souqApp.presentation.main.cart.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager

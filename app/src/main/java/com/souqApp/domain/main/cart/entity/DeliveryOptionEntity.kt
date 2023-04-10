@@ -1,4 +1,4 @@
-package com.souqApp.domain.checkout_details
+package com.souqApp.domain.main.cart.entity
 
 
 

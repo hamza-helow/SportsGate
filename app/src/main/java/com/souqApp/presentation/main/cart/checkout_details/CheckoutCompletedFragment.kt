@@ -1,4 +1,4 @@
-package com.souqApp.presentation.checkout_details
+package com.souqApp.presentation.main.cart.checkout_details
 
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs

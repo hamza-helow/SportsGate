@@ -15,7 +15,7 @@ import android.app.PendingIntent
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.souqApp.presentation.activity.MainActivity
-import com.souqApp.presentation.order_details.OrderDetailsFragment
+import com.souqApp.presentation.orders.details.OrderDetailsFragment
 import com.souqApp.presentation.product_details.ProductDetailsFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

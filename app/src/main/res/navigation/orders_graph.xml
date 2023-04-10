@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/ordersFragment"
-        android:name="com.souqApp.presentation.orders.OrdersFragment"
+        android:name="com.souqApp.presentation.orders.home.OrdersFragment"
         android:label="@string/my_orders_history_str"
         tools:layout="@layout/fragment_orders">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/orderDetailsFragment"
-        android:name="com.souqApp.presentation.order_details.OrderDetailsFragment"
+        android:name="com.souqApp.presentation.orders.details.OrderDetailsFragment"
         android:label="@string/order_details"
         tools:layout="@layout/fragment_order_details">
 

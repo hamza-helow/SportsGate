@@ -1,16 +1,16 @@
-package com.souqApp.presentation.order_details
+package com.souqApp.presentation.orders.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.order_details.remote.OrderDetailsEntity
+import com.souqApp.data.orders.remote.OrderDetailsResponse
+import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.order_details.OrderDetailsUseCase
+import com.souqApp.domain.orders.OrderDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +34,7 @@ class OrderDetailsViewModel @Inject constructor(private val orderDetailsUseCase:
         _state.value = OrderDetailsActivityState.Loaded(orderDetailsEntity)
     }
 
-    private fun onErrorLoad(response: WrappedResponse<OrderDetailsEntity>) {
+    private fun onErrorLoad(response: WrappedResponse<OrderDetailsResponse>) {
         _state.value = OrderDetailsActivityState.ErrorLoad(response)
     }
 
@@ -65,6 +65,6 @@ sealed class OrderDetailsActivityState {
     data class Loading(val isLoading: Boolean) : OrderDetailsActivityState()
     data class Error(val throwable: Throwable) : OrderDetailsActivityState()
     data class Loaded(val orderDetailsEntity: OrderDetailsEntity) : OrderDetailsActivityState()
-    data class ErrorLoad(val response: WrappedResponse<OrderDetailsEntity>) :
+    data class ErrorLoad(val response: WrappedResponse<OrderDetailsResponse>) :
         OrderDetailsActivityState()
 }

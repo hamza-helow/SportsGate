@@ -10,6 +10,8 @@ import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
 import com.souqApp.data.orders.remote.OrderResponse
 import com.souqApp.data.checkout_details.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.checkout_details.remote.dto.DeliveryOptionResponse
+import com.souqApp.data.orders.remote.OrderDetailsResponse
+import com.souqApp.data.orders.remote.ProductInOrderResponse
 import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
 import com.souqApp.data.sub_categories.remote.dto.SubCategoryResponse
@@ -22,11 +24,14 @@ import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductQtyEntity
 import com.souqApp.domain.orders.OrderEntity
-import com.souqApp.domain.checkout_details.CheckoutDetailsEntity
-import com.souqApp.domain.checkout_details.DeliveryOptionEntity
+import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
+import com.souqApp.domain.main.cart.entity.DeliveryOptionEntity
+import com.souqApp.domain.orders.OrderDetailsEntity
+import com.souqApp.domain.orders.ProductInOrderEntity
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import com.souqApp.domain.products_by_type.ProductsByTypeEntity
 import com.souqApp.domain.sub_categories.SubCategoryEntity
+import com.souqApp.infra.extension.orDash
 
 fun UserResponse.toEntity() = UserEntity(id, name, email, phone, image, verified, token)
 
@@ -80,6 +85,42 @@ fun VariationProductPriceInfoResponse.toEntity(): VariationProductPriceInfoEntit
     )
 }
 
+
+fun OrderDetailsResponse.toEntity(): OrderDetailsEntity {
+    return OrderDetailsEntity(
+        address = address.orDash(),
+        couponDiscount = couponDiscount.orDash(),
+        couponPercent = couponPercent ?: 0.0,
+        deliveryOptionId = deliveryOptionId ?: 0,
+        deliveryPrice = deliveryPrice.orDash(),
+        orderNumber = orderNumber.orDash(),
+        products = products.toEntities(),
+        reason = reason.orDash(),
+        status = status ?: 0,
+        statusDescription = statusDescription.orDash(),
+        subTotal = subTotal.orDash(),
+        total = total.orDash(),
+        vat = vat.orDash()
+    )
+}
+
+@JvmName("toProductInOrderEntities")
+fun List<ProductInOrderResponse>.toEntities(): List<ProductInOrderEntity> {
+    return map {
+        ProductInOrderEntity(
+            discountPrice = it.discountPrice.orDash(),
+            id = it.id ?: 0,
+            lastPrice = it.lastPrice.orDash(),
+            name = it.name.orDash(),
+            qty = it.qty ?: 1,
+            thumb = it.thumb.orEmpty(),
+            total_price = it.total_price.orDash(),
+            variation_compaination_id = it.variation_compaination_id ?: 0,
+            variation_compaination_label = it.variation_compaination_label.orDash()
+        )
+    }
+}
+
 @JvmName("toDeliveryOptionEntity")
 fun List<DeliveryOptionResponse>.toEntity() = map {
     DeliveryOptionEntity(
@@ -111,11 +152,10 @@ fun List<CityResponse>.toEntity() =
 fun List<OrderResponse>.toEntity() =
     map {
         OrderEntity(
-            it.createdAt,
-            it.id,
-            it.number,
-            it.settingCurrency,
-            it.status,
-            it.totalPrice
+            it.createdAt.orDash(),
+            it.id ?: 0,
+            it.number.orDash(),
+            it.statusDescription.orDash(),
+            it.totalPrice.orDash(),
         )
     }

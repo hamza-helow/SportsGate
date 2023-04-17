@@ -2,12 +2,13 @@ package com.souqApp.presentation.products
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.souqApp.domain.common.BaseResult
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.souqApp.domain.products.GetProductsUseCase
 import com.souqApp.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,26 +18,20 @@ class ProductsViewModel @Inject constructor(private val getProductsUseCase: GetP
 
     val state: MutableLiveData<ProductsFragmentState> = MutableLiveData()
 
-    fun loadProducts(categoryId: Int) {
+    fun loadProducts(id: Int, isPromo: Boolean) {
         viewModelScope.launch {
+            if (isPromo)
+                getProductsUseCase.request.promo = id
+            else
+                getProductsUseCase.request.categoryId = id
+            viewModelScope.launch {
+                val pagedData = Pager(
+                    config = PagingConfig(15, enablePlaceholders = false),
+                    pagingSourceFactory = { getProductsUseCase }
+                ).flow.cachedIn(this).stateIn(this)
 
-            getProductsUseCase.execute(categoryId).onStart {
-                state.value = ProductsFragmentState.Loading(true)
-            }.catch {
-                state.value = ProductsFragmentState.Loading(false)
-            }.collect {
-                state.value = ProductsFragmentState.Loading(false)
-                when (it) {
-                    is BaseResult.Errors -> {
-
-                    }
-                    is BaseResult.Success -> {
-                        state.value = ProductsFragmentState.OnProductsLoaded(it.data)
-                    }
-                }
+                state.value = ProductsFragmentState.OnProductsLoaded(pagedData.value)
             }
-
-
         }
     }
 }

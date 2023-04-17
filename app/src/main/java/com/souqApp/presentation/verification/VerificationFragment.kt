@@ -17,7 +17,6 @@ import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.databinding.FragmentVerificationBinding
 import com.souqApp.domain.common.entity.UserEntity
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.SharedPrefs
@@ -83,7 +82,7 @@ class VerificationFragment :
     }
 
     private fun onErrorResetVerification(response: WrappedResponse<CreateTokenResetPasswordEntity>) {
-        requireContext().showGenericAlertDialog(response.formattedErrors())
+        showErrorDialog(response.message)
     }
 
 
@@ -105,8 +104,8 @@ class VerificationFragment :
         findNavController().popBackStack(R.id.homeFragment , inclusive = true)
     }
 
-    private fun handleErrorAccountVerification(wrappedResponse: WrappedResponse<UserResponse>) {
-        requireContext().showGenericAlertDialog(wrappedResponse.formattedErrors())
+    private fun handleErrorAccountVerification(response: WrappedResponse<UserResponse>) {
+        showErrorDialog(response.message)
     }
 
     private fun initListener() {

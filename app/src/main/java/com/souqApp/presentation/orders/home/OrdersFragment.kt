@@ -8,7 +8,6 @@ import com.souqApp.data.orders.remote.OrderResponse
 import com.souqApp.databinding.FragmentOrdersBinding
 import com.souqApp.domain.orders.OrderEntity
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +44,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>(FragmentOrdersBinding
     }
 
     private fun handleOrdersErrorLoad(response: WrappedListResponse<OrderResponse>) {
-        requireContext().showGenericAlertDialog(response.formattedErrors())
+        showErrorDialog(response.message)
     }
 
     private fun handleOrdersLoaded(ordersEntity: List<OrderEntity>) {

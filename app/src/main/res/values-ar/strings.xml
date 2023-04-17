@@ -15,7 +15,7 @@
     <string name="best_match_str">أفضل تطابق</string>
     <string name="price_low_to_high_str">من الأقل إلى الأعلى (السعر)</string>
     <string name="price_high_to_low_str">من الأعلى إلى الأقل (السعر)</string>
-    <string name="search_str">ابحث</string>
+    <string name="search">ابحث</string>
     <string name="don_t_have_an_account_str">ليس لديك حساب؟</string>
     <string name="sign_in_str">تسجيل الدخول</string>
     <string name="forget_password_str">هل نسيت كلمة المرور</string>

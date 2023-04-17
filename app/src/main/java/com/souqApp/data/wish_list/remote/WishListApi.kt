@@ -7,6 +7,6 @@ import retrofit2.http.GET
 
 interface WishListApi {
 
-    @GET("v1/users/favourites/getAll")
+    @GET("v2/users/favorites/getFavoriteProducts")
     suspend fun getAll(): Response<WrappedListResponse<ProductEntity>>
 }

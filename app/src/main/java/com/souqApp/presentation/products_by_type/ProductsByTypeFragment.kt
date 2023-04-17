@@ -12,7 +12,6 @@ import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeRequest
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
 import com.souqApp.databinding.FragmentProductsByTypeBinding
 import com.souqApp.domain.products_by_type.ProductsByTypeEntity
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.base.BaseFragment
@@ -73,8 +72,8 @@ class ProductsByTypeFragment :
         Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
-    private fun handleProductsLoadedError(productsByTypeResponse: WrappedResponse<ProductsByTypeResponse>) {
-        requireContext().showGenericAlertDialog(productsByTypeResponse.formattedErrors())
+    private fun handleProductsLoadedError(response: WrappedResponse<ProductsByTypeResponse>) {
+        showErrorDialog(response.message)
     }
 
     private fun handleProductsLoaded(productsByTypeEntity: ProductsByTypeEntity) {

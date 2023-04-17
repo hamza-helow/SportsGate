@@ -1,12 +1,9 @@
 package com.souqApp.presentation.addresses.address_details
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -23,33 +20,23 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.FragmentAddressDetailsBinding
 import com.souqApp.domain.addresses.AddressDetailsEntity
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.ADDRESS_DETAILS
+import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 
 
 @AndroidEntryPoint
-class AddressDetailsFragment : Fragment(), OnMapReadyCallback, View.OnClickListener {
+class AddressDetailsFragment :
+    BaseFragment<FragmentAddressDetailsBinding>(FragmentAddressDetailsBinding::inflate),
+    OnMapReadyCallback, View.OnClickListener {
 
-    private lateinit var binding: FragmentAddressDetailsBinding
     private val viewModel: AddressDetailsViewModel by viewModels()
     private lateinit var mMap: GoogleMap
 
-    private val args:AddressDetailsFragmentArgs by navArgs()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentAddressDetailsBinding.inflate(inflater, container, false)
-        handleBack()
-        initMap(savedInstanceState)
-        return binding.root
-    }
-
+    private val args: AddressDetailsFragmentArgs by navArgs()
 
     private fun initMap(savedInstanceState: Bundle?) {
         binding.map.onCreate(savedInstanceState)
@@ -65,6 +52,8 @@ class AddressDetailsFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAddressDetails(args.addressId)
+        handleBack()
+        initMap(savedInstanceState)
         initListener()
         observer()
     }
@@ -89,7 +78,7 @@ class AddressDetailsFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
     }
 
     private fun handleAddressDetailsErrorLoad(response: WrappedResponse<AddressDetailsResponse>) {
-        requireContext().showGenericAlertDialog(response.formattedErrors())
+        showErrorDialog(response.message)
     }
 
     private fun handleError(error: Throwable) {

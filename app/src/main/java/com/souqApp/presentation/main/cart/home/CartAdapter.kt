@@ -5,31 +5,25 @@ import android.view.ViewGroup
 import com.souqApp.BR
 import com.souqApp.data.main.cart.remote.dto.ProductInCartResponse
 import com.souqApp.databinding.ItemCartBinding
+import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
-class CartAdapter : BaseRecyclerAdapter<ItemCartBinding, ProductInCartResponse>() {
+class CartAdapter(private val onChangeQTY: ((ProductInCartEntity, isIncrease: Boolean) -> Unit)) :
+    BaseRecyclerAdapter<ItemCartBinding, ProductInCartEntity>() {
 
-    lateinit var onChangeQTY: ((ProductInCartResponse) -> Unit)
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
         holder.bind(BR.product, getItemByPosition(position))
 
         holder.binding.btnIncrease.setOnClickListener {
-            getItemByPosition(position).qty += 1
-            holder.binding.invalidateAll()
-            onChangeQTY(getItemByPosition(position))
+            onChangeQTY(getItemByPosition(position), true)
 
         }
 
         holder.binding.btnDecrease.setOnClickListener {
-            if (getItemByPosition(position).qty > 1) {
-                getItemByPosition(position).qty -= 1
-                holder.binding.invalidateAll()
-                onChangeQTY(getItemByPosition(position))
-            }
+            onChangeQTY(getItemByPosition(position), false)
         }
-
 
     }
 

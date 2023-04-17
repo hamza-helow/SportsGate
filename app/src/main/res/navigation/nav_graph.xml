@@ -64,6 +64,11 @@
             android:name="categoryId"
             app:argType="integer" />
 
+        <argument
+            android:name="isPromo"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
     </fragment>
 
 

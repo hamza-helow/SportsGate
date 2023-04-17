@@ -1,8 +1,7 @@
-package com.souqApp.data.checkout_details.remote.dto
+package com.souqApp.data.main.cart.remote.dto
 
 import com.google.gson.annotations.SerializedName
 import com.souqApp.data.addresses.remote.dto.AddressResponse
-import com.souqApp.domain.addresses.AddressEntity
 
 data class CheckoutDetailsResponse(
     @SerializedName("user_address")

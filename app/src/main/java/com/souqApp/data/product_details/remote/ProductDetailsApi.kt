@@ -12,12 +12,11 @@ interface ProductDetailsApi {
     @POST("v2/users/favourites/addOrRemoveProduct")
     suspend fun addOrRemoveProduct(@Field("product_id") productId: Int): Response<WrappedResponse<Nothing>>
 
-    @FormUrlEncoded
     @POST("v2/users/carts/addProductToCart")
     suspend fun addProductToCart(
-        @Field("product_id") productId: Int,
-        @Field("combination_id") combinationId:Int?,
-        @Field("qty") count: Int = 1
+        @Query("product_id") productId: Int,
+        @Query("combination_id") combinationId:Int?,
+        @Query("qty") count: Int = 1
     ): Response<WrappedResponse<Nothing>>
 
     @GET("v2/products/getVariationProductPriceInfo")

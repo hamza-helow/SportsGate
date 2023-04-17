@@ -73,8 +73,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         startActivity(Intent(requireContext(), VerificationFragment::class.java))
     }
 
-    private fun handleErrorRegister(rawResponse: WrappedResponse<TokenResponse>) {
-        requireContext().showGenericAlertDialog(rawResponse.formattedErrors())
+    private fun handleErrorRegister(response: WrappedResponse<TokenResponse>) {
+        showErrorDialog(response.message)
     }
 
     private fun handleLoading(isLoading: Boolean) {

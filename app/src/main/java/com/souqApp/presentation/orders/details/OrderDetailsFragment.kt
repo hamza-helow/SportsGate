@@ -5,10 +5,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.orders.remote.OrderDetailsResponse
-import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.databinding.FragmentOrderDetailsBinding
+import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +41,7 @@ class OrderDetailsFragment :
     }
 
     private fun handleErrorLoad(response: WrappedResponse<OrderDetailsResponse>) {
-        requireContext().showGenericAlertDialog(response.formattedErrors())
+        showErrorDialog(response.message)
     }
 
     private fun handleLoaded(orderDetailsEntity: OrderDetailsEntity) {

@@ -1,14 +1,12 @@
 package com.souqApp.presentation.main.more.wish_list
 
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.FragmentWishListBinding
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
 import com.souqApp.presentation.base.BaseFragment
@@ -53,7 +51,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListB
     }
 
     private fun onErrorLoad(response: WrappedListResponse<ProductEntity>) {
-        requireContext().showGenericAlertDialog(response.formattedErrors())
+        showErrorDialog(response.message)
     }
 
     private fun onError(throwable: Throwable) {

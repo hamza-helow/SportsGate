@@ -15,7 +15,6 @@ import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.base.BaseFragment
@@ -102,7 +101,7 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
     }
 
     private fun handleAddressesErrorLoad(response: WrappedListResponse<AddressResponse>) {
-        requireContext().showGenericAlertDialog(response.formattedErrors())
+        showErrorDialog(response.message)
     }
 
     private fun handleAddressesLoaded(addressEntities: List<AddressEntity>) {

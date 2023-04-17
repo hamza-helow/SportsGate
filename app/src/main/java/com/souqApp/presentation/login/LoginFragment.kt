@@ -100,7 +100,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     private fun handleErrorLogin(rawResponse: WrappedResponse<UserResponse>) {
-        requireContext().showGenericAlertDialog(rawResponse.formattedErrors())
+        showErrorDialog(rawResponse.message)
     }
 
     private fun handleIsLoading(isLoading: Boolean) {

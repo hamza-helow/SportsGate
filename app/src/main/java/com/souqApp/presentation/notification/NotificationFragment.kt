@@ -7,7 +7,6 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.notification.remote.NotificationEntities
 import com.souqApp.databinding.FragmentNotificationBinding
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.SharedPrefs
@@ -52,7 +51,7 @@ class NotificationFragment :
     }
 
     private fun onErrorLoad(response: WrappedResponse<NotificationEntities>) {
-        requireContext().showGenericAlertDialog(response.formattedErrors())
+        showErrorDialog(response.message)
     }
 
     private fun onError(throwable: Throwable) {

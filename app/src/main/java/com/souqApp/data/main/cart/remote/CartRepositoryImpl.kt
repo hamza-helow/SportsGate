@@ -1,18 +1,17 @@
 package com.souqApp.data.main.cart.remote
 
-import com.souqApp.data.checkout_details.remote.dto.CheckoutDetailsResponse
+import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
-import com.souqApp.data.main.cart.remote.dto.CheckoutRequest
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
-import com.souqApp.data.main.cart.remote.dto.UpdateProductQtyResponse
+import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.CartRepository
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
-import com.souqApp.domain.main.cart.entity.UpdateProductQtyEntity
+import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -33,29 +32,29 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
         }
     }
 
-    override suspend fun checkout(checkoutRequest: CheckoutRequest): Flow<BaseResult<CheckoutEntity, WrappedResponse<CheckoutResponse>>> {
-        TODO("Not yet implemented")
-    }
 
-    override suspend fun deleteProductFromCart(productId: Int): Flow<Boolean> {
+    override suspend fun deleteProductFromCart(cartItemId: Int): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>> {
         return flow {
-            val response = cartApi.deleteProductFromCart(productId)
+            val response = cartApi.deleteProductFromCart(cartItemId)
             val isSuccessful = response.body()?.status
 
             if (isSuccessful == true) {
-                emit(true)
-            } else
-                emit(false)
+                val data = response.body()!!.data!!
+                emit(BaseResult.Success(data = data.toEntity()))
+            } else {
+                emit(BaseResult.Errors(response.body()!!))
+            }
         }
     }
 
     override suspend fun updateProductQty(
         productId: Int,
-        qty: Int
-    ): Flow<BaseResult<UpdateProductQtyEntity, WrappedResponse<UpdateProductQtyResponse>>> {
+        qty: Int,
+        combinationId: Int?
+    ): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>> {
 
         return flow {
-            val response = cartApi.updateProductQty(productId, qty)
+            val response = cartApi.updateProductQty(productId, qty, combinationId)
             val isSuccessful = response.body()?.status
             if (isSuccessful == true) {
                 val data = response.body()!!.data!!
@@ -69,7 +68,6 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
 
 
     override suspend fun getCheckoutDetails(deliveryOptionId: Int?): Flow<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> {
-
         return flow {
             val response = cartApi.getCheckoutDetails(deliveryOptionId)
             val isSuccessful = response.body()?.status
@@ -84,7 +82,6 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
 
         }
     }
-
 
 
     override suspend fun checkout(

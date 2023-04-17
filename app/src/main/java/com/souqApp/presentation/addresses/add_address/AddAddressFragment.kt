@@ -132,7 +132,7 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAd
 
     private fun handleCitiesErrLoad(response: WrappedListResponse<CityResponse>) {
         binding.loader.loadingProgressBar.start(false)
-        requireContext().showGenericAlertDialog(response.formattedErrors())
+        showErrorDialog(response.message)
     }
 
     private fun handleCitiesLoaded(cityEntities: List<CityEntity>) {

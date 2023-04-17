@@ -14,7 +14,6 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.databinding.FragmentProductDetailsBinding
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
@@ -156,7 +155,7 @@ class ProductDetailsFragment :
     }
 
     private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsEntity>) {
-        requireActivity().showGenericAlertDialog(wrappedResponse.formattedErrors())
+        showErrorDialog(wrappedResponse.message)
     }
 
     private fun handleError(throwable: Throwable) {

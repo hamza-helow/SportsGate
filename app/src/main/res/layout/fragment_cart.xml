@@ -70,11 +70,10 @@
 
                     <TextView
                         android:id="@+id/txt_total"
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text='@{cart.subTotal +" "+cart.settingCurrency,default=""}'
+                        android:text='@{cart.subTotal}'
                         android:textSize="17sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/textView6"

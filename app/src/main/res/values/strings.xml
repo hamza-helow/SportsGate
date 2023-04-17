@@ -14,7 +14,7 @@
     <string name="best_match_str">Best Match</string>
     <string name="price_low_to_high_str">Low to high (Price)</string>
     <string name="price_high_to_low_str">High to low (Price)</string>
-    <string name="search_str">Search</string>
+    <string name="search">Search</string>
     <string name="don_t_have_an_account_str">Don’t have an account?</string>
     <string name="sign_in_str">Login</string>
     <string name="forget_password_str">Forget Password</string>

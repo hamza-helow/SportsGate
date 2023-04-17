@@ -18,7 +18,7 @@ data class ProductDetailsEntity(
     val relevant: List<RelevantProductResponse>,
     val variations: List<Variation>,
     val combination_options: List<CombinationOption>,
-    val variation_compaination_id: Int,
+    val variation_compaination_id: Int?,
     val is_favorite: Boolean
 )
 

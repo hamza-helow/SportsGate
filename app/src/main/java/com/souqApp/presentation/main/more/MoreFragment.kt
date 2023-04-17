@@ -12,7 +12,6 @@ import com.souqApp.data.settings.remote.dto.SettingsEntity
 import com.souqApp.databinding.FragmentMoreBinding
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.openUrl
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.utils.*
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.ChangeLanguageDialog
@@ -62,8 +61,7 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     }
 
     private fun onErrorLoad(response: WrappedResponse<SettingsEntity>) {
-        requireContext().showGenericAlertDialog(response.formattedErrors())
-
+        showErrorDialog(response.message)
         binding.imgTiktok.isVisible(false)
         binding.imgInstagram.isVisible(false)
         binding.imgFacebook.isVisible(false)
@@ -155,10 +153,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
             }
         }
 
-    }
-
-    private fun goToContactUsActivity() {
-        startActivity(Intent(requireActivity(), ContactUsFragment::class.java))
     }
 
     private fun shareApp() {

@@ -10,8 +10,6 @@ interface OrdersApi {
     @GET("v2/users/orders/getOrders")
     suspend fun getOrders(): Response<WrappedListResponse<OrderResponse>>
 
-
-
     @GET("v2/users/orders/getOrderDetails")
     suspend fun getOrderDetails(@Query("order_id") order_id: Int): Response<WrappedResponse<OrderDetailsResponse>>
 }

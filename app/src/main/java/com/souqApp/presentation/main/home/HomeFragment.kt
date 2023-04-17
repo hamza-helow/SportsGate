@@ -13,7 +13,6 @@ import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeEntity
 import com.souqApp.databinding.FragmentHomeBinding
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
@@ -100,9 +99,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    private fun handleHomeLoadedError(rawResponse: WrappedResponse<HomeEntity>) {
+    private fun handleHomeLoadedError(response: WrappedResponse<HomeEntity>) {
         handleIsLoading(false)
-        requireContext().showGenericAlertDialog(rawResponse.formattedErrors())
+        showErrorDialog(response.message)
     }
 
     private fun handleIsLoading(loading: Boolean) {
@@ -119,7 +118,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.content.isVisible = true
 
         val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.promotions) {
-            navigate(NavGraphDirections.toProductDetailsFragment(it))
+            navigate(NavGraphDirections.toProductsFragment("", it).apply {
+                this.isPromo = true
+            })
         }
         binding.viewPager.adapter = sliderPagerAdapter
 
@@ -146,8 +147,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         context?.showLoader(false)
         binding.content.isVisible = false
         if (throwable.message != null)
-            requireContext().showGenericAlertDialog(throwable.message.orEmpty())
-
+            showErrorDialog(throwable.message.orEmpty())
         if (throwable is SocketTimeoutException) {
             requireContext().showToast("Unexpected error, try again later")
         }

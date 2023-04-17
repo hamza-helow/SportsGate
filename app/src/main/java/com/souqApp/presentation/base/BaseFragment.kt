@@ -13,7 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.souqApp.NavGraphDirections
-import com.souqApp.R
+import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.utils.AppBarConfig
 
 
@@ -66,6 +66,9 @@ abstract class BaseFragment<V : ViewBinding>(
         )
     }
 
+    fun showErrorDialog(message: String) {
+        requireContext().showGenericAlertDialog(message)
+    }
 
     fun navigate(navDirections: NavDirections, @IdRes popUpTo: Int? = null) {
 

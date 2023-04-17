@@ -11,7 +11,6 @@ import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.FragmentCategoriesBinding
-import com.souqApp.infra.extension.showGenericAlertDialog
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.ProgressDialog
@@ -67,7 +66,7 @@ class CategoriesFragment :
 
     private fun handleErrorLoadCategories(response: WrappedListResponse<CategoryEntity>) {
         progressBar.showLoader(false)
-        requireContext().showGenericAlertDialog(response.formattedErrors())
+        showErrorDialog(response.message)
     }
 
     private fun handleShowToast(message: String) {

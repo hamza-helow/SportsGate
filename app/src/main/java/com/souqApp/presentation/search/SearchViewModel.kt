@@ -4,56 +4,38 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.search.remote.SearchEntity
-import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.search.SearchUseCase
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.main.home.remote.dto.ProductEntity
+import com.souqApp.domain.products.GetProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCase) : ViewModel() {
+class SearchViewModel @Inject constructor(
+    private val getProductsUseCase: GetProductsUseCase,
+
+    ) : ViewModel() {
 
     private val _state = MutableLiveData<SearchActivityState>()
     val state: LiveData<SearchActivityState> get() = _state
 
+    fun search(search: String) {
 
-    private fun setLoading(isLoading: Boolean) {
-        _state.value = SearchActivityState.Loading(isLoading)
-    }
-
-    private fun onError(throwable: Throwable) {
-        _state.value = SearchActivityState.Error(throwable)
-    }
-
-    private fun onLoaded(searchEntity: SearchEntity) {
-        _state.value = SearchActivityState.Loaded(searchEntity)
-    }
-
-    private fun onErrorLoad(response: WrappedResponse<SearchEntity>) {
-        _state.value = SearchActivityState.ErrorLoad(response)
-    }
-
-    fun search(productName: String, page: Int , type:Int = 1) {
+        getProductsUseCase.request.search = search
 
         viewModelScope.launch {
-            searchUseCase.getSearchProducts(productName, type, page)
-                .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
-                .collect {
-                    setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onLoaded(it.data)
-                        is BaseResult.Errors -> onErrorLoad(it.error)
-                    }
-                }
+            val pagedData = Pager(
+                config = PagingConfig(15, enablePlaceholders = false),
+                pagingSourceFactory = { getProductsUseCase }
+            ).flow.cachedIn(this).stateIn(this)
+
+            _state.value = SearchActivityState.Loaded(pagedData.value)
         }
     }
 
@@ -64,6 +46,6 @@ sealed class SearchActivityState {
 
     data class Loading(val isLoading: Boolean) : SearchActivityState()
     data class Error(val throwable: Throwable) : SearchActivityState()
-    data class Loaded(val searchEntity: SearchEntity) : SearchActivityState()
-    data class ErrorLoad(val response: WrappedResponse<SearchEntity>) : SearchActivityState()
+    data class Loaded(val searchEntity: PagingData<ProductEntity>) : SearchActivityState()
+    data class ErrorLoad(val response: WrappedListResponse<ProductEntity>) : SearchActivityState()
 }

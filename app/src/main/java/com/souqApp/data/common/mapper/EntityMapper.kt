@@ -33,8 +33,8 @@ fun ProductsByTypeResponse.toEntity() = ProductsByTypeEntity(hasMore, products)
 fun UpdateProductCartResponse.toEntity() =
     UpdateProductCartEntity(
         cartItemId = cartItemId ?: Constants.UNDEFINED_ID,
-        subTotal = subTotal,
-        cartProductsCount = cartProductsCount
+        subTotal = subTotal.orDash(),
+        productQty = updatedQty ?: 0
     )
 
 fun CheckoutResponse.toEntity() = CheckoutEntity(orderId)

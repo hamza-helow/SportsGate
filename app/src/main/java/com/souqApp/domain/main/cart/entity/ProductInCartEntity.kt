@@ -1,6 +1,6 @@
 package com.souqApp.domain.main.cart.entity
 
-class ProductInCartEntity(
+data class ProductInCartEntity(
     val id: Int,
     val cartItemId:Int,
     val name: String,

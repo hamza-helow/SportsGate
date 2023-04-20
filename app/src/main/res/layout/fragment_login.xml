@@ -32,7 +32,6 @@
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_type_login"
                 android:layout_width="@dimen/_64sdp"
-
                 android:layout_height="@dimen/_28sdp"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/_16sdp"
@@ -55,12 +54,9 @@
                 android:layout_marginBottom="8dp"
                 android:visibility="gone" />
 
-
             <include
                 android:id="@+id/include_phone_number"
                 layout="@layout/edit_text_phone_number" />
-
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/email_input_lay"
@@ -91,18 +87,14 @@
                 app:hintText="@{@string/password_str}" />
 
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_25sdp"
                 android:enabled="false"
                 android:text="@string/sign_in_str"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox"
                 tools:ignore="HardcodedText" />
-
 
             <TextView
                 android:id="@+id/forgetPassBtn"
@@ -128,7 +120,7 @@
                 android:textSize="14sp" />
 
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/createAccBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_40sdp"

@@ -63,16 +63,13 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
         return flow {
             val response = verificationApi.requestPasswordReset(phone)
 
-            if (response.isSuccessful) {
+            val isSuccessful = response.body()?.status == true
+
+            if (isSuccessful) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {
-
-                val type = object : TypeToken<WrappedResponse<Nothing>>() {}.type
-                val error: WrappedResponse<Nothing> =
-                    Gson().fromJson(response.errorBody()!!.charStream(), type)
-                emit(BaseResult.Errors(error))
+                emit(BaseResult.Errors(response.body()!!))
             }
-
         }
     }
 
@@ -83,7 +80,6 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
             if (response.isSuccessful) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {
-
                 val type = object : TypeToken<WrappedResponse<Nothing>>() {}.type
                 val error: WrappedResponse<Nothing> =
                     Gson().fromJson(response.errorBody()!!.charStream(), type)

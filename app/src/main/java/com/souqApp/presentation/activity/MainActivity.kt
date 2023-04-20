@@ -9,7 +9,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
-import androidx.transition.Fade
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
@@ -48,10 +47,14 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
         setupBottomNav()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+
             val isBottomNavigationItem = bottomNavigationItems.contains(destination.id)
             binding.bottomNavigationView.isVisible(isBottomNavigationItem)
+
             if (destination.label != null)
                 binding.toolbar.title = destination.label
+            else
+                binding.toolbar.title = ""
         }
     }
 

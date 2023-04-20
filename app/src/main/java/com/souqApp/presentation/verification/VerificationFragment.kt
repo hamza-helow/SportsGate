@@ -36,10 +36,13 @@ class VerificationFragment :
     private val viewModel: VerificationViewModel by viewModels()
     private val args: VerificationFragmentArgs by navArgs()
 
+    private val isResetPassword by lazy {
+        args.phoneNumber.isNullOrBlank().not()
+    }
+
     override fun onResume() {
         super.onResume()
-        binding.isResetPassword = args.phoneNumber != null
-        sendCode()
+        binding.isResetPassword = isResetPassword
         startTimer()
         initListener()
         observer()
@@ -82,9 +85,8 @@ class VerificationFragment :
     }
 
     private fun onErrorResetVerification(response: WrappedResponse<CreateTokenResetPasswordEntity>) {
-        showErrorDialog(response.message)
+        showErrorDialog(response.formattedErrors())
     }
-
 
     private fun onError(throwable: Throwable) {
         Log.e(APP_TAG, throwable.stackTraceToString())
@@ -96,16 +98,12 @@ class VerificationFragment :
     }
 
     private fun handleSuccessAccountVerification(userEntity: UserEntity) {
-        sharedPrefs.saveToken(userEntity.token ?: "")
-        navigateToHomeFragment()
-    }
-
-    private fun navigateToHomeFragment() {
-        findNavController().popBackStack(R.id.homeFragment , inclusive = true)
+        sharedPrefs.saveToken(userEntity.token.orEmpty())
+        findNavController().popBackStack(R.id.homeFragment, inclusive = true)
     }
 
     private fun handleErrorAccountVerification(response: WrappedResponse<UserResponse>) {
-        showErrorDialog(response.message)
+        showErrorDialog(response.formattedErrors())
     }
 
     private fun initListener() {
@@ -146,7 +144,7 @@ class VerificationFragment :
     }
 
     private fun sendCode() {
-        if (args.phoneNumber != null)
+        if (isResetPassword)
             viewModel.requestPasswordReset(args.phoneNumber.orEmpty())
         else
             viewModel.resendActivationCode()

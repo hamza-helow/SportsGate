@@ -15,7 +15,6 @@ import com.souqApp.infra.extension.openUrl
 import com.souqApp.infra.utils.*
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.ChangeLanguageDialog
-import com.souqApp.presentation.main.more.contact_us.ContactUsFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -88,11 +87,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         binding.cardTermsAndConditions.setOnClickListener(this)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = MoreFragment()
-    }
-
     override fun onClick(p0: View) {
 
         when (p0.id) {
@@ -132,10 +126,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
                 navigate(MoreFragmentDirections.toTermsAndConditionsFragment())
             }
         }
-    }
-
-    private fun <T> goTo(to: Class<T>) {
-        startActivity(Intent(requireActivity(), to))
     }
 
     private fun openLink(imageView: ImageView) {

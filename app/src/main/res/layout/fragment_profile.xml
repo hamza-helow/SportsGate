@@ -12,10 +12,10 @@
     </data>
 
     <LinearLayout
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:fitsSystemWindows="true"
         android:orientation="vertical"
         android:padding="@dimen/_16sdp"
         tools:context=".presentation.main.more.profile.ProfileFragment">
@@ -32,15 +32,22 @@
             android:layout_gravity="center|top"
             android:layout_marginTop="@dimen/_8sdp"
             android:src="@drawable/ic_account_circle"
-            app:placeholder ="@{@drawable/ic_account_circle}"
-            app:networkImage="@{user.image}" />
+            app:networkImage="@{user.image}"
+            app:placeholder="@{@drawable/ic_account_circle}" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="@string/full_name_str"
+            android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/LoginTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_32sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:visibility="visible"
             app:boxStrokeColor="@color/green"
             app:hintEnabled="true">
@@ -49,8 +56,6 @@
                 android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@null"
-                android:hint="@string/full_name_str"
                 android:paddingStart="@dimen/_8sdp"
                 android:paddingEnd="@dimen/_8sdp"
                 android:text='@{user.name,default="user name"}'
@@ -58,13 +63,20 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="@string/phone_number_str"
+            android:textStyle="bold" />
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/LoginTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:enabled="false"
-            android:hint="@string/phone_number_str"
             android:visibility="visible"
             app:hintEnabled="true">
 
@@ -78,10 +90,19 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="@string/email_str"
+            android:textStyle="bold" />
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/LoginTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginBottom="@dimen/_16sdp"
             android:enabled="false"
             android:visibility="visible"
@@ -91,7 +112,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:hint="@string/email_str"
                 android:inputType="textEmailAddress"
                 android:paddingStart="@dimen/_8sdp"
                 android:paddingEnd="@dimen/_8sdp"

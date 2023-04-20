@@ -1,6 +1,5 @@
 package com.souqApp.data.change_password.remote
 
-import com.souqApp.data.change_password.remote.dto.ChangePasswordRequest
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.change_password.ChangePasswordRepository
 import com.souqApp.domain.common.BaseResult
@@ -11,11 +10,11 @@ import javax.inject.Inject
 
 class ChangePasswordRepositoryImpl @Inject constructor(private val changePasswordApi: ChangePasswordApi) :
     ChangePasswordRepository {
-    override suspend fun changePassword(changePasswordRequest: ChangePasswordRequest): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
+    override suspend fun changePassword(oldPassword:String , newPassword:String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
 
         return flow {
 
-            val response = changePasswordApi.changePassword(changePasswordRequest)
+            val response = changePasswordApi.changePassword(oldPassword, newPassword)
 
             val isSuccessful = response.body()?.status
 
@@ -26,7 +25,6 @@ class ChangePasswordRepositoryImpl @Inject constructor(private val changePasswor
                 emit(BaseResult.Errors(response.body()!!))
 
             }
-
         }
     }
 

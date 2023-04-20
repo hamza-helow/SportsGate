@@ -62,11 +62,10 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     private fun handleUpdateQuantity(updateProductQtyEntity: UpdateProductCartEntity) {
         val product = cartAdapter.list.first { it.cartItemId == updateProductQtyEntity.cartItemId }
         val index = cartAdapter.list.indexOf(product)
-        val updatedQty = updateProductQtyEntity.cartProductsCount
+        val updatedQty = updateProductQtyEntity.productQty
 
         if (updatedQty == 0) {
-            cartAdapter.list.removeAt(index)
-            cartAdapter.notifyItemRemoved(index)
+            cartAdapter.removeItem(index)
             handleCartEmptyState(cartAdapter.list)
         } else {
             product.qty = updatedQty

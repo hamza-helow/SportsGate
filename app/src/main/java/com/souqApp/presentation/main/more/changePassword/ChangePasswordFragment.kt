@@ -6,10 +6,11 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.souqApp.data.change_password.remote.dto.ChangePasswordRequest
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.FragmentChangePasswordBinding
-import com.souqApp.infra.extension.*
+import com.souqApp.infra.extension.activeBorder
+import com.souqApp.infra.extension.isPasswordValid
+import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,14 +43,11 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(Fragm
     }
 
     private fun handleError(throwable: Throwable) {
-
         Log.e("TAG", throwable.stackTraceToString())
-
     }
 
     private fun handleLoading(loading: Boolean) {
-        binding.includeLoader.loadingProgressBar.start(loading)
-        binding.btnSave.isEnabled = !loading
+        showLoading(loading)
     }
 
     private fun whenErrorChangePassword(response: WrappedResponse<Nothing>) {
@@ -104,7 +102,6 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(Fragm
 
     override fun onClick(view: View) {
         when (view.id) {
-
             binding.btnSave.id -> changePassword()
         }
     }
@@ -112,6 +109,6 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(Fragm
     private fun changePassword() {
         val currentPassword = binding.includeCurrentPassword.passwordEdt.text.toString()
         val newPassword = binding.includeNewPassword.passwordEdt.text.toString()
-        viewModel.changePassword(ChangePasswordRequest(currentPassword, newPassword))
+        viewModel.changePassword(currentPassword, newPassword)
     }
 }

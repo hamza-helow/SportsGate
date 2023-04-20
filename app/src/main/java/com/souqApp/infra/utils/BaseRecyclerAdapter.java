@@ -1,7 +1,6 @@
 package com.souqApp.infra.utils;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -64,7 +63,7 @@ public abstract class BaseRecyclerAdapter<Binding extends ViewDataBinding, Model
 
 
     public Set<Model> asSet() {
-        return new HashSet<Model>() {{
+        return new HashSet<>() {{
             addAll(list);
         }};
     }
@@ -250,11 +249,11 @@ public abstract class BaseRecyclerAdapter<Binding extends ViewDataBinding, Model
 
         if (idViewCLikable != -1 && onClickSubItemListener != null)
             holder.itemView.findViewById(idViewCLikable)
-                    .setOnClickListener(view -> onClickSubItemListener.onClickItem(getItemByPosition(holder.getAdapterPosition())));
+                    .setOnClickListener(view -> onClickSubItemListener.onClickItem(getItemByPosition(position)));
 
 
         if (onClickItemListener != null && onClickSubItemListener == null)
-            holder.getBinding().getRoot().setOnClickListener(view -> onClickItemListener.onClickItem(list.get(holder.getAdapterPosition())));
+            holder.getBinding().getRoot().setOnClickListener(view -> onClickItemListener.onClickItem(list.get(position)));
 
     }
 

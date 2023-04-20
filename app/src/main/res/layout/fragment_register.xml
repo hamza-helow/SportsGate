@@ -67,7 +67,7 @@
                 app:hintText="@{@string/confirm_password_str}" />
 
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/register_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"

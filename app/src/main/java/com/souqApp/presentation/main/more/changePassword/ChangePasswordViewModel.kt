@@ -35,11 +35,11 @@ class ChangePasswordViewModel @Inject constructor(private val changePasswordUseC
         state.value = ChangePasswordActivityState.SuccessChangePassword
     }
 
-    fun changePassword(changePasswordRequest: ChangePasswordRequest) {
+    fun changePassword(oldPassword: String, newPassword: String) {
         viewModelScope.launch {
 
             changePasswordUseCase
-                .changePassword(changePasswordRequest)
+                .changePassword(oldPassword, newPassword)
                 .onStart { setLoading(true) }
                 .catch {
                     setLoading(false)

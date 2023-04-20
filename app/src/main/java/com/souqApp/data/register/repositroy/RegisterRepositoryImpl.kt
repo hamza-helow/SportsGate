@@ -30,28 +30,4 @@ class RegisterRepositoryImpl @Inject constructor(private val registerApi: Regist
 
         }
     }
-
-//    override suspend fun activeAccount(activeAccountRequest: ActiveAccountRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
-//        return flow {
-//
-//            val response = registerApi.activeAccount(activeAccountRequest)
-//            val isSuccessful = response.body()?.status
-//
-//            if (isSuccessful == true) {
-//                val body = response.body()!!.data!!
-//                val userEntity = UserEntity(
-//                    body.id,
-//                    body.name,
-//                    body.email,
-//                    body.phone,
-//                    body.image,
-//                    body.verified,
-//                    body.token
-//                )
-//                emit(BaseResult.Success(userEntity))
-//            } else {
-//                emit(BaseResult.Errors(response.body()!!))
-//            }
-//        }
-//    }
 }

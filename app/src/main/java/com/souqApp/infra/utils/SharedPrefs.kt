@@ -8,6 +8,7 @@ import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.domain.common.entity.UserEntity
 
+@Suppress("UNCHECKED_CAST")
 class SharedPrefs(context: Context) {
 
     companion object {

@@ -8,6 +8,9 @@ import com.souqApp.data.common.remote.dto.TokenResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.TokenEntity
 import com.souqApp.domain.register.usecase.RegisterUseCase
+import com.souqApp.infra.extension.isEmail
+import com.souqApp.infra.extension.isPasswordValid
+import com.souqApp.infra.extension.isPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -17,32 +20,46 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(private val registerUseCase: RegisterUseCase) :
     ViewModel() {
 
-    private val state = MutableStateFlow<RegisterActivityState>(RegisterActivityState.Init)
-    val mState: StateFlow<RegisterActivityState> get() = state
+    private val state = MutableStateFlow<RegisterFragmentState>(RegisterFragmentState.Init)
+    val mState: StateFlow<RegisterFragmentState> get() = state
 
 
-    fun resetState(){
-        state.value = RegisterActivityState.Init
+    fun validate(
+        fullName: String,
+        email: String,
+        phone: String,
+        password: String,
+        confirmPassword: String
+    ) {
+        state.value = RegisterFragmentState.Validate(
+            fullName.isNotBlank() && email.isEmail() &&
+                    phone.isPhone() && password.isPasswordValid() &&
+                    password == confirmPassword
+        )
+    }
+
+    fun resetState() {
+        state.value = RegisterFragmentState.Init
     }
 
     private fun setLoading() {
-        state.value = RegisterActivityState.IsLoading(true)
+        state.value = RegisterFragmentState.IsLoading(true)
     }
 
     private fun hideLoading() {
-        state.value = RegisterActivityState.IsLoading(false)
+        state.value = RegisterFragmentState.IsLoading(false)
     }
 
     private fun showToast(message: String) {
-        state.value = RegisterActivityState.ShowToast(message)
+        state.value = RegisterFragmentState.ShowToast(message)
     }
 
     private fun successRegister(tokenEntity: TokenEntity) {
-        state.value = RegisterActivityState.SuccessRegister(tokenEntity)
+        state.value = RegisterFragmentState.SuccessRegister(tokenEntity)
     }
 
     private fun errorRegister(rawResponse: WrappedResponse<TokenResponse>) {
-        state.value = RegisterActivityState.ErrorRegister(rawResponse)
+        state.value = RegisterFragmentState.ErrorRegister(rawResponse)
     }
 
     fun register(registerRequest: RegisterRequest) {
@@ -64,11 +81,13 @@ class RegisterViewModel @Inject constructor(private val registerUseCase: Registe
 
 }
 
-sealed class RegisterActivityState {
-    object Init : RegisterActivityState()
-    data class IsLoading(val isLoading: Boolean) : RegisterActivityState()
-    data class ShowToast(val message: String) : RegisterActivityState()
-    data class SuccessRegister(val tokenEntity: TokenEntity) : RegisterActivityState()
+sealed class RegisterFragmentState {
+    object Init : RegisterFragmentState()
+    data class IsLoading(val isLoading: Boolean) : RegisterFragmentState()
+    data class ShowToast(val message: String) : RegisterFragmentState()
+    data class SuccessRegister(val tokenEntity: TokenEntity) : RegisterFragmentState()
     data class ErrorRegister(val rawResponse: WrappedResponse<TokenResponse>) :
-        RegisterActivityState()
+        RegisterFragmentState()
+
+    data class Validate(val isValid: Boolean) : RegisterFragmentState()
 }

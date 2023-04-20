@@ -14,8 +14,10 @@ class UpdateProductUseCase @Inject constructor(private val cartRepository: CartR
         product: ProductInCartEntity,
         isIncrease: Boolean
     ): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>> {
+
         return if (product.qty == 1 && isIncrease.not())
             cartRepository.deleteProductFromCart(product.cartItemId)
+
         else {
             val qty = if (isIncrease) product.qty + 1 else product.qty - 1
             cartRepository.updateProductQty(product.id, qty, product.combinationId)

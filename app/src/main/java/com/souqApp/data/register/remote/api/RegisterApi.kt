@@ -9,7 +9,7 @@ import retrofit2.http.POST
 
 interface RegisterApi {
 
-    @POST("v1/users/register")
+    @POST("v2/users/register")
     suspend fun register(@Body registerRequest: RegisterRequest): Response<WrappedResponse<TokenResponse>>
 
 }

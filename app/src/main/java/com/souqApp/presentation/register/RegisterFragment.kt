@@ -1,6 +1,5 @@
 package com.souqApp.presentation.register
 
-import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
@@ -16,7 +15,6 @@ import com.souqApp.domain.common.entity.TokenEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.verification.VerificationFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -30,14 +28,22 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     lateinit var sharedPrefs: SharedPrefs
     val viewModel: RegisterViewModel by viewModels()
 
-
     override fun onResume() {
         super.onResume()
         viewModel.resetState()
+        validate()
         initListeners()
         observe()
     }
 
+    private fun validate() {
+        val fullName = binding.includeFullName.emailEdt.text.toString().trim()
+        val email = binding.includeEmail.emailEdt.text.toString().trim()
+        val phone = binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber()
+        val password = binding.includePassword.passwordEdt.text.toString()
+        val confirmPassword = binding.includeConfirmPassword.passwordEdt.text.toString()
+        viewModel.validate(fullName, email, phone, password, confirmPassword)
+    }
 
     private fun observe() {
         viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
@@ -54,27 +60,28 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         binding.includeConfirmPassword.passwordEdt.doAfterTextChanged { validate() }
     }
 
-    private fun handleState(state: RegisterActivityState) {
+    private fun handleState(state: RegisterFragmentState) {
         when (state) {
-            is RegisterActivityState.ShowToast -> handleShowToast(state.message)
-            is RegisterActivityState.IsLoading -> handleLoading(state.isLoading)
-            is RegisterActivityState.ErrorRegister -> handleErrorRegister(state.rawResponse)
-            is RegisterActivityState.SuccessRegister -> handleSuccessRegister(state.tokenEntity)
-            is RegisterActivityState.Init -> Unit
+            is RegisterFragmentState.ShowToast -> handleShowToast(state.message)
+            is RegisterFragmentState.IsLoading -> handleLoading(state.isLoading)
+            is RegisterFragmentState.ErrorRegister -> handleErrorRegister(state.rawResponse)
+            is RegisterFragmentState.SuccessRegister -> handleSuccessRegister(state.tokenEntity)
+            is RegisterFragmentState.Init -> Unit
+            is RegisterFragmentState.Validate -> handleValidate(state.isValid)
         }
     }
 
     private fun handleSuccessRegister(tokenEntity: TokenEntity) {
         sharedPrefs.saveToken(tokenEntity.token, isLogin = false)
-        navigateToVerificationActivity()
+        navigateToVerificationScreen()
     }
 
-    private fun navigateToVerificationActivity() {
-        startActivity(Intent(requireContext(), VerificationFragment::class.java))
+    private fun navigateToVerificationScreen() {
+        navigate(RegisterFragmentDirections.toVerificationFragment(null))
     }
 
     private fun handleErrorRegister(response: WrappedResponse<TokenResponse>) {
-        showErrorDialog(response.message)
+        showErrorDialog(response.formattedErrors())
     }
 
     private fun handleLoading(isLoading: Boolean) {
@@ -108,58 +115,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
 
-    private fun validate(): Boolean {
-        val fullName = binding.includeFullName.emailEdt.text.toString().trim()
-        val email = binding.includeEmail.emailEdt.text.toString().trim()
-        val phone = binding.includePhoneNumber.phoneEdt.text.toString()
-        val password = binding.includePassword.passwordEdt.text.toString()
-        val confirmPassword = binding.includeConfirmPassword.passwordEdt.text.toString()
-
-        resetAllError()
-
-        Log.e(tag, phone.toPhoneNumber())
-
-        if (fullName.isEmpty()) {
-            binding.includeFullName.emailInputLay.activeBorder(requireContext(), false)
-            return false
-        }
-
-        if (!email.isEmail()) {
-            binding.includeEmail.emailInputLay.activeBorder(requireContext(), false)
-            return false
-        }
-
-        if (!phone.toPhoneNumber().isPhone()) {
-            //  binding.includeFullName.emailInputLay.activeBorder(this, false)
-            return false
-        }
-
-        if (!password.isPasswordValid()) {
-            binding.includePassword.passwordInputLay.activeBorder(requireContext(), false)
-            return false
-        }
-
-        if (!confirmPassword.isPasswordValid()) {
-            binding.includeConfirmPassword.passwordInputLay.activeBorder(requireContext(), false)
-            return false
-        }
-
-        if (password != confirmPassword) {
-            binding.includePassword.passwordInputLay.activeBorder(requireContext(), false)
-            binding.includeConfirmPassword.passwordInputLay.activeBorder(requireContext(), false)
-            return false
-        }
-
-        binding.registerBtn.isEnabled = true
-        return true
-    }
-
-
-    private fun resetAllError() {
-        binding.registerBtn.isEnabled = false
-        binding.includeFullName.emailInputLay.activeBorder(requireContext(), true)
-        binding.includeEmail.emailInputLay.activeBorder(requireContext(), true)
-        binding.includePassword.passwordInputLay.activeBorder(requireContext(), true)
-        binding.includeConfirmPassword.passwordInputLay.activeBorder(requireContext(), true)
+    private fun handleValidate(isValid: Boolean) {
+        binding.registerBtn.isEnabled = isValid
     }
 }

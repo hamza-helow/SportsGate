@@ -1,6 +1,5 @@
 package com.souqApp.presentation.login
 
-import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
@@ -20,7 +19,6 @@ import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.verification.VerificationFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -82,20 +80,20 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     private fun handleSuccessLogin(userEntity: UserEntity) {
-        sharedPrefs.saveToken(userEntity.token ?: "")
+        val requiredVerification = userEntity.verified == 2
+        sharedPrefs.saveToken(userEntity.token.orEmpty(), requiredVerification.not())
         sharedPrefs.saveUserInfo(userEntity.toUserResponse())
-        if (userEntity.verified == 2) {
-            sharedPrefs.isNeedVerify(true)
-            navigateToVerificationActivity()
+        if (requiredVerification) {
+            navigateToVerificationScreen()
         } else
-            navigateToMainActivity()
+            navigateToMainScreen()
     }
 
-    private fun navigateToVerificationActivity() {
-        startActivity(Intent(requireContext(), VerificationFragment::class.java))
+    private fun navigateToVerificationScreen() {
+        navigate(LoginFragmentDirections.toVerificationFragment(null))
     }
 
-    private fun navigateToMainActivity() {
+    private fun navigateToMainScreen() {
         findNavController().popBackStack()
     }
 

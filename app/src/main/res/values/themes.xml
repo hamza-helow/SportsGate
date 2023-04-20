@@ -12,8 +12,8 @@
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="bottomNavColor">@color/white</item>
         <item name="navigationIcon">@drawable/ic_circle_back</item>
-
         <item name="materialButtonStyle">@style/ButtonFillStyle</item>
+        <item name="editTextStyle">@style/EditTextStyle</item>
     </style>
 
     <!-- Night-->
@@ -25,6 +25,12 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText" >
+
+        <item name="android:background">@drawable/border_bg</item>
+        <item name="android:padding">16dp</item>
+    </style>
 
     <!-- it is blue color -->
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">

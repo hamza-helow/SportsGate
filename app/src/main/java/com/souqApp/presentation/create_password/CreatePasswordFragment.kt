@@ -8,10 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.souqApp.R
 import com.souqApp.databinding.FragmentCreatePasswordBinding
-import com.souqApp.infra.extension.activeBorder
-import com.souqApp.infra.extension.isPasswordValid
 import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +19,6 @@ class CreatePasswordFragment :
     View.OnClickListener {
 
     private val viewModel: CreatePasswordViewModel by viewModels()
-
     private val args: CreatePasswordFragmentArgs by navArgs()
 
     override fun onResume() {
@@ -42,11 +38,16 @@ class CreatePasswordFragment :
             is CreatePasswordActivityState.Created -> onCreatePassword(state.isCreated)
             is CreatePasswordActivityState.Error -> onError(state.throwable)
             is CreatePasswordActivityState.Loading -> onLoading(state.isLoading)
+            is CreatePasswordActivityState.Validate -> onValidate(state.isValid)
         }
     }
 
+    private fun onValidate(valid: Boolean) {
+        binding.btnSave.isEnabled = valid
+    }
+
     private fun onLoading(loading: Boolean) {
-        binding.includeLoader.loadingProgressBar.start(loading)
+        showLoading(loading)
     }
 
     private fun onError(throwable: Throwable) {
@@ -73,29 +74,8 @@ class CreatePasswordFragment :
 
 
     private fun validate() {
-        resetAllError()
-
         val newPassword = binding.passwordEdt.text.toString()
         val confirmNewPassword = binding.confirmPasswordEdt.text.toString()
-
-        if (newPassword.isEmpty() || confirmNewPassword.isEmpty() || newPassword != confirmNewPassword) {
-            binding.passwordInputLay.activeBorder(requireContext(), false)
-            binding.confirmPasswordInputLay.activeBorder(requireContext(), false)
-            return
-        }
-
-        if (!newPassword.isPasswordValid()) {
-            binding.passwordInputLay.activeBorder(requireContext(), false)
-            return
-        }
-
-        binding.btnSave.isEnabled = true
+        viewModel.validate(newPassword, confirmNewPassword)
     }
-
-    private fun resetAllError() {
-        binding.btnSave.isEnabled = false
-        binding.passwordInputLay.activeBorder(requireContext(), true)
-        binding.confirmPasswordInputLay.activeBorder(requireContext(), true)
-    }
-
 }

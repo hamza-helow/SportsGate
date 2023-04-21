@@ -70,7 +70,11 @@ abstract class BaseFragment<V : ViewBinding>(
         requireContext().showGenericAlertDialog(message)
     }
 
-    fun navigate(navDirections: NavDirections, @IdRes popUpTo: Int? = null) {
+    fun navigate(
+        navDirections: NavDirections,
+        @IdRes popUpTo: Int? = null,
+        singleTop: Boolean = false
+    ) {
 
         val navOptions = NavOptions.Builder()
             .apply {
@@ -78,6 +82,7 @@ abstract class BaseFragment<V : ViewBinding>(
                     setPopUpTo(popUpTo, false)
             }
             .setEnterAnim(android.R.anim.slide_in_left)
+            .setLaunchSingleTop(singleTop)
             .build()
 
         findNavController().navigate(navDirections, navOptions)

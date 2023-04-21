@@ -81,7 +81,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_send_otp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_32sdp"

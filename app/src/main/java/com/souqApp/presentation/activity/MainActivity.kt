@@ -53,8 +53,6 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
 
             if (destination.label != null)
                 binding.toolbar.title = destination.label
-            else
-                binding.toolbar.title = ""
         }
     }
 

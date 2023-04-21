@@ -12,7 +12,7 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.register.remote.dto.RegisterRequest
 import com.souqApp.databinding.FragmentRegisterBinding
 import com.souqApp.domain.common.entity.TokenEntity
-import com.souqApp.infra.extension.*
+import com.souqApp.infra.extension.toPhoneNumber
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,12 +37,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
     private fun validate() {
-        val fullName = binding.includeFullName.emailEdt.text.toString().trim()
-        val email = binding.includeEmail.emailEdt.text.toString().trim()
+        val fullName = binding.fullNameEdt.text.toString().trim()
+        val email = binding.emailEdt.text.toString().trim()
         val phone = binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber()
-        val password = binding.includePassword.passwordEdt.text.toString()
-        val confirmPassword = binding.includeConfirmPassword.passwordEdt.text.toString()
-        viewModel.validate(fullName, email, phone, password, confirmPassword)
+        val password = binding.passwordEdt.text.toString()
+        val confirmPassword = binding.confirmPasswordEdt.text.toString()
+        val isAgree = binding.checkBoxAgree.isChecked
+        viewModel.validate(fullName, email, phone, password, confirmPassword, isAgree)
     }
 
     private fun observe() {
@@ -52,12 +53,14 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
     private fun initListeners() {
+        binding.txtTermsAndConditions.setOnClickListener(this)
         binding.registerBtn.setOnClickListener(this)
-        binding.includeFullName.emailEdt.doAfterTextChanged { validate() }
-        binding.includeEmail.emailEdt.doAfterTextChanged { validate() }
+        binding.fullNameEdt.doAfterTextChanged { validate() }
+        binding.emailEdt.doAfterTextChanged { validate() }
         binding.includePhoneNumber.phoneEdt.doAfterTextChanged { validate() }
-        binding.includePassword.passwordEdt.doAfterTextChanged { validate() }
-        binding.includeConfirmPassword.passwordEdt.doAfterTextChanged { validate() }
+        binding.passwordEdt.doAfterTextChanged { validate() }
+        binding.confirmPasswordEdt.doAfterTextChanged { validate() }
+        binding.checkBoxAgree.setOnCheckedChangeListener { _, _ -> validate() }
     }
 
     private fun handleState(state: RegisterFragmentState) {
@@ -85,13 +88,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
     private fun handleLoading(isLoading: Boolean) {
-        binding.registerBtn.isEnabled = !isLoading
-        binding.loader.loadingProgressBar.isIndeterminate = isLoading
-        binding.loader.loadingProgressBar.isVisible(isLoading)
-
-        if (!isLoading) {
-            binding.loader.loadingProgressBar.progress = 0
-        }
+        showLoading(isLoading)
     }
 
     private fun handleShowToast(message: String) {
@@ -101,16 +98,20 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.registerBtn.id -> createAccount()
+            binding.txtTermsAndConditions.id -> navigateToTermsAndConditionScreen()
         }
     }
 
+    private fun navigateToTermsAndConditionScreen() {
+        navigate(RegisterFragmentDirections.toTermsAndConditionsFragment())
+    }
+
     private fun createAccount() {
-        val fullName = binding.includeFullName.emailEdt.text.toString().trim()
-        val email = binding.includeEmail.emailEdt.text.toString().trim()
+        val fullName = binding.fullNameEdt.text.toString().trim()
+        val email = binding.emailEdt.text.toString().trim()
         val code = "+962"
         val phone = code + binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber()
-        val password = binding.includePassword.passwordEdt.text.toString()
-
+        val password = binding.passwordEdt.text.toString()
         viewModel.register(RegisterRequest(fullName, email, phone, password))
     }
 

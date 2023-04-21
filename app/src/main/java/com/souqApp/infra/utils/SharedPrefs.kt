@@ -17,7 +17,6 @@ class SharedPrefs(context: Context) {
         private const val PREF_USER_INFO = "user_info"
         private const val IS_LOGIN = "is_login"
         private const val LANG = "lang_app"
-        private const val NEED_VERIFY_ACCOUNT = "need_verify_account"
         private const val FIREBASE_TOKEN = "firebase_token"
     }
 
@@ -33,13 +32,6 @@ class SharedPrefs(context: Context) {
         return get(FIREBASE_TOKEN, String::class.java)
     }
 
-    fun isNeedVerify(needVerify: Boolean) {
-        put(NEED_VERIFY_ACCOUNT, needVerify)
-    }
-
-    fun isNeedVerify(): Boolean {
-        return get(NEED_VERIFY_ACCOUNT, Boolean::class.java)
-    }
 
     fun setLanguage(code: String) {
         put(LANG, code)

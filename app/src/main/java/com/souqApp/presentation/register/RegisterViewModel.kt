@@ -29,12 +29,13 @@ class RegisterViewModel @Inject constructor(private val registerUseCase: Registe
         email: String,
         phone: String,
         password: String,
-        confirmPassword: String
+        confirmPassword: String ,
+        checkAgreeTerms:Boolean
     ) {
         state.value = RegisterFragmentState.Validate(
             fullName.isNotBlank() && email.isEmail() &&
                     phone.isPhone() && password.isPasswordValid() &&
-                    password == confirmPassword
+                    checkAgreeTerms && password == confirmPassword
         )
     }
 

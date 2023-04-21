@@ -18,7 +18,7 @@
     <string name="search">ابحث</string>
     <string name="don_t_have_an_account_str">ليس لديك حساب؟</string>
     <string name="sign_in_str">تسجيل الدخول</string>
-    <string name="forget_password_str">هل نسيت كلمة المرور</string>
+    <string name="forget_password">هل نسيت كلمة المرور</string>
     <string name="sign_up_str">اشتراك</string>
     <string name="new_password_str">كلمة المرور الجديدة</string>
     <string name="password_str">كلمة المرور</string>
@@ -29,7 +29,7 @@
     <string name="delete_str">حذف</string>
     <string name="resend_code_str">أعد إرسال</string>
     <string name="sub_total_str">المجموع الفرعي</string>
-    <string name="change_password_str">تغيير كلمة المرور</string>
+    <string name="change_password">تغيير كلمة المرور</string>
     <string name="my_orders_history_str">الطلبات</string>
     <string name="about_us_str">حول التطبيق</string>
     <string name="terms_and_conditions_str">الشروط والأحكام</string>
@@ -114,5 +114,9 @@
     <string name="your_order_has_been_submitted_and_will_be_delivered_within_4_working_days">Your order has been submitted and will be delivered within 4 working days</string>
     <string name="done">Done</string>
     <string name="adding_in_progress">Adding in progress</string>
+    <string name="change_your_old_password_by_setting_a_new_password_using_the_fields_below">Change your old password by setting a new password using the fields below</string>
+    <string name="enter_your_phone_number_used_your_account_to_be_eligible_to_reset_your_password">Enter your phone number used your account to be eligible to reset your password</string>
+    <string name="first_and_last_name_eg_ahmed_mohamed">First and last name eg Ahmed Mohamed</string>
+    <string name="i_agree_to_the">I agree to the</string>
 
 </resources>

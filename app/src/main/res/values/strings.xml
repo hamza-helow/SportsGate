@@ -17,7 +17,7 @@
     <string name="search">Search</string>
     <string name="don_t_have_an_account_str">Don’t have an account?</string>
     <string name="sign_in_str">Login</string>
-    <string name="forget_password_str">Forget Password</string>
+    <string name="forget_password">Forget Password</string>
     <string name="sign_up_str">Sign Up</string>
     <string name="new_password_str">New Password</string>
     <string name="password_str">Password</string>
@@ -28,7 +28,7 @@
     <string name="delete_str">Delete</string>
     <string name="resend_code_str">Resend</string>
     <string name="sub_total_str">Subtotal</string>
-    <string name="change_password_str">Change Password</string>
+    <string name="change_password">Change Password</string>
     <string name="my_orders_history_str">Orders</string>
     <string name="about_us_str">About Us</string>
     <string name="terms_and_conditions_str">Terms &amp; Conditions</string>
@@ -116,5 +116,9 @@
     <string name="your_order_has_been_submitted_and_will_be_delivered_within_4_working_days">Your order has been submitted and will be delivered within 4 working days</string>
     <string name="done">Done</string>
     <string name="adding_in_progress">Adding in progress</string>
+    <string name="change_your_old_password_by_setting_a_new_password_using_the_fields_below">Change your old password by setting a new password using the fields below</string>
+    <string name="enter_your_phone_number_used_your_account_to_be_eligible_to_reset_your_password">Enter your phone number used your account to be eligible to reset your password</string>
+    <string name="first_and_last_name_eg_ahmed_mohamed">First and last name eg Ahmed Mohamed</string>
+    <string name="i_agree_to_the">I agree to the</string>
 
 </resources>

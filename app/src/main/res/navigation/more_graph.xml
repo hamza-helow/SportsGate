@@ -53,7 +53,7 @@
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="com.souqApp.presentation.main.more.changePassword.ChangePasswordFragment"
-        android:label="@string/change_password_str"
+        android:label="@string/change_password"
         tools:layout="@layout/fragment_change_password" />
 
     <fragment

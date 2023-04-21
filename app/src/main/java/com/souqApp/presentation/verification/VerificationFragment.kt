@@ -73,8 +73,6 @@ class VerificationFragment :
     }
 
     private fun onSuccessResetVerification(createTokenResetPasswordEntity: CreateTokenResetPasswordEntity) {
-        sharedPrefs.isNeedVerify(false)
-
         navigate(
             VerificationFragmentDirections.toCreatePasswordFragment(
                 args.phoneNumber.orEmpty(),
@@ -99,7 +97,9 @@ class VerificationFragment :
 
     private fun handleSuccessAccountVerification(userEntity: UserEntity) {
         sharedPrefs.saveToken(userEntity.token.orEmpty())
-        findNavController().popBackStack(R.id.homeFragment, inclusive = true)
+
+
+        findNavController().popBackStack(R.id.homeFragment , false)
     }
 
     private fun handleErrorAccountVerification(response: WrappedResponse<UserResponse>) {

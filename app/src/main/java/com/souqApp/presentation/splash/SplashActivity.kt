@@ -29,8 +29,6 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (sharedPrefs.isNeedVerify())
-            sharedPrefs.logout()
 
         GlobalScope.launch {
             delay(2000)

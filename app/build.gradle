@@ -157,6 +157,10 @@ dependencies {
     //Paging 3
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
 
+
+    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.4"
+
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

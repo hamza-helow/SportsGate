@@ -4,21 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.notification.remote.NotificationEntities
-import com.souqApp.data.notification.remote.NotificationEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.notification.NotificationUseCase
+import com.souqApp.infra.utils.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NotificationViewModel @Inject constructor(private val notificationUseCase: NotificationUseCase) :
+class NotificationViewModel @Inject constructor(
+    private val notificationUseCase: NotificationUseCase,
+    private val sharedPrefs: SharedPrefs
+) :
     ViewModel() {
 
     private val _state = MutableLiveData<NotificationActivityState>()
@@ -40,7 +41,12 @@ class NotificationViewModel @Inject constructor(private val notificationUseCase:
         _state.value = NotificationActivityState.ErrorLoad(response)
     }
 
-    @Inject
+    init {
+        if (sharedPrefs.isLogin())
+            getNotificationsHistory()
+    }
+
+
     fun getNotificationsHistory() {
         viewModelScope.launch {
             notificationUseCase.notificationsHistory()

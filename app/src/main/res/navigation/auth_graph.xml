@@ -9,7 +9,6 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.souqApp.presentation.login.LoginFragment"
-        android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/to_forgotPasswordFragment"

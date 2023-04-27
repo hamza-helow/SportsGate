@@ -5,35 +5,45 @@ import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.souqApp.NavGraphDirections
 import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
+import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.databinding.FragmentProductDetailsBinding
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
+import com.souqApp.domain.products.ProductsType
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
+import com.souqApp.presentation.common.TagAdapter
 import com.souqApp.presentation.product_details.variations.VariationsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class ProductDetailsFragment :
     BaseFragment<FragmentProductDetailsBinding>(FragmentProductDetailsBinding::inflate),
     View.OnClickListener {
 
+
+    private lateinit var tagAdapter: TagAdapter
     private lateinit var variationsAdapter: VariationsAdapter
-
+    private lateinit var imagesProductAdapter: ImagesProductAdapter
+    private lateinit var relevantProducts: AdapterRelevantProducts
     private val args: ProductDetailsFragmentArgs by navArgs()
-
     private val viewModel: ProductDetailsViewModel by viewModels()
+    private val snapHelper = PagerSnapHelper()
 
     @Inject
     lateinit var firebaseConfig: FirebaseRemoteConfig
@@ -42,6 +52,8 @@ class ProductDetailsFragment :
     lateinit var sharedPrefs: SharedPrefs
 
     private lateinit var successAddToCartBottomSheet: SuccessAddToCartBottomSheet
+
+    override fun showAppBar(): Boolean = false
 
     override fun onStart() {
         super.onStart()
@@ -124,37 +136,65 @@ class ProductDetailsFragment :
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun handleDetailsLoaded(productDetailsEntity: ProductDetailsEntity) {
+        binding.content.isVisible = true
         binding.details = productDetailsEntity
-        binding.webView.wvSetContent(productDetailsEntity.desc)
+        binding.webView.setContent(productDetailsEntity.desc)
+
         binding.price = productDetailsEntity.price
-        binding.priceAfterDiscount = productDetailsEntity.discount_price
-        binding.discount = productDetailsEntity.discount_percentage
+        binding.priceAfterDiscount = productDetailsEntity.discountPrice
+        binding.discount = productDetailsEntity.discountPercentage
+
+        binding.hasRelevantProducts = productDetailsEntity.relevant.isNotEmpty()
 
         variationsAdapter = VariationsAdapter(
             productDetailsEntity.variations,
-            productDetailsEntity.combination_options
+            productDetailsEntity.combinationOptions
         ) {
             viewModel.getVariationProductPriceInfo(productDetailsEntity.id, it)
         }
+
+        imagesProductAdapter = ImagesProductAdapter()
+
+        imagesProductAdapter.list = productDetailsEntity.media
+
         binding.recVariations.layoutManager = LinearLayoutManager(requireContext())
         binding.recVariations.adapter = variationsAdapter
 
-
-        val sliderPagerAdapter =
-            ProductImagesViewPagerAdapter(requireContext(), productDetailsEntity.media)
-        binding.viewPager.adapter = sliderPagerAdapter
-
-        val adapterRelevantProducts = AdapterRelevantProducts {
-            navigate(ProductDetailsFragmentDirections.toSelf(it.id))
+        tagAdapter = TagAdapter {
+            navigate(
+                NavGraphDirections.toProductsFragment(it.name, it.id, ProductsType.TAG)
+            )
         }
-        adapterRelevantProducts.addList(productDetailsEntity.relevant)
-        binding.tabDots.setupWithViewPager(binding.viewPager)
 
-        handleToggleFavorite(productDetailsEntity.is_favorite)
+        tagAdapter.list = productDetailsEntity.tags
+
+        binding.recTag.layoutManager = FlexboxLayoutManager(requireContext())
+        binding.recTag.adapter = tagAdapter
+
+
+        relevantProducts = AdapterRelevantProducts {
+            navigate(NavGraphDirections.toProductDetailsFragment(it.id))
+        }
+
+        relevantProducts.list = productDetailsEntity.relevant
+
+        binding.recRelevant.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        binding.recRelevant.adapter = relevantProducts
+
+
+        binding.recPromotion.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        binding.recPromotion.adapter = imagesProductAdapter
+
+        snapHelper.attachToRecyclerView(binding.recPromotion)
+        binding.indicatorListPromotion.attachToRecyclerView(binding.recPromotion)
+
+        handleToggleFavorite(productDetailsEntity.isFavorite)
 
     }
 
-    private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsEntity>) {
+    private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsResponse>) {
         showErrorDialog(wrappedResponse.message)
     }
 
@@ -175,7 +215,10 @@ class ProductDetailsFragment :
 }
 
 @SuppressLint("SetJavaScriptEnabled")
-fun WebView.wvSetContent(content: String?) {
+fun WebView.setContent(content: String?) {
+    if (content.orEmpty().isEmpty())
+        return
+
     this.isFocusable = true
     this.isFocusableInTouchMode = true
     this.settings.javaScriptEnabled = true

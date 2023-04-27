@@ -13,13 +13,7 @@ class AdapterRelevantProducts(val onClickItem: (RelevantProductResponse) -> Unit
         holder.bind(BR.relevantProduct, getItemByPosition(position))
 
         holder.itemView.setOnClickListener {
-
             onClickItem(getItemByPosition(position))
-
-
-//            val intent = Intent(holder.itemView.context, ProductDetailsFragment::class.java)
-//            intent.putExtra(ID_PRODUCT, getItemByPosition(position).id)
-//            holder.itemView.context.startActivity(intent)
         }
     }
 

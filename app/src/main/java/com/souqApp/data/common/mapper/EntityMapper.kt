@@ -6,9 +6,12 @@ import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.Constants
 import com.souqApp.data.main.cart.remote.dto.*
-import com.souqApp.data.orders.remote.OrderResponse
+import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.data.orders.remote.OrderDetailsResponse
+import com.souqApp.data.orders.remote.OrderResponse
 import com.souqApp.data.orders.remote.ProductInOrderResponse
+import com.souqApp.data.product_details.remote.ProductDetailsEntity
+import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
 import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
 import com.souqApp.data.sub_categories.remote.dto.SubCategoryResponse
@@ -18,8 +21,9 @@ import com.souqApp.domain.addresses.AreaEntity
 import com.souqApp.domain.addresses.CityEntity
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.main.cart.entity.*
-import com.souqApp.domain.orders.OrderEntity
+import com.souqApp.domain.main.home.HomeEntity
 import com.souqApp.domain.orders.OrderDetailsEntity
+import com.souqApp.domain.orders.OrderEntity
 import com.souqApp.domain.orders.ProductInOrderEntity
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import com.souqApp.domain.products_by_type.ProductsByTypeEntity
@@ -30,27 +34,45 @@ fun UserResponse.toEntity() = UserEntity(id, name, email, phone, image, verified
 
 fun ProductsByTypeResponse.toEntity() = ProductsByTypeEntity(hasMore, products)
 
-fun UpdateProductCartResponse.toEntity() =
-    UpdateProductCartEntity(
-        cartItemId = cartItemId ?: Constants.UNDEFINED_ID,
-        subTotal = subTotal.orDash(),
-        productQty = updatedQty ?: 0
-    )
+fun UpdateProductCartResponse.toEntity() = UpdateProductCartEntity(
+    cartItemId = cartItemId ?: Constants.UNDEFINED_ID,
+    subTotal = subTotal.orDash(),
+    productQty = updatedQty ?: 0
+)
 
 fun CheckoutResponse.toEntity() = CheckoutEntity(orderId)
 
 fun AddressDetailsResponse.toEntity() = AddressDetailsEntity(
-    areaId,
-    areaName,
-    building,
-    cityId,
-    cityName,
-    floor,
-    id,
-    lat,
-    lng,
-    notes,
-    street
+    areaId, areaName, building, cityId, cityName, floor, id, lat, lng, notes, street
+)
+
+
+fun HomeResponse.toEntity() = HomeEntity(
+    cartProductsCount,
+    promotions,
+    categories,
+    newProducts,
+    bestSellingProducts,
+    recommendedProducts,
+    tags
+)
+
+fun ProductDetailsResponse.toEntity() = ProductDetailsEntity(
+    id = id ?: Constants.UNDEFINED_ID,
+    name = name.orDash(),
+    desc = desc.orEmpty(),
+    price = price.orDash(),
+    discountPrice = discountPrice.orDash(),
+    discountPercentage = discountPercentage ?: 0.0,
+    onSale = isSalesable ?: false,
+    qty = qty ?: 0,
+    media = media,
+    relevant = relevant,
+    variations = variations,
+    combinationOptions = combinationOptions,
+    variationCompainationId = variationCompainationId,
+    isFavorite = isFavorite ?: false ,
+    tags = tags
 )
 
 
@@ -121,9 +143,7 @@ fun List<ProductInOrderResponse>.toEntities(): List<ProductInOrderEntity> {
 @JvmName("toDeliveryOptionEntity")
 fun List<DeliveryOptionResponse>.toEntity() = map {
     DeliveryOptionEntity(
-        id = it.id ?: 0,
-        name = it.name ?: "-",
-        price = it.price ?: "-"
+        id = it.id ?: 0, name = it.name ?: "-", price = it.price ?: "-"
     )
 }
 
@@ -137,8 +157,7 @@ fun List<AddressResponse>.toEntity() = map { AddressEntity(it.id, it.fullAddress
 fun AddressResponse.toEntity() = AddressEntity(id, fullAddress, isDefault)
 
 
-fun CartDetailsResponse.toEntity() =
-    CartDetailsEntity(subTotal, currency, products.toEntities())
+fun CartDetailsResponse.toEntity() = CartDetailsEntity(subTotal, currency, products.toEntities())
 
 @JvmName("toProductsInCartEntities")
 fun List<ProductInCartResponse>.toEntities(): List<ProductInCartEntity> {
@@ -161,13 +180,12 @@ fun List<CityResponse>.toEntity() =
 
 
 @JvmName("toEntityOrderResponse")
-fun List<OrderResponse>.toEntity() =
-    map {
-        OrderEntity(
-            it.createdAt.orDash(),
-            it.id ?: 0,
-            it.number.orDash(),
-            it.statusDescription.orDash(),
-            it.totalPrice.orDash(),
-        )
-    }
+fun List<OrderResponse>.toEntity() = map {
+    OrderEntity(
+        it.createdAt.orDash(),
+        it.id ?: 0,
+        it.number.orDash(),
+        it.statusDescription.orDash(),
+        it.totalPrice.orDash(),
+    )
+}

@@ -22,22 +22,21 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>(FragmentProductsB
     private val args: ProductsFragmentArgs by navArgs()
 
     @Inject
-    lateinit var remoteConfig: FirebaseRemoteConfig //ToDo
+    lateinit var remoteConfig: FirebaseRemoteConfig
 
     private val productsAdapter: ProductGridPagingAdapter by lazy {
-        ProductGridPagingAdapter {
+        ProductGridPagingAdapter(remoteConfig) {
             navigate(NavGraphDirections.toProductDetailsFragment(it))
         }
     }
 
     override fun onStart() {
         super.onStart()
-        viewModel.loadProducts(args.categoryId , args.isPromo)
-
+        viewModel.loadProducts(args.categoryId , args.type)
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
-                is ProductsFragmentState.Loading -> showLoading(it.show)
                 is ProductsFragmentState.OnProductsLoaded -> setupProductsAdapter(it.result)
+                is ProductsFragmentState.Loading -> showLoading(it.show)
             }
         }
     }

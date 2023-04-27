@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +37,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         binding.recProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.recProducts.adapter = productHorizontalPagingAdapter
         binding.searchView.setOnQueryTextListener(this)
+        binding.imgBack.setOnClickListener{ findNavController().popBackStack() }
         observer()
     }
 

@@ -1,25 +1,24 @@
 package com.souqApp.data.product_details.remote
 
 import com.google.gson.annotations.SerializedName
+import com.souqApp.domain.main.home.TagEntity
 
 data class ProductDetailsEntity(
     val id: Int,
     val name: String,
     val desc: String,
     val price: String,
-    val discount_price: String,
-    val discount_percentage: Double,
-    val on_sale: Boolean,
-    val stock: Int,
-    val percent_added_tax: Double,
-    val setting_currency: String,
-    val setting_percent_added_tax: Double,
+    val discountPrice: String,
+    val discountPercentage: Double,
+    val onSale: Boolean,
+    val qty: Int,
     val media: List<String>,
     val relevant: List<RelevantProductResponse>,
     val variations: List<Variation>,
-    val combination_options: List<CombinationOption>,
-    val variation_compaination_id: Int?,
-    val is_favorite: Boolean
+    val combinationOptions: List<CombinationOption>,
+    val variationCompainationId: Int?,
+    val isFavorite: Boolean ,
+    val tags: List<TagEntity>
 )
 
 data class CombinationOption(

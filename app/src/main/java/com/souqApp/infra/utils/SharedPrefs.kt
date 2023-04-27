@@ -49,8 +49,8 @@ class SharedPrefs(context: Context) {
         put(IS_LOGIN, isLogin)
     }
 
-    fun saveUserInfo(userResponse: UserResponse) {
-        val jsonString = Gson().toJson(userResponse, UserResponse::class.java) ?: ""
+    fun saveUserInfo(user: UserEntity) {
+        val jsonString = Gson().toJson(user, UserEntity::class.java) ?: ""
         put(PREF_USER_INFO, jsonString)
     }
 

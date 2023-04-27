@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.main.home.remote.dto.HomeEntity
+import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.main.home.HomeEntity
 import com.souqApp.domain.main.home.HomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,7 +41,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
         state.value = HomeFragmentState.HomeLoaded(homeEntity)
     }
 
-    private fun homeErrorLoaded(rawResponse: WrappedResponse<HomeEntity>) {
+    private fun homeErrorLoaded(rawResponse: WrappedResponse<HomeResponse>) {
         state.value = HomeFragmentState.HomeLoadedError(rawResponse)
     }
 
@@ -47,7 +49,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
     fun getHome() {
         initState()
         viewModelScope.launch {
-            homeUseCase.home()
+            homeUseCase.execute()
                 .onStart { setLoading() }
                 .catch {
                     hideLoading()
@@ -71,6 +73,6 @@ sealed class HomeFragmentState {
     data class IsLoading(val isLoading: Boolean) : HomeFragmentState()
     data class Error(val error: Throwable) : HomeFragmentState()
     data class HomeLoaded(val homeEntity: HomeEntity) : HomeFragmentState()
-    data class HomeLoadedError(val rawResponse: WrappedResponse<HomeEntity>) : HomeFragmentState()
+    data class HomeLoadedError(val rawResponse: WrappedResponse<HomeResponse>) : HomeFragmentState()
 
 }

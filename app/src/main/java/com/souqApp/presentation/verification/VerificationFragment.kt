@@ -96,10 +96,9 @@ class VerificationFragment :
     }
 
     private fun handleSuccessAccountVerification(userEntity: UserEntity) {
+        sharedPrefs.saveUserInfo(userEntity)
         sharedPrefs.saveToken(userEntity.token.orEmpty())
-
-
-        findNavController().popBackStack(R.id.homeFragment , false)
+        findNavController().popBackStack(R.id.homeFragment, false)
     }
 
     private fun handleErrorAccountVerification(response: WrappedResponse<UserResponse>) {

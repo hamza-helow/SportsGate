@@ -4,6 +4,7 @@ import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsApi
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
+import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.product_details.ProductDetailsRepository
@@ -14,18 +15,18 @@ import javax.inject.Inject
 
 class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetailsApi: ProductDetailsApi) :
     ProductDetailsRepository {
-    override suspend fun productDetails(productID: Int): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsEntity>>> {
+
+    override suspend fun productDetails(productID: Int): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>> {
         return flow {
             val response = productsDetailsApi.productDetails(productID)
-            val isSuccessful = response.body()?.status
 
-            if (isSuccessful == true) {
-                val data = response.body()!!.data!!
-                emit(BaseResult.Success(data))
+            val isSuccessful = response.status
+            if (isSuccessful) {
+
+                emit(BaseResult.Success(response.data.toEntity()))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
-
         }
     }
 

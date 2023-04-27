@@ -6,6 +6,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.NavGraphDirections
 import com.souqApp.databinding.FragmentCategoriesBinding
+import com.souqApp.domain.products.ProductsType
 import com.souqApp.presentation.base.BaseFragment
 
 class CategoryChildrenFragment :
@@ -15,7 +16,7 @@ class CategoryChildrenFragment :
 
     private val adapterCategory by lazy {
         CategoryAdapter {
-            navigate(NavGraphDirections.toProductsFragment(it.name ?: "", it.id))
+            navigate(NavGraphDirections.toProductsFragment(it.name ?: "", it.id , ProductsType.PROMO))
         }.apply {
             list = args.categories.toList()
         }

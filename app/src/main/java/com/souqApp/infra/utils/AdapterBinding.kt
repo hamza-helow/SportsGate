@@ -5,8 +5,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +21,6 @@ import kotlin.math.roundToInt
 @SuppressLint("CheckResult")
 @BindingAdapter(value = ["networkImage", "placeholder"], requireAll = false)
 fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null) {
-
     if (url == null || url.isEmpty())
         return
     Glide.with(this)

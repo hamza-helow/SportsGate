@@ -5,29 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="@dimen/_8sdp"
     tools:context=".presentation.search.SearchFragment">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_view"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="@dimen/_8sdp"
-        android:layout_marginVertical="@dimen/_16sdp"
-        android:background="@drawable/bg_rounded"
-        android:closeIcon="@drawable/close_icon"
-        android:iconifiedByDefault="false"
-        android:queryBackground="@drawable/bg_rounded"
-        android:searchHintIcon="@drawable/ic_search"
-        android:searchIcon="@drawable/ic_search"
-        android:submitBackground="@drawable/bg_rounded"
-        app:iconifiedByDefault="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryBackground="@android:color/transparent"
-        app:queryHint="@string/search"
-        tools:targetApi="lollipop_mr1" />
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_back"
+            android:layout_marginEnd="@dimen/_8sdp"
+            tools:ignore="ContentDescription" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded"
+            android:closeIcon="@drawable/close_icon"
+            android:iconifiedByDefault="false"
+            android:queryBackground="@drawable/bg_rounded"
+            android:searchHintIcon="@drawable/ic_search"
+            android:searchIcon="@drawable/ic_search"
+            android:submitBackground="@drawable/bg_rounded"
+            app:iconifiedByDefault="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryBackground="@android:color/transparent"
+            app:queryHint="@string/search"
+            tools:targetApi="lollipop_mr1" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <include
         android:id="@+id/include_loader"

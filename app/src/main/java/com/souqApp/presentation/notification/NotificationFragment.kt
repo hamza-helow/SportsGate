@@ -29,7 +29,7 @@ class NotificationFragment :
         binding.rec.layoutManager = LinearLayoutManager(requireContext())
         binding.rec.adapter = notificationAdapter
         viewModel.state.observe(this) { handleState(it) }
-
+        binding.cardNoNotification.isVisible(sharedPrefs.isLogin().not())
     }
 
     private fun handleState(state: NotificationActivityState) {

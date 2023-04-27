@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 interface ProductDetailsApi {
     @GET("v2/products/getProductDetails")
-    suspend fun productDetails(@Query("id") productId: Int): Response<WrappedResponse<ProductDetailsEntity>>
+    suspend fun productDetails(@Query("id") productId: Int): WrappedResponse<ProductDetailsResponse>
 
     @FormUrlEncoded
     @POST("v2/users/favourites/addOrRemoveProduct")

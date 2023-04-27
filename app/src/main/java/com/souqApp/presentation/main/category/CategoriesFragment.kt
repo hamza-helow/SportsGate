@@ -11,9 +11,9 @@ import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.FragmentCategoriesBinding
+import com.souqApp.domain.products.ProductsType
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.common.ProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -23,12 +23,11 @@ class CategoriesFragment :
     BaseFragment<FragmentCategoriesBinding>(FragmentCategoriesBinding::inflate) {
 
     private val viewModel: CategoriesViewModel by viewModels()
-    private lateinit var progressBar: ProgressDialog
 
     private val adapterCategory by lazy {
         CategoryAdapter {
             if (it.children == null)
-                navigate(NavGraphDirections.toProductsFragment(it.name ?: "", it.id))
+                navigate(NavGraphDirections.toProductsFragment(it.name.orEmpty(), it.id , ProductsType.CATEGORY))
             else
                 navigate(
                     CategoriesFragmentDirections.toCategoryChildrenFragment(
@@ -41,7 +40,6 @@ class CategoriesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar = ProgressDialog(requireContext())
         binding.recCategory.layoutManager = LinearLayoutManager(requireContext())
         binding.recCategory.adapter = adapterCategory
         observe()
@@ -65,7 +63,7 @@ class CategoriesFragment :
     }
 
     private fun handleErrorLoadCategories(response: WrappedListResponse<CategoryEntity>) {
-        progressBar.showLoader(false)
+        showLoading(false)
         showErrorDialog(response.message)
     }
 
@@ -74,15 +72,11 @@ class CategoriesFragment :
     }
 
     private fun handleLoading(loading: Boolean) {
-        progressBar.showLoader(loading)
+        showLoading(loading)
     }
 
     private fun handleCategoriesLoaded(categories: List<CategoryEntity>) {
         adapterCategory.list = categories
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = CategoriesFragment()
-    }
 }

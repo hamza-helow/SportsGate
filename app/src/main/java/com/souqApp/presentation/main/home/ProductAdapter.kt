@@ -17,7 +17,6 @@ class ProductAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val product = getItemByPosition(position)
-
         holder.bind(BR.product, product)
         holder.bind(BR.showPrice, firebaseConfig.getBoolean(IS_PURCHASE_ENABLED))
 

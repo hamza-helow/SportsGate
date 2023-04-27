@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.souqApp.data.common.mapper.toUserResponse
+import com.souqApp.R
 import com.souqApp.databinding.FragmentProfileBinding
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.showToast
@@ -105,8 +105,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     }
 
     private fun handleSuccessUpdateProfile(userEntity: UserEntity) {
-        sharedPrefs.saveUserInfo(userEntity.toUserResponse())
-        requireContext().showToast("Updated successfully")
+        sharedPrefs.saveUserInfo(userEntity)
+        requireContext().showToast(getString(R.string.updated_successfully))
     }
 
     private fun handleProfileChanged(changed: Boolean) {
@@ -128,7 +128,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun updateProfile() {
         val name = binding.etName.text.toString().trim()
-        viewModel.updateProfile(name, imageSelected ?: "")
+        viewModel.updateProfile(name, imageSelected.orEmpty())
     }
 
     private fun requestPermissionReadStorageAndSelectImage() {

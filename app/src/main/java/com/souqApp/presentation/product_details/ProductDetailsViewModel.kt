@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
+import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.product_details.GetVariationProductPriceInfoUseCase
 import com.souqApp.domain.product_details.ProductDetailsUseCase
@@ -33,12 +34,12 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun onDetailsLoaded(productDetailsEntity: ProductDetailsEntity) {
-        variationCombinationId = productDetailsEntity.variation_compaination_id
+        variationCombinationId = productDetailsEntity.variationCompainationId
 
         state.value = ProductDetailsActivityState.DetailsLoaded(productDetailsEntity)
     }
 
-    private fun onDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsEntity>) {
+    private fun onDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsResponse>) {
         state.value = ProductDetailsActivityState.DetailsErrorLoaded(wrappedResponse)
     }
 
@@ -142,7 +143,7 @@ sealed class ProductDetailsActivityState {
     data class DetailsLoaded(val productDetailsEntity: ProductDetailsEntity) :
         ProductDetailsActivityState()
 
-    data class DetailsErrorLoaded(val wrappedResponse: WrappedResponse<ProductDetailsEntity>) :
+    data class DetailsErrorLoaded(val wrappedResponse: WrappedResponse<ProductDetailsResponse>) :
         ProductDetailsActivityState()
 
     data class Error(val throwable: Throwable) : ProductDetailsActivityState()

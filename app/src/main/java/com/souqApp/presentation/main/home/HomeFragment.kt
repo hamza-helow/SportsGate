@@ -5,20 +5,27 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.main.home.remote.dto.HomeEntity
+import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.databinding.FragmentHomeBinding
+import com.souqApp.domain.main.home.HomeEntity
+import com.souqApp.domain.products.ProductsType
 import com.souqApp.infra.extension.showLoader
 import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.layout_manager.CustomLinearLayoutManager
 import com.souqApp.presentation.base.BaseFragment
+import com.souqApp.presentation.common.TagAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
@@ -28,11 +35,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     private val viewModel: HomeViewModel by viewModels()
 
-    // private val progressBar: ProgressDialog by lazy {  ProgressDialog(requireContext()) }
     private lateinit var bestSellingAdapter: ProductAdapter
     private lateinit var homeCategoryAdapter: HomeCategoryAdapter
     private lateinit var recommendedAdapter: ProductAdapter
     private lateinit var newProductAdapter: ProductGridAdapter
+    private lateinit var promotionAdapter: PromotionAdapter
+    private lateinit var tagAdapter: TagAdapter
+    private val snapHelperChildren = PagerSnapHelper()
 
     override fun showAppBar() = false
 
@@ -48,28 +57,71 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         observer()
     }
 
+
+    private fun navigateToProductsScreen(id: Int, name: String? = null, type: ProductsType) {
+        navigate(
+            NavGraphDirections.toProductsFragment(
+                name.orEmpty(),
+                id,
+                type
+            )
+        )
+    }
+
     private fun initAdapters() {
         bestSellingAdapter = ProductAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
         homeCategoryAdapter = HomeCategoryAdapter(verticalMode = false) {
-            navigate(NavGraphDirections.toProductsFragment(it.name ?: "", it.id))
+            navigateToProductsScreen(
+                id = it.id,
+                name = it.name,
+                type = ProductsType.CATEGORY
+            )
         }
         recommendedAdapter = ProductAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
         newProductAdapter = ProductGridAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
+        tagAdapter = TagAdapter {
+            navigateToProductsScreen(
+                id = it.id,
+                name = it.name,
+                type = ProductsType.TAG
+            )
+
+        }
+        promotionAdapter = PromotionAdapter {
+            navigateToProductsScreen(
+                id = it,
+                type = ProductsType.PROMO
+            )
+        }
 
         // set layout managers
+        binding.recPromotion.layoutManager = generateLinearLayoutManager()
         binding.recCategory.layoutManager = generateLinearLayoutManager()
-        binding.recBestSelling.layoutManager = generateLinearLayoutManager()
-        binding.recRecommended.layoutManager = generateLinearLayoutManager()
+        binding.recRecommended.layoutManager = CustomLinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.recTag.layoutManager = FlexboxLayoutManager(context)
+
+        val spacesItemDecoration = SpacesItemDecoration(20)
+
+        binding.recBestSelling.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
         binding.recNewProducts.layoutManager =
             StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
-        binding.recNewProducts.addItemDecoration(SpacesItemDecoration(20))
+
+        binding.recNewProducts.addItemDecoration(spacesItemDecoration)
+        binding.recBestSelling.addItemDecoration(spacesItemDecoration)
 
         //set adapters
         binding.recCategory.adapter = homeCategoryAdapter
         binding.recBestSelling.adapter = bestSellingAdapter
         binding.recRecommended.adapter = recommendedAdapter
         binding.recNewProducts.adapter = newProductAdapter
+        binding.recPromotion.adapter = promotionAdapter
+        binding.recTag.adapter = tagAdapter
 
+
+        snapHelperChildren.attachToRecyclerView(binding.recPromotion)
+        binding.indicatorListPromotion.attachToRecyclerView(binding.recPromotion)
     }
 
     private fun navigateToProductDetails(productId: Int) {
@@ -99,7 +151,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    private fun handleHomeLoadedError(response: WrappedResponse<HomeEntity>) {
+    private fun handleHomeLoadedError(response: WrappedResponse<HomeResponse>) {
         handleIsLoading(false)
         showErrorDialog(response.message)
     }
@@ -117,30 +169,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //visible content
         binding.content.isVisible = true
 
-        val sliderPagerAdapter = SliderViewPagerAdapter(requireContext(), homeEntity.promotions) {
-            navigate(NavGraphDirections.toProductsFragment("", it).apply {
-                this.isPromo = true
-            })
-        }
-        binding.viewPager.adapter = sliderPagerAdapter
-
         // set lists
         homeCategoryAdapter.list = homeEntity.categories
-        bestSellingAdapter.list = homeEntity.best_selling_products
-        recommendedAdapter.list = homeEntity.recommended_products
-        newProductAdapter.list = homeEntity.new_products
-
-        //link viewpager with tabs layout
-        binding.tabDots.setupWithViewPager(binding.viewPager)
+        bestSellingAdapter.list = homeEntity.bestSellingProducts
+        recommendedAdapter.list = homeEntity.recommendedProducts
+        newProductAdapter.list = homeEntity.newProducts
+        promotionAdapter.list = homeEntity.promotions
+        tagAdapter.list = homeEntity.tags
 
         //viability
-        binding.cardNewProducts.isVisible = homeEntity.new_products.isNotEmpty()
-        binding.cardRecommended.isVisible = homeEntity.recommended_products.isNotEmpty()
-        binding.cardBestSelling.isVisible = homeEntity.best_selling_products.isNotEmpty()
+        binding.cardNewProducts.isVisible = homeEntity.newProducts.isNotEmpty()
+        binding.cardRecommended.isVisible = homeEntity.recommendedProducts.isNotEmpty()
+        binding.cardBestSelling.isVisible = homeEntity.bestSellingProducts.isNotEmpty()
         binding.recCategory.isVisible = homeEntity.categories.isNotEmpty()
-        binding.viewPager.isVisible = homeEntity.promotions.isNotEmpty()
-        binding.tabDots.isVisible = homeEntity.promotions.isNotEmpty()
-
+        binding.recPromotion.isVisible = homeEntity.promotions.isNotEmpty()
     }
 
     private fun handleUnexpectedError(throwable: Throwable) {

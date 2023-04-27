@@ -14,6 +14,7 @@
         <item name="navigationIcon">@drawable/ic_circle_back</item>
         <item name="materialButtonStyle">@style/ButtonFillStyle</item>
         <item name="editTextStyle">@style/EditTextStyle</item>
+        <item name="android:windowBackground">#F2F1F6</item>
     </style>
 
     <!-- Night-->
@@ -27,7 +28,6 @@
 
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText" >
-
         <item name="android:background">@drawable/border_bg</item>
         <item name="android:padding">16dp</item>
     </style>

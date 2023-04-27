@@ -65,9 +65,8 @@
             app:argType="integer" />
 
         <argument
-            android:name="isPromo"
-            android:defaultValue="false"
-            app:argType="boolean" />
+            android:name="type"
+            app:argType="com.souqApp.domain.products.ProductsType" />
 
     </fragment>
 

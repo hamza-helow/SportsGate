@@ -28,13 +28,19 @@
         <variable
             name="priceAfterDiscount"
             type="String" />
+
+        <variable
+            name="hasRelevantProducts"
+            type="Boolean" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="true"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -79,62 +85,48 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:paddingBottom="@dimen/_64sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/slider"
+                tools:ignore="WebViewLayout">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/slider"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content">
 
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/view_pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_200sdp"
-                        android:layoutDirection="ltr"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="SpeakableTextPresentCheck" />
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabDots"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rec_promotion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layoutDirection="ltr"
-                        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:tabBackground="@drawable/tab_selector"
-                        app:tabGravity="center"
-                        app:tabIndicatorHeight="0dp"
-                        tools:ignore="SpeakableTextPresentCheck" />
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_promotion" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                        android:id="@+id/indicator_list_promotion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:layout_margin="@dimen/_8sdp"
+                        app:spi_dotColor="@color/grey"
+                        app:spi_dotSelectedColor="@color/colorPrimary"
+                        app:spi_dotSize="@dimen/_5sdp" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="16dp"
+                </FrameLayout>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:background="@color/white"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/slider">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -158,8 +150,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:textStyle="bold"
                         android:text='@{priceAfterDiscount}'
+                        android:textStyle="bold"
                         app:isVisible="@{discount >0.0}"
                         tools:text="price after discount" />
 
@@ -172,17 +164,44 @@
                         tools:itemCount="2"
                         tools:listitem="@layout/item_variation" />
 
-                    <WebView
-                        android:id="@+id/webView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/_16sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rec_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:orientation="horizontal"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_tag" />
+
+                <WebView
+                    android:id="@+id/webView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:text="@string/relevant_products"
+                    app:isVisible="@{hasRelevantProducts}" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rec_relevant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_64sdp"
+                    android:orientation="horizontal"
+                    app:isVisible="@{hasRelevantProducts}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_product_relevant" />
+
+            </LinearLayout>
         </ScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

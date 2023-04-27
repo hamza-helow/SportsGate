@@ -10,7 +10,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
-import com.souqApp.data.common.mapper.toUserResponse
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.login.remote.dto.LoginRequest
@@ -82,7 +81,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private fun handleSuccessLogin(userEntity: UserEntity) {
         val requiredVerification = userEntity.verified == 2
         sharedPrefs.saveToken(userEntity.token.orEmpty(), requiredVerification.not())
-        sharedPrefs.saveUserInfo(userEntity.toUserResponse())
+        sharedPrefs.saveUserInfo(userEntity)
         if (requiredVerification) {
             navigateToVerificationScreen()
         } else

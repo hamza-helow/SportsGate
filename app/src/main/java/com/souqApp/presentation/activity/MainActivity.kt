@@ -40,12 +40,9 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-
         setupBottomNav()
-
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             val isBottomNavigationItem = bottomNavigationItems.contains(destination.id)
@@ -72,4 +69,5 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
     override fun showAppBar() {
         binding.toolbar.isVisible = true
     }
+
 }

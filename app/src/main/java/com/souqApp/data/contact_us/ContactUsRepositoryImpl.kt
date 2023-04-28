@@ -12,8 +12,8 @@ class ContactUsRepositoryImpl @Inject constructor(private val contactUsApi: Cont
     override suspend fun sendContactUs(contactUsRequest: ContactUsRequest): Flow<Boolean> {
         return flow {
             val response = contactUsApi.sendContactUs(contactUsRequest)
-            val isSuccessful = response.body()?.status
-            emit(isSuccessful == true)
+            val isSuccessful = response.status
+            emit(isSuccessful)
         }
     }
 }

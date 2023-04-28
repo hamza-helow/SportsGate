@@ -13,8 +13,6 @@ import com.souqApp.data.orders.remote.ProductInOrderResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
-import com.souqApp.data.products_by_type.remote.dto.ProductsByTypeResponse
-import com.souqApp.data.sub_categories.remote.dto.SubCategoryResponse
 import com.souqApp.domain.addresses.AddressDetailsEntity
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.domain.addresses.AreaEntity
@@ -26,13 +24,10 @@ import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.domain.orders.OrderEntity
 import com.souqApp.domain.orders.ProductInOrderEntity
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
-import com.souqApp.domain.products_by_type.ProductsByTypeEntity
-import com.souqApp.domain.sub_categories.SubCategoryEntity
 import com.souqApp.infra.extension.orDash
 
 fun UserResponse.toEntity() = UserEntity(id, name, email, phone, image, verified, token)
 
-fun ProductsByTypeResponse.toEntity() = ProductsByTypeEntity(hasMore, products)
 
 fun UpdateProductCartResponse.toEntity() = UpdateProductCartEntity(
     cartItemId = cartItemId ?: Constants.UNDEFINED_ID,
@@ -146,10 +141,6 @@ fun List<DeliveryOptionResponse>.toEntity() = map {
         id = it.id ?: 0, name = it.name ?: "-", price = it.price ?: "-"
     )
 }
-
-
-@JvmName("toEntitySubCategory")
-fun List<SubCategoryResponse>.toEntity() = map { SubCategoryEntity(it.id, it.name, it.logo) }
 
 @JvmName("toEntityAddressResponse")
 fun List<AddressResponse>.toEntity() = map { AddressEntity(it.id, it.fullAddress, it.isDefault) }

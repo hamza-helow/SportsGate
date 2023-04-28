@@ -16,7 +16,13 @@ class CategoryChildrenFragment :
 
     private val adapterCategory by lazy {
         CategoryAdapter {
-            navigate(NavGraphDirections.toProductsFragment(it.name ?: "", it.id , ProductsType.PROMO))
+            navigate(
+                NavGraphDirections.toProductsFragment(
+                    it.name.orEmpty(),
+                    it.id,
+                    ProductsType.CATEGORY
+                )
+            )
         }.apply {
             list = args.categories.toList()
         }

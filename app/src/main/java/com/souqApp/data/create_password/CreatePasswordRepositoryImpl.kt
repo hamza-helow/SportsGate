@@ -11,8 +11,7 @@ class CreatePasswordRepositoryImpl @Inject constructor(private val createPasswor
     override suspend fun resetPassword(newPassword: String, resetToken: String): Flow<Boolean> {
         return flow {
             val response = createPasswordApi.resetPassword(newPassword, resetToken)
-            val isSuccessful = response.body()?.status
-            emit(isSuccessful == true)
+            emit(response.status)
         }
     }
 }

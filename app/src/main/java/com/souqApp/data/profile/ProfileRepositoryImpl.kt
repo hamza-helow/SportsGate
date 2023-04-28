@@ -1,6 +1,5 @@
 package com.souqApp.data.profile
 
-import android.util.Log
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -11,11 +10,11 @@ import com.souqApp.domain.profile.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import javax.inject.Inject
-import okhttp3.MultipartBody
 
 
 class ProfileRepositoryImpl @Inject constructor(private val profileApi: ProfileApi) :
@@ -34,27 +33,19 @@ class ProfileRepositoryImpl @Inject constructor(private val profileApi: ProfileA
                 MultipartBody
                     .Builder()
                     .setType(MultipartBody.FORM).apply {
-                        if(image.isNotEmpty())
-                        addFormDataPart("image", "file", imageRequestBody)
+                        if (image.isNotEmpty()) {
+                            addFormDataPart("image", "file", imageRequestBody)
+                        }
                         addFormDataPart("name", name)
 
                     }.build()
 
             val response = profileApi.updateUser(body)
 
-            Log.e("ERe", "finish")
-            Log.e("ERe", "${response.code()}")
-
-
-            val isSuccessful = response.body()?.status ?: false
-
-            if (isSuccessful) {
-
-                val data = response.body()!!.data!!
-                emit(BaseResult.Success(data.toEntity()))
-
+            if (response.status) {
+                emit(BaseResult.Success(response.data.toEntity()))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
 
         }

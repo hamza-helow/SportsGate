@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import android.webkit.WebView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -122,15 +121,7 @@ class ProductDetailsFragment :
     }
 
     private fun handleToggleFavorite(favorite: Boolean) {
-        binding.imgFavorite.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                if (favorite)
-                    R.drawable.ic_baseline_favorite_24
-                else
-                    R.drawable.ic_baseline_favorite_border_24
-            )
-        )
+        binding.imgFavorite.isChecked = favorite
     }
 
 

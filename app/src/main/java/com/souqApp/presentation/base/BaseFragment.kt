@@ -34,7 +34,6 @@ abstract class BaseFragment<V : ViewBinding>(
         savedInstanceState: Bundle?
     ): View? {
 
-      //  if(this::_binding.isInitialized.not())
         _binding = inflate(inflater, container, false)
         handleBack()
 

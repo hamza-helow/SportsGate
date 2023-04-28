@@ -21,30 +21,24 @@ class AddressRepositoryImpl @Inject constructor(private val addressApi: AddressA
 
     override suspend fun getAll(): Flow<BaseResult<List<AddressEntity>, WrappedListResponse<AddressResponse>>> {
         return flow {
-
             val response = addressApi.getAll()
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                val data = response.body()!!.data!!.toEntity()
+            if (response.status) {
+                val data = response.data.orEmpty().toEntity()
                 emit(BaseResult.Success(data))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
         }
     }
 
     override suspend fun getDetails(addressId: Int): Flow<BaseResult<AddressDetailsEntity, WrappedResponse<AddressDetailsResponse>>> {
         return flow {
-
             val response = addressApi.getDetails(addressId)
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                val data = response.body()!!.data!!.toEntity()
+            if (response.status) {
+                val data = response.data.toEntity()
                 emit(BaseResult.Success(data))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
 
         }
@@ -52,85 +46,40 @@ class AddressRepositoryImpl @Inject constructor(private val addressApi: AddressA
 
     override suspend fun add(addressRequest: AddressRequest): Flow<Boolean> {
         return flow {
-
             val response = addressApi.add(addressRequest)
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                emit(true)
-
-            } else {
-
-                emit(false)
-            }
-
+            emit(response.status)
         }
     }
 
     override suspend fun update(addressRequest: AddressRequest): Flow<Boolean> {
         return flow {
-
             val response = addressApi.update(addressRequest)
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                emit(true)
-
-            } else {
-
-                emit(false)
-            }
-
-
+            emit(response.status)
         }
     }
 
     override suspend fun delete(addressId: Int): Flow<Boolean> {
         return flow {
-
             val response = addressApi.delete(addressId)
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                emit(true)
-
-            } else {
-
-                emit(false)
-            }
+            emit(response.status)
         }
     }
 
     override suspend fun getCitiesHaveAreas(): Flow<BaseResult<List<CityEntity>, WrappedListResponse<CityResponse>>> {
         return flow {
-
             val response = addressApi.getCitiesHaveAreas()
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-
-                val data = response.body()!!.data!!
-                emit(BaseResult.Success(data = data.toEntity()))
-
+            if (response.status) {
+                emit(BaseResult.Success(data = response.data.orEmpty().toEntity()))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
-
-
         }
     }
 
     override suspend fun changeDefault(addressId: Int): Flow<Boolean> {
         return flow {
             val response = addressApi.changeDefault(addressId)
-            val isSuccessful = response.body()?.status
-            if (isSuccessful == true) {
-                emit(true)
-
-            } else {
-
-                emit(false)
-            }
+            emit(response.status)
         }
     }
 }

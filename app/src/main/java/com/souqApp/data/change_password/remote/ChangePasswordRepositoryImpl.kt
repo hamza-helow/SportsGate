@@ -16,13 +16,13 @@ class ChangePasswordRepositoryImpl @Inject constructor(private val changePasswor
 
             val response = changePasswordApi.changePassword(oldPassword, newPassword)
 
-            val isSuccessful = response.body()?.status
+            val isSuccessful = response.status
 
-            if (isSuccessful == true) {
+            if (isSuccessful) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {
 
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
 
             }
         }

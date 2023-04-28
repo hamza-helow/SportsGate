@@ -1,7 +1,5 @@
 package com.souqApp.data.verifcation
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.VerificationApi
@@ -20,10 +18,9 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
     override suspend fun activeAccount(activeAccountRequest: ActiveAccountRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return flow {
             val response = verificationApi.activeAccount(activeAccountRequest)
-            val isSuccessful = response.body()?.status
 
-            if (isSuccessful == true) {
-                val body = response.body()!!.data!!
+            if (response.status) {
+                val body = response.data
                 val entity = UserEntity(
                     body.id,
                     body.name,
@@ -35,7 +32,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
                 )
                 emit(BaseResult.Success(entity))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
 
         }
@@ -46,15 +43,12 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
         code: String
     ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>> {
         return flow {
-
             val response = verificationApi.createTokenResetPassword(phone, code)
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                emit(BaseResult.Success(response.body()!!.data!!))
+            if (response.status) {
+                emit(BaseResult.Success(response.data))
 
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
         }
     }
@@ -62,13 +56,10 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
     override suspend fun requestPasswordReset(phone: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
         return flow {
             val response = verificationApi.requestPasswordReset(phone)
-
-            val isSuccessful = response.body()?.status == true
-
-            if (isSuccessful) {
+            if (response.status) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
         }
     }
@@ -76,14 +67,10 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
     override suspend fun resendActivationCode(): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
         return flow {
             val response = verificationApi.resendActivationCode()
-
-            if (response.isSuccessful) {
+            if (response.status) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {
-                val type = object : TypeToken<WrappedResponse<Nothing>>() {}.type
-                val error: WrappedResponse<Nothing> =
-                    Gson().fromJson(response.errorBody()!!.charStream(), type)
-                emit(BaseResult.Errors(error))
+                emit(BaseResult.Errors(response))
             }
 
         }

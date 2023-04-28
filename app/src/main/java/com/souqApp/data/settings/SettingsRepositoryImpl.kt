@@ -15,13 +15,10 @@ class SettingsRepositoryImpl @Inject constructor(private val settingsApi: Settin
     override suspend fun termsAndConditions(): Flow<BaseResult<ContentEntity, WrappedResponse<ContentEntity>>> {
         return flow {
             val response = settingsApi.termsAndConditions()
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                emit(BaseResult.Success(response.body()!!.data!!))
-
+            if (response.status) {
+                emit(BaseResult.Success(response.data))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
         }
     }
@@ -29,13 +26,10 @@ class SettingsRepositoryImpl @Inject constructor(private val settingsApi: Settin
     override suspend fun aboutUs(): Flow<BaseResult<ContentEntity, WrappedResponse<ContentEntity>>> {
         return flow {
             val response = settingsApi.aboutUs()
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                emit(BaseResult.Success(response.body()!!.data!!))
-
+            if (response.status) {
+                emit(BaseResult.Success(response.data))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
         }
     }
@@ -43,12 +37,10 @@ class SettingsRepositoryImpl @Inject constructor(private val settingsApi: Settin
     override suspend fun getSettings(): Flow<BaseResult<SettingsEntity, WrappedResponse<SettingsEntity>>> {
         return flow {
             val response = settingsApi.getSettings()
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                emit(BaseResult.Success(response.body()!!.data!!))
+            if (response.status) {
+                emit(BaseResult.Success(response.data))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
         }
     }

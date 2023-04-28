@@ -1,10 +1,8 @@
 package com.souqApp.data.notification
 
-import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.notification.remote.NotificationApi
 import com.souqApp.data.notification.remote.NotificationEntities
-import com.souqApp.data.notification.remote.NotificationEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.notification.NotificationRepository
 import kotlinx.coroutines.flow.Flow
@@ -15,14 +13,11 @@ class NotificationRepositoryImpl @Inject constructor(private val notificationApi
     NotificationRepository {
     override suspend fun notificationsHistory(): Flow<BaseResult<NotificationEntities, WrappedResponse<NotificationEntities>>> {
         return flow {
-
             val response = notificationApi.notificationsHistory()
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                emit(BaseResult.Success(response.body()!!.data!!))
+            if (response.status) {
+                emit(BaseResult.Success(response.data))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
         }
     }

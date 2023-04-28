@@ -36,7 +36,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         app:titleCentered="true"
-        app:title="@string/app_name"
+        app:title=""
         app:titleTextColor="@color/black"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"

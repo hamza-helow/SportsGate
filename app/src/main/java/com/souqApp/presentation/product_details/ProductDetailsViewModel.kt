@@ -25,7 +25,6 @@ class ProductDetailsViewModel @Inject constructor(
     ViewModel() {
 
     private var variationCombinationId: Int? = null
-    private var isFavorite = false
     private val state = MutableLiveData<ProductDetailsActivityState>()
     val mState: LiveData<ProductDetailsActivityState> get() = state
 
@@ -56,18 +55,23 @@ class ProductDetailsViewModel @Inject constructor(
         state.value = ProductDetailsActivityState.AddingToCart(onProgress)
     }
 
-    private fun handleToggleFavorite() {
-        isFavorite = !isFavorite
+    private fun handleToggleFavorite(isFavorite:Boolean) {
         state.value = ProductDetailsActivityState.ToggleFavorite(isFavorite)
     }
 
     fun toggleFavorite(idProduct: Int) {
         viewModelScope.launch {
-            productDetailsUseCase.addOrRemoveProduct(idProduct)
+            productDetailsUseCase.addOrRemoveProduct(idProduct, variationCombinationId)
                 .catch {
                     onError(it)
                 }.collect {
-                    handleToggleFavorite()
+
+                    when(it){
+                        is BaseResult.Errors -> Unit
+                        is BaseResult.Success ->  handleToggleFavorite(it.data.userFavourite)
+                    }
+
+
                 }
         }
     }

@@ -2,10 +2,7 @@ package com.souqApp.data.product_details
 
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.product_details.remote.ProductDetailsApi
-import com.souqApp.data.product_details.remote.ProductDetailsEntity
-import com.souqApp.data.product_details.remote.ProductDetailsResponse
-import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
+import com.souqApp.data.product_details.remote.*
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.product_details.ProductDetailsRepository
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
@@ -19,10 +16,8 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
     override suspend fun productDetails(productID: Int): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>> {
         return flow {
             val response = productsDetailsApi.productDetails(productID)
-
             val isSuccessful = response.status
             if (isSuccessful) {
-
                 emit(BaseResult.Success(response.data.toEntity()))
             } else {
                 emit(BaseResult.Errors(response))
@@ -30,17 +25,17 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
         }
     }
 
-    override suspend fun addOrRemoveProduct(productId: Int): Flow<Boolean> {
+    override suspend fun addOrRemoveProductToFavorite(
+        productId: Int,
+        combinationId: Int?
+    ): Flow<BaseResult<AddToFavoriteResponse, WrappedResponse<AddToFavoriteResponse>>> {
         return flow {
+            val response = productsDetailsApi.addOrRemoveProductToFavorite(productId, combinationId)
 
-            val response = productsDetailsApi.addOrRemoveProduct(productId)
-
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                emit(true)
+            if (response.status) {
+                emit(BaseResult.Success(response.data))
             } else {
-                emit(false)
+                emit(BaseResult.Errors(response))
             }
         }
     }
@@ -48,8 +43,7 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
     override suspend fun addProductToCart(productId: Int, combinationId: Int?): Flow<Boolean> {
         return flow {
             val response = productsDetailsApi.addProductToCart(productId, combinationId)
-            val isSuccessful = response.body()?.status
-            if (isSuccessful == true) {
+            if (response.status) {
                 emit(true)
             } else {
                 emit(false)
@@ -62,19 +56,11 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
         label: String
     ): Flow<BaseResult<VariationProductPriceInfoEntity, WrappedResponse<VariationProductPriceInfoResponse>>> {
         return flow {
-
             val response = productsDetailsApi.getVariationProductPriceInfo(productId, label)
-            val isSuccessful = response.body()?.status == true
-
-            if (isSuccessful) {
-                response.body()?.data?.let {
-                    emit(BaseResult.Success(it.toEntity()))
-                }
-
+            if (response.status) {
+                emit(BaseResult.Success(response.data.toEntity()))
             } else {
-                if (response.body() != null) {
-                    emit(BaseResult.Errors(response.body()!!))
-                }
+                emit(BaseResult.Errors(response))
             }
         }
     }

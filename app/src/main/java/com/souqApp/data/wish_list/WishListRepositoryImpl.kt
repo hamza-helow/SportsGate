@@ -14,15 +14,11 @@ class WishListRepositoryImpl @Inject constructor(private val wishListApi: WishLi
     override suspend fun getAll(): Flow<BaseResult<List<ProductEntity>, WrappedListResponse<ProductEntity>>> {
         return flow {
             val response = wishListApi.getAll()
-            val isSuccessful = response.body()?.status
-
-            if (isSuccessful == true) {
-                val data = response.body()!!.data!!
-                emit(BaseResult.Success(data))
+            if (response.status) {
+                emit(BaseResult.Success(response.data.orEmpty()))
             } else {
-                emit(BaseResult.Errors(response.body()!!))
+                emit(BaseResult.Errors(response))
             }
-
         }
     }
 }

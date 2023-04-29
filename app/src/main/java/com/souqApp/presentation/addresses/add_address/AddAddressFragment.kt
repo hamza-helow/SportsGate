@@ -1,5 +1,6 @@
 package com.souqApp.presentation.addresses.add_address
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -19,38 +20,42 @@ import com.souqApp.databinding.FragmentAddAddressBinding
 import com.souqApp.domain.addresses.AddressDetailsEntity
 import com.souqApp.domain.addresses.AreaEntity
 import com.souqApp.domain.addresses.CityEntity
-import com.souqApp.infra.extension.*
+import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.extension.successBorder
 import com.souqApp.infra.utils.ADDRESS_DETAILS
-import com.souqApp.infra.utils.LOCATION_USER
 import com.souqApp.presentation.addresses.map.MapsActivity
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
-class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAddressBinding::inflate), View.OnClickListener {
+class AddAddressFragment :
+    BaseFragment<FragmentAddAddressBinding>(FragmentAddAddressBinding::inflate),
+    View.OnClickListener {
+
+    private val requestLocationPermissions =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted)
+                openMapActivity.launch(Intent(requireActivity(), MapsActivity::class.java))
+        }
 
     private val viewModel: AddAddressViewModel by viewModels()
 
     private val openMapActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                val latLng = result.data?.getParcelableExtra<LatLng>(LOCATION_USER)
-                if (latLng != null) {
-                    viewModel.setUserLatLng(latLng)
-                }
+                val lat = result.data?.getDoubleExtra(MapsActivity.LAT, 0.0) ?: 0.0
+                val lng = result.data?.getDoubleExtra(MapsActivity.LNG, 0.0) ?: 0.0
+                viewModel.setUserLatLng(LatLng(lat, lng))
             }
         }
 
-    // when update address
     private fun fetchAddressDetailsIfExist() {
         val addressDetails = getAddressDetails() ?: return
         binding.addressDetails = addressDetails
         viewModel.setUserLatLng(LatLng(addressDetails.lat, addressDetails.lng))
     }
 
-    // if update should be not null
     private fun getAddressDetails(): AddressDetailsEntity? {
         val address = arguments?.getSerializable(ADDRESS_DETAILS) ?: return null
         return address as AddressDetailsEntity
@@ -58,9 +63,14 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAd
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        init()
         initListener()
         fetchAddressDetailsIfExist()
         observer()
+    }
+
+    private fun init() {
+        binding.txtStreet.doAfterTextChanged { validate() }
     }
 
     private fun observer() {
@@ -74,41 +84,14 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAd
         validate()
     }
 
-    private fun validate(): Boolean {
-        resetAllError()
-        var isValid = true
-
-        if (binding.txtBuildingNumber.text.isBlank()) {
-            binding.txtBuildingNumber.errorBorder()
-            isValid = false
-        } else {
-            binding.txtBuildingNumber.successBorder()
-        }
-
-        if (binding.txtFloorNumber.text.isBlank()) {
-            binding.txtFloorNumber.errorBorder()
-            isValid = false
-        } else {
-            binding.txtFloorNumber.successBorder()
-        }
-
-        if (binding.txtStreet.text.isBlank()) {
-            binding.txtStreet.errorBorder()
-            isValid = false
-        } else {
-            binding.txtStreet.successBorder()
-        }
-
-        binding.btnSubmit.isEnabled = isValid && viewModel.userLatLng.value != null
-        return isValid
+    private fun validate() {
+        viewModel.validate(
+            street = binding.txtStreet.text.toString(),
+            buildingNumber = binding.txtBuildingNumber.text.toString(),
+            floorNumber = binding.txtFloorNumber.text.toString()
+        )
     }
 
-    private fun resetAllError() {
-        binding.btnSubmit.isEnabled = false
-        binding.txtFloorNumber.noneBorder()
-        binding.txtBuildingNumber.noneBorder()
-        binding.txtStreet.noneBorder()
-    }
 
     private fun handleState(state: AddAddressFragmentState) {
         when (state) {
@@ -120,18 +103,20 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAd
             is AddAddressFragmentState.UpdateAddress.AddressUpdated -> handleAddOrUpdateAddress(
                 state.updated
             )
+            is AddAddressFragmentState.Validate -> handleValidate(state.isValid)
         }
+    }
+
+    private fun handleValidate(valid: Boolean) {
+        binding.btnSubmit.isEnabled = valid
     }
 
     private fun handleAddOrUpdateAddress(success: Boolean) {
         if (success)
-            Navigation
-                .findNavController(binding.root)
-                .popBackStack()
+            Navigation.findNavController(binding.root).popBackStack()
     }
 
     private fun handleCitiesErrLoad(response: WrappedListResponse<CityResponse>) {
-        binding.loader.loadingProgressBar.start(false)
         showDialog(response.message)
     }
 
@@ -145,15 +130,13 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAd
     }
 
     private fun handleError(error: Throwable) {
-        binding.loader.loadingProgressBar.start(false)
         if (error is SocketTimeoutException) {
             requireContext().showToast("Unexpected error, try again later")
         }
     }
 
     private fun handleLoading(loading: Boolean) {
-        binding.loader.loadingProgressBar.start(loading)
-        binding.btnSubmit.isEnabled = !loading && validate()
+        showLoading(loading)
     }
 
     private fun initListener() {
@@ -191,7 +174,7 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAd
 
     override fun onClick(view: View) {
         when (view.id) {
-            binding.cardPickLocation.id -> goToMapActivity()
+            binding.cardPickLocation.id -> requestLocationPermission()
             binding.btnSubmit.id -> addOrUpdateAddress()
         }
     }
@@ -218,7 +201,7 @@ class AddAddressFragment : BaseFragment<FragmentAddAddressBinding>(FragmentAddAd
         }
     }
 
-    private fun goToMapActivity() {
-        openMapActivity.launch(Intent(requireActivity(), MapsActivity::class.java))
+    private fun requestLocationPermission() {
+        requestLocationPermissions.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 }

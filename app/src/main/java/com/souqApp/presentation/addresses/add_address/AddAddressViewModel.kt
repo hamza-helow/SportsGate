@@ -13,7 +13,6 @@ import com.souqApp.domain.addresses.CityEntity
 import com.souqApp.domain.common.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +27,13 @@ class AddAddressViewModel @Inject constructor(private val addressUseCase: Addres
     private val _userLatLng = MutableLiveData<LatLng>()
     val userLatLng: LiveData<LatLng> get() = _userLatLng
 
+    fun validate(street: String, buildingNumber: String, floorNumber: String) {
+        _state.value =
+            AddAddressFragmentState.Validate(
+                street.isNotBlank() && buildingNumber.isNotBlank()
+                        && floorNumber.isNotBlank() && userLatLng.value != null
+            )
+    }
 
     fun setUserLatLng(latLng: LatLng) {
         _userLatLng.value = latLng
@@ -122,6 +128,8 @@ sealed class AddAddressFragmentState {
 
     data class Loading(val isLoading: Boolean) : AddAddressFragmentState()
     data class Error(val throwable: Throwable) : AddAddressFragmentState()
+
+    data class Validate(val isValid: Boolean) : AddAddressFragmentState()
 
     sealed class LoadCities {
         data class CitiesLoaded(val cityEntities: List<CityEntity>) : AddAddressFragmentState()

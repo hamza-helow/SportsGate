@@ -29,6 +29,7 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getAddresses()
         addressAdapter = AdapterAddress()
         binding.recAddresses.layoutManager = LinearLayoutManager(requireContext())
         binding.recAddresses.adapter = addressAdapter

@@ -20,10 +20,6 @@
             android:padding="@dimen/_16sdp"
             tools:context=".presentation.addresses.add_address.AddAddressFragment">
 
-            <include
-                android:id="@+id/loader"
-                layout="@layout/loader" />
-
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/card_pick_location"
                 android:layout_width="match_parent"

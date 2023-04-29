@@ -11,7 +11,6 @@ import com.souqApp.domain.addresses.AddressUseCase
 import com.souqApp.domain.common.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,7 +47,6 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
         _state.value = AddressesFragmentState.ChangeDefaultAddress(changed)
     }
 
-    @Inject
     fun getAddresses() {
         viewModelScope.launch {
             addressUseCase.getAll()

@@ -1,58 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:background="@color/white"
+    android:padding="@dimen/_16sdp"
+    android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="@dimen/_16sdp"
-    tools:context=".presentation.addresses.addresses.AddressesFragment">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <include
-        android:id="@+id/loader"
-        layout="@layout/loader" />
+    <TextView
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:drawablePadding="@dimen/_16sdp"
+        android:id="@+id/card_empty_address"
+        android:padding="@dimen/_32sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        app:drawableTopCompat="@drawable/ic_addresses_empty"
+        android:text="@string/no_addresses_found" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/content"
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_add_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_baseline_add_24"
+        tools:ignore="ContentDescription" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rec_addresses"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/card_empty_address"
-            android:visibility="gone"
-            android:padding="@dimen/_32sdp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_addresses_empty" />
-
-            <TextView
-                android:layout_marginTop="@dimen/_16sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/you_do_not_have_any_previous_addresses_please_add_an_address_str" />
-
-        </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fb_add_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_baseline_add_24"
-            tools:ignore="ContentDescription" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rec_addresses"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item_address" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</FrameLayout>
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_address" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

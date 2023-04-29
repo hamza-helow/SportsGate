@@ -6,11 +6,13 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
+
         android:id="@+id/homeFragment"
         android:name="com.souqApp.presentation.main.home.HomeFragment"
         tools:layout="@layout/fragment_home">
 
         <action
+            app:restoreState="true"
             android:id="@+id/to_categories_graph"
             app:destination="@+id/categories_graph" />
         <action

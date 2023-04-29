@@ -84,7 +84,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
     private fun handleErrorRegister(response: WrappedResponse<TokenResponse>) {
-        showErrorDialog(response.formattedErrors())
+        showDialog(response.formattedErrors())
     }
 
     private fun handleLoading(isLoading: Boolean) {

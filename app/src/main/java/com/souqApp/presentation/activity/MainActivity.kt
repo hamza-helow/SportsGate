@@ -1,18 +1,26 @@
 package com.souqApp.presentation.activity
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.navigation.FloatingWindow
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.souqApp.R
+import com.souqApp.data.common.module.SharedPrefsEntryPoint
 import com.souqApp.databinding.ActivityMainBinding
 import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.extension.setAppLocale
 import com.souqApp.infra.utils.AppBarConfig
+import com.souqApp.infra.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -31,23 +39,29 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
         R.id.moreFragment
     )
 
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.decorView.layoutDirection = resources.configuration.layoutDirection
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        navController.setGraph(R.navigation.nav_graph)
 
         setupBottomNav()
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
-            val isBottomNavigationItem = bottomNavigationItems.contains(destination.id)
+            if (destination is FloatingWindow)
+                return@addOnDestinationChangedListener
 
-            binding.bottomNavigationView.isVisible(isBottomNavigationItem)
+            binding.bottomNavigationView.isVisible(bottomNavigationItems.contains(destination.id))
 
             if (destination.label != null)
                 binding.toolbar.title = destination.label
@@ -68,6 +82,15 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
 
     override fun showAppBar() {
         binding.toolbar.isVisible = true
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val sharedPrefs = EntryPointAccessors.fromApplication(
+            newBase,
+            SharedPrefsEntryPoint::class.java
+        ).sharedPrefs
+
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(sharedPrefs.getLanguage())))
     }
 
 }

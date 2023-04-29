@@ -6,13 +6,16 @@ import android.widget.CompoundButton
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.souqApp.R
-import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
 import com.souqApp.databinding.FragmentPaymentDetailsBinding
 import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
-import com.souqApp.infra.extension.*
+import com.souqApp.infra.extension.errorBorder
+import com.souqApp.infra.extension.secondOrNull
+import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.extension.successBorder
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.addresses.addresses.AddressesFragment
 import com.souqApp.presentation.base.BaseFragment
@@ -69,7 +72,7 @@ class CheckOutDetailsFragment :
     }
 
     private fun handleCheckoutError(response: WrappedResponse<CheckoutResponse>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun handleCheckoutSuccess(checkoutEntity: CheckoutEntity) {
@@ -81,7 +84,7 @@ class CheckOutDetailsFragment :
 
 
     private fun handleCheckoutDetailsErrorLoad(response: WrappedResponse<CheckoutDetailsResponse>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun handleCheckoutDetailsLoaded(checkoutDetailsEntity: CheckoutDetailsEntity) {

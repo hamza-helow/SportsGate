@@ -75,7 +75,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun handleErrorUpdateQuantity(response: WrappedResponse<UpdateProductCartResponse>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -84,7 +84,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun handleCartDetailsErrorLoaded(response: WrappedResponse<CartDetailsResponse>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun handleCartEmptyState(products: List<ProductInCartEntity>) {

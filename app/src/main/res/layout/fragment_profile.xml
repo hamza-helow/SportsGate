@@ -8,7 +8,6 @@
         <variable
             name="user"
             type="com.souqApp.domain.common.entity.UserEntity" />
-
     </data>
 
     <LinearLayout
@@ -31,9 +30,10 @@
             android:layout_height="@dimen/_70sdp"
             android:layout_gravity="center|top"
             android:layout_marginTop="@dimen/_8sdp"
-            android:src="@drawable/ic_account_circle"
+            tools:src="@tools:sample/avatars"
             app:networkImage="@{user.image}"
-            app:placeholder="@{@drawable/ic_account_circle}" />
+            app:placeholder="@{@drawable/ic_account_circle}"
+            />
 
 
         <TextView
@@ -131,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
-            android:text="@string/log_out_str" />
+            android:text="@string/log_out" />
 
     </LinearLayout>
 </layout>

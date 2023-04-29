@@ -74,15 +74,28 @@
             tools:text="product name" />
 
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_colors"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtProductName"
+            tools:listitem="@layout/item_home_variation_colors" />
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/cardPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txtProductName"
-            app:layout_constraintTop_toBottomOf="@+id/txtProductName">
+            app:layout_constraintTop_toBottomOf="@+id/rec_colors">
 
             <TextView
                 android:id="@+id/txtPriceBeforeDiscount"
@@ -99,10 +112,9 @@
                 android:id="@+id/txtPriceAfterDiscount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{product.discounted_product_price}"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                app:isVisible="@{product.discount_percentage > 0}"
+                android:text='@{product.discount_percentage > 0 ?product.discounted_product_price : ""}'
                 tools:text="price after discount" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

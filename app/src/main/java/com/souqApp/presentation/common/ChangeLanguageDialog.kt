@@ -6,12 +6,10 @@ import android.os.Bundle
 import android.view.Window
 import android.widget.LinearLayout
 import com.souqApp.databinding.DialogLanguageBinding
-import com.souqApp.infra.extension.setLocale
 
 class ChangeLanguageDialog(context: Context, val language: String) : Dialog(context) {
 
     private lateinit var binding: DialogLanguageBinding
-
     lateinit var onSave: (String) -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +31,10 @@ class ChangeLanguageDialog(context: Context, val language: String) : Dialog(cont
 
         binding.btnSave.setOnClickListener {
             if (binding.radioButtonAr.isChecked) {
-                context.setLocale("Ar")
+               // context.setLocale("Ar")
                 onSave("Ar")
             } else {
-                context.setLocale("En")
+                //context.setLocale("En")
                 onSave("En")
             }
 

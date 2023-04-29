@@ -14,7 +14,6 @@ import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.openUrl
 import com.souqApp.infra.utils.*
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.common.ChangeLanguageDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -43,7 +42,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
     }
 
-
     private fun handleState(state: MoreFragmentState) {
         when (state) {
             is MoreFragmentState.Error -> onError(state.throwable)
@@ -60,7 +58,7 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     }
 
     private fun onErrorLoad(response: WrappedResponse<SettingsEntity>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
         binding.imgTiktok.isVisible(false)
         binding.imgInstagram.isVisible(false)
         binding.imgFacebook.isVisible(false)
@@ -117,7 +115,9 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
             binding.cardWishList.id -> {
                 navigate(MoreFragmentDirections.toWishListFragment())
             }
-            binding.cardChangeLanguage.id -> openChangeLanguageDialog()
+            binding.cardChangeLanguage.id -> {
+                navigate(MoreFragmentDirections.toChangeLanguageFragment())
+            }
             binding.cardAboutUs.id -> {
                 navigate(MoreFragmentDirections.toAboutUsFragment())
 
@@ -130,19 +130,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
 
     private fun openLink(imageView: ImageView) {
         requireContext().openUrl(imageView.contentDescription.toString())
-    }
-
-    private fun openChangeLanguageDialog() {
-        ChangeLanguageDialog(requireActivity(), language = sharedPrefs.getLanguage()).apply {
-            show()
-            onSave = {
-                dismiss()
-                requireActivity().recreate()
-                sharedPrefs.setLanguage(it)
-
-            }
-        }
-
     }
 
     private fun shareApp() {
@@ -165,7 +152,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         binding.enableCopyrights = firebaseConfig.getBoolean(SHOW_COPYRIGHTS)
         binding.enableOrderHistory = firebaseConfig.getBoolean(ORDER_HISTORY_ANDROID)
         binding.appVersion = firebaseConfig.getString(MIN_ANDROID_VERSION)
-
     }
 }
 

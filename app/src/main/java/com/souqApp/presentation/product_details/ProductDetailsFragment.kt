@@ -35,7 +35,6 @@ class ProductDetailsFragment :
     BaseFragment<FragmentProductDetailsBinding>(FragmentProductDetailsBinding::inflate),
     View.OnClickListener {
 
-
     private lateinit var tagAdapter: TagAdapter
     private lateinit var variationsAdapter: VariationsAdapter
     private lateinit var imagesProductAdapter: ImagesProductAdapter
@@ -52,7 +51,7 @@ class ProductDetailsFragment :
 
     private lateinit var successAddToCartBottomSheet: SuccessAddToCartBottomSheet
 
-    override fun showAppBar(): Boolean = false
+    override fun showAppBar(): Boolean = true
 
     override fun onStart() {
         super.onStart()
@@ -186,7 +185,7 @@ class ProductDetailsFragment :
     }
 
     private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsResponse>) {
-        showErrorDialog(wrappedResponse.message)
+        showDialog(wrappedResponse.message)
     }
 
     private fun handleError(throwable: Throwable) {

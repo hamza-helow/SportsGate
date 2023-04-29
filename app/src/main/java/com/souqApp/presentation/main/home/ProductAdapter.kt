@@ -2,6 +2,8 @@ package com.souqApp.presentation.main.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.BR
 import com.souqApp.data.main.home.remote.dto.ProductEntity
@@ -19,6 +21,16 @@ class ProductAdapter(
         val product = getItemByPosition(position)
         holder.bind(BR.product, product)
         holder.bind(BR.showPrice, firebaseConfig.getBoolean(IS_PURCHASE_ENABLED))
+
+
+
+        product.variations.firstOrNull()?.let { variation ->
+            val colorOptionsAdapter = ColorOptionsAdapter()
+            colorOptionsAdapter.list = variation.options
+            holder.binding.recColors.layoutManager =
+                LinearLayoutManager(holder.itemView.context, RecyclerView.HORIZONTAL, false)
+            holder.binding.recColors.adapter = colorOptionsAdapter
+        }
 
         holder.itemView.setOnClickListener {
             onClickItem(product.id)

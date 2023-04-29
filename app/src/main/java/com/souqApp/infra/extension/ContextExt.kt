@@ -1,93 +1,26 @@
 package com.souqApp.infra.extension
 
-import androidx.appcompat.app.AlertDialog;
-import android.app.ProgressDialog
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
-import android.widget.Toast
-import com.souqApp.R
 import android.content.Intent
 import android.net.Uri
-import android.app.Activity
-import android.content.res.Configuration
-import android.content.res.Resources
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import java.util.*
-
 
 fun Context.showToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
 }
-
-fun Context.showGenericAlertDialog(message: String) {
-    AlertDialog.Builder(this).apply {
-        setMessage(message)
-        setPositiveButton("ok") { d, _ -> d.cancel() }
-    }.show()
-}
-
-fun Activity.hideKeyboard() {
-    val imm: InputMethodManager =
-        this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-
-    var view: View? = this.currentFocus
-    //If no view currently has focus, create a new one, just so we can grab a window token from it
-    if (view == null) {
-        view = View(this)
-    }
-    imm.hideSoftInputFromWindow(view.windowToken, 0)
-
-}
-
-var dialog: ProgressDialog? = null
-fun Context.showLoader(isShow: Boolean) {
-    if (isShow) {
-        dialog = ProgressDialog(this)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-        dialog?.setCancelable(false)
-        dialog?.show()
-        dialog?.setContentView(R.layout.progress_bar)
-    } else {
-        dialog?.dismiss()
-        dialog = null
-    }
-
-}
-
 
 fun Context.openUrl(link: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
     this.startActivity(intent)
 }
 
-
-fun Activity.changeStatusBarColor(color: Int = R.color.white) {
-    val window: Window = this.window
-    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-    window.statusBarColor = ContextCompat.getColor(this, color)
-}
-
-fun Fragment.changeStatusBarColor(color: Int = R.color.white) {
-    val window: Window = requireActivity().window
-    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-    window.statusBarColor = ContextCompat.getColor(requireContext(), color)
-}
-
-fun Context.setLocale(languageCode: String) {
-    val locale = Locale(languageCode)
+fun Context.setAppLocale(language: String): Context {
+    val locale = Locale(language)
     Locale.setDefault(locale)
-    val resources: Resources = resources
-    val config: Configuration = resources.configuration
+    val config = resources.configuration
     config.setLocale(locale)
-    resources.updateConfiguration(config, resources.displayMetrics)
+    config.setLayoutDirection(locale)
+
+    return createConfigurationContext(config)
 }
-
-

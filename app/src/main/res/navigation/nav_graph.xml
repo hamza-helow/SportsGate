@@ -18,7 +18,13 @@
         android:id="@+id/to_loading_dialog_fragment"
         app:destination="@id/loadingDialogFragment" />
 
+    <action
+        android:id="@+id/to_BaseDialogFragment"
+        app:destination="@id/baseDialogFragment" />
+
+
     <fragment
+        android:label=""
         android:id="@+id/productDetailsFragment"
         android:name="com.souqApp.presentation.product_details.ProductDetailsFragment"
         tools:layout="@layout/fragment_product_details">
@@ -70,6 +76,27 @@
             app:argType="com.souqApp.domain.products.ProductsType" />
 
     </fragment>
+
+
+    <dialog
+        android:id="@+id/baseDialogFragment"
+        android:name="com.souqApp.presentation.dialog.GeneralDialogFragment"
+        tools:layout="@layout/dialog_general_fragment">
+
+        <argument
+            android:name="message"
+            app:argType="string" />
+
+        <argument
+            android:name="confirmText"
+            app:argType="string" />
+
+        <argument
+            android:name="cancelText"
+            app:argType="string"
+            app:nullable="true" />
+
+    </dialog>
 
 
 </navigation>

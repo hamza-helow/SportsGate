@@ -127,7 +127,7 @@
                     android:padding="@dimen/_8sdp"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_15sdp"
-                    android:text="@{selectedFullAddress ?? details.userAddress.fullAddress}"
+                    android:text='@{selectedFullAddress ?? details.userAddress.fullAddress ,default =@string/no_address_click_to_add}'
                     android:textAlignment="viewStart"
                     app:isVisible="@{deliveryOptionOne != null }"
                     app:layout_constraintBottom_toBottomOf="parent"

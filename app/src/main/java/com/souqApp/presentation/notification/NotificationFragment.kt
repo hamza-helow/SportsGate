@@ -51,7 +51,7 @@ class NotificationFragment :
     }
 
     private fun onErrorLoad(response: WrappedResponse<NotificationEntities>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun onError(throwable: Throwable) {

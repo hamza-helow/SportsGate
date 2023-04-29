@@ -4,38 +4,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.souqApp.NavGraphDirections
-import com.souqApp.infra.extension.showGenericAlertDialog
+import com.souqApp.R
 import com.souqApp.infra.utils.AppBarConfig
+import com.souqApp.presentation.dialog.GeneralDialogFragment
 
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
-abstract class BaseFragment<V : ViewBinding>(
-    private val inflate: Inflate<V>
-) : Fragment() {
+abstract class BaseFragment<V : ViewBinding>(private val inflate: Inflate<V>) : Fragment() {
 
     private lateinit var _binding: V
     val binding get() = _binding
 
     var isLoading = false
 
-    override fun onCreateView(
+    final override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = inflate(inflater, container, false)
-        handleBack()
 
         if (showAppBar())
             appBarConfig().showAppBar()
@@ -49,26 +46,29 @@ abstract class BaseFragment<V : ViewBinding>(
         return binding.root
     }
 
-    private fun handleBack() {
-        val onBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                val navController = NavHostFragment.findNavController(this@BaseFragment)
-                if (!navController.navigateUp()) {
-                    if (isEnabled) {
-                        isEnabled = false
-                        requireActivity().onBackPressed()
-                    }
-                }
+    fun showDialog(
+        message: String,
+        confirmText: String? = null,
+        cancelTest: String? = null,
+        onConfirm: () -> Unit = {},
+        onCancel: () -> Unit = {}
+    ) {
+        navigate(
+            NavGraphDirections.toBaseDialogFragment(
+                message,
+                confirmText ?: getString(R.string.ok),
+                cancelTest
+            )
+        )
+
+        setFragmentResultListener(BaseDialogFragment::class.java.simpleName) { _, bundle ->
+            val action = bundle.getInt(GeneralDialogFragment.ACTION_DIALOG)
+            if (action == GeneralDialogFragment.CONFIRM) {
+                onConfirm()
+            } else if (action == GeneralDialogFragment.CANCEL) {
+                onCancel()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            onBackPressedCallback
-        )
-    }
-
-    fun showErrorDialog(message: String) {
-        requireContext().showGenericAlertDialog(message)
     }
 
     fun navigate(

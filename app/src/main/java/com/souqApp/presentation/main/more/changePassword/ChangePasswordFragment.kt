@@ -51,7 +51,7 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(Fragm
     }
 
     private fun whenErrorChangePassword(response: WrappedResponse<Nothing>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun whenSuccessChangePassword() {

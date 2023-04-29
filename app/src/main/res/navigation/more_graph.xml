@@ -39,6 +39,9 @@
         <action
             android:id="@+id/to_wishListFragment"
             app:destination="@id/wishListFragment" />
+        <action
+            android:id="@+id/to_changeLanguageFragment"
+            app:destination="@id/changeLanguageFragment" />
 
     </fragment>
 
@@ -87,5 +90,11 @@
         android:name="com.souqApp.presentation.main.more.wish_list.WishListFragment"
         android:label="@string/wish_list"
         tools:layout="@layout/fragment_wish_list" />
+
+    <fragment
+        tools:layout="@layout/fragment_change_language"
+        android:id="@+id/changeLanguageFragment"
+        android:name="com.souqApp.presentation.main.more.changeLanguage.ChangeLanguageFragment"
+        android:label="@string/change_language_sr" />
 
 </navigation>

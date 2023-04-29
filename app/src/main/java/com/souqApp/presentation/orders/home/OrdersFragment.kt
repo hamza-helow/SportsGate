@@ -44,7 +44,7 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>(FragmentOrdersBinding
     }
 
     private fun handleOrdersErrorLoad(response: WrappedListResponse<OrderResponse>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun handleOrdersLoaded(ordersEntity: List<OrderEntity>) {

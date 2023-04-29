@@ -41,7 +41,7 @@ class TermsAndConditionsFragment :
     }
 
     private fun onErrorLoad(response: WrappedResponse<ContentEntity>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun onError(throwable: Throwable) {

@@ -6,19 +6,18 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
-import androidx.appcompat.app.AppCompatActivity
+import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.souqApp.R
 import com.souqApp.databinding.ActivityMapsBinding
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import android.location.LocationManager
-import com.google.android.gms.location.LocationServices
 import com.souqApp.infra.utils.LOCATION_USER
 
 
@@ -93,24 +92,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
 
     @SuppressLint("MissingPermission")
     private fun getDeviceLocation() {
-       // mMap.isMyLocationEnabled = true
-
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationProviderClient.lastLocation.addOnCompleteListener {
-
             val location = it.result
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(
-                LatLng(
-                    location.latitude,
-                    location.longitude
-                ), 16f
-            )
 
-            mMap.animateCamera(cameraUpdate)
+            if(location != null ){
+                val cameraUpdate = CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        location.latitude,
+                        location.longitude
+                    ), 16f
+                )
+
+                mMap.animateCamera(cameraUpdate)
+            }
 
         }
-
-
     }
 
 }

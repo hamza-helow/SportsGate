@@ -12,7 +12,7 @@ import com.souqApp.domain.common.entity.UserEntity
 class SharedPrefs(context: Context) {
 
     companion object {
-        private const val PREF = BuildConfig.APP_NAME
+        private const val PREF = BuildConfig.APPLICATION_ID
         private const val PREF_TOKEN = "user_token"
         private const val PREF_USER_INFO = "user_info"
         private const val IS_LOGIN = "is_login"

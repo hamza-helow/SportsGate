@@ -16,7 +16,7 @@ buildscript {
     ext.dagger_hilt_viewmodel_version = "1.0.0-alpha03"
 
     // activiy ktx
-    ext.activity_ktx_version = "1.6.1"
+    ext.activity_ktx_version = "1.7.1"
     ext.lifecycle_version = "2.5.1"
 
     //navigation

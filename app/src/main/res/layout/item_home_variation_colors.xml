@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="selected"
+            type="Boolean" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:background="@{selected ? @drawable/circle_border :null}"
+        tools:background="@drawable/circle_border">
+
+        <TextView
+            android:id="@+id/txtColor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_4sdp"
+            android:background="@drawable/circle"
+            android:gravity="center" />
+    </FrameLayout>
+
+</layout>

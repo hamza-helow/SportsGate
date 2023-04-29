@@ -92,7 +92,7 @@
                 <LinearLayout
                     android:id="@+id/content"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/_32sdp"
                     tools:context=".presentation.main.home.HomeFragment">
@@ -141,7 +141,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_16sdp"
-                        android:background="@color/white"
                         android:orientation="vertical">
 
                         <TextView
@@ -156,18 +155,32 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+<!--                        <androidx.recyclerview.widget.RecyclerView-->
+<!--                            android:id="@+id/rec_best_selling"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="@dimen/_8sdp"-->
+<!--                            android:clipToPadding="false"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:paddingEnd="@dimen/_32sdp"-->
+<!--                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                            tools:ignore="RtlSymmetry"-->
+<!--                            tools:itemCount="10"-->
+<!--                            tools:listitem="@layout/item_product" />-->
+
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rec_best_selling"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_8sdp"
-                            android:clipToPadding="false"
+                            android:horizontalSpacing="@dimen/_10sdp"
                             android:orientation="horizontal"
-                            android:paddingEnd="@dimen/_32sdp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:ignore="RtlSymmetry"
+                            android:padding="@dimen/_8sdp"
+                            android:stretchMode="spacingWidth"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             tools:itemCount="10"
-                            tools:listitem="@layout/item_product" />
+                            tools:listitem="@layout/item_product_grid" />
+
 
                     </LinearLayout>
 
@@ -214,10 +227,8 @@
                             android:id="@+id/rec_recommended"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clipToPadding="false"
                             android:orientation="horizontal"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:ignore="RtlSymmetry"
                             tools:itemCount="10"
                             tools:listitem="@layout/item_product" />
 

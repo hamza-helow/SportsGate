@@ -1,6 +1,8 @@
 package com.souqApp.presentation.main.more.profile
 
 import android.Manifest
+import android.os.Build
+import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,7 +23,6 @@ import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,15 +31,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-    private lateinit var cameraCachePath: File
 
-    private val requestCameraPermission: ActivityResultLauncher<String> = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { permissionGranted ->
-        if (permissionGranted) {
-            getImageContent.launch("image/*")
+    private val requestReadStoragePermission: ActivityResultLauncher<String> =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { permissionGranted ->
+            if (permissionGranted) {
+                getImageContent.launch("image/*")
+            }
         }
-    }
 
     private val getImageContent: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -53,9 +54,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     private var imageSelected: String? = null
     val viewModel: ProfileViewModel by viewModels()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
+
     override fun onResume() {
         super.onResume()
-        init()
         initListener()
     }
 
@@ -80,7 +85,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun init() {
         binding.user = sharedPrefs.getUserInfo()
-        cameraCachePath = File(requireContext().cacheDir, "images")
     }
 
     private fun observe() {
@@ -115,15 +119,22 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     override fun onClick(view: View) {
         when (view.id) {
-            binding.imgProfile.id -> requestPermissionReadStorageAndSelectImage()
+            binding.imgProfile.id -> requestPermissionReadStorage()
             binding.btnSave.id -> updateProfile()
             binding.btnLogout.id -> logout()
         }
     }
 
     private fun logout() {
-        sharedPrefs.logout()
-        findNavController().popBackStack()
+        showDialog(
+            message = getString(R.string.your_account_will_be_logged_out_from_the_app),
+            confirmText = getString(R.string.log_out),
+            cancelTest = getString(R.string.cancel),
+            onConfirm = {
+                sharedPrefs.logout()
+                findNavController().popBackStack()
+            }
+        )
     }
 
     private fun updateProfile() {
@@ -131,13 +142,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         viewModel.updateProfile(name, imageSelected.orEmpty())
     }
 
-    private fun requestPermissionReadStorageAndSelectImage() {
-        requestCameraPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+    private fun requestPermissionReadStorage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestReadStoragePermission.launch(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            requestReadStoragePermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        requestCameraPermission.unregister()
+        requestReadStoragePermission.unregister()
         getImageContent.unregister()
     }
 }

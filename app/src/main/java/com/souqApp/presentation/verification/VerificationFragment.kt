@@ -83,7 +83,7 @@ class VerificationFragment :
     }
 
     private fun onErrorResetVerification(response: WrappedResponse<CreateTokenResetPasswordEntity>) {
-        showErrorDialog(response.formattedErrors())
+        showDialog(response.formattedErrors())
     }
 
     private fun onError(throwable: Throwable) {
@@ -102,7 +102,7 @@ class VerificationFragment :
     }
 
     private fun handleErrorAccountVerification(response: WrappedResponse<UserResponse>) {
-        showErrorDialog(response.formattedErrors())
+        showDialog(response.formattedErrors())
     }
 
     private fun initListener() {

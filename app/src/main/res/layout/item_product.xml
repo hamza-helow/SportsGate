@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="product"
             type="com.souqApp.data.main.home.remote.dto.ProductEntity" />
@@ -16,7 +17,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/_8sdp"
@@ -56,7 +57,6 @@
 
         </androidx.cardview.widget.CardView>
 
-
         <TextView
             android:id="@+id/txtProductName"
             android:layout_width="0dp"
@@ -71,17 +71,31 @@
             app:layout_constraintTop_toBottomOf="@+id/cardImageProduct"
             tools:text="product name" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_colors"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtProductName"
+            tools:listitem="@layout/item_home_variation_colors" />
+
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/cardPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/cardImageProduct"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtProductName">
+            app:layout_constraintTop_toBottomOf="@+id/rec_colors"
+            app:layout_constraintVertical_bias="0.0">
 
             <TextView
                 android:id="@+id/txtPriceBeforeDiscount"
@@ -98,9 +112,10 @@
                 android:id="@+id/txtPriceAfterDiscount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='@{product.discount_percentage > 0 ?product.discounted_product_price : ""}'
+                android:text='@{product.discounted_product_price}'
                 android:textColor="@color/black"
                 android:textStyle="bold"
+                app:isVisible="@{product.discount_percentage > 0}"
                 tools:text="price" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

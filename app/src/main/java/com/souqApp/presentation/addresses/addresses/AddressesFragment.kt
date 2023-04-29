@@ -15,7 +15,6 @@ import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -101,7 +100,7 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
     }
 
     private fun handleAddressesErrorLoad(response: WrappedListResponse<AddressResponse>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun handleAddressesLoaded(addressEntities: List<AddressEntity>) {
@@ -119,7 +118,7 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
     }
 
     private fun handleLoading(loading: Boolean) {
-        binding.loader.loadingProgressBar.start(loading)
+        showLoading(loading)
     }
 
     private fun initListener() {

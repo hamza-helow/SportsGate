@@ -51,7 +51,7 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListB
     }
 
     private fun onErrorLoad(response: WrappedListResponse<ProductEntity>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun onError(throwable: Throwable) {

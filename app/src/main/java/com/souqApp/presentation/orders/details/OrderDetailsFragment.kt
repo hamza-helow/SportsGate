@@ -41,7 +41,7 @@ class OrderDetailsFragment :
     }
 
     private fun handleErrorLoad(response: WrappedResponse<OrderDetailsResponse>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun handleLoaded(orderDetailsEntity: OrderDetailsEntity) {

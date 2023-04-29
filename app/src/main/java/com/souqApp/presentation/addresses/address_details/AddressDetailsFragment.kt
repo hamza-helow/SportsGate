@@ -78,7 +78,7 @@ class AddressDetailsFragment :
     }
 
     private fun handleAddressDetailsErrorLoad(response: WrappedResponse<AddressDetailsResponse>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun handleError(error: Throwable) {

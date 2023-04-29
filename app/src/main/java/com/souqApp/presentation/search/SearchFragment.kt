@@ -66,7 +66,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     }
 
     private fun handleErrorLoad(response: WrappedListResponse<ProductEntity>) {
-        showErrorDialog(response.message)
+        showDialog(response.message)
 
     }
 

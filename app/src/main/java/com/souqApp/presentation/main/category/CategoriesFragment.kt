@@ -64,7 +64,7 @@ class CategoriesFragment :
 
     private fun handleErrorLoadCategories(response: WrappedListResponse<CategoryEntity>) {
         showLoading(false)
-        showErrorDialog(response.message)
+        showDialog(response.message)
     }
 
     private fun handleShowToast(message: String) {

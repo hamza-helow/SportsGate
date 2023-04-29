@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.databinding.BindingAdapter
 import com.souqApp.R
 
 @SuppressLint("Recycle", "CustomViewStyleable")
@@ -40,9 +39,4 @@ class LabelWithValueHorizontal @JvmOverloads constructor(
         }
     }
 
-}
-
-@BindingAdapter("app:value")
-fun LabelWithValueHorizontal.setValue(value: String?) {
-    txtValue.text = value.orEmpty().ifEmpty { "-" }
 }

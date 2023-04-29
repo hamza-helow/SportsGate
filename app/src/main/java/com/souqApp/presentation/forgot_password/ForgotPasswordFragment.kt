@@ -43,7 +43,7 @@ class ForgotPasswordFragment :
     }
 
     private fun handleOnOtpSentError(response: WrappedResponse<Nothing>) {
-        showErrorDialog(response.formattedErrors())
+        showDialog(response.formattedErrors())
     }
 
     private fun handleOnOtpSent() {

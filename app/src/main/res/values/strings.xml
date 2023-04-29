@@ -1,12 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="default_notification_channel_id" translatable="false">com.com.icestores.General</string>
 
+    <string name="app_name" translatable="false">dev douqApp</string>
 
     <!--validations-->
     <string name="select_city_str">Select city</string>
     <string name="select_area_str">Select area</string>
-
-
     <string name="notifications_str">Notifications</string>
     <string name="new_arrivals_str">New Products</string>
     <string name="best_selling_str">Best Selling</string>
@@ -34,7 +33,7 @@
     <string name="terms_and_conditions_str">Terms &amp; Conditions</string>
     <string name="share_app_str">App Share</string>
     <string name="contact_us_str">Contact Us</string>
-    <string name="log_out_str">Logout</string>
+    <string name="log_out">Logout</string>
     <string name="save_str">Save</string>
     <string name="change_pass_str">Change Password</string>
     <string name="change_language_sr">Change Language</string>
@@ -121,5 +120,12 @@
     <string name="first_and_last_name_eg_ahmed_mohamed">First and last name eg Ahmed Mohamed</string>
     <string name="i_agree_to_the">I agree to the</string>
     <string name="updated_successfully">Updated successfully</string>
+    <string name="no_address_click_to_add">No address Click to add</string>
+    <string name="no_addresses_found">No addresses found</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="your_account_will_be_logged_out_from_the_app">Your account will be logged out from the app</string>
+    <string name="english">English</string>
+    <string name="arabic">العربية</string>
 
 </resources>

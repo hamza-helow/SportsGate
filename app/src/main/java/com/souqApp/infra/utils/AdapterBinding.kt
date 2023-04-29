@@ -13,25 +13,28 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.souqApp.R
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.souqApp.infra.custome_view.LabelWithValueHorizontal
 import com.souqApp.infra.extension.inVisible
 import com.souqApp.infra.extension.isVisible
 import kotlin.math.roundToInt
 
 @SuppressLint("CheckResult")
-@BindingAdapter(value = ["networkImage", "placeholder"], requireAll = false)
-fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null) {
-    if (url == null || url.isEmpty())
+@BindingAdapter(value = ["networkImage", "placeholder", "resizeImage"], requireAll = false)
+fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null, resize: Boolean? = true) {
+    if (url == null || url.isEmpty()) {
+        setImageDrawable(placeholder)
         return
+    }
+
     Glide.with(this)
         .load(url)
-        .centerInside()
         .apply {
-            if (placeholder != null)
-                placeholder(R.drawable.image_placeholder)
+            if (resize != false)
+                override(300, 300)
         }
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .into(this)
-
 }
 
 @BindingAdapter("horizontalPadding")
@@ -96,4 +99,9 @@ fun TextView.discountTextView(isDiscountPrice: Boolean) {
         typeface = Typeface.DEFAULT_BOLD
         paintFlags = 0
     }
+}
+
+@BindingAdapter("value")
+fun LabelWithValueHorizontal.setValue(value: String?) {
+    txtValue.text = value.orEmpty().ifEmpty { "-" }
 }

@@ -15,23 +15,25 @@
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:visibility="gone"
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
         <TextView
-            android:visibility="gone"
-            android:drawablePadding="@dimen/_8sdp"
+
             android:id="@+id/card_cart_empty"
-            app:drawableTopCompat="@drawable/ic_cart_empty_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_32sdp"
+            android:drawablePadding="@dimen/_12sdp"
+            android:gravity="center"
             android:text="@string/your_cart_is_empty"
-            android:textSize="@dimen/_17sdp" />
+            android:textSize="@dimen/_17sdp"
+            android:visibility="gone"
+            app:drawableTopCompat="@drawable/ic_cart_empty_cart" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/content"
@@ -40,18 +42,18 @@
             tools:context=".presentation.main.cart.home.CartFragment">
 
             <androidx.recyclerview.widget.RecyclerView
-                tools:itemCount="2"
                 android:id="@+id/rec_products"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:itemCount="2"
                 tools:listitem="@layout/item_cart" />
 
             <androidx.cardview.widget.CardView
-                android:visibility="gone"
                 android:id="@+id/card_check_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom">
+                android:layout_gravity="bottom"
+                android:visibility="gone">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

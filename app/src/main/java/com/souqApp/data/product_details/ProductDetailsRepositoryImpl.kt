@@ -4,6 +4,7 @@ import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.*
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.product_details.AddProductToCartEntity
 import com.souqApp.domain.product_details.ProductDetailsRepository
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import kotlinx.coroutines.flow.Flow
@@ -40,13 +41,16 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
         }
     }
 
-    override suspend fun addProductToCart(productId: Int, combinationId: Int?): Flow<Boolean> {
+    override suspend fun addProductToCart(
+        productId: Int,
+        combinationId: Int?
+    ): Flow<BaseResult<AddProductToCartEntity, WrappedResponse<AddProductToCartResponse>>> {
         return flow {
             val response = productsDetailsApi.addProductToCart(productId, combinationId)
             if (response.status) {
-                emit(true)
+                emit(BaseResult.Success(response.data.toEntity()))
             } else {
-                emit(false)
+                emit(BaseResult.Errors(response))
             }
         }
     }

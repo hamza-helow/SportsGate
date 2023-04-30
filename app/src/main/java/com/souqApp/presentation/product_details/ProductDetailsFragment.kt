@@ -1,10 +1,9 @@
 package com.souqApp.presentation.product_details
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
-import android.webkit.WebView
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,14 +15,14 @@ import com.souqApp.NavGraphDirections
 import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
-import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.databinding.FragmentProductDetailsBinding
+import com.souqApp.domain.product_details.AddProductToCartEntity
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import com.souqApp.domain.products.ProductsType
-import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.utils.APP_TAG
+import com.souqApp.infra.extension.setContent
 import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
 import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.TagAdapter
 import com.souqApp.presentation.product_details.variations.VariationsAdapter
@@ -41,6 +40,7 @@ class ProductDetailsFragment :
     private lateinit var relevantProducts: AdapterRelevantProducts
     private val args: ProductDetailsFragmentArgs by navArgs()
     private val viewModel: ProductDetailsViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val snapHelper = PagerSnapHelper()
 
     @Inject
@@ -48,8 +48,6 @@ class ProductDetailsFragment :
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-
-    private lateinit var successAddToCartBottomSheet: SuccessAddToCartBottomSheet
 
     override fun showAppBar(): Boolean = true
 
@@ -62,13 +60,10 @@ class ProductDetailsFragment :
     private fun initListener() {
         binding.imgFavorite.setOnClickListener(this)
         binding.btnAddToCart.setOnClickListener(this)
-        successAddToCartBottomSheet.showCart = {
-            navigate(ProductDetailsFragmentDirections.toCartGraph())
-        }
+
     }
 
     private fun init() {
-        successAddToCartBottomSheet = SuccessAddToCartBottomSheet()
         initListener()
         binding.isLogin = sharedPrefs.isLogin()
         binding.showAddToCart = firebaseConfig.getBoolean(IS_PURCHASE_ENABLED)
@@ -84,16 +79,15 @@ class ProductDetailsFragment :
             is ProductDetailsActivityState.Init -> Unit
             is ProductDetailsActivityState.ToggleFavorite -> handleToggleFavorite(state.isFavorite)
             is ProductDetailsActivityState.Loading -> handleLoading(state.isLoading)
-            is ProductDetailsActivityState.Error -> handleError(state.throwable)
-            is ProductDetailsActivityState.DetailsErrorLoaded -> handleDetailsErrorLoaded(state.wrappedResponse)
+            is ProductDetailsActivityState.DetailsErrorLoaded -> handleOnError(state.wrappedResponse)
             is ProductDetailsActivityState.DetailsLoaded -> handleDetailsLoaded(state.productDetailsEntity)
-            is ProductDetailsActivityState.AddedToCart -> handleAddedToCart(state.isAdded)
+            is ProductDetailsActivityState.AddedToCart -> handleAddedToCart(state.entity)
             is ProductDetailsActivityState.AddingToCart -> handleAddingToCart(state.inProgress)
-            is ProductDetailsActivityState.VariationProductPriceLoaded -> handleVariationProductPriceLoaded(
-                state.variationProductPriceInfoEntity
-            )
+            is ProductDetailsActivityState.VariationProductPriceLoaded -> handleVariationProductPriceLoaded(state.variationProductPriceInfoEntity)
         }
     }
+
+
 
     private fun handleVariationProductPriceLoaded(priceInfoEntity: VariationProductPriceInfoEntity) {
         binding.price = priceInfoEntity.price
@@ -111,18 +105,14 @@ class ProductDetailsFragment :
 
     }
 
-    private fun handleAddedToCart(added: Boolean) {
-        if (added) {
-            successAddToCartBottomSheet.show(parentFragmentManager, "")
-        } else
-            requireActivity().showToast("Add failed,try later")
-
+    private fun handleAddedToCart(entity: AddProductToCartEntity) {
+        navigate(ProductDetailsFragmentDirections.toSuccessAddToCartBottomSheet(entity.productsCount))
+        mainViewModel.setQty(entity.productsCount)
     }
 
     private fun handleToggleFavorite(favorite: Boolean) {
         binding.imgFavorite.isChecked = favorite
     }
-
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun handleDetailsLoaded(productDetailsEntity: ProductDetailsEntity) {
@@ -184,12 +174,8 @@ class ProductDetailsFragment :
 
     }
 
-    private fun handleDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsResponse>) {
+    private fun handleOnError(wrappedResponse: WrappedResponse<*>) {
         showDialog(wrappedResponse.message)
-    }
-
-    private fun handleError(throwable: Throwable) {
-        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -202,20 +188,4 @@ class ProductDetailsFragment :
             binding.btnAddToCart.id -> viewModel.addProductToCart(args.productId)
         }
     }
-}
-
-@SuppressLint("SetJavaScriptEnabled")
-fun WebView.setContent(content: String?) {
-    if (content.orEmpty().isEmpty())
-        return
-
-    this.isFocusable = true
-    this.isFocusableInTouchMode = true
-    this.settings.javaScriptEnabled = true
-    this.settings.loadsImagesAutomatically = true
-
-    this.loadDataWithBaseURL(
-        null,
-        "<style>img{max-width: 100%}</style>$content", "text/html", "UTF-8", null
-    )
 }

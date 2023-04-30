@@ -53,6 +53,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
                     hideLoading()
                     when (it) {
                         is BaseResult.Success -> {
+                            state.value = HomeFragmentState.CartCountUpdated(it.data.cartProductsCount)
                             homeLoaded(it.data)
                         }
                         is BaseResult.Errors -> homeErrorLoaded(it.error)
@@ -68,5 +69,5 @@ sealed class HomeFragmentState {
     data class IsLoading(val isLoading: Boolean) : HomeFragmentState()
     data class HomeLoaded(val homeEntity: HomeEntity) : HomeFragmentState()
     data class HomeLoadedError(val rawResponse: WrappedResponse<HomeResponse>) : HomeFragmentState()
-
+    data class CartCountUpdated(val count:Int):HomeFragmentState()
 }

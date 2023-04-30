@@ -1,11 +1,14 @@
 package com.souqApp.presentation.main.cart.checkout_details
 
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.souqApp.R
+import com.souqApp.data.common.utlis.Constants
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
@@ -17,6 +20,7 @@ import com.souqApp.infra.extension.secondOrNull
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.successBorder
 import com.souqApp.infra.utils.APP_TAG
+import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.addresses.addresses.AddressesFragment
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,9 +31,10 @@ class CheckOutDetailsFragment :
     View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private val viewModel: PaymentDetailsViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initListener()
         observer()
         binding.radioButtonHomeDelivery.setOnCheckedChangeListener(this)
@@ -43,23 +48,25 @@ class CheckOutDetailsFragment :
     }
 
     private fun observer() {
-        viewModel.state.observe(this) { handleState(it) }
+        viewModel.validateLiveData.observe(viewLifecycleOwner, binding.btnBuy::setEnabled)
+        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
     }
 
-    private fun handleState(state: PaymentDetailsActivityState) {
+    private fun handleState(state: PaymentDetailsFragmentState) {
         when (state) {
-            is PaymentDetailsActivityState.Loading -> handleLoading(state.loading)
-            is PaymentDetailsActivityState.Error -> handleError(state.throwable)
-            is PaymentDetailsActivityState.CheckoutDetailsLoaded ->
-                handleCheckoutDetailsLoaded(state.checkoutDetailsEntity)
-            is PaymentDetailsActivityState.CheckoutDetailsErrorLoad ->
-                handleCheckoutDetailsErrorLoad(state.response)
-            is PaymentDetailsActivityState.CheckoutSuccess -> handleCheckoutSuccess(state.checkoutEntity)
-            is PaymentDetailsActivityState.CheckoutError -> handleCheckoutError(state.response)
-            is PaymentDetailsActivityState.CheckCouponCode -> handleCheckCouponCode(state.valid)
+            is PaymentDetailsFragmentState.Loading -> handleLoading(state.loading)
+            is PaymentDetailsFragmentState.Error -> handleError(state.throwable)
+            is PaymentDetailsFragmentState.CheckoutDetailsLoaded -> handleCheckoutDetailsLoaded(
+                state.checkoutDetailsEntity
+            )
+            is PaymentDetailsFragmentState.CheckoutDetailsErrorLoad -> handleCheckoutDetailsErrorLoad(
+                state.response
+            )
+            is PaymentDetailsFragmentState.CheckoutSuccess -> handleCheckoutSuccess(state.checkoutEntity)
+            is PaymentDetailsFragmentState.CheckoutError -> handleCheckoutError(state.response)
+            is PaymentDetailsFragmentState.CheckCouponCode -> handleCheckCouponCode(state.valid)
         }
     }
-
 
     private fun handleCheckCouponCode(valid: Boolean) {
         if (!valid) {
@@ -76,12 +83,12 @@ class CheckOutDetailsFragment :
     }
 
     private fun handleCheckoutSuccess(checkoutEntity: CheckoutEntity) {
+        mainViewModel.setQty(0)
         navigate(
             CheckOutDetailsFragmentDirections.toCheckoutCompleted(checkoutEntity.orderId),
             popUpTo = R.id.homeFragment
         )
     }
-
 
     private fun handleCheckoutDetailsErrorLoad(response: WrappedResponse<CheckoutDetailsResponse>) {
         showDialog(response.message)
@@ -89,10 +96,11 @@ class CheckOutDetailsFragment :
 
     private fun handleCheckoutDetailsLoaded(checkoutDetailsEntity: CheckoutDetailsEntity) {
         binding.details = checkoutDetailsEntity
-        viewModel.selectedIdAddress = checkoutDetailsEntity.userAddress?.id
+        viewModel.defaultIdAddress = checkoutDetailsEntity.userAddress?.id
         viewModel.selectedDeliveryOptionId = checkoutDetailsEntity.deliveryOptionId
         binding.deliveryOptionOne = checkoutDetailsEntity.deliveryOptions.firstOrNull()
         binding.deliveryOptionTwo = checkoutDetailsEntity.deliveryOptions.secondOrNull()
+        viewModel.validate()
     }
 
     private fun handleError(throwable: Throwable) {
@@ -122,12 +130,12 @@ class CheckOutDetailsFragment :
 
     private fun observeToAddressesFragmentResult() {
         setFragmentResultListener(AddressesFragment::class.java.simpleName) { _, bundle ->
-            val id = bundle.getInt(AddressesFragment.ADDRESS_ID, -1)
+            val id = bundle.getInt(AddressesFragment.ADDRESS_ID, Constants.UNDEFINED_ID)
             val name = bundle.getString(AddressesFragment.ADDRESS_NAME).orEmpty()
             binding.selectedFullAddress = name
             viewModel.selectedIdAddress = id
+            viewModel.validate()
         }
-
     }
 
     private fun checkPromoCode() {
@@ -150,5 +158,6 @@ class CheckOutDetailsFragment :
                 binding.deliveryOptionTwo?.let { viewModel.getCheckoutDetails(it.id) }
             }
         }
+        viewModel.validate()
     }
 }

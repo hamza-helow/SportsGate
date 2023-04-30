@@ -3,6 +3,7 @@
     <style name="ThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:spinnerMode">dropdown</item>
         <item name="colorAccent">@color/colorAccent</item>
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:textSize">15sp</item>
         <item name="colorPrimaryDark">@color/white</item>

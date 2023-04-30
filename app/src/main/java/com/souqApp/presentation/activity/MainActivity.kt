@@ -3,6 +3,7 @@ package com.souqApp.presentation.activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.FloatingWindow
@@ -22,9 +23,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), AppBarConfig {
+
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
 
@@ -52,8 +54,13 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
         navController.setGraph(R.navigation.nav_graph)
+
+        viewModel.cartQtyLiveData.observe(this) {
+            val badge = binding.bottomNavigationView.getOrCreateBadge(R.id.cart_graph)
+            badge.isVisible = it > 0
+            badge.number = it
+        }
 
         setupBottomNav()
         navController.addOnDestinationChangedListener { _, destination, _ ->

@@ -1,14 +1,12 @@
 package com.souqApp.infra.extension
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.view.View
+import android.webkit.WebView
 import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.souqApp.R
@@ -18,18 +16,6 @@ fun TextInputLayout.activeBorder(context: Context, active: Boolean) {
     this.boxStrokeColor =
         ContextCompat.getColor(context, if (active) R.color.green else R.color.red)
 }
-
-fun ActionBar.setup(
-    homeAsUpEnabled: Boolean = true,
-    showHomeEnabled: Boolean = true,
-    showTitleEnabled: Boolean = false,
-) {
-    setDisplayHomeAsUpEnabled(homeAsUpEnabled)
-    setDisplayShowHomeEnabled(showHomeEnabled)
-    setDisplayShowTitleEnabled(showTitleEnabled)
-
-}
-
 
 fun View.successBorder() {
     background = rectangleShape(context = context, ContextCompat.getColor(context, R.color.green))
@@ -78,3 +64,20 @@ fun ProgressBar.start(start: Boolean) {
 }
 
 
+
+
+@SuppressLint("SetJavaScriptEnabled")
+fun WebView.setContent(content: String?) {
+    if (content.orEmpty().isEmpty())
+        return
+
+    this.isFocusable = true
+    this.isFocusableInTouchMode = true
+    this.settings.javaScriptEnabled = true
+    this.settings.loadsImagesAutomatically = true
+
+    this.loadDataWithBaseURL(
+        null,
+        "<style>img{max-width: 100%}</style>$content", "text/html", "UTF-8", null
+    )
+}

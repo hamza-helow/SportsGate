@@ -2,6 +2,7 @@ package com.souqApp.presentation.main.cart.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -14,6 +15,7 @@ import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
+import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
@@ -22,6 +24,7 @@ import java.net.SocketTimeoutException
 class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::inflate),
     View.OnClickListener {
 
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val viewModel: CartFragmentViewModel by viewModels()
     private lateinit var cartAdapter: CartAdapter
 
@@ -63,7 +66,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         val product = cartAdapter.list.first { it.cartItemId == updateProductQtyEntity.cartItemId }
         val index = cartAdapter.list.indexOf(product)
         val updatedQty = updateProductQtyEntity.productQty
-
+        mainViewModel.setQty(updatedQty)
         if (updatedQty == 0) {
             cartAdapter.removeItem(index)
             handleCartEmptyState(cartAdapter.list)

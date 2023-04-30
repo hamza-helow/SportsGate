@@ -127,4 +127,5 @@
     <string name="your_account_will_be_logged_out_from_the_app">Your account will be logged out from the app</string>
     <string name="english" translatable="false">English</string>
     <string name="arabic" translatable="false">العربية</string>
+    <string name="not_available">Not Available</string>
 </resources>

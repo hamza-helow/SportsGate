@@ -20,7 +20,7 @@ interface ProductDetailsApi {
         @Query("product_id") productId: Int,
         @Query("combination_id") combinationId: Int?,
         @Query("qty") count: Int = 1
-    ): WrappedResponse<Nothing>
+    ): WrappedResponse<AddProductToCartResponse>
 
     @GET("v2/products/getVariationProductPriceInfo")
     suspend fun getVariationProductPriceInfo(
@@ -29,3 +29,4 @@ interface ProductDetailsApi {
     ): WrappedResponse<VariationProductPriceInfoResponse>
 
 }
+

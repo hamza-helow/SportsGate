@@ -10,6 +10,7 @@ import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.data.orders.remote.OrderDetailsResponse
 import com.souqApp.data.orders.remote.OrderResponse
 import com.souqApp.data.orders.remote.ProductInOrderResponse
+import com.souqApp.data.product_details.remote.AddProductToCartResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
@@ -23,6 +24,7 @@ import com.souqApp.domain.main.home.HomeEntity
 import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.domain.orders.OrderEntity
 import com.souqApp.domain.orders.ProductInOrderEntity
+import com.souqApp.domain.product_details.AddProductToCartEntity
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import com.souqApp.infra.extension.orDash
 
@@ -41,6 +43,10 @@ fun AddressDetailsResponse.toEntity() = AddressDetailsEntity(
     areaId, areaName, building, cityId, cityName, floor, id, lat, lng, notes, street
 )
 
+
+fun AddProductToCartResponse.toEntity() = AddProductToCartEntity(
+    productsCount = productsCount ?: 0
+)
 
 fun HomeResponse.toEntity() = HomeEntity(
     cartProductsCount,
@@ -66,7 +72,7 @@ fun ProductDetailsResponse.toEntity() = ProductDetailsEntity(
     variations = variations,
     combinationOptions = combinationOptions,
     variationCompainationId = variationCompainationId,
-    isFavorite = isFavorite ?: false ,
+    isFavorite = isFavorite ?: false,
     tags = tags
 )
 

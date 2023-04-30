@@ -3,6 +3,7 @@ package com.souqApp.presentation.main.home
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -17,6 +18,7 @@ import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.databinding.FragmentHomeBinding
 import com.souqApp.domain.main.home.HomeEntity
 import com.souqApp.domain.products.ProductsType
+import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.TagAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,8 +32,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     @Inject
     lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     private val viewModel: HomeViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val snapHelperChildren = PagerSnapHelper()
-
     private lateinit var bestSellingAdapter: ProductGridAdapter
     private lateinit var newProductAdapter: ProductGridAdapter
     private lateinit var recommendedAdapter: ProductAdapter
@@ -160,7 +162,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             is HomeFragmentState.Init -> Unit
             is HomeFragmentState.HomeLoaded -> handleHomeLoaded(state.homeEntity)
             is HomeFragmentState.HomeLoadedError -> handleHomeLoadedError(state.rawResponse)
+            is HomeFragmentState.CartCountUpdated -> handleCartCountUpdated(state.count)
         }
+    }
+
+    private fun handleCartCountUpdated(count: Int) {
+        mainViewModel.setQty(count)
     }
 
     private fun handleHomeLoadedError(response: WrappedResponse<HomeResponse>) {
@@ -196,7 +203,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.recCategory.isVisible = homeEntity.categories.isNotEmpty()
         binding.recPromotion.isVisible = homeEntity.promotions.isNotEmpty()
     }
-
 
     override fun onRefresh() {
         viewModel.getHome()

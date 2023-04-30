@@ -58,15 +58,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_add_to_cart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/add_to_cart"
+                    android:enabled="@{details.onSale}"
+                    android:text="@{details.onSale ? @string/add_to_cart : @string/not_available}"
+                    tools:text="@string/add_to_cart"
+                    tools:visibility="invisible"
                     android:visibility="invisible"
                     app:isVisible="@{showAddToCart}">
-                </Button>
+                </com.google.android.material.button.MaterialButton>
 
                 <CheckedTextView
                     android:id="@+id/img_favorite"

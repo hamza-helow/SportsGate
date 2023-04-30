@@ -1,6 +1,7 @@
 package com.souqApp.domain.product_details
 
 import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.product_details.remote.AddProductToCartResponse
 import com.souqApp.data.product_details.remote.AddToFavoriteResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.data.product_details.remote.ProductDetailsResponse
@@ -18,7 +19,7 @@ class ProductDetailsUseCase @Inject constructor(private val productDetailsReposi
         return productDetailsRepository.addOrRemoveProductToFavorite(productId, combinationId)
     }
 
-    suspend fun addProductToCart(productId: Int, combinationId: Int?): Flow<Boolean> {
+    suspend fun addProductToCart(productId: Int, combinationId: Int?): Flow<BaseResult<AddProductToCartEntity, WrappedResponse<AddProductToCartResponse>>> {
         return productDetailsRepository.addProductToCart(productId, combinationId)
     }
 }

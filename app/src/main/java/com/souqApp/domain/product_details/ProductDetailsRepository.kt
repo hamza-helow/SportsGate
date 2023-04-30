@@ -1,10 +1,7 @@
 package com.souqApp.domain.product_details
 
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.product_details.remote.AddToFavoriteResponse
-import com.souqApp.data.product_details.remote.ProductDetailsEntity
-import com.souqApp.data.product_details.remote.ProductDetailsResponse
-import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
+import com.souqApp.data.product_details.remote.*
 import com.souqApp.domain.common.BaseResult
 import kotlinx.coroutines.flow.Flow
 
@@ -12,9 +9,15 @@ interface ProductDetailsRepository {
 
     suspend fun productDetails(productID: Int): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>>
 
-    suspend fun addOrRemoveProductToFavorite(productId: Int, combinationId: Int?): Flow<BaseResult<AddToFavoriteResponse , WrappedResponse<AddToFavoriteResponse>>>
+    suspend fun addOrRemoveProductToFavorite(
+        productId: Int,
+        combinationId: Int?
+    ): Flow<BaseResult<AddToFavoriteResponse, WrappedResponse<AddToFavoriteResponse>>>
 
-    suspend fun addProductToCart(productId: Int, combinationId: Int?): Flow<Boolean>
+    suspend fun addProductToCart(
+        productId: Int,
+        combinationId: Int?
+    ): Flow<BaseResult<AddProductToCartEntity, WrappedResponse<AddProductToCartResponse>>>
 
     suspend fun getVariationProductPriceInfo(
         productId: Int,

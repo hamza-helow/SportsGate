@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
-import com.souqApp.data.product_details.remote.ProductDetailsResponse
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.product_details.AddProductToCartEntity
 import com.souqApp.domain.product_details.GetVariationProductPriceInfoUseCase
 import com.souqApp.domain.product_details.ProductDetailsUseCase
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
@@ -38,40 +38,32 @@ class ProductDetailsViewModel @Inject constructor(
         state.value = ProductDetailsActivityState.DetailsLoaded(productDetailsEntity)
     }
 
-    private fun onDetailsErrorLoaded(wrappedResponse: WrappedResponse<ProductDetailsResponse>) {
+    private fun setOnError(wrappedResponse: WrappedResponse<*>) {
         state.value = ProductDetailsActivityState.DetailsErrorLoaded(wrappedResponse)
     }
 
 
-    private fun onError(throwable: Throwable) {
-        state.value = ProductDetailsActivityState.Error(throwable)
+    private fun setAddedToCart(entity: AddProductToCartEntity) {
+        state.value = ProductDetailsActivityState.AddedToCart(entity)
     }
 
-    private fun setAddedToCart(isAdded: Boolean) {
-        state.value = ProductDetailsActivityState.AddedToCart(isAdded)
-    }
 
     private fun onAddingToCart(onProgress: Boolean) {
         state.value = ProductDetailsActivityState.AddingToCart(onProgress)
     }
 
-    private fun handleToggleFavorite(isFavorite:Boolean) {
+    private fun handleToggleFavorite(isFavorite: Boolean) {
         state.value = ProductDetailsActivityState.ToggleFavorite(isFavorite)
     }
 
     fun toggleFavorite(idProduct: Int) {
         viewModelScope.launch {
             productDetailsUseCase.addOrRemoveProduct(idProduct, variationCombinationId)
-                .catch {
-                    onError(it)
-                }.collect {
-
-                    when(it){
+                .catch {}.collect {
+                    when (it) {
                         is BaseResult.Errors -> Unit
-                        is BaseResult.Success ->  handleToggleFavorite(it.data.userFavourite)
+                        is BaseResult.Success -> handleToggleFavorite(it.data.userFavourite)
                     }
-
-
                 }
         }
     }
@@ -82,7 +74,6 @@ class ProductDetailsViewModel @Inject constructor(
                 setLoading(true)
             }.catch {
                 setLoading(false)
-                onError(it)
             }.collect {
                 setLoading(false)
                 when (it) {
@@ -107,13 +98,12 @@ class ProductDetailsViewModel @Inject constructor(
                 }
                 .catch {
                     onAddingToCart(false)
-                    onError(it)
                 }
                 .collect {
                     onAddingToCart(false)
                     when (it) {
-                        true -> setAddedToCart(true)
-                        false -> setAddedToCart(false)
+                        is BaseResult.Errors -> setOnError(it.error)
+                        is BaseResult.Success -> setAddedToCart(it.data)
                     }
                 }
         }
@@ -123,14 +113,11 @@ class ProductDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             productDetailsUseCase.productDetails(productId)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }.collect {
+                .catch { setLoading(false) }.collect {
                     setLoading(false)
                     when (it) {
                         is BaseResult.Success -> onDetailsLoaded(it.data)
-                        is BaseResult.Errors -> onDetailsErrorLoaded(it.error)
+                        is BaseResult.Errors -> setOnError(it.error)
                     }
                 }
         }
@@ -147,14 +134,12 @@ sealed class ProductDetailsActivityState {
     data class DetailsLoaded(val productDetailsEntity: ProductDetailsEntity) :
         ProductDetailsActivityState()
 
-    data class DetailsErrorLoaded(val wrappedResponse: WrappedResponse<ProductDetailsResponse>) :
+    data class DetailsErrorLoaded(val wrappedResponse: WrappedResponse<*>) :
         ProductDetailsActivityState()
-
-    data class Error(val throwable: Throwable) : ProductDetailsActivityState()
 
     data class ToggleFavorite(val isFavorite: Boolean) : ProductDetailsActivityState()
 
-    data class AddedToCart(val isAdded: Boolean) : ProductDetailsActivityState()
+    data class AddedToCart(val entity: AddProductToCartEntity) : ProductDetailsActivityState()
 
     data class AddingToCart(val inProgress: Boolean) : ProductDetailsActivityState()
 

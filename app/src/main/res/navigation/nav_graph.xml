@@ -24,9 +24,9 @@
 
 
     <fragment
-        android:label=""
         android:id="@+id/productDetailsFragment"
         android:name="com.souqApp.presentation.product_details.ProductDetailsFragment"
+        android:label=""
         tools:layout="@layout/fragment_product_details">
 
         <argument
@@ -37,8 +37,8 @@
             app:destination="@id/productDetailsFragment" />
 
         <action
-            android:id="@+id/to_cart_graph"
-            app:destination="@+id/cart_graph" />
+            android:id="@+id/to_successAddToCartBottomSheet"
+            app:destination="@id/successAddToCartBottomSheet" />
 
     </fragment>
 
@@ -95,6 +95,21 @@
             android:name="cancelText"
             app:argType="string"
             app:nullable="true" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/successAddToCartBottomSheet"
+        android:name="com.souqApp.presentation.dialog.SuccessAddToCartBottomSheet"
+        tools:layout="@layout/success_add_to_cart_bottom_sheet">
+
+        <argument
+            android:name="count"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/to_cart_graph"
+            app:destination="@+id/cart_graph" />
 
     </dialog>
 

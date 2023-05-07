@@ -122,7 +122,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         val code = if (viewModel.isPhoneEnable) "+962" else ""
 
         if (viewModel.isPhoneEnable)
-            username = username.toPhoneNumber()
+            username = username.toValidPhoneNumber()
 
         if (validate()) {
             viewModel.login(LoginRequest(code + username, password, 0, sharedPrefs.firebaseToken()))

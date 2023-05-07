@@ -49,13 +49,13 @@ fun AddProductToCartResponse.toEntity() = AddProductToCartEntity(
 )
 
 fun HomeResponse.toEntity() = HomeEntity(
-    cartProductsCount,
-    promotions,
-    categories,
-    newProducts,
-    bestSellingProducts,
-    recommendedProducts,
-    tags
+    cartProductsCount ?: 0,
+    promotions.orEmpty(),
+    categories.orEmpty(),
+    newProducts.orEmpty(),
+    bestSellingProducts.orEmpty(),
+    recommendedProducts.orEmpty(),
+    tags.orEmpty()
 )
 
 fun ProductDetailsResponse.toEntity() = ProductDetailsEntity(

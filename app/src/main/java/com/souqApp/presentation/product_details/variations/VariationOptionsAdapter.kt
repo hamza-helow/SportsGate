@@ -25,7 +25,7 @@ class VariationOptionsAdapter(
     private var selectedItemPosition = 0
 
     init {
-        val combinationOption = combinationOptions.firstOrNull { it.variation_id == variation.id }
+        val combinationOption = combinationOptions.firstOrNull { it.variationId == variation.id }
         val selectedOption = variation.options.firstOrNull { it.value == combinationOption?.value }
         selectedItemPosition = variation.options.indexOf(selectedOption)
 

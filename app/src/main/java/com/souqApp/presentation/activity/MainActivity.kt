@@ -5,6 +5,7 @@ import android.content.ContextWrapper
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.navigation.FloatingWindow
 import androidx.navigation.NavController
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         window.decorView.layoutDirection = resources.configuration.layoutDirection
         binding = ActivityMainBinding.inflate(layoutInflater)

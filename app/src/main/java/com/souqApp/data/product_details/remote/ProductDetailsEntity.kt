@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.souqApp.domain.main.home.TagEntity
 
 data class ProductDetailsEntity(
+
     val id: Int,
     val name: String,
     val desc: String,
@@ -22,16 +23,24 @@ data class ProductDetailsEntity(
 )
 
 data class CombinationOption(
+    @SerializedName("description")
     val description: String,
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("value")
     val value: String,
-    val variation_id: Int
+    @SerializedName("variation_id")
+    val variationId: Int
 )
 
 data class Variation(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("label")
     val label: String,
+    @SerializedName("options")
     val options: List<VariationOption>,
+    @SerializedName("type")
     val type: VariationType,
 
     @Transient
@@ -39,11 +48,16 @@ data class Variation(
 )
 
 data class VariationOption(
+    @SerializedName("description")
     val description: String,
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("media")
     val media: List<String>,
+    @SerializedName("value")
     val value: String,
-    val variation_id: Int,
+    @SerializedName("variation_id")
+    val variationId: Int,
 )
 
 enum class VariationType(val code: Int) {

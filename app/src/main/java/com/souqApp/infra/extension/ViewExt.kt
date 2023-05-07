@@ -64,8 +64,6 @@ fun ProgressBar.start(start: Boolean) {
 }
 
 
-
-
 @SuppressLint("SetJavaScriptEnabled")
 fun WebView.setContent(content: String?) {
     if (content.orEmpty().isEmpty())

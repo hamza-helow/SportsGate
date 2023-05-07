@@ -12,7 +12,7 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.register.remote.dto.RegisterRequest
 import com.souqApp.databinding.FragmentRegisterBinding
 import com.souqApp.domain.common.entity.TokenEntity
-import com.souqApp.infra.extension.toPhoneNumber
+import com.souqApp.infra.extension.toValidPhoneNumber
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +39,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     private fun validate() {
         val fullName = binding.fullNameEdt.text.toString().trim()
         val email = binding.emailEdt.text.toString().trim()
-        val phone = binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber()
+        val phone = binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber()
         val password = binding.passwordEdt.text.toString()
         val confirmPassword = binding.confirmPasswordEdt.text.toString()
         val isAgree = binding.checkBoxAgree.isChecked
@@ -110,7 +110,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         val fullName = binding.fullNameEdt.text.toString().trim()
         val email = binding.emailEdt.text.toString().trim()
         val code = "+962"
-        val phone = code + binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber()
+        val phone = code + binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber()
         val password = binding.passwordEdt.text.toString()
         viewModel.register(RegisterRequest(fullName, email, phone, password))
     }

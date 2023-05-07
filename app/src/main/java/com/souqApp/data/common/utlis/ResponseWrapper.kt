@@ -11,13 +11,7 @@ data class WrappedListResponse<T>(
     @SerializedName("current_page") val currentPage: Int? = null,
     @SerializedName("per_page") val totalPages: Int? = null
 
-) {
-    //convert array of errors to formatted text
-    fun formattedErrors(): String {
-        return formattedErrors(this.errors)
-    }
-}
-
+)
 
 data class WrappedResponse<T>(
     var code: Int,

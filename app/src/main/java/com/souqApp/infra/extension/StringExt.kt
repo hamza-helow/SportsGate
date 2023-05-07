@@ -1,7 +1,6 @@
 package com.souqApp.infra.extension
 
 import android.util.Patterns
-import com.souqApp.data.common.utlis.WrappedResponse
 
 
 fun String.isEmail(): Boolean {
@@ -17,7 +16,7 @@ fun String.isPasswordValid(): Boolean {
 }
 
 
-fun String.toPhoneNumber(): String {
+fun String.toValidPhoneNumber(): String {
     if (this.startsWith("0")) {
         return this.drop(1)
     }

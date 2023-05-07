@@ -30,10 +30,9 @@
             android:layout_height="@dimen/_70sdp"
             android:layout_gravity="center|top"
             android:layout_marginTop="@dimen/_8sdp"
-            tools:src="@tools:sample/avatars"
             app:networkImage="@{user.image}"
             app:placeholder="@{@drawable/ic_account_circle}"
-            />
+            tools:src="@tools:sample/avatars" />
 
 
         <TextView
@@ -46,7 +45,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/LoginTextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
             android:visibility="visible"
             app:boxStrokeColor="@color/green"
@@ -74,7 +73,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/LoginTextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
             android:enabled="false"
             android:visibility="visible"
@@ -101,7 +100,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/LoginTextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginBottom="@dimen/_16sdp"
             android:enabled="false"

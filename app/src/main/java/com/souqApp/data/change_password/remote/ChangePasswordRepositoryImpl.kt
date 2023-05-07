@@ -13,11 +13,8 @@ class ChangePasswordRepositoryImpl @Inject constructor(private val changePasswor
     override suspend fun changePassword(oldPassword:String , newPassword:String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
 
         return flow {
-
             val response = changePasswordApi.changePassword(oldPassword, newPassword)
-
             val isSuccessful = response.status
-
             if (isSuccessful) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {

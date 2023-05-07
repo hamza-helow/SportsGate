@@ -5,7 +5,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.FragmentForgotPasswordBinding
-import com.souqApp.infra.extension.toPhoneNumber
+import com.souqApp.infra.extension.toValidPhoneNumber
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +25,7 @@ class ForgotPasswordFragment :
     }
 
     private fun validate() {
-        viewModel.validate(binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber())
+        viewModel.validate(binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber())
     }
 
     private fun observeToState() {
@@ -55,7 +55,7 @@ class ForgotPasswordFragment :
     }
 
     private fun getMobileNumber(): String {
-        val phoneNumber = binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber()
+        val phoneNumber = binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber()
         val code = "+962"
 
         return code + phoneNumber

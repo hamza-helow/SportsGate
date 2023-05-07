@@ -11,7 +11,10 @@ data class VariationProductPriceInfoResponse(
     val discountPrice: String?,
     @SerializedName("last_price")
     val lastPrice: String?,
+    @SerializedName("price")
     val price: String?,
+    @SerializedName("qty")
     val qty: Int?,
+    @SerializedName("currency")
     val currency: String?,
 )

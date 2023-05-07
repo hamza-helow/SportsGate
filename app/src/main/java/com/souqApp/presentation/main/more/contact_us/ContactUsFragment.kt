@@ -92,7 +92,7 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(FragmentContact
             binding.txtMessage.successBorder()
         }
 
-        if (!binding.includePhoneNumber.phoneEdt.text.toString().toPhoneNumber().isPhone()) {
+        if (!binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber().isPhone()) {
             binding.includePhoneNumber.root.errorBorder()
             isValid = false
         } else {

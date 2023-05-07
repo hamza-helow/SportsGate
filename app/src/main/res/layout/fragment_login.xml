@@ -71,7 +71,6 @@
                     android:id="@+id/email_edt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@null"
                     android:hint="@string/email_str"
                     android:inputType="textEmailAddress"
                     android:paddingStart="@dimen/_8sdp"

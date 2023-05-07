@@ -49,8 +49,6 @@ class ProductDetailsFragment :
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
-    override fun showAppBar(): Boolean = true
-
     override fun onStart() {
         super.onStart()
         observer()
@@ -60,7 +58,6 @@ class ProductDetailsFragment :
     private fun initListener() {
         binding.imgFavorite.setOnClickListener(this)
         binding.btnAddToCart.setOnClickListener(this)
-
     }
 
     private fun init() {

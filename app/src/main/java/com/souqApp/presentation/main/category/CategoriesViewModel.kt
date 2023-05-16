@@ -7,7 +7,10 @@ import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.categories.CategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,7 +20,6 @@ class CategoriesViewModel @Inject constructor(private val categoriesUseCase: Cat
 
     private val state = MutableStateFlow<CategoriesFragmentState>(CategoriesFragmentState.Init)
     val mState: StateFlow<CategoriesFragmentState> get() = state
-
 
     fun setLoading() {
         state.value = CategoriesFragmentState.IsLoading(true)
@@ -40,7 +42,7 @@ class CategoriesViewModel @Inject constructor(private val categoriesUseCase: Cat
     }
 
     @Inject
-    fun categories() {
+    fun getCategories() {
         viewModelScope.launch {
             categoriesUseCase.categories()
                 .onStart { setLoading() }

@@ -27,6 +27,10 @@ class ProductGridAdapter(
             onClickItem(product.id)
         }
 
+        if (product.variations.isEmpty()) {
+            holder.binding.recColors.adapter = null
+        }
+
         product.variations.firstOrNull()?.let { variation ->
             val colorOptionsAdapter = ColorOptionsAdapter()
             colorOptionsAdapter.list = variation.options

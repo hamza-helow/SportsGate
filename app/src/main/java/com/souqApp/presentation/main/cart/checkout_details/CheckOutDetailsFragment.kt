@@ -59,9 +59,11 @@ class CheckOutDetailsFragment :
             is PaymentDetailsFragmentState.CheckoutDetailsLoaded -> handleCheckoutDetailsLoaded(
                 state.checkoutDetailsEntity
             )
+
             is PaymentDetailsFragmentState.CheckoutDetailsErrorLoad -> handleCheckoutDetailsErrorLoad(
                 state.response
             )
+
             is PaymentDetailsFragmentState.CheckoutSuccess -> handleCheckoutSuccess(state.checkoutEntity)
             is PaymentDetailsFragmentState.CheckoutError -> handleCheckoutError(state.response)
             is PaymentDetailsFragmentState.CheckCouponCode -> handleCheckCouponCode(state.valid)
@@ -139,7 +141,8 @@ class CheckOutDetailsFragment :
     }
 
     private fun checkPromoCode() {
-        viewModel.checkCouponCode(binding.promoCodeEdt.text.toString())
+        if (binding.promoCodeEdt.text.toString().isNotBlank())
+            viewModel.checkCouponCode(binding.promoCodeEdt.text.toString())
     }
 
     private fun checkout() {

@@ -47,7 +47,7 @@ class NotificationViewModel @Inject constructor(
     }
 
 
-    fun getNotificationsHistory() {
+    private fun getNotificationsHistory() {
         viewModelScope.launch {
             notificationUseCase.notificationsHistory()
                 .onStart { setLoading(true) }

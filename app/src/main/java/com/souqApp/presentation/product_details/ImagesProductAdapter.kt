@@ -3,16 +3,20 @@ package com.souqApp.presentation.product_details
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.souqApp.BR
-import com.souqApp.data.main.home.remote.dto.ProductAdsEntity
 import com.souqApp.databinding.ItemPromotionBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
 
-class ImagesProductAdapter() : BaseRecyclerAdapter<ItemPromotionBinding, String>() {
+class ImagesProductAdapter(private val onClickItem: (image: String) -> Unit = {}) :
+    BaseRecyclerAdapter<ItemPromotionBinding, String>() {
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = list[position]
         holder.bind(BR.image, item)
+
+        holder.binding.root.setOnClickListener {
+            onClickItem(list[position])
+        }
     }
 
     override fun getBinding(parent: ViewGroup, viewType: Int): ItemPromotionBinding {

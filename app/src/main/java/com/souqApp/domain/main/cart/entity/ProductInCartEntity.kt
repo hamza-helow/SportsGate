@@ -5,7 +5,7 @@ data class ProductInCartEntity(
     val cartItemId:Int,
     val name: String,
     val thumb: String,
-    val totalPrice: String,
+    var totalPrice: String,
     var qty: Int,
     val combinationId: Int?,
 )

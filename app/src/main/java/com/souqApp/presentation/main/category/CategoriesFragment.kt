@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.common.CategoryEntity
@@ -20,7 +21,8 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class CategoriesFragment :
-    BaseFragment<FragmentCategoriesBinding>(FragmentCategoriesBinding::inflate) {
+    BaseFragment<FragmentCategoriesBinding>(FragmentCategoriesBinding::inflate),
+    SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel: CategoriesViewModel by viewModels()
 
@@ -42,6 +44,9 @@ class CategoriesFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.recCategory.layoutManager = LinearLayoutManager(requireContext())
         binding.recCategory.adapter = adapterCategory
+
+        binding.refreshSwiper.setOnRefreshListener(this)
+
         observe()
     }
 
@@ -77,6 +82,11 @@ class CategoriesFragment :
 
     private fun handleCategoriesLoaded(categories: List<CategoryEntity>) {
         adapterCategory.list = categories
+    }
+
+    override fun onRefresh() {
+        viewModel.getCategories()
+        binding.refreshSwiper.isRefreshing = false
     }
 
 }

@@ -10,15 +10,14 @@ import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
 import com.souqApp.presentation.base.BaseFragment
-import com.souqApp.presentation.common.ProductHorizontalAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
 class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListBinding::inflate) {
     private val viewModel: WishListViewModel by viewModels()
-    private val adapter: ProductHorizontalAdapter by lazy {
-        ProductHorizontalAdapter{
+    private val adapter: WishListProductAdapter by lazy {
+        WishListProductAdapter{
             navigate(NavGraphDirections.toProductDetailsFragment(it))
         }
     }

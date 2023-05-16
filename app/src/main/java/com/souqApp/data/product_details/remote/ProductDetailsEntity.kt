@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 import com.souqApp.domain.main.home.TagEntity
 
 data class ProductDetailsEntity(
-
     val id: Int,
     val name: String,
     val desc: String,

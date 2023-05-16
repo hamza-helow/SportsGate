@@ -10,7 +10,7 @@
             type="com.souqApp.domain.orders.OrderDetailsEntity" />
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:background="@color/white"
         android:id="@+id/content"
         android:layout_width="match_parent"
@@ -242,5 +242,5 @@
         </LinearLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

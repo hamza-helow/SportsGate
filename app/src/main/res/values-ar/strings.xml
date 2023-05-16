@@ -52,7 +52,7 @@
     <string name="discount_str">الخصم</string>
     <string name="order_total_str">المجموع</string>
     <string name="qty_lbl">الكمية</string>
-    <string name="wish_list">المفضلة</string>
+    <string name="wish_list">قائمة الرغبات</string>
     <string name="login">تسجيل الدخول</string>
     <string name="app_version">اصدار التطبيق:</string>
     <string name="powered_by">بدعم من: \t</string>
@@ -88,16 +88,16 @@
     <string name="area">المنطقة</string>
     <string name="address_details">تفاصيل العنوان</string>
     <string name="tax">الضريبة</string>
-    <string name="successfully_operation">Successfully operation</string>
+    <string name="successfully_operation">عملية ناجحة</string>
     <string name="coupon_not_valid">رمز القسيمة المحدد غير صالح</string>
     <string name="name">الاسم</string>
     <string name="best_selling">الافضل مبيعا</string>
     <string name="recommended_products">المنتجات الموصى بها</string>
     <string name="new_products">منتجات جديدة</string>
-    <string name="checkout">Checkout</string>
+    <string name="checkout">الدفع</string>
     <string name="user_profile">صفحة المستخدم</string>
     <string name="notification_not_found">لم يتم العثور على اشعارات</string>
-    <string name="reset_pass_message">reset password</string>
+    <string name="reset_pass_message">إعادة تعيين كلمة المرور</string>
     <string name="password_changed">تم تغيير كلمة المرور بنجاح</string>
     <string name="no_products_found">لا توجد منتجات</string>
     <string name="added_to_your_cart_successfully">تمت الإضافة إلى عربة التسوق الخاصة بك بنجاح!</string>
@@ -116,5 +116,5 @@
     <string name="ok">حسنا</string>
     <string name="cancel">إلغاء</string>
     <string name="your_account_will_be_logged_out_from_the_app">سيتم تسجيل خروج حسابك من التطبيق</string>
-    <string name="not_available">Not Available</string>
+    <string name="not_available">غير متاح</string>
 </resources>

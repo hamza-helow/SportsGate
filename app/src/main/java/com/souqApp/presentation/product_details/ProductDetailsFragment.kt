@@ -80,10 +80,11 @@ class ProductDetailsFragment :
             is ProductDetailsActivityState.DetailsLoaded -> handleDetailsLoaded(state.productDetailsEntity)
             is ProductDetailsActivityState.AddedToCart -> handleAddedToCart(state.entity)
             is ProductDetailsActivityState.AddingToCart -> handleAddingToCart(state.inProgress)
-            is ProductDetailsActivityState.VariationProductPriceLoaded -> handleVariationProductPriceLoaded(state.variationProductPriceInfoEntity)
+            is ProductDetailsActivityState.VariationProductPriceLoaded -> handleVariationProductPriceLoaded(
+                state.variationProductPriceInfoEntity
+            )
         }
     }
-
 
 
     private fun handleVariationProductPriceLoaded(priceInfoEntity: VariationProductPriceInfoEntity) {
@@ -130,7 +131,9 @@ class ProductDetailsFragment :
             viewModel.getVariationProductPriceInfo(productDetailsEntity.id, it)
         }
 
-        imagesProductAdapter = ImagesProductAdapter()
+        imagesProductAdapter = ImagesProductAdapter {
+            navigate(ProductDetailsFragmentDirections.toImagePreviewFragment(it))
+        }
 
         imagesProductAdapter.list = productDetailsEntity.media
 
@@ -181,8 +184,20 @@ class ProductDetailsFragment :
 
     override fun onClick(view: View) {
         when (view.id) {
-            binding.imgFavorite.id -> viewModel.toggleFavorite(args.productId)
-            binding.btnAddToCart.id -> viewModel.addProductToCart(args.productId)
+            binding.imgFavorite.id -> checkIsUserLogged {
+                viewModel.toggleFavorite(args.productId)
+            }
+
+            binding.btnAddToCart.id -> checkIsUserLogged {
+                viewModel.addProductToCart(args.productId)
+            }
         }
+    }
+
+    private fun checkIsUserLogged(success: () -> Unit) {
+        if (sharedPrefs.isLogin())
+            success()
+        else
+            navigate(ProductDetailsFragmentDirections.toAuthGraph())
     }
 }

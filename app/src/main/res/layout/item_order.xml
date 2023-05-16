@@ -62,7 +62,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/txt_order_number_label"
             app:layout_constraintTop_toTopOf="@+id/txt_order_number_label"
-            tools:text="@string/status" />
+            android:text="@string/status" />
 
         <TextView
             android:id="@+id/txt_status"

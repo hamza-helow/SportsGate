@@ -48,8 +48,7 @@
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="@color/white"
-            app:contentPadding="@dimen/_8sdp"
-            app:isVisible="@{isLogin}">
+            app:contentPadding="@dimen/_8sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,11 +63,10 @@
                     android:layout_weight="1"
                     android:enabled="@{details.onSale}"
                     android:text="@{details.onSale ? @string/add_to_cart : @string/not_available}"
-                    tools:text="@string/add_to_cart"
-                    tools:visibility="invisible"
                     android:visibility="invisible"
-                    app:isVisible="@{showAddToCart}">
-                </com.google.android.material.button.MaterialButton>
+                    app:isVisible="@{showAddToCart}"
+                    tools:text="@string/add_to_cart"
+                    tools:visibility="invisible" />
 
                 <CheckedTextView
                     android:id="@+id/img_favorite"
@@ -86,6 +84,7 @@
         </androidx.cardview.widget.CardView>
 
         <ScrollView
+            android:paddingBottom="@dimen/_32sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -100,9 +99,9 @@
                 tools:ignore="WebViewLayout">
 
                 <FrameLayout
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rec_promotion"
@@ -149,15 +148,31 @@
                         app:isDiscountPrice="@{discount >0.0}"
                         tools:text="original price" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:text='@{priceAfterDiscount}'
-                        android:textStyle="bold"
-                        app:isVisible="@{discount >0.0}"
-                        tools:text="price after discount" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_8sdp"
+                            android:text='@{priceAfterDiscount}'
+                            android:textStyle="bold"
+                            app:isVisible="@{discount >0.0}"
+                            tools:text="price after discount" />
+
+                        <TextView
+                            android:textColor="@color/red"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="@{ '-' + String.valueOf(details.discountPercentage) + '%'}"
+                            tools:text="-100%" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rec_variations"

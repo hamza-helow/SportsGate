@@ -2,6 +2,7 @@ package com.souqApp.infra.extension
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
@@ -63,6 +64,13 @@ fun ProgressBar.start(start: Boolean) {
     }
 }
 
+fun View.setHexColor(hex: String) {
+    val color = Color.parseColor(hex.substring(0..6))
+    val r: Int = Color.red(color)
+    val g: Int = Color.green(color)
+    val b: Int = Color.blue(color)
+    backgroundTintList = ColorStateList.valueOf(Color.rgb(r, g, b))
+}
 
 @SuppressLint("SetJavaScriptEnabled")
 fun WebView.setContent(content: String?) {

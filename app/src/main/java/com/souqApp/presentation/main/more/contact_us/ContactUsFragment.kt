@@ -6,7 +6,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.souqApp.data.contact_us.remote.ContactUsRequest
 import com.souqApp.databinding.FragmentContactUsBinding
-import com.souqApp.infra.extension.*
+import com.souqApp.infra.extension.showToast
+import com.souqApp.infra.extension.start
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
@@ -42,6 +43,7 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(FragmentContact
             is ContactUsState.Added -> handleAdded(state.isAdded)
             is ContactUsState.Error -> handleError(state.throwable)
             is ContactUsState.Loading -> handleLoading(state.isLoading)
+            is ContactUsState.Validate -> binding.btnSubmit.isEnabled = state.isValid
         }
     }
 
@@ -68,47 +70,15 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(FragmentContact
 
 
     private fun validate() {
-        resetAllError()
-        var isValid = true
 
-        if (binding.txtName.text.isBlank()) {
-            binding.txtName.errorBorder()
-            isValid = false
-        } else {
-            binding.txtName.successBorder()
-        }
-
-        if (!binding.txtEmail.text.toString().isEmail()) {
-            binding.txtEmail.errorBorder()
-            isValid = false
-        } else {
-            binding.txtEmail.successBorder()
-        }
-
-        if (binding.txtMessage.text.isBlank()) {
-            binding.txtMessage.errorBorder()
-            isValid = false
-        } else {
-            binding.txtMessage.successBorder()
-        }
-
-        if (!binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber().isPhone()) {
-            binding.includePhoneNumber.root.errorBorder()
-            isValid = false
-        } else {
-            binding.includePhoneNumber.root.successBorder()
-        }
-
-        binding.btnSubmit.isEnabled = isValid
+        viewModel.validate(
+            name = binding.txtName.text.toString(),
+            email = binding.txtEmail.text.toString(),
+            message = binding.txtMessage.text.toString(),
+            phoneNumber = binding.includePhoneNumber.phoneEdt.text.toString()
+        )
     }
 
-    private fun resetAllError() {
-        binding.btnSubmit.isEnabled = false
-        binding.txtName.noneBorder()
-        binding.txtMessage.noneBorder()
-        binding.txtEmail.noneBorder()
-        binding.includePhoneNumber.root.noneBorder()
-    }
 
     override fun onClick(view: View) {
         when (view.id) {

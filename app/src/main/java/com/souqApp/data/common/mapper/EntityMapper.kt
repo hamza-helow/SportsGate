@@ -34,7 +34,8 @@ fun UserResponse.toEntity() = UserEntity(id, name, email, phone, image, verified
 fun UpdateProductCartResponse.toEntity() = UpdateProductCartEntity(
     cartItemId = cartItemId ?: Constants.UNDEFINED_ID,
     subTotal = subTotal.orDash(),
-    productQty = updatedQty ?: 0
+    productQty = updatedQty ?: 0,
+    itemsPrice = itemsPrice.orDash()
 )
 
 fun CheckoutResponse.toEntity() = CheckoutEntity(orderId)

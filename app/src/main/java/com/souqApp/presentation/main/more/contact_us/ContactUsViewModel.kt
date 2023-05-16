@@ -6,9 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.contact_us.remote.ContactUsRequest
 import com.souqApp.domain.contact_us.ContactUsUseCase
+import com.souqApp.infra.extension.isEmail
+import com.souqApp.infra.extension.isPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +33,11 @@ class ContactUsViewModel @Inject constructor(private val contactUsUseCase: Conta
         _state.value = ContactUsState.Added(isAdded)
     }
 
-    fun sendContactUsInfo(contactUsRequest: ContactUsRequest){
+    fun validate(name: String, email: String, message: String, phoneNumber: String) {
+        _state.value = ContactUsState.Validate(name.isNotBlank() && email.isEmail() && message.isNotBlank() && phoneNumber.isPhone())
+    }
+
+    fun sendContactUsInfo(contactUsRequest: ContactUsRequest) {
         viewModelScope.launch {
             contactUsUseCase
                 .sendContactUs(contactUsRequest)
@@ -55,4 +60,6 @@ sealed class ContactUsState {
     data class Loading(val isLoading: Boolean) : ContactUsState()
     data class Error(val throwable: Throwable) : ContactUsState()
     data class Added(val isAdded: Boolean) : ContactUsState()
+
+    data class Validate(val isValid: Boolean) : ContactUsState()
 }

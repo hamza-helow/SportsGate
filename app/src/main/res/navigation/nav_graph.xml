@@ -40,6 +40,13 @@
             android:id="@+id/to_successAddToCartBottomSheet"
             app:destination="@id/successAddToCartBottomSheet" />
 
+        <action
+            android:id="@+id/to_auth_graph"
+            app:destination="@id/auth_graph" />
+        <action
+            android:id="@+id/to_imagePreviewFragment"
+            app:destination="@id/imagePreviewFragment" />
+
     </fragment>
 
 
@@ -50,6 +57,8 @@
     <include app:graph="@navigation/cart_graph" />
 
     <include app:graph="@navigation/more_graph" />
+
+    <include app:graph="@navigation/auth_graph" />
 
 
     <dialog
@@ -112,6 +121,18 @@
             app:destination="@+id/cart_graph" />
 
     </dialog>
+
+
+    <fragment
+        android:id="@+id/imagePreviewFragment"
+        android:name="com.souqApp.presentation.product_details.image_preview.ImagePreviewFragment"
+        android:label=""
+        tools:layout="@layout/fragment_image_preview">
+
+        <argument
+            android:name="image"
+            app:argType="string" />
+    </fragment>
 
 
 </navigation>

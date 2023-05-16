@@ -40,7 +40,7 @@ class SharedPrefs(context: Context) {
     fun getLanguage(): String {
         val lang = get(LANG, String::class.java)
         if (lang.isEmpty())
-            return "En"
+            return "en"
         return lang
     }
 

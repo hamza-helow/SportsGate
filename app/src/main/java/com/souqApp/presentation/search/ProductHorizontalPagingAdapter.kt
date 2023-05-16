@@ -14,7 +14,7 @@ class ProductHorizontalPagingAdapter(val onClickItem: (Int) -> Unit) :
     PagingDataAdapter<ProductEntity, ProductHorizontalPagingAdapter.SearchViewHolder>(DiffCallback) {
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(BR.productInSearch, getItem(position))
+        holder.bind(BR.product, getItem(position))
 
         holder.binding.root.setOnClickListener {
             onClickItem(getItem(position)?.id ?: Constants.UNDEFINED_ID)

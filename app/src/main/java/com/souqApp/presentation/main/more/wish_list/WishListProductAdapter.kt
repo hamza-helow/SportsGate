@@ -1,4 +1,4 @@
-package com.souqApp.presentation.common
+package com.souqApp.presentation.main.more.wish_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,12 +7,10 @@ import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.ItemProductHorizontalBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
-class ProductHorizontalAdapter (val onClickItem:(Int)->Unit): BaseRecyclerAdapter<ItemProductHorizontalBinding, ProductEntity>() {
-
-    lateinit var listenerNeedLoadMore: ((Int) -> Unit)
+class WishListProductAdapter (val onClickItem:(Int)->Unit): BaseRecyclerAdapter<ItemProductHorizontalBinding, ProductEntity>() {
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(BR.productInSearch, getItemByPosition(position))
+        holder.bind(BR.product, getItemByPosition(position))
 
         holder.binding.root.setOnClickListener {
             onClickItem(getItemByPosition(position).id)
@@ -28,6 +26,5 @@ class ProductHorizontalAdapter (val onClickItem:(Int)->Unit): BaseRecyclerAdapte
     }
 
     override fun needLoadMore(page: Int) {
-        listenerNeedLoadMore(page)
     }
 }

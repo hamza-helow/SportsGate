@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="productInSearch"
+            name="product"
             type="com.souqApp.data.main.home.remote.dto.ProductEntity" />
     </data>
 
@@ -23,42 +23,67 @@
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:networkImage="@{productInSearch.thumb}"
-            app:srcCompat="@drawable/gym_category_for_test" />
+            app:networkImage="@{product.thumb}"
+            app:srcCompat="@drawable/gym_category_for_test"
+            tools:ignore="ContentDescription" />
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/txt_name_product"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/_8sdp"
-            android:orientation="vertical"
+            android:text="@{product.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/img_product"
-            app:layout_constraintTop_toTopOf="@+id/img_product">
+            app:layout_constraintTop_toTopOf="@+id/img_product"
+            tools:layout_editor_absoluteX="206dp"
+            tools:layout_editor_absoluteY="16dp"
+            tools:text="@tools:sample/last_names" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/cardPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_product"
+            app:layout_constraintTop_toBottomOf="@+id/txt_name_product">
 
             <TextView
-                android:id="@+id/txt_name_product"
-                android:layout_width="match_parent"
+                android:id="@+id/txtPriceBeforeDiscount"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{productInSearch.name}"
-                tools:layout_editor_absoluteX="206dp"
-                tools:layout_editor_absoluteY="16dp"
-                tools:text="Flix" />
+                android:text="@{product.price}"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:isDiscountPrice="@{product.discountPercentage > 0}"
+                tools:text="price" />
 
             <TextView
-                android:id="@+id/txt_desc"
-                android:layout_width="match_parent"
+                android:id="@+id/txtPriceAfterDiscount"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:text="@{productInSearch.desc}"
-                android:textColor="@color/grey"
-                tools:layout_editor_absoluteX="107dp"
-                tools:layout_editor_absoluteY="42dp"
-                tools:text="The first name in the world" />
-        </LinearLayout>
+                android:text="@{product.discountedProductPrice}"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:isVisible="@{product.discountPercentage > 0}"
+                tools:text="price" />
 
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include
+            layout="@layout/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_product" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

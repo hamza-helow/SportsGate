@@ -1,8 +1,6 @@
 package com.souqApp.presentation.product_details.variations
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +11,7 @@ import com.souqApp.data.product_details.remote.VariationType
 import com.souqApp.databinding.ItemVariationColorsBinding
 import com.souqApp.databinding.ItemVariationImageBinding
 import com.souqApp.databinding.ItemVariationTextBinding
+import com.souqApp.infra.extension.setHexColor
 import com.souqApp.infra.utils.BaseViewHolder
 
 class VariationOptionsAdapter(
@@ -46,6 +45,7 @@ class VariationOptionsAdapter(
                     false
                 )
             )
+
             VariationType.IMAGE.code -> {
                 return ViewHolderImageOption(
                     ItemVariationImageBinding.inflate(
@@ -55,6 +55,7 @@ class VariationOptionsAdapter(
                     )
                 )
             }
+
             else -> return ViewHolderTextOption(
                 ItemVariationTextBinding.inflate(
                     layoutInflater,
@@ -70,22 +71,27 @@ class VariationOptionsAdapter(
         val item = variation.options[position]
 
         holder.binding.root.setOnClickListener {
-            selectedItemPosition = holder.adapterPosition
-            notifyDataSetChanged()
-            variation.selectedValue = item.value
-            onChange()
+
+            if (selectedItemPosition != position) {
+                selectedItemPosition = holder.layoutPosition
+                notifyDataSetChanged()
+                variation.selectedValue = item.value
+                onChange()
+            }
         }
 
         holder.bind(BR.selected, selectedItemPosition == position)
 
         when (holder) {
             is ViewHolderColorOption -> {
-                holder.binding.txtColor.backgroundTintList =
-                    ColorStateList.valueOf(Color.parseColor(item.description))
+                holder.binding.txtColor.setHexColor(item.description)
+
             }
+
             is ViewHolderTextOption -> {
                 holder.binding.txtValue.text = item.value
             }
+
             is ViewHolderImageOption -> {
                 holder.binding.imageUrl = item.media.firstOrNull()
             }

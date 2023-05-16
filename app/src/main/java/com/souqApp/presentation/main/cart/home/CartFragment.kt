@@ -72,6 +72,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
             handleCartEmptyState(cartAdapter.list)
         } else {
             product.qty = updatedQty
+            product.totalPrice = updateProductQtyEntity.itemsPrice
             binding.txtTotal.text = updateProductQtyEntity.subTotal
             cartAdapter.notifyItemChanged(index)
         }

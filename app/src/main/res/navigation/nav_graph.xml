@@ -22,6 +22,10 @@
         android:id="@+id/to_BaseDialogFragment"
         app:destination="@id/baseDialogFragment" />
 
+    <action
+        android:id="@+id/to_ForceUpdateDialogFragment"
+        app:destination="@id/forceUpdateDialogFragment" />
+
 
     <fragment
         android:id="@+id/productDetailsFragment"
@@ -104,6 +108,18 @@
             android:name="cancelText"
             app:argType="string"
             app:nullable="true" />
+
+    </dialog>
+
+
+    <dialog
+        android:id="@+id/forceUpdateDialogFragment"
+        android:name="com.souqApp.presentation.dialog.ForceUpdateDialogFragment"
+        tools:layout="@layout/dialog_force_update_fragment">
+
+        <argument
+            android:name="message"
+            app:argType="string" />
 
     </dialog>
 

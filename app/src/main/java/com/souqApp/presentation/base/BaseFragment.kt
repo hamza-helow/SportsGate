@@ -34,6 +34,8 @@ abstract class BaseFragment<V : ViewBinding>(private val inflate: Inflate<V>) : 
 
         _binding = inflate(inflater, container, false)
 
+        appBarConfig().hideBackButton(hideBackButton())
+
         if (showAppBar())
             appBarConfig().showAppBar()
         else
@@ -74,13 +76,14 @@ abstract class BaseFragment<V : ViewBinding>(private val inflate: Inflate<V>) : 
     fun navigate(
         navDirections: NavDirections,
         @IdRes popUpTo: Int? = null,
-        singleTop: Boolean = false
+        singleTop: Boolean = false,
+        inclusive: Boolean = false
     ) {
 
         val navOptions = NavOptions.Builder()
             .apply {
                 if (popUpTo != null)
-                    setPopUpTo(popUpTo, false)
+                    setPopUpTo(popUpTo, inclusive)
             }
             .setEnterAnim(android.R.anim.slide_in_left)
             .setLaunchSingleTop(singleTop)
@@ -105,6 +108,8 @@ abstract class BaseFragment<V : ViewBinding>(private val inflate: Inflate<V>) : 
     }
 
     open fun showAppBar(): Boolean = true
+
+    open fun hideBackButton(): Boolean = false
 
     open fun updateTitleBar(): String? = null
 

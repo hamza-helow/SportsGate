@@ -20,10 +20,10 @@
     <string name="sign_up_str">Sign Up</string>
     <string name="new_password_str">New Password</string>
     <string name="password_str">Password</string>
-    <string name="full_name_str">Full name</string>
-    <string name="email_str">Email</string>
-    <string name="phone_number_str">Phone Number</string>
-    <string name="confirm_password_str">Confirm Password</string>
+    <string name="full_name">Full name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="delete_str">Delete</string>
     <string name="resend_code_str">Resend</string>
     <string name="sub_total_str">Subtotal</string>
@@ -40,7 +40,7 @@
     <string name="mange_addresses_str">Addresses</string>
     <string name="you_do_not_have_any_previous_addresses_please_add_an_address_str">You do not have any previous addresses, please create one to use with your next orders</string>
     <string name="edit_str">Edit</string>
-    <string name="add_a_new_address_str">New Address</string>
+    <string name="add_a_new_address">New Address</string>
     <string name="notes_str">Notes</string>
     <string name="floor_str">Floor number</string>
     <string name="building_str">Building number</string>
@@ -128,4 +128,8 @@
     <string name="english" translatable="false">English</string>
     <string name="arabic" translatable="false">العربية</string>
     <string name="not_available">Not Available</string>
+    <string name="update">Update</string>
+    <string name="there_are_no_products">There are no products</string>
+    <string name="phone">Phone</string>
+    <string name="vat">VAT</string>
 </resources>

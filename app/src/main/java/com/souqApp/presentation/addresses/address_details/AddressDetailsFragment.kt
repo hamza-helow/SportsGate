@@ -1,6 +1,7 @@
 package com.souqApp.presentation.addresses.address_details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
@@ -83,7 +84,10 @@ class AddressDetailsFragment :
 
     private fun handleError(error: Throwable) {
         binding.progressBar.start(false)
-        binding.content.isVisible(false)
+
+        Log.e("TAG" , error.stackTraceToString())
+
+      //  binding.content.isVisible(false)
 
         if (error is SocketTimeoutException) {
             requireContext().showToast("Unexpected error, try again later")

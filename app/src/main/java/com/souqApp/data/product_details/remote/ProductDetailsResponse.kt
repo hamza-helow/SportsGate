@@ -33,5 +33,5 @@ data class ProductDetailsResponse(
     @SerializedName("is_favorite")
     val isFavorite: Boolean? ,
     @SerializedName("tags")
-    val tags:List<TagEntity>
+    val tags:List<TagEntity> ,
 )

@@ -28,6 +28,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     private val viewModel: CartFragmentViewModel by viewModels()
     private lateinit var cartAdapter: CartAdapter
 
+    override fun hideBackButton(): Boolean = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()

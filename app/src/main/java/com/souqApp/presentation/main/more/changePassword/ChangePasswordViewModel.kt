@@ -39,7 +39,6 @@ class ChangePasswordViewModel @Inject constructor(private val changePasswordUseC
 
     fun changePassword(oldPassword: String, newPassword: String) {
         viewModelScope.launch {
-
             changePasswordUseCase
                 .changePassword(oldPassword, newPassword)
                 .onStart { setLoading(true) }
@@ -54,7 +53,6 @@ class ChangePasswordViewModel @Inject constructor(private val changePasswordUseC
                         is BaseResult.Errors -> errorChangePassword(it.error)
                     }
                 }
-
         }
     }
 

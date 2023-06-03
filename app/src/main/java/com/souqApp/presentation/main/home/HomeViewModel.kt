@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.main.home.CheckUpdateEntity
+import com.souqApp.domain.main.home.CheckUpdateUseCase
 import com.souqApp.domain.main.home.HomeEntity
 import com.souqApp.domain.main.home.HomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +18,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val homeUseCase: HomeUseCase,
+    private val checkUpdateUseCase: CheckUpdateUseCase
+) : ViewModel() {
 
     private val state = MutableLiveData<HomeFragmentState>(HomeFragmentState.Init)
     val mState: LiveData<HomeFragmentState> get() = state
@@ -43,6 +48,21 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
     }
 
     @Inject
+    fun checkUpdate() {
+        viewModelScope.launch {
+            checkUpdateUseCase.execute().collect {
+                when (it) {
+                    is BaseResult.Errors -> Unit
+                    is BaseResult.Success -> {
+                        state.value = HomeFragmentState.CheckUpdateSuccess(it.data)
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Inject
     fun getHome() {
         initState()
         viewModelScope.launch {
@@ -53,9 +73,11 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
                     hideLoading()
                     when (it) {
                         is BaseResult.Success -> {
-                            state.value = HomeFragmentState.CartCountUpdated(it.data.cartProductsCount)
+                            state.value =
+                                HomeFragmentState.CartCountUpdated(it.data.cartProductsCount)
                             homeLoaded(it.data)
                         }
+
                         is BaseResult.Errors -> homeErrorLoaded(it.error)
                     }
                 }
@@ -69,5 +91,7 @@ sealed class HomeFragmentState {
     data class IsLoading(val isLoading: Boolean) : HomeFragmentState()
     data class HomeLoaded(val homeEntity: HomeEntity) : HomeFragmentState()
     data class HomeLoadedError(val rawResponse: WrappedResponse<HomeResponse>) : HomeFragmentState()
-    data class CartCountUpdated(val count:Int):HomeFragmentState()
+    data class CartCountUpdated(val count: Int) : HomeFragmentState()
+
+    data class CheckUpdateSuccess(val checkUpdateEntity: CheckUpdateEntity) : HomeFragmentState()
 }

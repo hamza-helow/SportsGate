@@ -2,14 +2,13 @@ package com.souqApp.presentation.products
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.products.GetProductsUseCase
 import com.souqApp.domain.products.ProductsType
 import com.souqApp.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,24 +17,35 @@ class ProductsViewModel @Inject constructor(private val getProductsUseCase: GetP
     BaseViewModel() {
 
     val state: MutableLiveData<ProductsFragmentState> = MutableLiveData()
+    var isLastPage = false
 
-    fun loadProducts(id: Int, type: ProductsType) {
-        when(type){
-            ProductsType.PROMO ->   getProductsUseCase.request.promo = id
-            ProductsType.TAG ->  getProductsUseCase.request.tag = id
-            ProductsType.CATEGORY ->  getProductsUseCase.request.categoryId = id
-        }
+    private fun setLoading(isLoading: Boolean) {
+        state.value = ProductsFragmentState.Loading(isLoading)
+    }
+
+    fun loadProducts(id: Int, type: ProductsType , pageNumber:Int = 1) {
 
         viewModelScope.launch {
-            val pager = Pager(
-                config = PagingConfig(15, enablePlaceholders = false),
-                pagingSourceFactory = { getProductsUseCase }
-            )
-
-            val pagedData = pager.flow.cachedIn(this).stateIn(this)
-
-            state.value = ProductsFragmentState.OnProductsLoaded(pagedData.value)
-
+            getProductsUseCase.execute(
+                promo = if (type == ProductsType.PROMO) id else null,
+                tag = if (type == ProductsType.TAG) id else null,
+                type = if (type == ProductsType.CATEGORY) id else null,
+                page = pageNumber
+            ).onStart {
+                if (pageNumber == 1)
+                    setLoading(true)
+            }.catch {
+                setLoading(false)
+            }.collect {
+                setLoading(false)
+                when (it) {
+                    is BaseResult.Errors -> Unit
+                    is BaseResult.Success -> {
+                        isLastPage = it.data.products.isEmpty()
+                        state.value = ProductsFragmentState.OnProductsLoaded(it.data.products)
+                    }
+                }
+            }
         }
     }
 }

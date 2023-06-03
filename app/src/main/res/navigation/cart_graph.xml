@@ -39,12 +39,13 @@
 
 
     <include app:graph="@navigation/addresses_graph" />
+    <include app:graph="@navigation/orders_graph" />
 
 
-    <fragment
-        tools:layout="@layout/fragment_checkout_completed"
+    <dialog
         android:id="@+id/checkoutCompleted"
-        android:name="com.souqApp.presentation.main.cart.checkout_details.CheckoutCompletedFragment">
+        android:name="com.souqApp.presentation.main.cart.checkout_details.CheckoutCompletedFragment"
+        tools:layout="@layout/fragment_checkout_completed">
 
         <argument
             android:name="orderId"
@@ -54,7 +55,11 @@
             android:id="@+id/to_orderDetailsFragment"
             app:destination="@id/orderDetailsFragment"
             app:popUpTo="@id/homeFragment" />
-    </fragment>
+
+        <action
+            android:id="@+id/to_orders_graph"
+            app:destination="@id/orders_graph" />
+    </dialog>
 
 
     <fragment

@@ -6,6 +6,7 @@ import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.Constants
 import com.souqApp.data.main.cart.remote.dto.*
+import com.souqApp.data.main.home.remote.dto.CheckUpdateResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.data.orders.remote.OrderDetailsResponse
 import com.souqApp.data.orders.remote.OrderResponse
@@ -20,6 +21,7 @@ import com.souqApp.domain.addresses.AreaEntity
 import com.souqApp.domain.addresses.CityEntity
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.main.cart.entity.*
+import com.souqApp.domain.main.home.CheckUpdateEntity
 import com.souqApp.domain.main.home.HomeEntity
 import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.domain.orders.OrderEntity
@@ -74,7 +76,7 @@ fun ProductDetailsResponse.toEntity() = ProductDetailsEntity(
     combinationOptions = combinationOptions,
     variationCompainationId = variationCompainationId,
     isFavorite = isFavorite ?: false,
-    tags = tags
+    tags = tags,
 )
 
 
@@ -121,7 +123,8 @@ fun OrderDetailsResponse.toEntity(): OrderDetailsEntity {
         statusDescription = statusDescription.orDash(),
         subTotal = subTotal.orDash(),
         total = total.orDash(),
-        vat = vat.orDash()
+        vat = vat.orDash() ,
+        createdAt = createdAt.orDash()
     )
 }
 
@@ -187,3 +190,10 @@ fun List<OrderResponse>.toEntity() = map {
         it.totalPrice.orDash(),
     )
 }
+
+fun CheckUpdateResponse.toEntity() = CheckUpdateEntity(
+    forceUpdate = forceUpdate == true,
+    latestVersion = latestVersion.orEmpty(),
+    newVersion = newVersion == true,
+    storeUrl = storeUrl.orEmpty()
+)

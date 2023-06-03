@@ -1,43 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <data>
+
+        <variable
+            name="showEmptyState"
+            type="Boolean" />
+    </data>
+
+    <com.souqApp.infra.custome_view.flex_recycler_view.FlexRecyclerView
         android:id="@+id/rec_products"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="@dimen/_4sdp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:listitem="@layout/item_product_grid" />
-
-
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/card_empty"
-        android:layout_gravity="center"
-         android:gravity="center"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:ignore="UseCompoundDrawables">
-
-        <ImageView
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:src="@drawable/ic_products_empty_products"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/no_products_found"
-            />
-    </LinearLayout>
-
-
-</FrameLayout>
+        app:emptyState="@layout/empty_state_products"
+        app:showEmptyState="@{showEmptyState}" />
+</layout>

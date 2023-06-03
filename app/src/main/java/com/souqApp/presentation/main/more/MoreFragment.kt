@@ -12,7 +12,11 @@ import com.souqApp.data.settings.remote.dto.SettingsEntity
 import com.souqApp.databinding.FragmentMoreBinding
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.openUrl
-import com.souqApp.infra.utils.*
+import com.souqApp.infra.utils.APP_TAG
+import com.souqApp.infra.utils.MIN_ANDROID_VERSION
+import com.souqApp.infra.utils.ORDER_HISTORY_ANDROID
+import com.souqApp.infra.utils.SHOW_COPYRIGHTS
+import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -69,20 +73,20 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     }
 
     private fun initListener() {
-        binding.cardChangeLanguage.setOnClickListener(this)
-        binding.cardOrders.setOnClickListener(this)
-        binding.cardAddresses.setOnClickListener(this)
+        binding.txtChangeLanguage.setOnClickListener(this)
+        binding.txtOrders.setOnClickListener(this)
+        binding.txtAddresses.setOnClickListener(this)
         binding.imgFacebook.setOnClickListener(this)
         binding.imgTiktok.setOnClickListener(this)
         binding.imgInstagram.setOnClickListener(this)
-        binding.includeLogin.root.setOnClickListener(this)
+        binding.txtLogin.setOnClickListener(this)
         binding.cardProfile.setOnClickListener(this)
-        binding.cardShareApp.setOnClickListener(this)
-        binding.cardContactUs.setOnClickListener(this)
-        binding.cardWishList.setOnClickListener(this)
-        binding.cardChangePassword.setOnClickListener(this)
-        binding.cardAboutUs.setOnClickListener(this)
-        binding.cardTermsAndConditions.setOnClickListener(this)
+        binding.txtShareApp.setOnClickListener(this)
+        binding.txtContactUs.setOnClickListener(this)
+        binding.txtWishList.setOnClickListener(this)
+        binding.txtChangePassword.setOnClickListener(this)
+        binding.txtAboutUs.setOnClickListener(this)
+        binding.txtTermsAndConditions.setOnClickListener(this)
     }
 
     override fun onClick(p0: View) {
@@ -91,38 +95,38 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
             binding.imgFacebook.id -> openLink(binding.imgFacebook)
             binding.imgTiktok.id -> openLink(binding.imgTiktok)
             binding.imgInstagram.id -> openLink(binding.imgInstagram)
-            binding.includeLogin.root.id -> {
+            binding.txtLogin.id -> {
                 navigate(MoreFragmentDirections.toAuthGraph())
             }
             binding.cardProfile.id -> {
                 navigate(MoreFragmentDirections.toProfileFragment())
             }
-            binding.cardChangePassword.id -> {
+            binding.txtChangePassword.id -> {
                 navigate(MoreFragmentDirections.toChangePasswordFragment())
 
             }
-            binding.cardAddresses.id -> {
+            binding.txtAddresses.id -> {
                 navigate(MoreFragmentDirections.toAddressesGraph())
             }
-            binding.cardOrders.id -> {
+            binding.txtOrders.id -> {
                 navigate(MoreFragmentDirections.toOrdersGraph())
             }
-            binding.cardShareApp.id -> shareApp()
-            binding.cardContactUs.id -> {
+            binding.txtShareApp.id -> shareApp()
+            binding.txtContactUs.id -> {
                 navigate(MoreFragmentDirections.toContactUsFragment())
 
             }
-            binding.cardWishList.id -> {
+            binding.txtWishList.id -> {
                 navigate(MoreFragmentDirections.toWishListFragment())
             }
-            binding.cardChangeLanguage.id -> {
+            binding.txtChangeLanguage.id -> {
                 navigate(MoreFragmentDirections.toChangeLanguageFragment())
             }
-            binding.cardAboutUs.id -> {
+            binding.txtAboutUs.id -> {
                 navigate(MoreFragmentDirections.toAboutUsFragment())
 
             }
-            binding.cardTermsAndConditions.id -> {
+            binding.txtTermsAndConditions.id -> {
                 navigate(MoreFragmentDirections.toTermsAndConditionsFragment())
             }
         }

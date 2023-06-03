@@ -11,7 +11,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_8sdp"
+        android:layout_margin="@dimen/_4sdp"
         android:background="@drawable/bg_tag"
         android:text="@{value}"
         android:padding="@dimen/_8sdp"

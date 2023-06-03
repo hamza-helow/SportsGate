@@ -11,10 +11,10 @@
     </data>
 
     <androidx.core.widget.NestedScrollView
-        android:background="@color/white"
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -29,20 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/grey"
+                android:text="@{details.createdAt}"
                 tools:text="12/2/2022" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:text="@string/order_number"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{details.orderNumber}"
-                tools:text="234545656" />
 
 
             <TextView
@@ -94,148 +82,58 @@
                 android:text="@string/payment_details"
                 android:textStyle="bold" />
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16sdp">
+                android:layout_marginTop="@dimen/_8sdp"
+                app:label="@string/sub_total_str"
+                app:value="@{details.subTotal}"
+                tools:value="100 JOD" />
 
-                <TextView
-                    android:id="@+id/txt_sub_total_lable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sub_total_str"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txt_sub_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{details.subTotal}'
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="140 JOD" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <include layout="@layout/divider" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp">
+                app:label="@string/delivery_str"
+                app:value="@{details.deliveryPrice}"
+                tools:value="100 JOD" />
 
-                <TextView
-                    android:id="@+id/txt_delivery_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/delivery_str"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/txt_delivery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{details.deliveryPrice}'
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="1 JOD" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <include layout="@layout/divider" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp">
+                app:label="@string/vat"
+                app:value="@{details.vat}"
+                tools:value="100 JOD" />
 
-                <TextView
-                    android:id="@+id/txt_tax_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tax"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txt_tax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{details.vat}'
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="1 JOD" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <include layout="@layout/divider" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp">
+                app:label="@string/discount_str"
+                app:value="@{details.couponDiscount}"
+                tools:value="100 JOD" />
 
-                <TextView
-                    android:id="@+id/txt_discount_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/discount_str"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txt_discount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{details.couponDiscount}'
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="1 JOD" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <include layout="@layout/divider" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp">
+                android:layout_marginTop="@dimen/_8sdp"
+                app:boldValue="true"
+                app:hasDivider="false"
+                app:label="@string/order_total_str"
+                app:value="@{details.total}"
+                tools:value="100 JOD" />
 
-                <TextView
-                    android:id="@+id/txt_total_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/order_total_str"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/txt_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{details.total}'
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="1 JOD" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <include layout="@layout/divider" />
+            <View
+                style="@style/Divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_8sdp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rec_products"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_8sdp"
                 tools:itemCount="2"
                 tools:listitem="@layout/item_product_in_order_details" />
 

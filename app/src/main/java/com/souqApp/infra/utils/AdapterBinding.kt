@@ -5,24 +5,28 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
+import androidx.core.text.layoutDirection
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.souqApp.infra.custome_view.LabelWithValueHorizontal
 import com.souqApp.infra.extension.inVisible
 import com.souqApp.infra.extension.isVisible
+import java.util.Locale
 import kotlin.math.roundToInt
+
 
 @SuppressLint("CheckResult")
 @BindingAdapter(value = ["networkImage", "placeholder", "resizeImage"], requireAll = false)
 fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null, resize: Boolean? = true) {
-    if (url == null || url.isEmpty()) {
+    if (url.isNullOrEmpty()) {
         setImageDrawable(placeholder)
         return
     }
@@ -104,4 +108,16 @@ fun TextView.discountTextView(isDiscountPrice: Boolean) {
 @BindingAdapter("value")
 fun LabelWithValueHorizontal.setValue(value: String?) {
     txtValue.text = value.orEmpty().ifEmpty { "-" }
+}
+
+
+@BindingAdapter("drawableEndCompat")
+fun TextView.setDrawableEnd(drawable: Drawable?) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        drawable?.layoutDirection = Locale.getDefault().layoutDirection
+    }
+    if (Locale.getDefault() == Locale.ENGLISH)
+        setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+    else
+        setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
 }

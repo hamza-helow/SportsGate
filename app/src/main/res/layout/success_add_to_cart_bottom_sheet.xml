@@ -37,13 +37,18 @@
             android:text="@string/show_cart" />
 
         <TextView
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/white"
             android:id="@+id/count"
-            android:layout_margin="@dimen/_8sdp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:padding="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
             android:layout_gravity="center|end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textStyle="bold"
+            android:textColor="@color/red"
+            android:textSize="12sp"
             tools:text="10" />
     </FrameLayout>
 

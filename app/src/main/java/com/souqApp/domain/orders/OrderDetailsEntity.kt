@@ -13,7 +13,8 @@ data class OrderDetailsEntity(
     val statusDescription: String,
     val subTotal: String,
     val total: String,
-    val vat: String
+    val vat: String,
+    val createdAt:String
 )
 
 

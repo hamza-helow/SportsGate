@@ -29,7 +29,9 @@ data class OrderDetailsResponse(
     @SerializedName("total")
     val total: String?,
     @SerializedName("vat")
-    val vat: String?
+    val vat: String? ,
+    @SerializedName("created_at")
+    val createdAt:String?
 )
 
 data class ProductInOrderResponse(

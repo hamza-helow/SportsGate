@@ -22,6 +22,7 @@ import com.souqApp.infra.utils.AppBarConfig
 import com.souqApp.infra.utils.SharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,9 +50,13 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         window.decorView.layoutDirection = resources.configuration.layoutDirection
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -60,6 +65,7 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
 
         viewModel.cartQtyLiveData.observe(this) {
             val badge = binding.bottomNavigationView.getOrCreateBadge(R.id.cart_graph)
+            badge.badgeNumberLocale = Locale.ENGLISH
             badge.isVisible = it > 0
             badge.number = it
         }
@@ -91,6 +97,11 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
 
     override fun showAppBar() {
         binding.toolbar.isVisible = true
+    }
+
+    override fun hideBackButton(hide: Boolean) {
+        supportActionBar?.setDisplayHomeAsUpEnabled(hide.not())
+        supportActionBar?.setHomeButtonEnabled(hide.not())
     }
 
     override fun attachBaseContext(newBase: Context) {

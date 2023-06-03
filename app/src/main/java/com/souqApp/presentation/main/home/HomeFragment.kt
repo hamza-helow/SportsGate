@@ -16,6 +16,7 @@ import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.databinding.FragmentHomeBinding
+import com.souqApp.domain.main.home.CheckUpdateEntity
 import com.souqApp.domain.main.home.HomeEntity
 import com.souqApp.domain.products.ProductsType
 import com.souqApp.presentation.activity.MainViewModel
@@ -163,7 +164,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             is HomeFragmentState.HomeLoaded -> handleHomeLoaded(state.homeEntity)
             is HomeFragmentState.HomeLoadedError -> handleHomeLoadedError(state.rawResponse)
             is HomeFragmentState.CartCountUpdated -> handleCartCountUpdated(state.count)
+            is HomeFragmentState.CheckUpdateSuccess -> handleCheckUpdateSuccess(state.checkUpdateEntity)
         }
+    }
+
+    private fun handleCheckUpdateSuccess(checkUpdateEntity: CheckUpdateEntity) {
+       // if (checkUpdateEntity.newVersion)
+        //    navigate(NavGraphDirections.toForceUpdateDialogFragment(checkUpdateEntity.latestVersion))
+
     }
 
     private fun handleCartCountUpdated(count: Int) {

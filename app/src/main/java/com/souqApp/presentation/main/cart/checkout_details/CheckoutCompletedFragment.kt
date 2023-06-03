@@ -4,10 +4,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.souqApp.R
 import com.souqApp.databinding.FragmentCheckoutCompletedBinding
-import com.souqApp.presentation.base.BaseFragment
+import com.souqApp.presentation.base.BaseBottomSheetDialogFragment
 
 class CheckoutCompletedFragment :
-    BaseFragment<FragmentCheckoutCompletedBinding>(FragmentCheckoutCompletedBinding::inflate) {
+    BaseBottomSheetDialogFragment<FragmentCheckoutCompletedBinding>(FragmentCheckoutCompletedBinding::inflate) {
 
     private val args: CheckoutCompletedFragmentArgs by navArgs()
 
@@ -15,14 +15,12 @@ class CheckoutCompletedFragment :
         super.onResume()
 
         binding.txtOrderDetails.setOnClickListener{
-            navigate(
-                CheckoutCompletedFragmentDirections.toOrderDetailsFragment(args.orderId),
-                popUpTo = R.id.homeFragment
-            )
+            navigate(CheckoutCompletedFragmentDirections.toOrdersGraph() ,popUpTo = R.id.homeFragment)
+            navigate(CheckoutCompletedFragmentDirections.toOrderDetailsFragment(args.orderId))
         }
 
         binding.btnDone.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().popBackStack(R.id.homeFragment ,false)
         }
     }
 }

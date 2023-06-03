@@ -158,6 +158,9 @@ dependencies {
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.4"
 
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

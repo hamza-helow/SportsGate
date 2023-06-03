@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_40sdp"
     android:layout_marginBottom="@dimen/_16sdp"
+    android:layoutDirection="ltr"
     android:background="@drawable/border_bg"
     android:orientation="horizontal">
 
@@ -22,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
-        android:hint="@string/phone_number_str"
+        android:hint="@string/phone_number"
         android:inputType="phone"
         android:maxLength="10"
         android:paddingStart="@dimen/_8sdp"

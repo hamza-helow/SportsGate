@@ -15,13 +15,14 @@ import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.extension.setupMenu
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddressesBinding::inflate),
-    View.OnClickListener {
+class AddressesFragment :
+    BaseFragment<FragmentAddressesBinding>(FragmentAddressesBinding::inflate) {
 
     private val args: AddressesFragmentArgs by navArgs()
     private lateinit var addressAdapter: AdapterAddress
@@ -33,6 +34,11 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
         addressAdapter = AdapterAddress()
         binding.recAddresses.layoutManager = LinearLayoutManager(requireContext())
         binding.recAddresses.adapter = addressAdapter
+
+        setupMenu(R.menu.menu_add) {
+            if (it.itemId == R.id.item_add)
+                goToAddAddressFragment()
+        }
 
         addressAdapter.onClickItem = {
             if (args.selectedMode) {
@@ -48,7 +54,6 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
             }
 
         }
-        initListener()
         observer()
     }
 
@@ -122,20 +127,12 @@ class AddressesFragment : BaseFragment<FragmentAddressesBinding>(FragmentAddress
         showLoading(loading)
     }
 
-    private fun initListener() {
-        binding.fbAddAddress.setOnClickListener(this)
-    }
 
     companion object {
         const val ADDRESS_ID = "address_id"
         const val ADDRESS_NAME = "address_name"
     }
 
-    override fun onClick(view: View) {
-        when (view.id) {
-            binding.fbAddAddress.id -> goToAddAddressFragment()
-        }
-    }
 
     private fun goToAddAddressFragment() {
         navigate(AddressesFragmentDirections.toAddAddressFragment())

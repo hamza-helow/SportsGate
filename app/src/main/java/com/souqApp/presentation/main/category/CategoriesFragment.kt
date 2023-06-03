@@ -26,6 +26,8 @@ class CategoriesFragment :
 
     private val viewModel: CategoriesViewModel by viewModels()
 
+    override fun hideBackButton(): Boolean  = true
+
     private val adapterCategory by lazy {
         CategoryAdapter {
             if (it.children == null)

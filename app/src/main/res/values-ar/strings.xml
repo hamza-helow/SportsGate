@@ -15,10 +15,10 @@
     <string name="sign_up_str">اشتراك</string>
     <string name="new_password_str">كلمة المرور الجديدة</string>
     <string name="password_str">كلمة المرور</string>
-    <string name="full_name_str">الاسم الكامل</string>
-    <string name="email_str">البريد الإلكتروني</string>
-    <string name="phone_number_str">رقم الهاتف</string>
-    <string name="confirm_password_str">تأكيد كلمة المرور</string>
+    <string name="full_name">الاسم</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
     <string name="delete_str">حذف</string>
     <string name="resend_code_str">أعد إرسال</string>
     <string name="sub_total_str">المجموع الفرعي</string>
@@ -35,7 +35,7 @@
     <string name="mange_addresses_str">العناوين</string>
     <string name="you_do_not_have_any_previous_addresses_please_add_an_address_str">ليس لديك أي عناوين سابقة ، يرجى إنشاء عنوان لاستخدامه مع طلباتك التالية</string>
     <string name="edit_str">تعديل</string>
-    <string name="add_a_new_address_str">عنوان جديد</string>
+    <string name="add_a_new_address">عنوان جديد</string>
     <string name="notes_str">الملاحظات</string>
     <string name="floor_str">رقم الطابق *</string>
     <string name="building_str">رقم المبنى *</string>
@@ -54,14 +54,14 @@
     <string name="qty_lbl">الكمية</string>
     <string name="wish_list">قائمة الرغبات</string>
     <string name="login">تسجيل الدخول</string>
-    <string name="app_version">اصدار التطبيق:</string>
-    <string name="powered_by">بدعم من: \t</string>
+    <string name="app_version">نسخة التطبيق:</string>
+    <string name="powered_by">مشغل بواسطة: \t</string>
     <string name="your_cart_is_empty">عربتك فارغة</string>
     <string name="payment_details">بيانات الدفع</string>
     <string name="buy">إشتر</string>
     <string name="order_number">رقم الطلب</string>
     <string name="status">الحالة</string>
-    <string name="delivery_address">عنوان التوصيل</string>
+    <string name="delivery_address">عنوان التسليم</string>
     <string name="specifications">المواصفات</string>
     <string name="continue_shopping">متابعة التسوق</string>
     <string name="forget_your_password">نسيت كلمة المرور؟</string>
@@ -117,4 +117,8 @@
     <string name="cancel">إلغاء</string>
     <string name="your_account_will_be_logged_out_from_the_app">سيتم تسجيل خروج حسابك من التطبيق</string>
     <string name="not_available">غير متاح</string>
+    <string name="update">تحديث</string>
+    <string name="there_are_no_products">There are no products</string>
+    <string name="phone">الهاتف</string>
+    <string name="vat">ضريبة القيمة المضافة</string>
 </resources>

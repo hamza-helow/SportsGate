@@ -18,7 +18,7 @@ data class ProductDetailsEntity(
     val combinationOptions: List<CombinationOption>,
     val variationCompainationId: Int?,
     val isFavorite: Boolean ,
-    val tags: List<TagEntity>
+    val tags: List<TagEntity>,
 )
 
 data class CombinationOption(

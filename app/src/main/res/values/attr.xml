@@ -12,4 +12,14 @@
     </declare-styleable>
 
 
+    <declare-styleable name="flexRecycler">
+        <attr name="listItem" format="reference" />
+        <attr name="itemCount" format="integer" />
+        <attr name="emptyState" format="reference" />
+        <attr name="showEmptyState" format="boolean" />
+
+    </declare-styleable>
+
+
+
 </resources>

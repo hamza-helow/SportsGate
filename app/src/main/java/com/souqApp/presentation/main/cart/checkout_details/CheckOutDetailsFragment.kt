@@ -86,10 +86,7 @@ class CheckOutDetailsFragment :
 
     private fun handleCheckoutSuccess(checkoutEntity: CheckoutEntity) {
         mainViewModel.setQty(0)
-        navigate(
-            CheckOutDetailsFragmentDirections.toCheckoutCompleted(checkoutEntity.orderId),
-            popUpTo = R.id.homeFragment
-        )
+        navigate(CheckOutDetailsFragmentDirections.toCheckoutCompleted(checkoutEntity.orderId))
     }
 
     private fun handleCheckoutDetailsErrorLoad(response: WrappedResponse<CheckoutDetailsResponse>) {

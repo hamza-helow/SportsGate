@@ -44,6 +44,6 @@
     <fragment
         android:id="@+id/addAddressFragment"
         android:name="com.souqApp.presentation.addresses.add_address.AddAddressFragment"
-        android:label="@string/add_a_new_address_str"
+        android:label="@string/add_a_new_address"
         tools:layout="@layout/fragment_add_address" />
 </navigation>

@@ -17,6 +17,7 @@
         android:src="@color/green"
         app:networkImage="@{image}"
         app:resizeImage="@{false}"
+        android:scaleType="fitXY"
         tools:srcCompat="@color/green"
         tools:ignore="ContentDescription" />
 </layout>

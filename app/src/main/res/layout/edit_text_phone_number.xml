@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/_40sdp"
-    android:layout_marginBottom="@dimen/_16sdp"
-    android:layoutDirection="ltr"
-    android:background="@drawable/border_bg"
-    android:orientation="horizontal">
+<layout xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|start"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="@string/code_country"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_13sdp"
-        android:textStyle="bold" />
+    <data>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/phone_edt"
+        <variable
+            name="hint"
+            type="String" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@null"
-        android:hint="@string/phone_number"
-        android:inputType="phone"
-        android:maxLength="10"
-        android:paddingStart="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_15sdp" />
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@drawable/border_bg"
+        android:layoutDirection="ltr"
+        android:orientation="horizontal">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="@string/code_country"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phone_edt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="@{hint ??@string/phone_number }"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_15sdp"
+            tools:hint="@string/phone_number" />
+
+    </LinearLayout>
+</layout>

@@ -58,7 +58,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_add_to_cart"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:enabled="@{details.qty > 0}"
@@ -66,31 +66,22 @@
                     android:visibility="invisible"
                     app:isVisible="@{showAddToCart}"
                     tools:text="@string/add_to_cart"
-                    tools:visibility="invisible" />
+                    tools:visibility="visible" />
 
-                <CheckedTextView
-                    android:id="@+id/img_favorite"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:layout_weight="1"
-                    android:background="@drawable/favorite_selector"
-                    app:srcCompat="@drawable/ic_baseline_favorite_border_24"
-                    tools:ignore="ContentDescription,TouchTargetSizeCheck" />
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
         <ScrollView
-            android:paddingBottom="@dimen/_32sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_32sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -98,10 +89,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/slider"
                 tools:ignore="WebViewLayout">
 
+
                 <FrameLayout
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp">
+                    android:layout_height="wrap_content">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rec_promotion"
@@ -128,7 +120,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <TextView
@@ -164,11 +155,11 @@
                             tools:text="price after discount" />
 
                         <TextView
-                            android:textColor="@color/red"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
                             android:text="@{ '-' + String.valueOf(details.discountPercentage) + '%'}"
+                            android:textColor="@color/red"
+                            android:textSize="12sp"
                             tools:text="-100%" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -200,6 +191,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -217,11 +212,42 @@
                     android:layout_marginBottom="@dimen/_64sdp"
                     android:orientation="horizontal"
                     app:isVisible="@{hasRelevantProducts}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
                     tools:listitem="@layout/item_product_relevant" />
 
             </LinearLayout>
         </ScrollView>
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_margin="@dimen/_16sdp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_back"
+                tools:ignore="ContentDescription" />
+
+            <CheckedTextView
+                android:id="@+id/img_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="@dimen/_16sdp"
+                android:background="@drawable/favorite_selector"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

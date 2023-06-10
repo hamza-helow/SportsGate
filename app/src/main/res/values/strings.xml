@@ -104,7 +104,7 @@
     <string name="recommended_products">Recommended Products</string>
     <string name="new_products">New Products</string>
     <string name="checkout">Checkout</string>
-    <string name="user_profile">user profile</string>
+    <string name="user_profile">User Profile</string>
     <string name="notification_not_found">No notifications found</string>
     <string name="reset_pass_message">reset password</string>
     <string name="password_changed">Password changed successfully</string>
@@ -132,4 +132,13 @@
     <string name="there_are_no_products">There are no products</string>
     <string name="phone">Phone</string>
     <string name="vat">VAT</string>
+    <string name="cart_empty">Cart Empty</string>
+    <string name="your_shopping_cart_is_empty">Your shopping cart is empty</string>
+    <string name="shop_now">Shop Now!</string>
+    <string name="your_wish_list_is_empty">Your wish list is empty!</string>
+    <string name="your_inquiry_has_been_sent">Your inquiry has been sent</string>
+    <string name="unexpected_error_try_again_later">Unexpected error, try again later</string>
+    <string name="insert_your_name">Insert your name</string>
+    <string name="insert_your_email_address">Insert your email address</string>
+    <string name="insert_phone_number">Insert phone number</string>
 </resources>

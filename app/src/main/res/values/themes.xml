@@ -16,6 +16,7 @@
         <item name="editTextStyle">@style/EditTextStyle</item>
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:includeFontPadding">false</item>
     </style>
 
     <style name="BottomSheet" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
@@ -37,7 +38,7 @@
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/border_bg</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">@dimen/_10sdp</item>
         <item name="android:textAlignment">viewStart</item>
     </style>
 

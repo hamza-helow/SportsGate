@@ -37,7 +37,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val snapHelperChildren = PagerSnapHelper()
     private lateinit var bestSellingAdapter: ProductGridAdapter
     private lateinit var newProductAdapter: ProductGridAdapter
-    private lateinit var recommendedAdapter: ProductAdapter
+    private lateinit var recommendedAdapter: ProductRecommendedAdapter
     private lateinit var homeCategoryAdapter: HomeCategoryAdapter
     private lateinit var tagAdapter: TagAdapter
     private lateinit var promotionAdapter: PromotionAdapter
@@ -90,8 +90,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     private fun initRecommendedAdapter() {
-        recommendedAdapter = ProductAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
+        recommendedAdapter = ProductRecommendedAdapter(::navigateToProductDetails)
         binding.recRecommended.layoutManager = generateLinearLayoutManager()
+        binding.recRecommended.addItemDecoration(SpacesItemDecoration(20))
         binding.recRecommended.adapter = recommendedAdapter
     }
 
@@ -169,7 +170,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun handleCheckUpdateSuccess(checkUpdateEntity: CheckUpdateEntity) {
-       // if (checkUpdateEntity.newVersion)
+        // if (checkUpdateEntity.newVersion)
         //    navigate(NavGraphDirections.toForceUpdateDialogFragment(checkUpdateEntity.latestVersion))
 
     }

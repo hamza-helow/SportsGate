@@ -9,12 +9,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.souqApp.R
 import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
-import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.setupMenu
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.base.BaseFragment
@@ -22,7 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddressesFragment :
-    BaseFragment<FragmentAddressesBinding>(FragmentAddressesBinding::inflate) {
+    BaseFragment<FragmentAddressesBinding>(FragmentAddressesBinding::inflate),
+    SwipeRefreshLayout.OnRefreshListener {
 
     private val args: AddressesFragmentArgs by navArgs()
     private lateinit var addressAdapter: AdapterAddress
@@ -30,10 +31,12 @@ class AddressesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.refreshSwiper.setOnRefreshListener(this)
+
         viewModel.getAddresses()
         addressAdapter = AdapterAddress()
-        binding.recAddresses.layoutManager = LinearLayoutManager(requireContext())
-        binding.recAddresses.adapter = addressAdapter
+        binding.recAddresses.setAdapter(addressAdapter,LinearLayoutManager(requireContext()))
 
         setupMenu(R.menu.menu_add) {
             if (it.itemId == R.id.item_add)
@@ -110,13 +113,13 @@ class AddressesFragment :
     }
 
     private fun handleAddressesLoaded(addressEntities: List<AddressEntity>) {
-        addressAdapter.list = addressEntities
+        addressAdapter.clearList()
+        addressAdapter.addList(addressEntities)
         checkEmptyAddresses()
     }
 
     private fun checkEmptyAddresses() {
-        binding.cardEmptyAddress.isVisible(addressAdapter.list.isEmpty())
-
+        binding.recAddresses.setupEmptyState(addressAdapter.dataList.isEmpty())
     }
 
     private fun handleError(throwable: Throwable) {
@@ -136,5 +139,10 @@ class AddressesFragment :
 
     private fun goToAddAddressFragment() {
         navigate(AddressesFragmentDirections.toAddAddressFragment())
+    }
+
+    override fun onRefresh() {
+        viewModel.getAddresses()
+        binding.refreshSwiper.isRefreshing = false
     }
 }

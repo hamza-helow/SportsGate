@@ -67,7 +67,7 @@
     <string name="forget_your_password">نسيت كلمة المرور؟</string>
     <string name="primary">أساسي</string>
     <string name="order_details">تفاصيل الطلب</string>
-    <string name="add_to_cart">أضف إلى السلة</string>
+    <string name="add_to_cart">اضف الى عربة التسوق</string>
     <string name="pick_your_location">اختر موقعك</string>
     <string name="code_country">+962</string>
     <string name="sign_up">اشتراك</string>
@@ -121,4 +121,13 @@
     <string name="there_are_no_products">There are no products</string>
     <string name="phone">الهاتف</string>
     <string name="vat">ضريبة القيمة المضافة</string>
+    <string name="cart_empty">Cart Empty</string>
+    <string name="your_shopping_cart_is_empty">Your shopping cart is empty</string>
+    <string name="shop_now">Shop Now!</string>
+    <string name="your_wish_list_is_empty">Your wish list is empty!</string>
+    <string name="your_inquiry_has_been_sent">Your inquiry has been sent</string>
+    <string name="unexpected_error_try_again_later">Unexpected error, try again later</string>
+    <string name="insert_your_name">Insert your name</string>
+    <string name="insert_your_email_address">Insert your email address</string>
+    <string name="insert_phone_number">Insert phone number</string>
 </resources>

@@ -3,6 +3,7 @@ package com.souqApp.presentation.activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -56,7 +57,6 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         window.decorView.layoutDirection = resources.configuration.layoutDirection
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -80,6 +80,8 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
 
             if (destination.label != null)
                 binding.toolbar.title = destination.label
+
+            Log.e("TAG" , destination.label.toString())
         }
     }
 

@@ -23,7 +23,7 @@ data class ProductEntity(
     @SerializedName("discounted_product_price")
     val discountedProductPrice: String,
     @SerializedName("discount_percentage")
-    val discountPercentage: Double,
+    val discountPercentage: Int,
     @SerializedName("sale_price")
     val salePrice: Double,
     @SerializedName("variations")

@@ -13,19 +13,19 @@ import retrofit2.http.Query
 
 interface AddressApi {
 
-    @GET("v1/users/addresses/getAll")
+    @GET("v2/users/addresses/getUsersAddresses")
     suspend fun getAll(): WrappedListResponse<AddressResponse>
 
-    @GET("v1/users/addresses/getDetails")
+    @GET("v2/users/addresses/getAddressDetails")
     suspend fun getDetails(@Query("address_id") addressId: Int): WrappedResponse<AddressDetailsResponse>
 
-    @POST("v1/users/addresses/add")
+    @POST("v2/users/addresses/create")
     suspend fun add(@Body addressRequest: AddressRequest): WrappedResponse<Nothing>
 
-    @POST("v1/users/addresses/update")
+    @POST("v2/users/addresses/update")
     suspend fun update(@Body addressRequest: AddressRequest): WrappedResponse<Nothing>
 
-    @POST("v1/users/addresses/delete")
+    @POST("v2/users/addresses/delete")
     suspend fun delete(@Query("address_id") addressId: Int): WrappedResponse<Nothing>
 
     @GET("v1/cities/getCitiesHaveAreas")

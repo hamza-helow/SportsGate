@@ -12,11 +12,11 @@ import java.util.LinkedList
 import java.util.Queue
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-abstract class FlexRecyclerAdapter<MODEL>(list: List<MODEL> = mutableListOf()) :
+abstract class FlexRecyclerAdapter<MODEL>( list: List<MODEL> = mutableListOf()) :
 
     RecyclerView.Adapter<FlexRecyclerAdapter.FlexViewHolder>() {
 
-    private val dataList: MutableList<MODEL> = list.toMutableList()
+    val dataList: MutableList<MODEL> = list.toMutableList()
     private val queue: Queue<List<MODEL>> = LinkedList()
     private var paginationListener: PaginationListener? = null
     private var currentPage: Int = 0
@@ -54,7 +54,6 @@ abstract class FlexRecyclerAdapter<MODEL>(list: List<MODEL> = mutableListOf()) :
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-
                 val canScroll =
                     !recyclerView.canScrollVertically(1) || !recyclerView.canScrollHorizontally(1)
 

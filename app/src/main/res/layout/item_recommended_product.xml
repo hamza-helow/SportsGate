@@ -9,10 +9,14 @@
             name="product"
             type="com.souqApp.data.main.home.remote.dto.ProductEntity" />
 
+        <variable
+            name="showPrice"
+            type="Boolean" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical"
@@ -22,17 +26,15 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/cardImageProduct"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
+            android:layout_height="@dimen/_120sdp"
+            android:minWidth="@dimen/_120sdp"
             android:padding="@dimen/_8sdp"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:networkImage="@{product.thumb}"
             tools:ignore="ContentDescription"
             tools:srcCompat="@drawable/gym_category_for_test" />
-
 
         <androidx.cardview.widget.CardView
             android:layout_width="@dimen/_30sdp"
@@ -57,62 +59,18 @@
 
         <TextView
             android:id="@+id/txtProductName"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             android:ellipsize="end"
             android:maxLines="2"
+            android:minLines="2"
             android:text='@{product.name}'
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@+id/cardImageProduct"
             app:layout_constraintStart_toStartOf="@+id/cardImageProduct"
             app:layout_constraintTop_toBottomOf="@+id/cardImageProduct"
             tools:text="product name" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rec_colors"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtProductName"
-            tools:listitem="@layout/item_home_variation_colors" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/cardPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/txtProductName"
-            app:layout_constraintTop_toBottomOf="@+id/rec_colors">
-
-            <TextView
-                android:id="@+id/txtPriceBeforeDiscount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{product.price}"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:isDiscountPrice="@{product.discountPercentage > 0}"
-                tools:text="price before discount" />
-
-            <TextView
-                android:id="@+id/txtPriceAfterDiscount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:text='@{product.discountPercentage > 0 ?product.discountedProductPrice : ""}'
-                tools:text="price after discount" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,41 +1,25 @@
 package com.souqApp.presentation.addresses.addresses
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import com.souqApp.BR
 import com.souqApp.databinding.ItemAddressBinding
 import com.souqApp.domain.addresses.AddressEntity
-import com.souqApp.infra.utils.BaseRecyclerAdapter
+import com.souqApp.infra.custome_view.flex_recycler_view.SingleFlexRecyclerAdapter
 
-class AdapterAddress : BaseRecyclerAdapter<ItemAddressBinding, AddressEntity>() {
+class AdapterAddress : SingleFlexRecyclerAdapter<ItemAddressBinding, AddressEntity>() {
 
     lateinit var onClickMoreButton: ((AddressEntity, Int) -> Unit)
 
     lateinit var onClickItem: ((AddressEntity) -> Unit)
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(BR.address, getItemByPosition(position))
+    override fun setupViewHolder(holder: Holder, position: Int, item: AddressEntity) {
+        holder.bind(BR.address, item)
 
         holder.binding.imgMore.setOnClickListener {
-            onClickMoreButton(getItemByPosition(position), position)
+            onClickMoreButton(item, position)
         }
 
         holder.binding.root.setOnClickListener {
-            onClickItem(getItemByPosition(position))
+            onClickItem(item)
         }
-
-
-    }
-
-    override fun getBinding(parent: ViewGroup, viewType: Int): ItemAddressBinding {
-        return ItemAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    }
-
-    override fun enableAddItem(): Boolean {
-        return false
-    }
-
-    override fun needLoadMore(page: Int) {
-
     }
 }

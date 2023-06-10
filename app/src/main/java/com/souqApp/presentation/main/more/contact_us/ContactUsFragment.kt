@@ -4,6 +4,7 @@ import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.souqApp.R
 import com.souqApp.data.contact_us.remote.ContactUsRequest
 import com.souqApp.databinding.FragmentContactUsBinding
 import com.souqApp.infra.extension.showToast
@@ -54,17 +55,17 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(FragmentContact
 
     private fun handleError(throwable: Throwable) {
         if (throwable is SocketTimeoutException) {
-            requireContext().showToast("Unexpected error, try again later")
+            requireContext().showToast(getString(R.string.unexpected_error_try_again_later))
         }
     }
 
     private fun handleAdded(added: Boolean) {
         if (added) {
-            requireContext().showToast("Your inquiry has been sent")
-            findNavController().popBackStack()
+            requireContext().showToast(getString(R.string.your_inquiry_has_been_sent))
+            findNavController().popBackStack(R.id.moreFragment , false)
 
         } else {
-            requireContext().showToast("Unexpected error, try again later")
+            requireContext().showToast(getString(R.string.unexpected_error_try_again_later))
         }
     }
 

@@ -19,7 +19,6 @@
     <fragment
         android:id="@+id/categoryChildrenFragment"
         android:name="com.souqApp.presentation.main.category.CategoryChildrenFragment"
-        android:label="CategoryChildrenFragment"
         tools:layout="@layout/fragment_categories">
 
         <argument

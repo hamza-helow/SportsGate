@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
     private val notificationUseCase: NotificationUseCase,
-    private val sharedPrefs: SharedPrefs
+    sharedPrefs: SharedPrefs
 ) :
     ViewModel() {
 

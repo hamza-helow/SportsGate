@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center|top"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:contentDescription="@string/cart_empty"
+        android:src="@drawable/ic_cart_empty_state" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:text="@string/your_shopping_cart_is_empty" />
+
+
+    <TextView
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shop_now" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

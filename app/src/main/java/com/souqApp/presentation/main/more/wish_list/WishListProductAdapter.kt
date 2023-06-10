@@ -1,30 +1,15 @@
 package com.souqApp.presentation.main.more.wish_list
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import com.souqApp.BR
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.ItemProductHorizontalBinding
-import com.souqApp.infra.utils.BaseRecyclerAdapter
+import com.souqApp.infra.custome_view.flex_recycler_view.SingleFlexRecyclerAdapter
 
-class WishListProductAdapter (val onClickItem:(Int)->Unit): BaseRecyclerAdapter<ItemProductHorizontalBinding, ProductEntity>() {
+class WishListProductAdapter (val onClickItem:(Int)->Unit): SingleFlexRecyclerAdapter<ItemProductHorizontalBinding, ProductEntity>() {
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(BR.product, getItemByPosition(position))
 
-        holder.binding.root.setOnClickListener {
-            onClickItem(getItemByPosition(position).id)
-        }
-    }
-
-    override fun getBinding(parent: ViewGroup, viewType: Int): ItemProductHorizontalBinding {
-        return ItemProductHorizontalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    }
-
-    override fun enableAddItem(): Boolean {
-        return false
-    }
-
-    override fun needLoadMore(page: Int) {
+    override fun setupViewHolder(holder: Holder, position: Int, item: ProductEntity) {
+        holder.bind(BR.product, item)
+        holder.binding.root.setOnClickListener { onClickItem(it.id) }
     }
 }

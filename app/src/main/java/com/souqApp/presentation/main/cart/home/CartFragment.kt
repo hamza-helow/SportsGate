@@ -2,6 +2,7 @@ package com.souqApp.presentation.main.cart.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +15,6 @@ import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.extension.start
 import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,16 +65,16 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun handleUpdateQuantity(updateProductQtyEntity: UpdateProductCartEntity) {
-        val product = cartAdapter.list.first { it.cartItemId == updateProductQtyEntity.cartItemId }
-        val index = cartAdapter.list.indexOf(product)
+        val product = cartAdapter.dataList.firstOrNull { it.cartItemId == updateProductQtyEntity.cartItemId }
+        val index = cartAdapter.dataList.indexOf(product)
         val updatedQty = updateProductQtyEntity.productQty
         mainViewModel.setQty(updatedQty)
         if (updatedQty == 0) {
             cartAdapter.removeItem(index)
-            handleCartEmptyState(cartAdapter.list)
+            handleCartEmptyState(cartAdapter.dataList)
         } else {
-            product.qty = updatedQty
-            product.totalPrice = updateProductQtyEntity.itemsPrice
+            product?.qty = updatedQty
+            product?.totalPrice = updateProductQtyEntity.itemsPrice
             binding.txtTotal.text = updateProductQtyEntity.subTotal
             cartAdapter.notifyItemChanged(index)
         }
@@ -85,7 +85,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun handleLoading(loading: Boolean) {
-        binding.progressBar.start(loading)
+        showLoading(loading)
         binding.content.isVisible(!loading)
     }
 
@@ -94,9 +94,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun handleCartEmptyState(products: List<ProductInCartEntity>) {
-        binding.content.isVisible(products.isNotEmpty())
-        binding.cardCheckOut.isVisible(products.isNotEmpty())
-        binding.cardCartEmpty.isVisible(products.isEmpty())
+        binding.recProducts.setupEmptyState(products.isEmpty())
+        binding.cardCheckOut.isVisible = products.isNotEmpty()
     }
 
     private fun handleCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
@@ -108,8 +107,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         }
 
         cartAdapter.addList(cartDetailsEntity.products)
-        binding.recProducts.layoutManager = LinearLayoutManager(requireContext())
-        binding.recProducts.adapter = cartAdapter
+        binding.recProducts.setAdapter(cartAdapter, LinearLayoutManager(requireContext()))
+
     }
 
     private fun handleError(throwable: Throwable) {

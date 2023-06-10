@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -30,12 +31,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:background="@drawable/border_bg"
+                android:hint="@string/insert_your_name"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:padding="@dimen/_8sdp"
-                android:textColor="#757575"
-                tools:ignore="LabelFor,TextContrastCheck,TextContrastCheck"
-                tools:text="name" />
+                android:textColor="#757575" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -49,18 +49,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:background="@drawable/border_bg"
+                android:hint="@string/insert_your_email_address"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/_8sdp"
-                android:textColor="#757575"
-                tools:ignore="LabelFor,TextContrastCheck,TextContrastCheck"
-                tools:text="email" />
+                android:textColor="#757575" />
 
 
             <include
                 android:id="@+id/include_phone_number"
                 layout="@layout/edit_text_phone_number"
                 android:layout_width="match_parent"
+                app:hint="@{@string/insert_phone_number}"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_16sdp" />
 
@@ -86,7 +86,7 @@
             <Button
                 android:id="@+id/btn_submit"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_44sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_marginVertical="@dimen/_16sdp"
                 android:enabled="false"
                 android:text="@string/submit" />

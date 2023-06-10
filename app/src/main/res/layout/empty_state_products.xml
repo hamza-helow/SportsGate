@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<TextView android:gravity="center"
+    android:layout_gravity="center|top"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/there_are_no_products" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+    android:drawablePadding="@dimen/_12sdp"
+    android:text="@string/no_products_found"
+    app:drawableTopCompat="@drawable/ic_products_empty_state"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />

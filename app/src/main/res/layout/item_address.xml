@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_24sdp"
+            android:textStyle="bold"
             android:text="@{address.fullAddress}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

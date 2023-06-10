@@ -28,8 +28,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/grey"
                 android:text="@{details.createdAt}"
+                android:textColor="@color/grey"
                 tools:text="12/2/2022" />
 
 
@@ -108,6 +108,7 @@
             <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:isVisible="@{details.couponPercent > 0}"
                 app:label="@string/discount_str"
                 app:value="@{details.couponDiscount}"
                 tools:value="100 JOD" />

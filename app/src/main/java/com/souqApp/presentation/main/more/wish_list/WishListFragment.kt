@@ -6,9 +6,8 @@ import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.FragmentWishListBinding
-import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.custome_view.flex_recycler_view.showEmptyState
 import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.extension.start
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.SocketTimeoutException
@@ -17,16 +16,13 @@ import java.net.SocketTimeoutException
 class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListBinding::inflate) {
     private val viewModel: WishListViewModel by viewModels()
     private val adapter: WishListProductAdapter by lazy {
-        WishListProductAdapter{
+        WishListProductAdapter {
             navigate(NavGraphDirections.toProductDetailsFragment(it))
         }
     }
 
-
     override fun onResume() {
         super.onResume()
-        binding.recProducts.layoutManager = LinearLayoutManager(requireContext())
-        binding.recProducts.adapter = adapter
         viewModel.state.observe(this) { handleState(it) }
     }
 
@@ -41,12 +37,13 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListB
     }
 
     private fun onLoading(loading: Boolean) {
-        binding.progressBar.start(loading)
-        binding.recProducts.isVisible(!loading)
+        showLoading(loading)
     }
 
     private fun onLoaded(products: List<ProductEntity>) {
-        adapter.list = products
+        adapter.addList(products)
+        binding.recProducts.setAdapter(adapter, LinearLayoutManager(requireContext()))
+        binding.recProducts.showEmptyState(products.isEmpty())
     }
 
     private fun onErrorLoad(response: WrappedListResponse<ProductEntity>) {

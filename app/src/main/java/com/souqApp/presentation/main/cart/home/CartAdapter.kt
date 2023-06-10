@@ -1,40 +1,25 @@
 package com.souqApp.presentation.main.cart.home
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import com.souqApp.BR
-import com.souqApp.data.main.cart.remote.dto.ProductInCartResponse
 import com.souqApp.databinding.ItemCartBinding
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
-import com.souqApp.infra.utils.BaseRecyclerAdapter
+import com.souqApp.infra.custome_view.flex_recycler_view.SingleFlexRecyclerAdapter
 
 class CartAdapter(private val onChangeQTY: ((ProductInCartEntity, isIncrease: Boolean) -> Unit)) :
-    BaseRecyclerAdapter<ItemCartBinding, ProductInCartEntity>() {
+    SingleFlexRecyclerAdapter<ItemCartBinding, ProductInCartEntity>() {
 
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
+    override fun setupViewHolder(holder: Holder, position: Int, item: ProductInCartEntity) {
 
-        holder.bind(BR.product, getItemByPosition(position))
+        holder.bind(BR.product, item)
 
         holder.binding.btnIncrease.setOnClickListener {
-            onChangeQTY(getItemByPosition(position), true)
+            onChangeQTY(item, true)
 
         }
 
         holder.binding.btnDecrease.setOnClickListener {
-            onChangeQTY(getItemByPosition(position), false)
+            onChangeQTY(item, false)
         }
-
-    }
-
-    override fun getBinding(parent: ViewGroup, viewType: Int): ItemCartBinding {
-        return ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    }
-
-    override fun enableAddItem(): Boolean {
-        return false
-    }
-
-    override fun needLoadMore(page: Int) {
     }
 }

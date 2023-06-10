@@ -37,8 +37,8 @@
             tools:srcCompat="@drawable/gym_category_for_test" />
 
         <androidx.cardview.widget.CardView
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_32sdp"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
             android:background="@drawable/circle"
             app:cardBackgroundColor="@color/red"
             app:cardCornerRadius="@dimen/_50sdp"
@@ -52,7 +52,7 @@
                 android:layout_gravity="center"
                 android:text='@{"-" + String.valueOf(product.discountPercentage) + "%" }'
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 tools:text="50%" />
 
         </androidx.cardview.widget.CardView>

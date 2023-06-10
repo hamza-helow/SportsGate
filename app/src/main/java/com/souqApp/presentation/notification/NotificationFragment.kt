@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.notification.remote.NotificationEntities
 import com.souqApp.databinding.FragmentNotificationBinding
-import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.start
+import com.souqApp.infra.custome_view.flex_recycler_view.showEmptyState
 import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
@@ -26,10 +25,8 @@ class NotificationFragment :
 
     override fun onResume() {
         super.onResume()
-        binding.rec.layoutManager = LinearLayoutManager(requireContext())
-        binding.rec.adapter = notificationAdapter
         viewModel.state.observe(this) { handleState(it) }
-        binding.cardNoNotification.isVisible(sharedPrefs.isLogin().not())
+        binding.rec.showEmptyState(sharedPrefs.isLogin().not())
     }
 
     private fun handleState(state: NotificationActivityState) {
@@ -42,12 +39,13 @@ class NotificationFragment :
     }
 
     private fun onLoading(loading: Boolean) {
-        binding.progressBar.start(loading)
+        showLoading(loading)
     }
 
-    private fun onLoaded(notifications: NotificationEntities) {
-        notificationAdapter.list = notifications.notifications
-        binding.cardNoNotification.isVisible(notifications.notifications.isEmpty())
+    private fun onLoaded(entities: NotificationEntities) {
+        notificationAdapter.addList(entities.notifications)
+        binding.rec.setAdapter(notificationAdapter , LinearLayoutManager(requireContext()))
+        binding.rec.showEmptyState(entities.notifications.isEmpty())
     }
 
     private fun onErrorLoad(response: WrappedResponse<NotificationEntities>) {
@@ -55,7 +53,6 @@ class NotificationFragment :
     }
 
     private fun onError(throwable: Throwable) {
-        binding.cardNoNotification.isVisible(true)
         Log.e(APP_TAG, throwable.stackTraceToString())
     }
 }

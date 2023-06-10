@@ -5,7 +5,9 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -58,13 +60,21 @@ class ProductDetailsFragment :
     private fun initListener() {
         binding.imgFavorite.setOnClickListener(this)
         binding.btnAddToCart.setOnClickListener(this)
+
+
     }
+
+    override fun showAppBar(): Boolean =false
 
     private fun init() {
         initListener()
         binding.isLogin = sharedPrefs.isLogin()
         binding.showAddToCart = firebaseConfig.getBoolean(IS_PURCHASE_ENABLED)
         viewModel.productDetails(args.productId)
+
+        binding.imgBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun observer() {
@@ -158,8 +168,7 @@ class ProductDetailsFragment :
 
         relevantProducts.list = productDetailsEntity.relevant
 
-        binding.recRelevant.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        binding.recRelevant.layoutManager = GridLayoutManager(requireContext(),3)
         binding.recRelevant.adapter = relevantProducts
 
 

@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="match_parent"
         tools:layout_height="@dimen/_140sdp"
-        android:maxHeight="@dimen/_140sdp"
+        android:maxHeight="@dimen/_200sdp"
         android:adjustViewBounds="true"
         android:layout_height="wrap_content"
         android:src="@color/green"

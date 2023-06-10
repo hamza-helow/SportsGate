@@ -3,10 +3,11 @@ package com.souqApp.infra.custome_view.flex_recycler_view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import java.lang.reflect.ParameterizedType
+
+typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
 @Suppress("UNCHECKED_CAST")
-abstract class SingleFlexRecyclerAdapter<VB : ViewDataBinding, MODEL> :
+abstract class SingleFlexRecyclerAdapter<VB : ViewDataBinding, MODEL>(  private val inflate: Inflate<VB>) :
     FlexRecyclerAdapter<MODEL>() {
 
     final override fun onCreateViewHolder(
@@ -14,17 +15,7 @@ abstract class SingleFlexRecyclerAdapter<VB : ViewDataBinding, MODEL> :
         parent: ViewGroup,
         viewType: Int
     ): FlexViewHolder {
-
-        val type = javaClass.genericSuperclass
-        val clazz = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
-        val method = clazz.getMethod(
-            "inflate",
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.java
-        )
-
-        return Holder(method.invoke(null, inflater, parent, false) as VB)
+        return Holder(inflate.invoke(inflater,parent , false))
     }
 
     override fun setupViewHolder(holder: FlexViewHolder, position: Int, item: MODEL) {

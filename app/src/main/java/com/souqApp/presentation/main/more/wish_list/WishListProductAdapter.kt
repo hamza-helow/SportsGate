@@ -5,7 +5,10 @@ import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.ItemProductHorizontalBinding
 import com.souqApp.infra.custome_view.flex_recycler_view.SingleFlexRecyclerAdapter
 
-class WishListProductAdapter (val onClickItem:(Int)->Unit): SingleFlexRecyclerAdapter<ItemProductHorizontalBinding, ProductEntity>() {
+class WishListProductAdapter(val onClickItem: (Int) -> Unit) :
+    SingleFlexRecyclerAdapter<ItemProductHorizontalBinding, ProductEntity>(
+        ItemProductHorizontalBinding::inflate
+    ) {
 
 
     override fun setupViewHolder(holder: Holder, position: Int, item: ProductEntity) {

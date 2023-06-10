@@ -5,7 +5,7 @@ import com.souqApp.databinding.ItemAddressBinding
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.infra.custome_view.flex_recycler_view.SingleFlexRecyclerAdapter
 
-class AdapterAddress : SingleFlexRecyclerAdapter<ItemAddressBinding, AddressEntity>() {
+class AdapterAddress : SingleFlexRecyclerAdapter<ItemAddressBinding, AddressEntity>(ItemAddressBinding::inflate) {
 
     lateinit var onClickMoreButton: ((AddressEntity, Int) -> Unit)
 

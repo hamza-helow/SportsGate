@@ -6,7 +6,7 @@ import com.souqApp.databinding.ItemProductGridBinding
 import com.souqApp.infra.custome_view.flex_recycler_view.SingleFlexRecyclerAdapter
 
 class ProductGridAdapter(private val onClickItem: (Int) -> Unit) :
-    SingleFlexRecyclerAdapter<ItemProductGridBinding, ProductEntity>() {
+    SingleFlexRecyclerAdapter<ItemProductGridBinding, ProductEntity>(ItemProductGridBinding::inflate) {
 
     override fun setupViewHolder(
         holder: Holder,

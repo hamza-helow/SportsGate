@@ -65,7 +65,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun handleUpdateQuantity(updateProductQtyEntity: UpdateProductCartEntity) {
-        val product = cartAdapter.dataList.firstOrNull { it.cartItemId == updateProductQtyEntity.cartItemId }
+        val product =
+            cartAdapter.dataList.firstOrNull { it.cartItemId == updateProductQtyEntity.cartItemId }
         val index = cartAdapter.dataList.indexOf(product)
         val updatedQty = updateProductQtyEntity.productQty
         mainViewModel.setQty(updatedQty)
@@ -75,7 +76,11 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         } else {
             product?.qty = updatedQty
             product?.totalPrice = updateProductQtyEntity.itemsPrice
-            binding.txtTotal.text = updateProductQtyEntity.subTotal
+            binding.cart?.subTotal = updateProductQtyEntity.subTotal
+            binding.cart?.isAbleToPlaceOrder = updateProductQtyEntity.isAbleToPlaceOrder
+            binding.cart?.placeOrderPercentage = updateProductQtyEntity.placeOrderPercentage
+            binding.cart?.placeOrderAmount = updateProductQtyEntity.placeOrderAmount
+            binding.invalidateAll()
             cartAdapter.notifyItemChanged(index)
         }
     }

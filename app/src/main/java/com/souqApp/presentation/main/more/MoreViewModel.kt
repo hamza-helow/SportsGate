@@ -10,7 +10,6 @@ import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.settings.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,6 +38,12 @@ class MoreViewModel @Inject constructor(private val settingsUseCase: SettingsUse
     private fun onErrorLoad(response: WrappedResponse<SettingsEntity>) {
         _state.value = MoreFragmentState.ErrorLoad(response)
     }
+
+    var facebook: String = ""
+    var twitter: String = ""
+    var instagram: String = ""
+    var tiktok:String =""
+
 
     @Inject
     fun getSettings() {

@@ -27,7 +27,7 @@ data class CheckoutDetailsResponse(
     @SerializedName("available_delivery_options")
     val availableDeliveryOptions:List<DeliveryOptionResponse>,
     @SerializedName("delivery_option_id")
-    val deliveryOptionId:Int?
+    val deliveryOptionId:Int? ,
 )
 
 data class DeliveryOptionResponse(

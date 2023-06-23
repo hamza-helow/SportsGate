@@ -9,26 +9,29 @@
     android:padding="@dimen/_8sdp"
     tools:context=".presentation.search.SearchFragment">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_30sdp"
             android:layout_weight="1"
             android:src="@drawable/ic_back"
-            android:layout_marginEnd="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_weight="1"
             android:background="@drawable/bg_rounded"
             android:closeIcon="@drawable/close_icon"
@@ -39,13 +42,13 @@
             android:submitBackground="@drawable/bg_rounded"
             app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_back"
             app:layout_constraintTop_toTopOf="parent"
             app:queryBackground="@android:color/transparent"
             app:queryHint="@string/search"
             tools:targetApi="lollipop_mr1" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <include

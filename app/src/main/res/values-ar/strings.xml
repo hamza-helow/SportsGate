@@ -130,4 +130,6 @@
     <string name="insert_your_name">Insert your name</string>
     <string name="insert_your_email_address">Insert your email address</string>
     <string name="insert_phone_number">Insert phone number</string>
+    <string name="add">اضف</string>
+    <string name="to_place_your_order">لتقديم طلبك!</string>
 </resources>

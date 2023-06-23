@@ -35,7 +35,7 @@ class SuccessAddToCartBottomSheet : BottomSheetDialogFragment(), View.OnClickLis
         when (view.id) {
             binding.btnShowCart.id -> findNavController().navigate(
                 SuccessAddToCartBottomSheetDirections.toCartGraph(),
-                NavOptions.Builder().setPopUpTo(R.id.homeFragment, inclusive = false).build()
+                NavOptions.Builder().setPopUpTo(R.id.homeFragment, inclusive = true).build()
             )
 
             binding.btnContinue.id -> findNavController().popBackStack()

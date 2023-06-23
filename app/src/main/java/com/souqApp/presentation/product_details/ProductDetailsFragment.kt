@@ -96,7 +96,6 @@ class ProductDetailsFragment :
         }
     }
 
-
     private fun handleVariationProductPriceLoaded(priceInfoEntity: VariationProductPriceInfoEntity) {
         binding.price = priceInfoEntity.price
         binding.priceAfterDiscount = priceInfoEntity.discountPrice

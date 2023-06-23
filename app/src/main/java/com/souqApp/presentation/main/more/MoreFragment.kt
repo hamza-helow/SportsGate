@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -56,9 +55,10 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     }
 
     private fun onLoaded(settingEntity: SettingsEntity) {
-        binding.imgFacebook.contentDescription = settingEntity.facebook
-        binding.imgInstagram.contentDescription = settingEntity.instagram
-        binding.imgTiktok.contentDescription = settingEntity.tiktok
+        viewModel.facebook = settingEntity.facebook
+        viewModel.instagram = settingEntity.instagram
+        viewModel.twitter = settingEntity.twitter
+        viewModel.tiktok = settingEntity.tiktok
     }
 
     private fun onErrorLoad(response: WrappedResponse<SettingsEntity>) {
@@ -78,6 +78,7 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         binding.txtAddresses.setOnClickListener(this)
         binding.imgFacebook.setOnClickListener(this)
         binding.imgTiktok.setOnClickListener(this)
+        binding.imgTwitter.setOnClickListener(this)
         binding.imgInstagram.setOnClickListener(this)
         binding.txtLogin.setOnClickListener(this)
         binding.cardProfile.setOnClickListener(this)
@@ -92,48 +93,58 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     override fun onClick(p0: View) {
 
         when (p0.id) {
-            binding.imgFacebook.id -> openLink(binding.imgFacebook)
-            binding.imgTiktok.id -> openLink(binding.imgTiktok)
-            binding.imgInstagram.id -> openLink(binding.imgInstagram)
+            binding.imgFacebook.id -> openLink(viewModel.facebook)
+            binding.imgTiktok.id -> openLink(viewModel.tiktok)
+            binding.imgTwitter.id -> openLink(viewModel.twitter)
+            binding.imgInstagram.id -> openLink(viewModel.instagram)
             binding.txtLogin.id -> {
                 navigate(MoreFragmentDirections.toAuthGraph())
             }
+
             binding.cardProfile.id -> {
                 navigate(MoreFragmentDirections.toProfileFragment())
             }
+
             binding.txtChangePassword.id -> {
                 navigate(MoreFragmentDirections.toChangePasswordFragment())
 
             }
+
             binding.txtAddresses.id -> {
                 navigate(MoreFragmentDirections.toAddressesGraph())
             }
+
             binding.txtOrders.id -> {
                 navigate(MoreFragmentDirections.toOrdersGraph())
             }
+
             binding.txtShareApp.id -> shareApp()
             binding.txtContactUs.id -> {
                 navigate(MoreFragmentDirections.toContactUsFragment())
 
             }
+
             binding.txtWishList.id -> {
                 navigate(MoreFragmentDirections.toWishListFragment())
             }
+
             binding.txtChangeLanguage.id -> {
                 navigate(MoreFragmentDirections.toChangeLanguageFragment())
             }
+
             binding.txtAboutUs.id -> {
                 navigate(MoreFragmentDirections.toAboutUsFragment())
 
             }
+
             binding.txtTermsAndConditions.id -> {
                 navigate(MoreFragmentDirections.toTermsAndConditionsFragment())
             }
         }
     }
 
-    private fun openLink(imageView: ImageView) {
-        requireContext().openUrl(imageView.contentDescription.toString())
+    private fun openLink(url: String) {
+        requireContext().openUrl(url)
     }
 
     private fun shareApp() {

@@ -148,7 +148,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun initListeners() {
         binding.refreshSwiper.setOnRefreshListener(this)
         binding.recCategory.setOnClickListener(this)
-        binding.toolbar.cardSearch.setOnClickListener(this)
+        binding.toolbar.imgSearch.setOnClickListener(this)
         binding.toolbar.imgNotification.setOnClickListener(this)
     }
 
@@ -220,7 +220,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun onClick(view: View) {
         when (view.id) {
-            binding.toolbar.cardSearch.id -> navigateToSearchFragment()
+            binding.toolbar.imgSearch.id -> navigateToSearchFragment()
             binding.toolbar.imgNotification.id -> navigateToNotificationFragment()
         }
     }

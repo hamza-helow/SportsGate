@@ -10,54 +10,35 @@
     android:padding="@dimen/_8sdp"
     tools:ignore="UselessParent">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:cardBackgroundColor="#EEEEEE"
-        app:cardCornerRadius="@dimen/_8sdp"
-        app:cardElevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/img_notification"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:id="@+id/card_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|start"
-            android:padding="@dimen/_8sdp"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:layout_marginEnd="@dimen/_4sdp"
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_search"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search"
-                android:textColor="#868688"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
     <ImageView
         android:id="@+id/img_notification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
         android:src="@drawable/ic_notifications"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/img_logo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img_logo"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/img_logo"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_30sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/img_notification"
+        app:layout_constraintStart_toEndOf="@+id/img_search"
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_logo"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/img_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/img_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img_logo"
+        app:srcCompat="@drawable/ic_search_primary"
         tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

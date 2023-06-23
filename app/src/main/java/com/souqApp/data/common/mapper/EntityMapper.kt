@@ -37,7 +37,10 @@ fun UpdateProductCartResponse.toEntity() = UpdateProductCartEntity(
     cartItemId = cartItemId ?: Constants.UNDEFINED_ID,
     subTotal = subTotal.orDash(),
     productQty = updatedQty ?: 0,
-    itemsPrice = itemsPrice.orDash()
+    itemsPrice = itemsPrice.orDash(),
+    placeOrderPercentage = placeOrderPercentage ?: 0,
+    isAbleToPlaceOrder = isAbleToPlaceOrder ?: true,
+    placeOrderAmount = placeOrderAmount.orDash()
 )
 
 fun CheckoutResponse.toEntity() = CheckoutEntity(orderId)
@@ -123,7 +126,7 @@ fun OrderDetailsResponse.toEntity(): OrderDetailsEntity {
         statusDescription = statusDescription.orDash(),
         subTotal = subTotal.orDash(),
         total = total.orDash(),
-        vat = vat.orDash() ,
+        vat = vat.orDash(),
         createdAt = createdAt.orDash()
     )
 }
@@ -158,7 +161,14 @@ fun List<AddressResponse>.toEntity() = map { AddressEntity(it.id, it.fullAddress
 fun AddressResponse.toEntity() = AddressEntity(id, fullAddress, isDefault)
 
 
-fun CartDetailsResponse.toEntity() = CartDetailsEntity(subTotal, currency, products.toEntities())
+fun CartDetailsResponse.toEntity() = CartDetailsEntity(
+    subTotal = subTotal,
+    settingCurrency = currency,
+    products = products.toEntities(),
+    placeOrderPercentage = placeOrderPercentage ?: 0,
+    isAbleToPlaceOrder = isAbleToPlaceOrder ?: true,
+    placeOrderAmount = placeOrderAmount.orDash()
+)
 
 @JvmName("toProductsInCartEntities")
 fun List<ProductInCartResponse>.toEntities(): List<ProductInCartEntity> {

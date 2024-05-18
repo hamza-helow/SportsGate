@@ -90,11 +90,10 @@
     <fragment
         android:id="@+id/pageDetailsFragment"
         android:name="com.souqApp.presentation.main.more.page_details.PageDetailsFragment"
-        android:label=""
         tools:layout="@layout/fragment_page_details">
         <argument
-            android:name="pageId"
-            app:argType="integer" />
+            android:name="page"
+            app:argType="com.souqApp.data.settings.remote.dto.PageEntity" />
     </fragment>
 
 </navigation>

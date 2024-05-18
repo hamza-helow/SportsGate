@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetPageDetailsUseCase @Inject constructor(private val settingsRepository: SettingsRepository) {
 
-    suspend fun invoke(pageId: Int): Flow<BaseResult<PageDetailsEntity, WrappedResponse<PageDetailsEntity>>> {
+    suspend fun invoke(pageId: Int?): Flow<BaseResult<PageDetailsEntity, WrappedResponse<PageDetailsEntity>>> {
         return settingsRepository.getPageDetails(pageId)
     }
 }

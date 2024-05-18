@@ -39,7 +39,7 @@ class PageDetailsViewModel @Inject constructor(private val getPageDetailsUseCase
         _state.value = PageDetailsState.ErrorLoad(response)
     }
 
-    fun getPageDetails(pageId: Int) {
+    fun getPageDetails(pageId: Int?) {
         viewModelScope.launch {
             getPageDetailsUseCase.invoke(pageId)
                 .onStart { setLoading(true) }

@@ -23,13 +23,15 @@ class PageDetailsFragment :
     private val args: PageDetailsFragmentArgs by navArgs()
     private val viewModel: PageDetailsViewModel by viewModels()
 
+    override fun updateTitleBar(): String = args.page.title.orEmpty()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observer()
     }
 
     private fun observer() {
-        viewModel.getPageDetails(args.pageId)
+        viewModel.getPageDetails(args.page.id)
         viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
     }
 

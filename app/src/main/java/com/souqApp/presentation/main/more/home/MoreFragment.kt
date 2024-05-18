@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.data.common.utlis.CacheHelper
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.settings.remote.dto.PageEntity
 import com.souqApp.data.settings.remote.dto.SettingsEntity
 import com.souqApp.databinding.FragmentMoreBinding
 import com.souqApp.infra.extension.isVisible
@@ -64,10 +63,8 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         val pages = CacheHelper.pages
 
         binding.txtPages.isVisible(pages.isNotEmpty())
-        pagesAdapter = PagesAdapter {
-            navigate(MoreFragmentDirections.toPageDetailsFragment(it.id ?: 0))
-        }
-        pagesAdapter.list =pages
+        pagesAdapter = PagesAdapter { navigate(MoreFragmentDirections.toPageDetailsFragment(it)) }
+        pagesAdapter.list = pages
         binding.recPages.layoutManager = LinearLayoutManager(requireContext())
         binding.recPages.adapter = pagesAdapter
     }

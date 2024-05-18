@@ -60,7 +60,7 @@ class SettingsRepositoryImpl @Inject constructor(private val settingsApi: Settin
         }
     }
 
-    override suspend fun getPageDetails(pageId: Int): Flow<BaseResult<PageDetailsEntity, WrappedResponse<PageDetailsEntity>>> {
+    override suspend fun getPageDetails(pageId: Int?): Flow<BaseResult<PageDetailsEntity, WrappedResponse<PageDetailsEntity>>> {
         return flow {
             val response = handleApi { settingsApi.getPageDetails(pageId) }
 

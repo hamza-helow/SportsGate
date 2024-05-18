@@ -24,5 +24,5 @@ interface SettingsApi {
     suspend fun getPages(): WrappedListResponse<PageEntity>
 
     @GET("v2/pageDetails")
-    suspend fun getPageDetails(@Query("id") pageId: Int): WrappedResponse<PageDetailsEntity>
+    suspend fun getPageDetails(@Query("id") pageId: Int?): WrappedResponse<PageDetailsEntity>
 }

@@ -20,5 +20,5 @@ interface SettingsRepository {
 
     suspend fun getPages(): Flow<BaseResult<List<PageEntity>, WrappedListResponse<PageEntity>>>
 
-    suspend fun getPageDetails(pageId:Int): Flow<BaseResult<PageDetailsEntity, WrappedResponse<PageDetailsEntity>>>
+    suspend fun getPageDetails(pageId:Int?): Flow<BaseResult<PageDetailsEntity, WrappedResponse<PageDetailsEntity>>>
 }

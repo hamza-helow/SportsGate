@@ -60,8 +60,6 @@ class ProductDetailsFragment :
     private fun initListener() {
         binding.imgFavorite.setOnClickListener(this)
         binding.btnAddToCart.setOnClickListener(this)
-
-
     }
 
     override fun showAppBar(): Boolean =false

@@ -85,7 +85,6 @@ abstract class BaseFragment<V : ViewBinding>(private val inflate: Inflate<V>) : 
                 if (popUpTo != null)
                     setPopUpTo(popUpTo, inclusive)
             }
-            .setEnterAnim(android.R.anim.slide_in_left)
             .setLaunchSingleTop(singleTop)
             .build()
 

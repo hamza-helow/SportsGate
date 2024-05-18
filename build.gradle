@@ -1,5 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    ext {
+        agp_version = '8.3.2'
+    }
 
     //kotlin
     ext.kotlin_version = "1.8.21"
@@ -12,15 +15,15 @@ buildscript {
     ext.coroutine_version = "1.6.4"
 
     // dagger hilt
-    ext.dagger_hilt_version = "2.43.2"
+    ext.dagger_hilt_version = "2.49"
     ext.dagger_hilt_viewmodel_version = "1.0.0-alpha03"
 
-    // activiy ktx
-    ext.activity_ktx_version = "1.7.1"
+    // activity ktx
+    ext.activity_ktx_version = "1.9.0"
     ext.lifecycle_version = "2.5.1"
 
     //navigation
-    ext.nav_version = "2.5.3"
+    ext.nav_version = "2.7.7"
 
     //junit
     ext.junit_version ="4.13.2"
@@ -36,11 +39,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath "com.android.tools.build:gradle:$agp_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_hilt_version"
-        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.gms:google-services:4.4.1'
     }
 
 }
@@ -51,8 +54,4 @@ plugins {
     id 'com.android.library' version '7.2.0' apply false
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.21' apply false
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

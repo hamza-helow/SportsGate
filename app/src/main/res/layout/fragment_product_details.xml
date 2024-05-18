@@ -155,7 +155,8 @@
                             tools:text="price after discount" />
 
                         <TextView
-                            android:layout_width="match_parent"
+                            app:isVisible="@{discount >0.0}"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{ '-' + String.valueOf(details.discountPercentage) + '%'}"
                             android:textColor="@color/red"

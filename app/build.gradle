@@ -10,13 +10,15 @@ plugins {
 
 
 android {
-    compileSdk 33
+    compileSdk 34
     flavorDimensions "default"
+
+    namespace 'com.souqApp'
 
     defaultConfig {
         applicationId "advanced.devsouqApp"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 8
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -46,13 +48,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
     buildFeatures {
         viewBinding true
@@ -70,23 +72,23 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     //noinspection GradleDependency
     implementation 'com.google.android.material:material:1.6.1'
 
-    implementation 'androidx.fragment:fragment-ktx:1.5.7'
+    implementation 'androidx.fragment:fragment-ktx:1.7.1'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.annotation:annotation:1.6.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation 'androidx.annotation:annotation:1.8.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.gms:play-services-maps:18.1.0'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.google.firebase:firebase-common-ktx:20.3.2'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
-    implementation 'com.google.android.gms:play-services-cast-framework:21.3.0'
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+    implementation 'com.google.android.gms:play-services-location:21.2.0'
+    implementation 'com.google.firebase:firebase-common-ktx:21.0.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:24.0.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:21.4.0'
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -108,7 +110,7 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$dagger_hilt_version"
     kapt "androidx.hilt:hilt-compiler:$dagger_hilt_viewmodel_version"
 
-    implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
+    implementation 'androidx.hilt:hilt-navigation-fragment:1.2.0'
 
     // Activity KTX for viewModels()
     implementation "androidx.activity:activity-ktx:$activity_ktx_version"
@@ -134,25 +136,25 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // firebase
-    implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    implementation platform('com.google.firebase:firebase-bom:33.0.0')
     implementation 'com.google.firebase:firebase-config'
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-config-ktx:21.4.0'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.2.2'
+    implementation 'com.google.firebase:firebase-config-ktx:22.0.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:22.0.0'
     implementation 'com.google.firebase:firebase-core:21.1.1'
 
     // kotlin reflect
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.10"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.9.22"
 
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
-    implementation "androidx.core:core-ktx:1.12.0-alpha03"
+    implementation "androidx.core:core-ktx:1.13.1"
 
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     //Paging 3
-    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+    implementation("androidx.paging:paging-runtime-ktx:3.3.0")
 
 
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.4"

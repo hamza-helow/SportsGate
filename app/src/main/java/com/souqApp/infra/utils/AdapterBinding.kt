@@ -15,7 +15,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.text.layoutDirection
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.souqApp.R
 import com.souqApp.infra.custome_view.LabelWithValueHorizontal
 import com.souqApp.infra.extension.inVisible
 import com.souqApp.infra.extension.isVisible
@@ -24,8 +24,8 @@ import kotlin.math.roundToInt
 
 
 @SuppressLint("CheckResult")
-@BindingAdapter(value = ["networkImage", "placeholder", "resizeImage"], requireAll = false)
-fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null, resize: Boolean? = true) {
+@BindingAdapter(value = ["networkImage", "placeholder"], requireAll = false)
+fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null) {
     if (url.isNullOrEmpty()) {
         setImageDrawable(placeholder)
         return
@@ -33,11 +33,7 @@ fun ImageView.setImageUrl(url: String?, placeholder: Drawable? = null, resize: B
 
     Glide.with(this)
         .load(url)
-        .apply {
-            if (resize != false)
-                override(300, 300)
-        }
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .placeholder(R.drawable.image_placeholder)
         .into(this)
 }
 

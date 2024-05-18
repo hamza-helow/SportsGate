@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:src="@color/green"
         app:networkImage="@{image}"
-        app:resizeImage="@{false}"
         tools:srcCompat="@color/green"
         tools:ignore="ContentDescription" />
 </layout>

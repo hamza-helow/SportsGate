@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.souqApp.data.common.utlis.CacheHelper
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.settings.remote.dto.PageEntity
 import com.souqApp.data.settings.remote.dto.SettingsEntity
@@ -40,13 +41,13 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initPagesAdapter()
         initListener()
         initInfo()
         observer()
     }
 
     private fun observer() {
-        viewModel.getPages()
         viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
     }
 
@@ -55,16 +56,18 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
             is MoreFragmentState.Error -> onError(state.throwable)
             is MoreFragmentState.ErrorLoad -> onErrorLoad(state.response)
             is MoreFragmentState.Loaded -> onLoaded(state.settingEntity)
-            is MoreFragmentState.Loading -> Unit
-            is MoreFragmentState.Pages -> onPagesLoaded(state.pages)
+
         }
     }
 
-    private fun onPagesLoaded(pages: List<PageEntity>) {
+    private fun initPagesAdapter() {
+        val pages = CacheHelper.pages
+
+        binding.txtPages.isVisible(pages.isNotEmpty())
         pagesAdapter = PagesAdapter {
             navigate(MoreFragmentDirections.toPageDetailsFragment(it.id ?: 0))
         }
-        pagesAdapter.list = pages
+        pagesAdapter.list =pages
         binding.recPages.layoutManager = LinearLayoutManager(requireContext())
         binding.recPages.adapter = pagesAdapter
     }
@@ -101,8 +104,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         binding.txtContactUs.setOnClickListener(this)
         binding.txtWishList.setOnClickListener(this)
         binding.txtChangePassword.setOnClickListener(this)
-        binding.txtAboutUs.setOnClickListener(this)
-        binding.txtTermsAndConditions.setOnClickListener(this)
     }
 
     override fun onClick(p0: View) {
@@ -147,14 +148,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
                 navigate(MoreFragmentDirections.toChangeLanguageFragment())
             }
 
-            binding.txtAboutUs.id -> {
-                navigate(MoreFragmentDirections.toAboutUsFragment())
-
-            }
-
-            binding.txtTermsAndConditions.id -> {
-                navigate(MoreFragmentDirections.toTermsAndConditionsFragment())
-            }
         }
     }
 

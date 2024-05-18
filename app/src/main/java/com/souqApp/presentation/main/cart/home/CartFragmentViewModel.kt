@@ -1,6 +1,5 @@
 package com.souqApp.presentation.main.cart.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,7 +21,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartFragmentViewModel @Inject constructor(
-
     private val getCartDetailsUseCase: GetCartDetailsUseCase,
     private val updateProductUseCase: UpdateProductUseCase) :
     ViewModel() {

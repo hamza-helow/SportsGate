@@ -201,22 +201,6 @@
                 android:layout_marginTop="@dimen/_8sdp" />
 
             <TextView
-                android:id="@+id/txt_terms_and_conditions"
-                style="@style/SettingItem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/terms_and_conditions_str" />
-
-
-            <View
-                style="@style/Divider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp" />
-
-
-            <TextView
                 android:id="@+id/txt_share_app"
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
@@ -231,20 +215,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp" />
 
-            <TextView
-                android:id="@+id/txt_about_us"
-                style="@style/SettingItem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/about_us_str" />
-
-
-            <View
-                style="@style/Divider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp" />
 
             <TextView
                 android:id="@+id/txt_contact_us"
@@ -261,6 +231,7 @@
                 android:layout_marginTop="@dimen/_8sdp" />
 
             <TextView
+                android:id="@+id/txt_pages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_24sdp"

@@ -24,9 +24,7 @@
         <action
             android:id="@+id/to_changePasswordFragment"
             app:destination="@id/changePasswordFragment" />
-        <action
-            android:id="@+id/to_aboutUsFragment"
-            app:destination="@id/aboutUsFragment" />
+
         <action
             android:id="@+id/to_contactUsFragment"
             app:destination="@id/contactUsFragment" />
@@ -62,11 +60,6 @@
         android:label="@string/change_password"
         tools:layout="@layout/fragment_change_password" />
 
-    <fragment
-        android:id="@+id/aboutUsFragment"
-        android:name="com.souqApp.presentation.main.more.about_us.AboutUsFragment"
-        android:label="@string/about_us_str"
-        tools:layout="@layout/fragment_about_us" />
 
 
     <fragment
@@ -74,12 +67,6 @@
         android:name="com.souqApp.presentation.main.more.contact_us.ContactUsFragment"
         android:label="@string/contact_us_str"
         tools:layout="@layout/fragment_contact_us" />
-
-    <fragment
-        android:id="@+id/termsAndConditionsFragment"
-        android:name="com.souqApp.presentation.main.more.terms_and_conditions.TermsAndConditionsFragment"
-        android:label="@string/terms_and_conditions_str"
-        tools:layout="@layout/fragment_terms_and_conditions" />
 
 
     <fragment

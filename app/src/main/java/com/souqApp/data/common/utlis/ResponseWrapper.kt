@@ -1,9 +1,6 @@
 package com.souqApp.data.common.utlis
 
-import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
-import retrofit2.HttpException
 
 data class WrappedListResponse<T>(
     var code: Int,

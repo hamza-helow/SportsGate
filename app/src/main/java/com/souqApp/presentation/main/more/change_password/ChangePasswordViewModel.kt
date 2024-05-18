@@ -1,4 +1,4 @@
-package com.souqApp.presentation.main.more.changePassword
+package com.souqApp.presentation.main.more.change_password
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

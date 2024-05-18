@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface NotificationApi {
 
-    @GET("v1/users/notificationsHistory")
+    @GET("v2/users/notificationsHistory")
     suspend fun notificationsHistory(): WrappedResponse<NotificationEntities>
 }

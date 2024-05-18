@@ -28,9 +28,9 @@ interface AddressApi {
     @POST("v2/users/addresses/delete")
     suspend fun delete(@Query("address_id") addressId: Int): WrappedResponse<Nothing>
 
-    @GET("v1/cities/getCitiesHaveAreas")
+    @GET("v2/cities/getCitiesHaveAreas")
     suspend fun getCitiesHaveAreas(): WrappedListResponse<CityResponse>
 
-    @POST("v1/users/addresses/changeDefault")
+    @POST("v2/users/addresses/changeDefault")
     suspend fun changeDefault(@Query("address_id") addressId: Int): WrappedResponse<Nothing>
 }

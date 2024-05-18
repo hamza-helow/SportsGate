@@ -5,26 +5,27 @@ import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface CartApi {
 
-    @GET("v2/users/carts/getCartDetails")
+    @GET("v2/users/carts/details")
     suspend fun getCartDetails(): WrappedResponse<CartDetailsResponse>
 
-    @POST("v2/users/carts/deleteProductFromCart")
+    @DELETE("v2/users/carts/remove")
     suspend fun deleteProductFromCart(@Query("id") cartItemId: Int): WrappedResponse<UpdateProductCartResponse>
 
-    @POST("v2/users/carts/updateProductQty")
+    @POST("v2/users/carts/updateQty")
     suspend fun updateProductQty(
-        @Query("product_id") productId: Int,
+        @Query("cart_id") productId: Int,
         @Query("qty") qty: Int,
         @Query("combination_id") combinationId: Int?,
     ): WrappedResponse<UpdateProductCartResponse>
 
-    @GET("v2/users/carts/getCheckoutDetails")
+    @GET("v2/users/carts/checkoutDetails")
     suspend fun getCheckoutDetails(@Query("delivery_option_id") deliveryOptionId: Int?): WrappedResponse<CheckoutDetailsResponse>
 
     @POST("v2/users/carts/checkout")

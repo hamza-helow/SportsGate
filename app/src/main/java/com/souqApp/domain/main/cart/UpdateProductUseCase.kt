@@ -20,7 +20,7 @@ class UpdateProductUseCase @Inject constructor(private val cartRepository: CartR
 
         else {
             val qty = if (isIncrease) product.qty + 1 else product.qty - 1
-            cartRepository.updateProductQty(product.id, qty, product.combinationId)
+            cartRepository.updateProductQty(product.cartItemId, qty, product.combinationId)
         }
     }
 }

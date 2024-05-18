@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface ChangePasswordApi {
 
-    @POST("v1/users/changePassword")
+    @POST("v2/users/changePassword")
     suspend fun changePassword(
         @Query("old_password") oldPassword: String,
         @Query("new_password") newPassword: String

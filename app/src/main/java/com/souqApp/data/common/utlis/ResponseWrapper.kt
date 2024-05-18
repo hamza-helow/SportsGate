@@ -1,6 +1,9 @@
 package com.souqApp.data.common.utlis
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
+import retrofit2.HttpException
 
 data class WrappedListResponse<T>(
     var code: Int,
@@ -14,7 +17,6 @@ data class WrappedListResponse<T>(
 )
 
 data class WrappedResponse<T>(
-    var code: Int,
     @SerializedName("message") var message: String,
     @SerializedName("status") var status: Boolean,
     @SerializedName("errors") var errors: List<String>? = null,
@@ -27,7 +29,6 @@ data class WrappedResponse<T>(
     }
 }
 
-//convert array of errors to formatted text
 fun formattedErrors(arrErrors: List<String>?): String {
     var errors = ""
     if (arrErrors != null && arrErrors.isNotEmpty()) {

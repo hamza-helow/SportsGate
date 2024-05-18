@@ -1,7 +1,10 @@
 package com.souqApp.domain.main.cart.entity
 
+import com.google.gson.annotations.SerializedName
+
 data class ProductInCartEntity(
     val id: Int,
+    @SerializedName("cart_id")
     val cartItemId:Int,
     val name: String,
     val thumb: String,

@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface CreatePasswordApi {
 
-    @POST("v1/users/resetPassword")
+    @POST("v2/users/resetPassword")
     suspend fun resetPassword(
         @Query("new_password") newPassword: String,
         @Header("Authorization") resetToken: String

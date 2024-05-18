@@ -1,5 +1,6 @@
 package com.souqApp.presentation.main.cart.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -60,7 +61,6 @@ class CartFragmentViewModel @Inject constructor(
                     setLoading(true)
                 }
                 .catch {
-
                     setLoading(false)
                     onError(it)
                 }.collect {

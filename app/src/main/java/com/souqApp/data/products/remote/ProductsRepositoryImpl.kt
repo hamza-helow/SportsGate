@@ -1,6 +1,7 @@
 package com.souqApp.data.products.remote
 
 import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.products.ProductsEntity
@@ -21,7 +22,7 @@ class ProductsRepositoryImpl @Inject constructor(private val productsApi: Produc
         recommended: Int?,
     ): Flow<BaseResult<ProductsEntity, WrappedListResponse<ProductEntity>>> {
         return flow {
-            val response = productsApi.getProducts(type, page, search, tag, promo, recommended)
+            val response = handleApi { productsApi.getProducts(type, page, search, tag, promo, recommended) }
             if (response.status) {
                 emit(
                     BaseResult.Success(

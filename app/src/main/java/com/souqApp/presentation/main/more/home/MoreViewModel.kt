@@ -1,12 +1,14 @@
-package com.souqApp.presentation.main.more
+package com.souqApp.presentation.main.more.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.settings.remote.dto.PageEntity
 import com.souqApp.data.settings.remote.dto.SettingsEntity
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.settings.GetPagesUseCase
 import com.souqApp.domain.settings.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -16,7 +18,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MoreViewModel @Inject constructor(private val settingsUseCase: SettingsUseCase) :
+class MoreViewModel @Inject constructor(
+    private val settingsUseCase: SettingsUseCase,
+    private val getPagesUseCase: GetPagesUseCase
+) :
     ViewModel() {
 
 
@@ -35,6 +40,10 @@ class MoreViewModel @Inject constructor(private val settingsUseCase: SettingsUse
         _state.value = MoreFragmentState.Loaded(settingEntity)
     }
 
+    private fun onLoadPages(pages: List<PageEntity>) {
+        _state.value = MoreFragmentState.Pages(pages)
+    }
+
     private fun onErrorLoad(response: WrappedResponse<SettingsEntity>) {
         _state.value = MoreFragmentState.ErrorLoad(response)
     }
@@ -42,7 +51,7 @@ class MoreViewModel @Inject constructor(private val settingsUseCase: SettingsUse
     var facebook: String = ""
     var twitter: String = ""
     var instagram: String = ""
-    var tiktok:String =""
+    var tiktok: String = ""
 
 
     @Inject
@@ -64,14 +73,37 @@ class MoreViewModel @Inject constructor(private val settingsUseCase: SettingsUse
         }
     }
 
+
+    fun getPages() {
+        viewModelScope.launch {
+            getPagesUseCase.invoke()
+                .onStart { setLoading(true) }
+                .catch {
+                    setLoading(false)
+                    onError(it)
+                }
+                .collect {
+                    setLoading(false)
+
+                    when (it) {
+                        is BaseResult.Success -> onLoadPages(it.data)
+                        is BaseResult.Errors -> Unit
+                    }
+                }
+        }
+    }
+
 }
 
 
-sealed class MoreFragmentState() {
+sealed class MoreFragmentState {
 
     data class Loading(val isLoading: Boolean) : MoreFragmentState()
     data class Error(val throwable: Throwable) : MoreFragmentState()
     data class Loaded(val settingEntity: SettingsEntity) : MoreFragmentState()
+
+    data class Pages(val pages: List<PageEntity>) : MoreFragmentState()
+
     data class ErrorLoad(val response: WrappedResponse<SettingsEntity>) :
         MoreFragmentState()
 }

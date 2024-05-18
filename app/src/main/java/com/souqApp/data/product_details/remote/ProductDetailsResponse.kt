@@ -23,15 +23,15 @@ data class ProductDetailsResponse(
     @SerializedName("media")
     val media: List<String>,
     @SerializedName("relevant")
-    val relevant: List<RelevantProductResponse>,
+    val relevant: List<RelevantProductResponse>?,
     @SerializedName("variations")
     val variations: List<Variation>,
     @SerializedName("combination_options")
-    val combinationOptions: List<CombinationOption>,
+    val combinationOptions: List<CombinationOption>?,
     @SerializedName("variation_compaination_id")
     val variationCompainationId: Int?,
     @SerializedName("is_favorite")
     val isFavorite: Boolean? ,
     @SerializedName("tags")
-    val tags:List<TagEntity> ,
+    val tags:List<TagEntity>? ,
 )

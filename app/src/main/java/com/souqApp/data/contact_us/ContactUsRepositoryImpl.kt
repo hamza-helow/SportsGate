@@ -1,5 +1,6 @@
 package com.souqApp.data.contact_us
 
+import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.contact_us.remote.ContactUsApi
 import com.souqApp.data.contact_us.remote.ContactUsRequest
 import com.souqApp.domain.contact_us.ContactUsRepository
@@ -11,7 +12,7 @@ class ContactUsRepositoryImpl @Inject constructor(private val contactUsApi: Cont
     ContactUsRepository {
     override suspend fun sendContactUs(contactUsRequest: ContactUsRequest): Flow<Boolean> {
         return flow {
-            val response = contactUsApi.sendContactUs(contactUsRequest)
+            val response = handleApi { contactUsApi.sendContactUs(contactUsRequest) }
             val isSuccessful = response.status
             emit(isSuccessful)
         }

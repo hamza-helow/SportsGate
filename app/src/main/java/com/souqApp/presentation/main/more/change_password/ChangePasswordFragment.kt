@@ -1,4 +1,4 @@
-package com.souqApp.presentation.main.more.changePassword
+package com.souqApp.presentation.main.more.change_password
 
 import android.util.Log
 import android.view.View

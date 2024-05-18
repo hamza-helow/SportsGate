@@ -1,4 +1,4 @@
-package com.souqApp.presentation.main.more.changeLanguage
+package com.souqApp.presentation.main.more.change_language
 
 import android.os.Bundle
 import android.view.View

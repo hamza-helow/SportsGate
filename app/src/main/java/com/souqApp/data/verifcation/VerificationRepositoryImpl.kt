@@ -2,6 +2,7 @@ package com.souqApp.data.verifcation
 
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.verifcation.remote.VerificationApi
 import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
@@ -17,7 +18,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
     VerificationRepository {
     override suspend fun activeAccount(activeAccountRequest: ActiveAccountRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return flow {
-            val response = verificationApi.activeAccount(activeAccountRequest)
+            val response = handleApi { verificationApi.activeAccount(activeAccountRequest) }
 
             if (response.status) {
                 val body = response.data
@@ -43,7 +44,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
         code: String
     ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>> {
         return flow {
-            val response = verificationApi.createTokenResetPassword(phone, code)
+            val response = handleApi { verificationApi.createTokenResetPassword(phone, code) }
             if (response.status) {
                 emit(BaseResult.Success(response.data))
 
@@ -55,7 +56,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
 
     override suspend fun requestPasswordReset(phone: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
         return flow {
-            val response = verificationApi.requestPasswordReset(phone)
+            val response = handleApi { verificationApi.requestPasswordReset(phone) }
             if (response.status) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {
@@ -66,7 +67,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
 
     override suspend fun resendActivationCode(): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
         return flow {
-            val response = verificationApi.resendActivationCode()
+            val response = handleApi { verificationApi.resendActivationCode() }
             if (response.status) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {

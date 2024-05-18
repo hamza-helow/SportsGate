@@ -1,12 +1,14 @@
-package com.souqApp.presentation.main.more
+package com.souqApp.presentation.main.more.home
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.settings.remote.dto.PageEntity
 import com.souqApp.data.settings.remote.dto.SettingsEntity
 import com.souqApp.databinding.FragmentMoreBinding
 import com.souqApp.infra.extension.isVisible
@@ -32,6 +34,8 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
+    private lateinit var pagesAdapter: PagesAdapter
+
     override fun showAppBar() = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,6 +46,7 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     }
 
     private fun observer() {
+        viewModel.getPages()
         viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
     }
 
@@ -51,7 +56,17 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
             is MoreFragmentState.ErrorLoad -> onErrorLoad(state.response)
             is MoreFragmentState.Loaded -> onLoaded(state.settingEntity)
             is MoreFragmentState.Loading -> Unit
+            is MoreFragmentState.Pages -> onPagesLoaded(state.pages)
         }
+    }
+
+    private fun onPagesLoaded(pages: List<PageEntity>) {
+        pagesAdapter = PagesAdapter {
+            navigate(MoreFragmentDirections.toPageDetailsFragment(it.id ?: 0))
+        }
+        pagesAdapter.list = pages
+        binding.recPages.layoutManager = LinearLayoutManager(requireContext())
+        binding.recPages.adapter = pagesAdapter
     }
 
     private fun onLoaded(settingEntity: SettingsEntity) {

@@ -1,5 +1,6 @@
 package com.souqApp.presentation.product_details
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -113,7 +114,9 @@ class ProductDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             productDetailsUseCase.productDetails(productId)
                 .onStart { setLoading(true) }
-                .catch { setLoading(false) }.collect {
+                .catch {
+                    setLoading(false)
+                }.collect {
                     setLoading(false)
                     when (it) {
                         is BaseResult.Success -> onDetailsLoaded(it.data)

@@ -10,21 +10,21 @@ import retrofit2.http.Query
 
 interface VerificationApi {
 
-    @POST("v1/users/activeAccount")
+    @POST("v2/users/activeAccount")
     suspend fun activeAccount(@Body activeAccountRequest: ActiveAccountRequest): WrappedResponse<UserResponse>
 
-    @POST("v1/users/createTokenResetPassword")
+    @POST("v2/users/createTokenResetPassword")
     suspend fun createTokenResetPassword(
         @Query("phone") phone: String,
         @Query("reset_code") code: String
     ): WrappedResponse<CreateTokenResetPasswordEntity>
 
 
-    @POST("v1/users/requestPasswordReset")
+    @POST("v2/users/requestPasswordReset")
     suspend fun requestPasswordReset(@Query("phone") phone: String): WrappedResponse<Nothing>
 
 
-    @POST("v1/users/resendActivationCode")
+    @POST("v2/users/resendActivationCode")
     suspend fun resendActivationCode(): WrappedResponse<Nothing>
 
 }

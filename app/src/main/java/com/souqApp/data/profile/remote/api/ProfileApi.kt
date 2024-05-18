@@ -9,13 +9,13 @@ import retrofit2.http.POST
 
 interface ProfileApi {
 
-    @POST("v1/users/updateProfile")
+    @POST("v2/users/updateProfile")
     suspend fun updateUser(
         @Body params: RequestBody
     ): WrappedResponse<UserResponse>
 
 
-    @POST("v1/users/login")
+    @POST("v2/users/login")
     suspend fun login(@Body loginRequest: LoginRequest): WrappedResponse<UserResponse>
 
 }

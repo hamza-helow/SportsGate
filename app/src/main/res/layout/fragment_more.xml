@@ -29,7 +29,7 @@
 
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
@@ -40,14 +40,14 @@
             android:divider="@drawable/divider"
             android:orientation="vertical"
             android:padding="@dimen/_16sdp"
-            tools:context=".presentation.main.more.MoreFragment">
+            tools:context=".presentation.main.more.home.MoreFragment">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/card_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginBottom="@dimen/_24sdp"
+                android:orientation="horizontal"
                 app:isVisible="@{sharedPrefs.login}">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -74,8 +74,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text='@{user.name,default="user name"}'
-                        android:textStyle="bold"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -97,84 +97,84 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                app:isVisible="@{!sharedPrefs.login}"
                 android:id="@+id/txt_login"
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/login" />
+                android:text="@string/login"
+                app:isVisible="@{!sharedPrefs.login}" />
 
             <View
-                app:isVisible="@{!sharedPrefs.login}"
                 style="@style/Divider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp" />
+                android:layout_marginTop="@dimen/_8sdp"
+                app:isVisible="@{!sharedPrefs.login}" />
 
             <TextView
-                app:isVisible="@{sharedPrefs.login}"
                 android:id="@+id/txtOrders"
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/my_orders_history_str" />
+                android:text="@string/my_orders_history_str"
+                app:isVisible="@{sharedPrefs.login}" />
 
 
             <View
-                app:isVisible="@{sharedPrefs.login}"
                 style="@style/Divider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp" />
+                android:layout_marginTop="@dimen/_8sdp"
+                app:isVisible="@{sharedPrefs.login}" />
 
             <TextView
-                app:isVisible="@{sharedPrefs.login}"
                 android:id="@+id/txt_addresses"
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/mange_addresses_str" />
+                android:text="@string/mange_addresses_str"
+                app:isVisible="@{sharedPrefs.login}" />
 
             <View
-                app:isVisible="@{sharedPrefs.login}"
                 style="@style/Divider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp" />
+                android:layout_marginTop="@dimen/_8sdp"
+                app:isVisible="@{sharedPrefs.login}" />
 
             <TextView
-                app:isVisible="@{sharedPrefs.login}"
                 android:id="@+id/txt_wish_list"
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/wish_list" />
+                android:text="@string/wish_list"
+                app:isVisible="@{sharedPrefs.login}" />
 
             <View
-                app:isVisible="@{sharedPrefs.login}"
                 style="@style/Divider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp" />
+                android:layout_marginTop="@dimen/_8sdp"
+                app:isVisible="@{sharedPrefs.login}" />
 
 
             <TextView
-                app:isVisible="@{sharedPrefs.login}"
                 android:id="@+id/txt_change_password"
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/change_password" />
+                android:text="@string/change_password"
+                app:isVisible="@{sharedPrefs.login}" />
 
             <View
-                app:isVisible="@{sharedPrefs.login}"
                 style="@style/Divider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp" />
+                android:layout_marginTop="@dimen/_8sdp"
+                app:isVisible="@{sharedPrefs.login}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -260,6 +260,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:text="@string/pages"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rec_pages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_page" />
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -274,35 +289,35 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_marginEnd="@dimen/_4sdp"
                         android:id="@+id/img_instagram"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
                         android:src="@drawable/ic_instagram_logo"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
-                        android:layout_marginEnd="@dimen/_4sdp"
                         android:id="@+id/img_tiktok"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_tiktok_logo"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
-                        android:layout_marginEnd="@dimen/_4sdp"
                         android:id="@+id/img_twitter"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
                         android:src="@drawable/ic_twitter"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
-                        android:layout_marginEnd="@dimen/_4sdp"
                         android:id="@+id/img_facebook"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
                         android:src="@drawable/ic_facebook_logo"
                         tools:ignore="ContentDescription" />
 
@@ -358,6 +373,6 @@
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </layout>

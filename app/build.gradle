@@ -38,11 +38,11 @@ android {
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
-            buildConfigField 'String', 'API_BASE_URL', '"https://souqapp.co/api/"'
+            buildConfigField 'String', 'API_BASE_URL', '"https://dellcom.advancedsouqstagingappenv.uk/t/api/"'
         }
 
         debug {
-            buildConfigField 'String', 'API_BASE_URL', '"https://souqapp.co/api/"'
+            buildConfigField 'String', 'API_BASE_URL', '"https://dellcom.advancedsouqstagingappenv.uk/t/api/"'
         }
     }
     compileOptions {

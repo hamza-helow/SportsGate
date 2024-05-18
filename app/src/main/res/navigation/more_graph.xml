@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/moreFragment"
-        android:name="com.souqApp.presentation.main.more.MoreFragment"
+        android:name="com.souqApp.presentation.main.more.home.MoreFragment"
         tools:layout="@layout/fragment_more">
 
         <action
@@ -42,6 +42,9 @@
         <action
             android:id="@+id/to_changeLanguageFragment"
             app:destination="@id/changeLanguageFragment" />
+        <action
+            android:id="@+id/to_pageDetailsFragment"
+            app:destination="@id/pageDetailsFragment" />
 
     </fragment>
 
@@ -55,7 +58,7 @@
 
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.souqApp.presentation.main.more.changePassword.ChangePasswordFragment"
+        android:name="com.souqApp.presentation.main.more.change_password.ChangePasswordFragment"
         android:label="@string/change_password"
         tools:layout="@layout/fragment_change_password" />
 
@@ -73,17 +76,17 @@
         tools:layout="@layout/fragment_contact_us" />
 
     <fragment
-        tools:layout="@layout/fragment_terms_and_conditions"
         android:id="@+id/termsAndConditionsFragment"
         android:name="com.souqApp.presentation.main.more.terms_and_conditions.TermsAndConditionsFragment"
-        android:label="@string/terms_and_conditions_str" />
+        android:label="@string/terms_and_conditions_str"
+        tools:layout="@layout/fragment_terms_and_conditions" />
 
 
     <fragment
-        tools:layout="@layout/fragment_profile"
         android:id="@+id/profileFragment"
         android:name="com.souqApp.presentation.main.more.profile.ProfileFragment"
-        android:label="@string/user_profile" />
+        android:label="@string/user_profile"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/wishListFragment"
@@ -92,9 +95,19 @@
         tools:layout="@layout/fragment_wish_list" />
 
     <fragment
-        tools:layout="@layout/fragment_change_language"
         android:id="@+id/changeLanguageFragment"
-        android:name="com.souqApp.presentation.main.more.changeLanguage.ChangeLanguageFragment"
-        android:label="@string/change_language_sr" />
+        android:name="com.souqApp.presentation.main.more.change_language.ChangeLanguageFragment"
+        android:label="@string/change_language_sr"
+        tools:layout="@layout/fragment_change_language" />
+
+    <fragment
+        android:id="@+id/pageDetailsFragment"
+        android:name="com.souqApp.presentation.main.more.page_details.PageDetailsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_page_details">
+        <argument
+            android:name="pageId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

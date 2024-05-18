@@ -74,12 +74,12 @@ fun ProductDetailsResponse.toEntity() = ProductDetailsEntity(
     onSale = isSalesable ?: false,
     qty = qty ?: 0,
     media = media,
-    relevant = relevant,
+    relevant = relevant.orEmpty(),
     variations = variations,
-    combinationOptions = combinationOptions,
+    combinationOptions = combinationOptions.orEmpty(),
     variationCompainationId = variationCompainationId,
     isFavorite = isFavorite ?: false,
-    tags = tags,
+    tags = tags.orEmpty(),
 )
 
 

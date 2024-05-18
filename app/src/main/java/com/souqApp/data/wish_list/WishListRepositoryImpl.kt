@@ -1,6 +1,7 @@
 package com.souqApp.data.wish_list
 
 import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.data.wish_list.remote.WishListApi
 import com.souqApp.domain.common.BaseResult
@@ -13,7 +14,7 @@ class WishListRepositoryImpl @Inject constructor(private val wishListApi: WishLi
     WishListRepository {
     override suspend fun getAll(): Flow<BaseResult<List<ProductEntity>, WrappedListResponse<ProductEntity>>> {
         return flow {
-            val response = wishListApi.getAll()
+            val response = handleApi { wishListApi.getAll() }
             if (response.status) {
                 emit(BaseResult.Success(response.data.orEmpty()))
             } else {

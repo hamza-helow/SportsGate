@@ -15,7 +15,7 @@ interface ProductDetailsApi {
         @Query("combination_id") combinationId: Int?
     ): WrappedResponse<AddToFavoriteResponse>
 
-    @POST("v2/users/carts/addProductToCart")
+    @POST("v2/users/carts/add")
     suspend fun addProductToCart(
         @Query("product_id") productId: Int,
         @Query("combination_id") combinationId: Int?,

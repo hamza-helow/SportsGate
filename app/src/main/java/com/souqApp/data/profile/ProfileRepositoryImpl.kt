@@ -3,6 +3,7 @@ package com.souqApp.data.profile
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.profile.remote.api.ProfileApi
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
@@ -40,7 +41,7 @@ class ProfileRepositoryImpl @Inject constructor(private val profileApi: ProfileA
 
                     }.build()
 
-            val response = profileApi.updateUser(body)
+            val response = handleApi { profileApi.updateUser(body) }
 
             if (response.status) {
                 emit(BaseResult.Success(response.data.toEntity()))

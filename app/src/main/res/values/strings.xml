@@ -143,4 +143,6 @@
     <string name="insert_phone_number">Insert phone number</string>
     <string name="add">Add</string>
     <string name="to_place_your_order">to place your order!</string>
+    <string name="pages">Pages</string>
+    <string name="some_things_wrong">Some things wrong!</string>
 </resources>

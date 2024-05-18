@@ -29,7 +29,6 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>(FragmentOrdersBinding
     }
 
     private fun observer() {
-
         viewModel.state.observe(this) { handleState(it) }
     }
 

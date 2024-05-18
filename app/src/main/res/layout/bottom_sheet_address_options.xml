@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/_8sdp"
-                android:text="@string/delete_str" />
+                android:text="@string/delete" />
         </LinearLayout>
 
 

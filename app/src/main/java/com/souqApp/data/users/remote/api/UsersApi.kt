@@ -1,21 +1,26 @@
-package com.souqApp.data.profile.remote.api
+package com.souqApp.data.users.remote.api
 
 import com.souqApp.data.common.remote.dto.UserResponse
+import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.login.remote.dto.LoginRequest
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Query
 
-interface ProfileApi {
+interface UsersApi {
 
     @POST("v2/users/updateProfile")
     suspend fun updateUser(
         @Body params: RequestBody
     ): WrappedResponse<UserResponse>
 
-
     @POST("v2/users/login")
     suspend fun login(@Body loginRequest: LoginRequest): WrappedResponse<UserResponse>
+
+
+    @POST("v2/users/dropAccount")
+    suspend fun deleteUser(@Query("email") email: String): WrappedListResponse<Any>
 
 }

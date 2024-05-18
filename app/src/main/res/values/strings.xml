@@ -24,7 +24,7 @@
     <string name="email">Email</string>
     <string name="phone_number">Phone Number</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="delete_str">Delete</string>
+    <string name="delete">Delete</string>
     <string name="resend_code_str">Resend</string>
     <string name="sub_total_str">Subtotal</string>
     <string name="change_password">Change Password</string>
@@ -34,7 +34,7 @@
     <string name="share_app_str">App Share</string>
     <string name="contact_us_str">Contact Us</string>
     <string name="log_out">Logout</string>
-    <string name="save_str">Save</string>
+    <string name="save">Save</string>
     <string name="change_pass_str">Change Password</string>
     <string name="change_language_sr">Change Language</string>
     <string name="mange_addresses_str">Addresses</string>
@@ -145,4 +145,6 @@
     <string name="to_place_your_order">to place your order!</string>
     <string name="pages">Pages</string>
     <string name="some_things_wrong">Some things wrong!</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="are_you_sure_you_want_to_delete_the_account">Are you sure you want to delete the account?</string>
 </resources>

@@ -2,18 +2,20 @@ package com.souqApp.presentation.main.more.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.souqApp.data.common.remote.dto.UserResponse
-import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
-import com.souqApp.domain.profile.ProfileUseCase
+import com.souqApp.domain.users.DeleteUserUseCase
+import com.souqApp.domain.users.UpdateProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUseCase) :
+class ProfileViewModel @Inject constructor(
+    private val updateProfileUseCase: UpdateProfileUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase
+) :
     ViewModel() {
 
     private val state = MutableStateFlow<ProfileActivityState>(ProfileActivityState.Init)
@@ -32,6 +34,9 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
         state.value = ProfileActivityState.IsLoading(false)
     }
 
+    private fun onAccountDeleted(message: String) {
+        state.value = ProfileActivityState.AccountDeleted(message)
+    }
 
     private fun showToast(message: String) {
         state.value = ProfileActivityState.ShowToast(message)
@@ -42,13 +47,13 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
         state.value = ProfileActivityState.SuccessUpdateProfile(loginEntity)
     }
 
-    private fun errorUpdateProfile(rawResponse: WrappedResponse<UserResponse>) {
-        state.value = ProfileActivityState.ErrorUpdateProfile(rawResponse)
+    private fun oneError(message: String) {
+        state.value = ProfileActivityState.OnError(message)
     }
 
     fun updateProfile(name: String, image: String) {
         viewModelScope.launch {
-            profileUseCase.updateProfile(name, image)
+            updateProfileUseCase.invoke(name, image)
                 .onStart { setLoading() }
                 .catch {
                     hideLoading()
@@ -58,11 +63,25 @@ class ProfileViewModel @Inject constructor(private val profileUseCase: ProfileUs
                     hideLoading()
                     when (it) {
                         is BaseResult.Success -> successUpdateProfile(it.data)
-                        is BaseResult.Errors -> errorUpdateProfile(it.error)
+                        is BaseResult.Errors -> oneError(it.error.message)
                     }
                 }
+        }
+    }
 
 
+    fun deleteUser(email: String) {
+        viewModelScope.launch {
+            deleteUserUseCase.invoke(email)
+                .onStart { setLoading() }
+                .catch { hideLoading() }
+                .collect {
+                    hideLoading()
+                    when (it) {
+                        is BaseResult.Errors -> oneError(it.error.message)
+                        is BaseResult.Success -> onAccountDeleted(it.message)
+                    }
+                }
         }
     }
 
@@ -76,6 +95,7 @@ sealed class ProfileActivityState {
 
     data class ShowToast(val message: String) : ProfileActivityState()
     data class SuccessUpdateProfile(val userEntity: UserEntity) : ProfileActivityState()
-    data class ErrorUpdateProfile(val rawResponse: WrappedResponse<UserResponse>) :
-        ProfileActivityState()
+    data class OnError(val message: String) : ProfileActivityState()
+
+    data class AccountDeleted(val message: String) : ProfileActivityState()
 }

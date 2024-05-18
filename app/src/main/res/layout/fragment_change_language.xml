@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_24sdp"
-            android:text="@string/save_str"
+            android:text="@string/save"
             android:textStyle="bold" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -19,7 +19,7 @@
     <string name="email">البريد الإلكتروني</string>
     <string name="phone_number">رقم الهاتف</string>
     <string name="confirm_password">تأكيد كلمة المرور</string>
-    <string name="delete_str">حذف</string>
+    <string name="delete">حذف</string>
     <string name="resend_code_str">أعد إرسال</string>
     <string name="sub_total_str">المجموع الفرعي</string>
     <string name="change_password">تغيير كلمة المرور</string>
@@ -29,7 +29,7 @@
     <string name="share_app_str">شارك التطبيق</string>
     <string name="contact_us_str">اتصل بنا</string>
     <string name="log_out">تسجيل الخروج</string>
-    <string name="save_str">حفظ</string>
+    <string name="save">حفظ</string>
     <string name="change_pass_str">تغيير كلمة المرور</string>
     <string name="change_language_sr">تغيير اللغة</string>
     <string name="mange_addresses_str">العناوين</string>
@@ -134,4 +134,6 @@
     <string name="to_place_your_order">لتقديم طلبك!</string>
     <string name="pages">Pages</string>
     <string name="some_things_wrong">Some things wrong!</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="are_you_sure_you_want_to_delete_the_account">Are you sure you want to delete the account?</string>
 </resources>

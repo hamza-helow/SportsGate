@@ -31,6 +31,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
+    private var imageSelected: String? = null
+    private val viewModel: ProfileViewModel by viewModels()
+
 
     private val requestReadStoragePermission: ActivityResultLauncher<String> =
         registerForActivityResult(
@@ -51,9 +54,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
 
 
-    private var imageSelected: String? = null
-    val viewModel: ProfileViewModel by viewModels()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
@@ -73,6 +73,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         binding.imgProfile.setOnClickListener(this)
         binding.btnLogout.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
+        binding.btnDelete.setOnClickListener(this)
+
         binding.etName.doAfterTextChanged {
             val name = it.toString()
             if (name != sharedPrefs.getUserInfo()?.name) {
@@ -97,11 +99,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         when (state) {
             is ProfileActivityState.Init -> Unit
             is ProfileActivityState.ProfileChanged -> handleProfileChanged(state.isChanged)
-            is ProfileActivityState.ErrorUpdateProfile -> Unit
+            is ProfileActivityState.OnError -> Unit
             is ProfileActivityState.SuccessUpdateProfile -> handleSuccessUpdateProfile(state.userEntity)
             is ProfileActivityState.IsLoading -> handleIsLoading(state.isLoading)
             is ProfileActivityState.ShowToast -> Unit
+            is ProfileActivityState.AccountDeleted -> onAccountDeleted(state.message)
         }
+    }
+
+    private fun onAccountDeleted(message: String) {
+        showDialog(message, onConfirm = { logout() })
     }
 
     private fun handleIsLoading(isLoading: Boolean) {
@@ -121,20 +128,37 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         when (view.id) {
             binding.imgProfile.id -> requestPermissionReadStorage()
             binding.btnSave.id -> updateProfile()
-            binding.btnLogout.id -> logout()
+            binding.btnLogout.id -> confirmLogout()
+            binding.btnDelete.id -> confirmDeleteAccount()
         }
     }
 
-    private fun logout() {
+    private fun confirmDeleteAccount() {
+
+        showDialog(
+            message = getString(R.string.are_you_sure_you_want_to_delete_the_account),
+            confirmText = getString(R.string.delete),
+            cancelTest = getString(R.string.cancel),
+            onConfirm = ::deleteAccount
+        )
+    }
+
+    private fun deleteAccount() {
+        viewModel.deleteUser(sharedPrefs.getUserInfo()?.email.orEmpty())
+    }
+
+    private fun confirmLogout() {
         showDialog(
             message = getString(R.string.your_account_will_be_logged_out_from_the_app),
             confirmText = getString(R.string.log_out),
             cancelTest = getString(R.string.cancel),
-            onConfirm = {
-                sharedPrefs.logout()
-                findNavController().popBackStack()
-            }
+            onConfirm = ::logout
         )
+    }
+
+    private fun logout() {
+        sharedPrefs.logout()
+        findNavController().popBackStack()
     }
 
     private fun updateProfile() {

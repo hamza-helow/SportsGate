@@ -1,13 +1,14 @@
-package com.souqApp.data.profile
+package com.souqApp.data.users
 
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
+import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.common.utlis.handleApi
-import com.souqApp.data.profile.remote.api.ProfileApi
+import com.souqApp.data.users.remote.api.UsersApi
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
-import com.souqApp.domain.profile.ProfileRepository
+import com.souqApp.domain.users.UsersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -18,8 +19,8 @@ import java.io.File
 import javax.inject.Inject
 
 
-class ProfileRepositoryImpl @Inject constructor(private val profileApi: ProfileApi) :
-    ProfileRepository {
+class UsersRepositoryImpl @Inject constructor(private val usersApi: UsersApi) :
+    UsersRepository {
     override suspend fun updateUser(
         name: String,
         image: String
@@ -41,10 +42,24 @@ class ProfileRepositoryImpl @Inject constructor(private val profileApi: ProfileA
 
                     }.build()
 
-            val response = handleApi { profileApi.updateUser(body) }
+            val response = handleApi { usersApi.updateUser(body) }
 
             if (response.status) {
                 emit(BaseResult.Success(response.data.toEntity()))
+            } else {
+                emit(BaseResult.Errors(response))
+            }
+
+        }
+    }
+
+    override suspend fun deleteUser(email: String): Flow<BaseResult<List<Any>, WrappedListResponse<Any>>> {
+
+        return flow {
+
+            val response = handleApi { usersApi.deleteUser(email) }
+            if (response.status) {
+                emit(BaseResult.Success(response.data.orEmpty(), message = response.message))
             } else {
                 emit(BaseResult.Errors(response))
             }

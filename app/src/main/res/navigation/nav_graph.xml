@@ -3,7 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home_graph">
+    app:startDestination="@id/splashFragment">
+
+    <include app:graph="@navigation/home_graph" />
+
+    <include app:graph="@navigation/categories_graph" />
+
+    <include app:graph="@navigation/cart_graph" />
+
+    <include app:graph="@navigation/more_graph" />
+
+    <include app:graph="@navigation/auth_graph" />
 
 
     <action
@@ -25,6 +35,16 @@
     <action
         android:id="@+id/to_ForceUpdateDialogFragment"
         app:destination="@id/forceUpdateDialogFragment" />
+
+    <fragment
+        tools:layout="@layout/fragment_splash"
+        android:id="@+id/splashFragment"
+        android:name="com.souqApp.presentation.splash.SplashFragment"
+        android:label="" >
+        <action
+            android:id="@+id/to_homeGraph"
+            app:destination="@id/home_graph" />
+    </fragment>
 
 
     <fragment
@@ -52,17 +72,6 @@
             app:destination="@id/imagePreviewFragment" />
 
     </fragment>
-
-
-    <include app:graph="@navigation/home_graph" />
-
-    <include app:graph="@navigation/categories_graph" />
-
-    <include app:graph="@navigation/cart_graph" />
-
-    <include app:graph="@navigation/more_graph" />
-
-    <include app:graph="@navigation/auth_graph" />
 
 
     <dialog

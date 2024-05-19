@@ -52,6 +52,7 @@ class CartFragmentViewModel @Inject constructor(
         _state.value = CartFragmentState.ErrorUpdateQuantity(response)
     }
 
+    @Inject
     fun getCartDetails() {
         viewModelScope.launch {
             getCartDetailsUseCase.execute()

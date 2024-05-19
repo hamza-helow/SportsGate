@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
+import com.souqApp.R
 import com.souqApp.data.common.utlis.CacheHelper
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -40,16 +43,12 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
 
     private fun onLoaded(pages: List<PageEntity>) {
         CacheHelper.pages = pages
-        navigate(SplashFragmentDirections.toHomeFragment())
+
+        navigate(SplashFragmentDirections.toHomeGraph(), R.id.splashFragment, inclusive = true)
     }
 
     private fun onErrorLoad(response: WrappedListResponse<PageEntity>) {
         showDialog(response.message, onConfirm = { viewModel.getPages() })
     }
-
-    private fun onError(throwable: Throwable) {
-        Log.e(APP_TAG, throwable.stackTraceToString())
-    }
-
 
 }

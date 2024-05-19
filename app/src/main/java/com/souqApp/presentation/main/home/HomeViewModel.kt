@@ -73,8 +73,7 @@ class HomeViewModel @Inject constructor(
                     hideLoading()
                     when (it) {
                         is BaseResult.Success -> {
-                            state.value =
-                                HomeFragmentState.CartCountUpdated(it.data.cartProductsCount)
+                            state.value = HomeFragmentState.CartCountUpdated(it.data.cartProductsCount)
                             homeLoaded(it.data)
                         }
 

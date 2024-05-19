@@ -170,13 +170,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun handleCheckUpdateSuccess(checkUpdateEntity: CheckUpdateEntity) {
-        // if (checkUpdateEntity.newVersion)
-        //    navigate(NavGraphDirections.toForceUpdateDialogFragment(checkUpdateEntity.latestVersion))
+        if (checkUpdateEntity.newVersion)
+            navigate(NavGraphDirections.toForceUpdateDialogFragment(checkUpdateEntity.latestVersion))
 
     }
 
     private fun handleCartCountUpdated(count: Int) {
-        mainViewModel.setQty(count)
+        if (count != 0)
+            mainViewModel.setQty(count)
     }
 
     private fun handleHomeLoadedError(response: WrappedResponse<HomeResponse>) {

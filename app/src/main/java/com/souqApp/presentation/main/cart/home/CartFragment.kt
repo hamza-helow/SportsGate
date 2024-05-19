@@ -31,6 +31,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initCartAdapter()
         init()
     }
 
@@ -105,12 +106,15 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         handleCartEmptyState(cartDetailsEntity.products)
         binding.cart = cartDetailsEntity
 
+        cartAdapter.addList(cartDetailsEntity.products)
+        binding.recProducts.setAdapter(cartAdapter, LinearLayoutManager(requireContext()))
+
+    }
+
+    private fun initCartAdapter() {
         cartAdapter = CartAdapter { product, isIncrease ->
             viewModel.updateProduct(product, isIncrease)
         }
-
-        cartAdapter.addList(cartDetailsEntity.products)
-        binding.recProducts.setAdapter(cartAdapter, LinearLayoutManager(requireContext()))
 
     }
 

@@ -32,10 +32,12 @@ class SuccessAddToCartBottomSheet : BottomSheetDialogFragment(), View.OnClickLis
 
     override fun onClick(view: View) {
         dismiss()
+
         when (view.id) {
-            binding.btnShowCart.id -> findNavController().navigate(
+            binding.btnShowCart.id ->
+                findNavController().navigate(
                 SuccessAddToCartBottomSheetDirections.toCartGraph(),
-                NavOptions.Builder().setPopUpTo(R.id.homeFragment, inclusive = true).build()
+                NavOptions.Builder().setPopUpTo(R.id.homeFragment, inclusive = false).build()
             )
 
             binding.btnContinue.id -> findNavController().popBackStack()

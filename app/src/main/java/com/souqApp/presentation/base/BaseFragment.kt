@@ -80,13 +80,16 @@ abstract class BaseFragment<V : ViewBinding>(private val inflate: Inflate<V>) : 
         inclusive: Boolean = false
     ) {
 
+
         val navOptions = NavOptions.Builder()
             .apply {
-                if (popUpTo != null)
+                if (popUpTo != null) {
                     setPopUpTo(popUpTo, inclusive)
+                }
             }
             .setLaunchSingleTop(singleTop)
             .build()
+
 
         findNavController().navigate(navDirections, navOptions)
     }

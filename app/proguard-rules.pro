@@ -31,8 +31,11 @@
 
 -keepclassmembers class com.a2a.wallet.data_source.** { <fields>; }
 
-# @Serializable and @Polymorphic are used at runtime for polymorphic serialization.
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
+
+-keepclassmembers class * {
+    @androidx.navigation.NavArgs *;
+}
 
 
 -keepnames class androidx.navigation.fragment.NavHostFragment
@@ -45,8 +48,10 @@
 -keep @kotlinx.android.parcel.Parcelize public class *
 
 
--keep class com.souqApp.data.main.common.CategoryEntity
--keep class com.souqApp.domain.products.ProductsType
-
 -keepclassmembers class com.souqApp.data.** { <fields>; }
 -keepclassmembers class com.souqApp.domain.** { <fields>; }
+
+
+-keep class * implements android.os.Parcelable {
+    *;
+}

@@ -1,6 +1,5 @@
 package com.souqApp.presentation.splash
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,45 +16,19 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(private val getPagesUseCase: GetPagesUseCase) :
     ViewModel() {
 
-    private val _state = MutableLiveData<SplashFragmentState>()
-    val state: LiveData<SplashFragmentState> get() = _state
-
-
-    private fun onError(throwable: Throwable) {
-        _state.value = SplashFragmentState.Error(throwable)
-    }
-
-    private fun onLoaded(pages: List<PageEntity>) {
-        _state.value = SplashFragmentState.Loaded(pages)
-    }
-
-    private fun onErrorLoad(response: WrappedListResponse<PageEntity>) {
-        _state.value = SplashFragmentState.ErrorLoad(response)
-    }
+    val pagesLiveData: MutableLiveData<BaseResult<List<PageEntity>, WrappedListResponse<PageEntity>>> =
+        MutableLiveData()
 
     @Inject
     fun getPages() {
         viewModelScope.launch {
             getPagesUseCase.invoke()
-                .catch { onError(it) }
+                .catch {  }
                 .collect {
-                    when (it) {
-                        is BaseResult.Success -> onLoaded(it.data)
-                        is BaseResult.Errors -> onErrorLoad(it.error)
-                    }
+                    pagesLiveData.value = it
                 }
         }
     }
 
 
-}
-
-sealed class SplashFragmentState {
-
-    data class Error(val throwable: Throwable) : SplashFragmentState()
-
-    data class Loaded(val pages: List<PageEntity>) : SplashFragmentState()
-
-    data class ErrorLoad(val response: WrappedListResponse<PageEntity>) :
-        SplashFragmentState()
 }

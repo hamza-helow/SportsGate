@@ -77,12 +77,12 @@ fun WebView.setContent(content: String?) {
     if (content.orEmpty().isEmpty())
         return
 
-    this.isFocusable = true
-    this.isFocusableInTouchMode = true
-    this.settings.javaScriptEnabled = true
-    this.settings.loadsImagesAutomatically = true
+//    isFocusable = true
+    isFocusableInTouchMode = true
+    settings.javaScriptEnabled = true
+    settings.loadsImagesAutomatically = true
 
-    this.loadDataWithBaseURL(
+    loadDataWithBaseURL(
         null,
         "<style>img{max-width: 100%}</style>$content", "text/html", "UTF-8", null
     )

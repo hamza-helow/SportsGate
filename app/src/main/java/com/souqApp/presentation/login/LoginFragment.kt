@@ -1,26 +1,23 @@
 package com.souqApp.presentation.login
 
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.login.remote.dto.LoginRequest
 import com.souqApp.databinding.FragmentLoginBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.*
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,11 +32,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     override fun showAppBar() = false
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeToLoading()
+        observeToLoginByPhone()
+    }
+
+    private fun observeToLoginByPhone() {
+        viewModel.loginByPhoneLiveData.observe(viewLifecycleOwner, ::handleLoginByPhone)
+    }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleIsLoading)
+    }
+
     override fun onResume() {
         super.onResume()
-        viewModel.resetState()
         initListener()
-        observe()
     }
 
     private fun initListener() {
@@ -50,27 +59,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         binding.createAccBtn.setOnClickListener(this)
         binding.includePassword.passwordEdt.doAfterTextChanged { validate() }
         binding.includePhoneNumber.phoneEdt.doAfterTextChanged { validate() }
-    }
-
-    private fun observe() {
-        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
-            .onEach { state -> handleState(state) }
-            .launchIn(lifecycleScope)
-    }
-
-    private fun handleState(state: LoginActivityState) {
-        when (state) {
-            is LoginActivityState.ShowToast -> handleShowToast(state.message)
-            is LoginActivityState.IsLoading -> handleIsLoading(state.isLoading)
-            is LoginActivityState.Init -> Unit
-            is LoginActivityState.ErrorLogin -> handleErrorLogin(state.rawResponse)
-            is LoginActivityState.SuccessLogin -> handleSuccessLogin(state.loginEntity)
-            is LoginActivityState.LoginByPhone -> handleLoginByPhone(state.isEnable)
-        }
-    }
-
-    private fun handleShowToast(message: String) {
-        Log.d(tag, message)
     }
 
     private fun handleLoginByPhone(enable: Boolean) {
@@ -116,7 +104,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     private fun login() {
-        //  hideKeyboard()
         var username = getUsernameField().text.toString().trim()
         val password = binding.includePassword.passwordEdt.text.toString()
         val code = if (viewModel.isPhoneEnable) "+962" else ""
@@ -125,7 +112,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             username = username.toValidPhoneNumber()
 
         if (validate()) {
-            viewModel.login(LoginRequest(code + username, password, 0, sharedPrefs.firebaseToken()))
+            viewModel.login(
+                LoginRequest(code + username, password, 0, sharedPrefs.firebaseToken())
+            ) { result ->
+
+                when (result) {
+                    is BaseResult.Errors -> {
+                        handleErrorLogin(result.error)
+                    }
+
+                    is BaseResult.Success -> {
+                        handleSuccessLogin(result.data)
+                    }
+                }
+
+            }
         }
     }
 

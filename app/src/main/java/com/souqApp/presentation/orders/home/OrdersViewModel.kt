@@ -1,6 +1,5 @@
 package com.souqApp.presentation.orders.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,25 +17,14 @@ import javax.inject.Inject
 @HiltViewModel
 class OrdersViewModel @Inject constructor(private val ordersUseCase: OrdersUseCase) : ViewModel() {
 
-    private val _state = MutableLiveData<OrdersActivityState>()
-    val state: LiveData<OrdersActivityState> get() = _state
-
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val orderLiveData: MutableLiveData<BaseResult<List<OrderEntity>, WrappedListResponse<OrderResponse>>> =
+        MutableLiveData()
 
     private fun setLoading(isLoading: Boolean) {
-        _state.value = OrdersActivityState.Loading(isLoading)
+        loadingLiveData.value = isLoading
     }
 
-    private fun onError(throwable: Throwable) {
-        _state.value = OrdersActivityState.Error(throwable)
-    }
-
-    private fun onOrdersLoaded(ordersEntity: List<OrderEntity>) {
-        _state.value = OrdersActivityState.OrdersLoaded(ordersEntity)
-    }
-
-    private fun onOrdersErrorLoad(response: WrappedListResponse<OrderResponse>) {
-        _state.value = OrdersActivityState.OrdersErrorLoad(response)
-    }
 
     @Inject
     fun getOrders() {
@@ -45,26 +33,12 @@ class OrdersViewModel @Inject constructor(private val ordersUseCase: OrdersUseCa
             ordersUseCase
                 .getOrders()
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onOrdersLoaded(it.data)
-                        is BaseResult.Errors -> onOrdersErrorLoad(it.error)
-                    }
+                    orderLiveData.value = it
                 }
         }
     }
 
-}
-
-sealed class OrdersActivityState {
-    data class Loading(val isLoading: Boolean) : OrdersActivityState()
-    data class Error(val throwable: Throwable) : OrdersActivityState()
-    data class OrdersLoaded(val ordersEntity: List<OrderEntity>) : OrdersActivityState()
-    data class OrdersErrorLoad(val response: WrappedListResponse<OrderResponse>) :
-        OrdersActivityState()
 }

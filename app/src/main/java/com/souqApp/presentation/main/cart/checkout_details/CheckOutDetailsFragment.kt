@@ -1,7 +1,6 @@
 package com.souqApp.presentation.main.cart.checkout_details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import androidx.fragment.app.activityViewModels
@@ -13,13 +12,13 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
 import com.souqApp.databinding.FragmentPaymentDetailsBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
 import com.souqApp.infra.extension.errorBorder
 import com.souqApp.infra.extension.secondOrNull
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.successBorder
-import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.addresses.addresses.AddressesFragment
 import com.souqApp.presentation.base.BaseFragment
@@ -35,10 +34,30 @@ class CheckOutDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeToLoading()
+        observeToCheckoutDetails()
+        observeTocCheckCouponCode()
         initListener()
-        observer()
+        observeToValidate()
         binding.radioButtonHomeDelivery.setOnCheckedChangeListener(this)
         binding.radioButtonSitePickup.setOnCheckedChangeListener(this)
+    }
+
+    private fun observeTocCheckCouponCode() {
+        viewModel.checkCouponCodeLiveData.observe(viewLifecycleOwner, ::handleCheckCouponCode)
+    }
+
+    private fun observeToCheckoutDetails() {
+        viewModel.checkoutDetailsLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleCheckoutDetailsErrorLoad(result.error)
+                is BaseResult.Success -> handleCheckoutDetailsLoaded(result.data)
+            }
+        }
+    }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
     }
 
     private fun initListener() {
@@ -47,27 +66,8 @@ class CheckOutDetailsFragment :
         binding.etAddress.setOnClickListener(this)
     }
 
-    private fun observer() {
+    private fun observeToValidate() {
         viewModel.validateLiveData.observe(viewLifecycleOwner, binding.btnBuy::setEnabled)
-        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
-    }
-
-    private fun handleState(state: PaymentDetailsFragmentState) {
-        when (state) {
-            is PaymentDetailsFragmentState.Loading -> handleLoading(state.loading)
-            is PaymentDetailsFragmentState.Error -> handleError(state.throwable)
-            is PaymentDetailsFragmentState.CheckoutDetailsLoaded -> handleCheckoutDetailsLoaded(
-                state.checkoutDetailsEntity
-            )
-
-            is PaymentDetailsFragmentState.CheckoutDetailsErrorLoad -> handleCheckoutDetailsErrorLoad(
-                state.response
-            )
-
-            is PaymentDetailsFragmentState.CheckoutSuccess -> handleCheckoutSuccess(state.checkoutEntity)
-            is PaymentDetailsFragmentState.CheckoutError -> handleCheckoutError(state.response)
-            is PaymentDetailsFragmentState.CheckCouponCode -> handleCheckCouponCode(state.valid)
-        }
     }
 
     private fun handleCheckCouponCode(valid: Boolean) {
@@ -100,10 +100,6 @@ class CheckOutDetailsFragment :
         binding.deliveryOptionOne = checkoutDetailsEntity.deliveryOptions.firstOrNull()
         binding.deliveryOptionTwo = checkoutDetailsEntity.deliveryOptions.secondOrNull()
         viewModel.validate()
-    }
-
-    private fun handleError(throwable: Throwable) {
-        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -143,7 +139,12 @@ class CheckOutDetailsFragment :
     }
 
     private fun checkout() {
-        viewModel.checkout(couponCode = binding.promoCodeEdt.text.toString())
+        viewModel.checkout(couponCode = binding.promoCodeEdt.text.toString()) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleCheckoutError(result.error)
+                is BaseResult.Success -> handleCheckoutSuccess(result.data)
+            }
+        }
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {

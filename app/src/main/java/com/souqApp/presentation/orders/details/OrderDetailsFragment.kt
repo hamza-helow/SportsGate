@@ -1,11 +1,14 @@
 package com.souqApp.presentation.orders.details
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.orders.remote.OrderDetailsResponse
 import com.souqApp.databinding.FragmentOrderDetailsBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.showToast
@@ -20,24 +23,30 @@ class OrderDetailsFragment :
     private val viewModel: OrderDetailsViewModel by viewModels()
     private val productsOrderAdapter = ProductsOrderAdapter()
 
-    override fun onResume() {
-        super.onResume()
-        binding.recProducts.layoutManager = LinearLayoutManager(requireContext())
-        binding.recProducts.adapter = productsOrderAdapter
-        observer()
-    }
-    private fun observer() {
-        viewModel.getOrderDetails(args.orderId)
-        viewModel.state.observe(this) { handleState(it) }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initAdapter()
+        observeToLoading()
+        observeToOrderDetails()
     }
 
-    private fun handleState(state: OrderDetailsActivityState) {
-        when (state) {
-            is OrderDetailsActivityState.Loading -> handleLoading(state.isLoading)
-            is OrderDetailsActivityState.Error -> handleError(state.throwable)
-            is OrderDetailsActivityState.Loaded -> handleLoaded(state.orderDetailsEntity)
-            is OrderDetailsActivityState.ErrorLoad -> handleErrorLoad(state.response)
+    private fun observeToOrderDetails() {
+        viewModel.getOrderDetails(args.orderId)
+        viewModel.orderDetailsLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleErrorLoad(result.error)
+                is BaseResult.Success -> handleLoaded(result.data)
+            }
         }
+    }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
+    }
+
+    private fun initAdapter() {
+        binding.recProducts.layoutManager = LinearLayoutManager(requireContext())
+        binding.recProducts.adapter = productsOrderAdapter
     }
 
     private fun handleErrorLoad(response: WrappedResponse<OrderDetailsResponse>) {
@@ -47,12 +56,6 @@ class OrderDetailsFragment :
     private fun handleLoaded(orderDetailsEntity: OrderDetailsEntity) {
         productsOrderAdapter.addList(orderDetailsEntity.products)
         binding.details = orderDetailsEntity
-    }
-
-    private fun handleError(throwable: Throwable) {
-        if (throwable.message != null) {
-            requireContext().showToast(throwable.message!!)
-        }
     }
 
     private fun handleLoading(loading: Boolean) {

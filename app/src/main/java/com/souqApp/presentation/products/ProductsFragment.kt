@@ -7,6 +7,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.NavGraphDirections
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.FragmentProductsBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.custome_view.flex_recycler_view.PaginationListener
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.main.home.SpacesItemDecoration
@@ -26,21 +27,28 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>(FragmentProductsB
     override fun onStart() {
         super.onStart()
         setupAdapter()
-        observeToState()
+        observeToLoading()
+        observeToProducts()
     }
 
-    private fun observeToState() {
+    private fun observeToProducts() {
         viewModel.loadProducts(args.categoryId, args.type)
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is ProductsFragmentState.OnProductsLoaded -> handleOnProductsLoaded(it.result)
-                is ProductsFragmentState.Loading -> showLoading(it.show)
+
+        viewModel.productsLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> Unit
+                is BaseResult.Success -> handleOnProductsLoaded(result.data.products)
             }
         }
     }
 
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
+    }
+
     private fun setupAdapter() {
-        productsAdapter = ProductGridAdapter { navigate(NavGraphDirections.toProductDetailsFragment(it)) }
+        productsAdapter =
+            ProductGridAdapter { navigate(NavGraphDirections.toProductDetailsFragment(it)) }
         productsAdapter.setPaginationListener(object : PaginationListener {
             override val startPage: Int get() = 1
 
@@ -53,6 +61,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>(FragmentProductsB
     }
 
     private fun handleOnProductsLoaded(products: List<ProductEntity>) {
+        viewModel.isLastPage = products.isEmpty()
         binding.showEmptyState = products.isEmpty()
         productsAdapter.addList(products)
         binding.recProducts.addItemDecoration(SpacesItemDecoration(20))

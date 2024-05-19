@@ -5,6 +5,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.FragmentForgotPasswordBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.toValidPhoneNumber
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,28 +20,18 @@ class ForgotPasswordFragment :
     override fun onResume() {
         super.onResume()
         initListener()
-        validate()
-        observeToState()
+        observeToValidate()
+    }
 
+    private fun observeToValidate() {
+        validate()
+        viewModel.validateLiveData.observe(viewLifecycleOwner, binding.btnSubmit::setEnabled)
     }
 
     private fun validate() {
         viewModel.validate(binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber())
     }
 
-    private fun observeToState() {
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is ForgotPasswordState.Validate -> {
-                    binding.btnSubmit.isEnabled = it.isValid
-                }
-                ForgotPasswordState.OtpSent -> handleOnOtpSent()
-                is ForgotPasswordState.Error -> Unit
-                is ForgotPasswordState.OtpSentError -> handleOnOtpSentError(it.response)
-                is ForgotPasswordState.ShowLoading -> showLoading(it.loading)
-            }
-        }
-    }
 
     private fun handleOnOtpSentError(response: WrappedResponse<Nothing>) {
         showDialog(response.formattedErrors())
@@ -51,7 +42,17 @@ class ForgotPasswordFragment :
     }
 
     private fun requestOtp() {
-        viewModel.requestPasswordReset(getMobileNumber())
+        viewModel.requestPasswordReset(getMobileNumber()) { result ->
+            when (result) {
+                is BaseResult.Errors -> {
+                    handleOnOtpSentError(result.error)
+                }
+
+                is BaseResult.Success -> {
+                    handleOnOtpSent()
+                }
+            }
+        }
     }
 
     private fun getMobileNumber(): String {

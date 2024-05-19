@@ -1,6 +1,5 @@
 package com.souqApp.presentation.product_details
 
-import android.annotation.SuppressLint
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -119,7 +118,6 @@ class ProductDetailsFragment :
         binding.imgFavorite.isChecked = favorite
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun handleDetailsLoaded(productDetailsEntity: ProductDetailsEntity) {
         binding.content.isVisible = true
         binding.details = productDetailsEntity
@@ -157,7 +155,6 @@ class ProductDetailsFragment :
 
         binding.recTag.layoutManager = FlexboxLayoutManager(requireContext())
         binding.recTag.adapter = tagAdapter
-
 
         relevantProducts = AdapterRelevantProducts {
             navigate(NavGraphDirections.toProductDetailsFragment(it.id))

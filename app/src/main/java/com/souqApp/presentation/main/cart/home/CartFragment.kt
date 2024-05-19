@@ -6,11 +6,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 import com.souqApp.databinding.FragmentCartBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
@@ -32,36 +32,48 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCartAdapter()
+        observeToCartDetails()
+        observeToLoading()
         init()
     }
 
+    private fun observeToLoading() {
+        viewModel.loading.observe(viewLifecycleOwner, ::showLoading)
+    }
+
+    private fun observeToCartDetails() {
+        viewModel.cartDetailsLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleCartDetailsErrorLoaded(result.error)
+                is BaseResult.Success -> {
+                    handleCartDetailsLoaded(result.data)
+                }
+            }
+        }
+    }
+
+    private fun handleCartDetailsErrorLoaded(response: WrappedResponse<CartDetailsResponse>) {
+        showDialog(response.message)
+    }
+
+    private fun handleCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
+        val products = cartDetailsEntity.products
+        handleCartEmptyState(products)
+        binding.cart = cartDetailsEntity
+        cartAdapter.addList(products)
+        binding.recProducts.setAdapter(cartAdapter, LinearLayoutManager(requireContext()))
+    }
+
+
     override fun onResume() {
         super.onResume()
-        observer()
+
     }
 
     private fun init() {
         binding.btnCheckOut.setOnClickListener(this)
     }
 
-    private fun observer() {
-        viewModel.state.observe(viewLifecycleOwner) {
-            handleState(it)
-        }
-    }
-
-    private fun handleState(state: CartFragmentState) {
-        when (state) {
-            is CartFragmentState.Init -> Unit
-            is CartFragmentState.Error -> handleError()
-            is CartFragmentState.CartDetailsLoaded -> handleCartDetailsLoaded(state.cartDetailsEntity)
-            is CartFragmentState.CartDetailsErrorLoaded -> handleCartDetailsErrorLoaded(state.wrappedResponse)
-            is CartFragmentState.Loading -> handleLoading(state.isLoading)
-            is CartFragmentState.ProductUpdated -> handleUpdateQuantity(state.updateProductEntity)
-            is CartFragmentState.ProductDelete -> Unit
-            is CartFragmentState.ErrorUpdateQuantity -> handleErrorUpdateQuantity(state.response)
-        }
-    }
 
     private fun handleUpdateQuantity(updateProductQtyEntity: UpdateProductCartEntity) {
         val product =
@@ -93,34 +105,23 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         binding.content.isVisible(!loading)
     }
 
-    private fun handleCartDetailsErrorLoaded(response: WrappedResponse<CartDetailsResponse>) {
-        showDialog(response.message)
-    }
-
     private fun handleCartEmptyState(products: List<ProductInCartEntity>) {
         binding.recProducts.setupEmptyState(products.isEmpty())
         binding.cardCheckOut.isVisible = products.isNotEmpty()
     }
 
-    private fun handleCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
-        handleCartEmptyState(cartDetailsEntity.products)
-        binding.cart = cartDetailsEntity
-
-        cartAdapter.addList(cartDetailsEntity.products)
-        binding.recProducts.setAdapter(cartAdapter, LinearLayoutManager(requireContext()))
-
-    }
 
     private fun initCartAdapter() {
         cartAdapter = CartAdapter { product, isIncrease ->
-            viewModel.updateProduct(product, isIncrease)
+            viewModel.updateProduct(product, isIncrease) {
+                when (it) {
+                    is BaseResult.Errors -> handleErrorUpdateQuantity(it.error)
+                    is BaseResult.Success -> handleUpdateQuantity(it.data)
+                }
+            }
         }
-
     }
 
-    private fun handleError() {
-        showDialog(getString(R.string.unexpected_error_try_again_later))
-    }
 
     override fun onClick(view: View) {
         when (view.id) {

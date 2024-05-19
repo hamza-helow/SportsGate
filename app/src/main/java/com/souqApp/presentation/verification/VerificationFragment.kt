@@ -1,5 +1,6 @@
 package com.souqApp.presentation.verification
 
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
@@ -16,6 +17,7 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.databinding.FragmentVerificationBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.APP_TAG
@@ -40,37 +42,18 @@ class VerificationFragment :
         args.phoneNumber.isNullOrBlank().not()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.isResetPassword = isResetPassword
+        observeToLoading()
         startTimer()
         initListener()
-        observer()
     }
 
-    private fun observer() {
-        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { handleState(it) }
-            .launchIn(lifecycleScope)
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
     }
 
-    private fun handleState(state: VerificationActivityState) {
-        when (state) {
-            is VerificationActivityState.Init -> Unit
-            is VerificationActivityState.SuccessAccountVerification -> handleSuccessAccountVerification(
-                state.userEntity
-            )
-            is VerificationActivityState.ErrorAccountVerification -> handleErrorAccountVerification(
-                state.wrappedResponse
-            )
-            is VerificationActivityState.IsLoading -> handleLoading(state.isLoading)
-            is VerificationActivityState.Error -> onError(state.throwable)
-            is VerificationActivityState.ErrorResetVerification -> onErrorResetVerification(state.response)
-            is VerificationActivityState.SuccessResetVerification -> onSuccessResetVerification(
-                state.createTokenResetPasswordEntity
-            )
-        }
-    }
 
     private fun onSuccessResetVerification(createTokenResetPasswordEntity: CreateTokenResetPasswordEntity) {
         navigate(
@@ -79,15 +62,10 @@ class VerificationFragment :
                 createTokenResetPasswordEntity.token
             )
         )
-        viewModel.resetState()
     }
 
     private fun onErrorResetVerification(response: WrappedResponse<CreateTokenResetPasswordEntity>) {
         showDialog(response.formattedErrors())
-    }
-
-    private fun onError(throwable: Throwable) {
-        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun handleLoading(isLoading: Boolean) {
@@ -150,7 +128,7 @@ class VerificationFragment :
     }
 
     private fun submit() {
-        if (args.phoneNumber != null)
+        if (isResetPassword)
             createResetPasswordToken()
         else
             activeAccount()
@@ -163,14 +141,24 @@ class VerificationFragment :
                 "0",
                 "",
             )
-        )
+        ) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleErrorAccountVerification(result.error)
+                is BaseResult.Success -> handleSuccessAccountVerification(result.data)
+            }
+        }
     }
 
     private fun createResetPasswordToken() {
         viewModel.createTokenResetPassword(
             args.phoneNumber.orEmpty(),
             binding.otpView.text.toString()
-        )
+        ) { result ->
+            when (result) {
+                is BaseResult.Errors -> onErrorResetVerification(result.error)
+                is BaseResult.Success -> onSuccessResetVerification(result.data)
+            }
+        }
     }
 
     private fun validate(): Boolean {

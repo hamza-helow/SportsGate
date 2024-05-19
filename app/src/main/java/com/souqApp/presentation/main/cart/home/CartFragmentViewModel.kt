@@ -22,35 +22,20 @@ import javax.inject.Inject
 @HiltViewModel
 class CartFragmentViewModel @Inject constructor(
     private val getCartDetailsUseCase: GetCartDetailsUseCase,
-    private val updateProductUseCase: UpdateProductUseCase) :
+    private val updateProductUseCase: UpdateProductUseCase
+) :
     ViewModel() {
 
-    private val _state: MutableLiveData<CartFragmentState> = MutableLiveData(CartFragmentState.Init)
-    val state: LiveData<CartFragmentState> get() = _state
+    val cartDetailsLiveData: MutableLiveData<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>> =
+        MutableLiveData()
+
+    val loading: MutableLiveData<Boolean> = MutableLiveData()
+
 
     private fun setLoading(isLoading: Boolean) {
-        _state.value = CartFragmentState.Loading(isLoading)
+        loading.value = isLoading
     }
 
-    private fun onCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
-        _state.value = CartFragmentState.CartDetailsLoaded(cartDetailsEntity)
-    }
-
-    private fun onCartDetailsErrorLoaded(wrappedResponse: WrappedResponse<CartDetailsResponse>) {
-        _state.value = CartFragmentState.CartDetailsErrorLoaded(wrappedResponse)
-    }
-
-    private fun onError(throwable: Throwable) {
-        _state.value = CartFragmentState.Error(throwable)
-    }
-
-    private fun onUpdateProduct(updateProductQtyEntity: UpdateProductCartEntity) {
-        _state.value = CartFragmentState.ProductUpdated(updateProductQtyEntity)
-    }
-
-    private fun onErrorUpdateProduct(response: WrappedResponse<UpdateProductCartResponse>) {
-        _state.value = CartFragmentState.ErrorUpdateQuantity(response)
-    }
 
     @Inject
     fun getCartDetails() {
@@ -59,48 +44,21 @@ class CartFragmentViewModel @Inject constructor(
                 .onStart {
                     setLoading(true)
                 }
-                .catch {
+                .catch { setLoading(false) }.collect {
                     setLoading(false)
-                    onError(it)
-                }.collect {
-                    setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onCartDetailsLoaded(it.data)
-                        is BaseResult.Errors -> onCartDetailsErrorLoaded(it.error)
-                    }
+                    cartDetailsLiveData.value = it
                 }
         }
     }
 
-    fun updateProduct(product: ProductInCartEntity, isIncrease: Boolean) {
+    fun updateProduct(
+        product: ProductInCartEntity,
+        isIncrease: Boolean,
+        onResult: (BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>) -> Unit
+    ) {
         viewModelScope.launch {
-            updateProductUseCase.execute(product,isIncrease)
-                .collect {
-                    when (it) {
-                        is BaseResult.Success -> onUpdateProduct(it.data)
-                        is BaseResult.Errors -> onErrorUpdateProduct(it.error)
-                    }
-                }
+            updateProductUseCase.execute(product, isIncrease)
+                .collect { onResult(it) }
         }
     }
-}
-
-sealed class CartFragmentState {
-    object Init : CartFragmentState()
-    data class Loading(val isLoading: Boolean) : CartFragmentState()
-
-    data class ProductDelete(val deleted: Boolean) : CartFragmentState()
-
-    data class CartDetailsLoaded(val cartDetailsEntity: CartDetailsEntity) : CartFragmentState()
-    data class CartDetailsErrorLoaded(val wrappedResponse: WrappedResponse<CartDetailsResponse>) :
-        CartFragmentState()
-
-    data class ProductUpdated(val updateProductEntity: UpdateProductCartEntity) :
-        CartFragmentState()
-
-    data class ErrorUpdateQuantity(val response: WrappedResponse<UpdateProductCartResponse>) :
-        CartFragmentState()
-
-    data class Error(val throwable: Throwable) : CartFragmentState()
-
 }

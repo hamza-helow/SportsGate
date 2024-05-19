@@ -1,5 +1,6 @@
 package com.souqApp.presentation.login
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.remote.dto.UserResponse
@@ -16,70 +17,38 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
-    private val state = MutableStateFlow<LoginActivityState>(LoginActivityState.Init)
-    private var loginByPhone: Boolean = true
 
-    val mState: StateFlow<LoginActivityState> get() = state
-    val isPhoneEnable: Boolean get() = loginByPhone
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    val loginByPhoneLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
+
+    val isPhoneEnable get() = loginByPhoneLiveData.value == true
 
     fun loginByPhoneToggle() {
-        loginByPhone = !loginByPhone
-        state.value = LoginActivityState.LoginByPhone(loginByPhone)
-    }
-
-    fun resetState() {
-        state.value = LoginActivityState.Init
+        loginByPhoneLiveData.value = isPhoneEnable.not()
     }
 
     private fun setLoading() {
-        state.value = LoginActivityState.IsLoading(true)
+        loadingLiveData.value = true
     }
 
 
     private fun hideLoading() {
-        state.value = LoginActivityState.IsLoading(false)
+        loadingLiveData.value = false
     }
 
-
-    private fun showToast(message: String) {
-        state.value = LoginActivityState.ShowToast(message)
-    }
-
-
-    private fun successLogin(loginEntity: UserEntity) {
-        state.value = LoginActivityState.SuccessLogin(loginEntity)
-    }
-
-    private fun errorLogin(rawResponse: WrappedResponse<UserResponse>) {
-        state.value = LoginActivityState.ErrorLogin(rawResponse)
-    }
-
-
-    fun login(loginRequest: LoginRequest) {
+    fun login(
+        loginRequest: LoginRequest,
+        onResult: (BaseResult<UserEntity, WrappedResponse<UserResponse>>) -> Unit
+    ) {
         viewModelScope.launch {
-            loginUseCase.invoke(loginRequest).onStart {
-                setLoading()
-            }.catch { error ->
-                hideLoading()
-                showToast(error.stackTraceToString())
-            }.collect { result ->
-                hideLoading()
-                when (result) {
-                    is BaseResult.Success -> successLogin(result.data)
-                    is BaseResult.Errors -> errorLogin(result.error)
+            loginUseCase.invoke(loginRequest).onStart { setLoading() }
+                .catch { hideLoading() }
+                .collect { result ->
+                    hideLoading()
+                    onResult(result)
                 }
-            }
-
         }
     }
 
-}
-
-sealed class LoginActivityState {
-    object Init : LoginActivityState()
-    data class IsLoading(val isLoading: Boolean) : LoginActivityState()
-    data class LoginByPhone(val isEnable: Boolean) : LoginActivityState()
-    data class ShowToast(val message: String) : LoginActivityState()
-    data class SuccessLogin(val loginEntity: UserEntity) : LoginActivityState()
-    data class ErrorLogin(val rawResponse: WrappedResponse<UserResponse>) : LoginActivityState()
 }

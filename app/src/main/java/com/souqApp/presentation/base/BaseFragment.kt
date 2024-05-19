@@ -24,7 +24,6 @@ abstract class BaseFragment<V : ViewBinding>(private val inflate: Inflate<V>) : 
     private lateinit var _binding: V
     val binding get() = _binding
 
-    var isLoading = false
 
     final override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,12 +94,15 @@ abstract class BaseFragment<V : ViewBinding>(private val inflate: Inflate<V>) : 
     }
 
     fun showLoading(show: Boolean) {
-        if (isLoading.not() && show) {
-            isLoading = true
+
+        val loadingShown = findNavController().currentDestination?.id == R.id.loadingDialogFragment
+
+        if (loadingShown.not() && show) {
             navigate(NavGraphDirections.toLoadingDialogFragment())
         } else {
-            isLoading = false
-            findNavController().popBackStack()
+
+            if (loadingShown)
+                findNavController().popBackStack()
         }
 
     }

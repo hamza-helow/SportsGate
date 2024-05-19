@@ -3,7 +3,9 @@ package com.souqApp.presentation.forgot_password
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.common.entity.EmptyEntity
 import com.souqApp.domain.verifcation.VerificationUseCase
 import com.souqApp.infra.extension.isPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,41 +18,30 @@ import javax.inject.Inject
 class ForgotPasswordViewModel @Inject constructor(private val verificationUseCase: VerificationUseCase) :
     ViewModel() {
 
-    val state: MutableLiveData<ForgotPasswordState> = MutableLiveData()
+
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val validateLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     fun validate(mobileNumber: String) {
-        state.value = ForgotPasswordState.Validate(mobileNumber.isPhone())
+        validateLiveData.value = mobileNumber.isPhone()
     }
 
-    private fun onError(throwable: Throwable) {
-        state.value = ForgotPasswordState.Error(throwable)
+    private fun showLoading(loading: Boolean) {
+        loadingLiveData.value = loading
     }
 
-    private fun showLoading(loading:Boolean){
-        state.value = ForgotPasswordState.ShowLoading(loading)
-    }
-
-    fun requestPasswordReset(phoneNumber: String) {
+    fun requestPasswordReset(
+        phoneNumber: String,
+        onResult: (BaseResult<EmptyEntity, WrappedResponse<Nothing>>) -> Unit
+    ) {
         viewModelScope.launch {
             verificationUseCase
                 .requestPasswordReset(phoneNumber)
-                .onStart {
-                    showLoading(true)
-                }
-                .catch {
-                    showLoading(false)
-                    onError(it)
-                }
+                .onStart { showLoading(true) }
+                .catch { showLoading(false) }
                 .collect {
                     showLoading(false)
-                    when (it) {
-                        is BaseResult.Errors -> {
-                            state.value = ForgotPasswordState.OtpSentError(it.error)
-                        }
-                        is BaseResult.Success -> {
-                            state.value = ForgotPasswordState.OtpSent
-                        }
-                    }
+                    onResult(it)
                 }
         }
     }

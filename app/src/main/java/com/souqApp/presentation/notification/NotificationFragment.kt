@@ -1,13 +1,12 @@
 package com.souqApp.presentation.notification
 
-import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.notification.remote.NotificationEntities
 import com.souqApp.databinding.FragmentNotificationBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.custome_view.flex_recycler_view.showEmptyState
-import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,26 +24,34 @@ class NotificationFragment :
 
     override fun onResume() {
         super.onResume()
-        viewModel.state.observe(this) { handleState(it) }
+        observeToLoading()
+        observeToNotifications()
+
         binding.rec.showEmptyState(sharedPrefs.isLogin().not())
     }
 
-    private fun handleState(state: NotificationActivityState) {
-        when (state) {
-            is NotificationActivityState.Error -> onError(state.throwable)
-            is NotificationActivityState.ErrorLoad -> onErrorLoad(state.response)
-            is NotificationActivityState.Loaded -> onLoaded(state.notifications)
-            is NotificationActivityState.Loading -> onLoading(state.isLoading)
+    private fun observeToNotifications() {
+        viewModel.notificationsLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> {
+                    onErrorLoad(result.error)
+                }
+
+                is BaseResult.Success -> {
+                    onLoaded(result.data)
+                }
+            }
         }
     }
 
-    private fun onLoading(loading: Boolean) {
-        showLoading(loading)
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
     }
+
 
     private fun onLoaded(entities: NotificationEntities) {
         notificationAdapter.addList(entities.notifications)
-        binding.rec.setAdapter(notificationAdapter , LinearLayoutManager(requireContext()))
+        binding.rec.setAdapter(notificationAdapter, LinearLayoutManager(requireContext()))
         binding.rec.showEmptyState(entities.notifications.isEmpty())
     }
 
@@ -52,7 +59,4 @@ class NotificationFragment :
         showDialog(response.message)
     }
 
-    private fun onError(throwable: Throwable) {
-        Log.e(APP_TAG, throwable.stackTraceToString())
-    }
 }

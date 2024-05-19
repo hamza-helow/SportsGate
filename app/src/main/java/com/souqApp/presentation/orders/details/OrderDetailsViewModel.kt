@@ -1,13 +1,12 @@
 package com.souqApp.presentation.orders.details
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.orders.remote.OrderDetailsResponse
-import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.domain.orders.OrderDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -19,23 +18,12 @@ import javax.inject.Inject
 class OrderDetailsViewModel @Inject constructor(private val orderDetailsUseCase: OrderDetailsUseCase) :
     ViewModel() {
 
-    private val _state = MutableLiveData<OrderDetailsActivityState>()
-    val state: LiveData<OrderDetailsActivityState> get() = _state
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val orderDetailsLiveData: MutableLiveData<BaseResult<OrderDetailsEntity, WrappedResponse<OrderDetailsResponse>>> =
+        MutableLiveData()
 
     private fun setLoading(isLoading: Boolean) {
-        _state.value = OrderDetailsActivityState.Loading(isLoading)
-    }
-
-    private fun onError(throwable: Throwable) {
-        _state.value = OrderDetailsActivityState.Error(throwable)
-    }
-
-    private fun onLoaded(orderDetailsEntity: OrderDetailsEntity) {
-        _state.value = OrderDetailsActivityState.Loaded(orderDetailsEntity)
-    }
-
-    private fun onErrorLoad(response: WrappedResponse<OrderDetailsResponse>) {
-        _state.value = OrderDetailsActivityState.ErrorLoad(response)
+        loadingLiveData.value = isLoading
     }
 
     fun getOrderDetails(orderId: Int) {
@@ -44,27 +32,11 @@ class OrderDetailsViewModel @Inject constructor(private val orderDetailsUseCase:
             orderDetailsUseCase
                 .getOrderDetails(orderId)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onLoaded(it.data)
-                        is BaseResult.Errors -> onErrorLoad(it.error)
-                    }
+                    orderDetailsLiveData.value = it
                 }
         }
     }
-}
-
-
-sealed class OrderDetailsActivityState {
-
-    data class Loading(val isLoading: Boolean) : OrderDetailsActivityState()
-    data class Error(val throwable: Throwable) : OrderDetailsActivityState()
-    data class Loaded(val orderDetailsEntity: OrderDetailsEntity) : OrderDetailsActivityState()
-    data class ErrorLoad(val response: WrappedResponse<OrderDetailsResponse>) :
-        OrderDetailsActivityState()
 }

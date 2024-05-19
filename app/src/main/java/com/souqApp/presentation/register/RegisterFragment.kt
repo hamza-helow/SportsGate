@@ -1,23 +1,18 @@
 package com.souqApp.presentation.register
 
-import android.util.Log
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.souqApp.data.common.remote.dto.TokenResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.register.remote.dto.RegisterRequest
 import com.souqApp.databinding.FragmentRegisterBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.TokenEntity
 import com.souqApp.infra.extension.toValidPhoneNumber
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,10 +25,19 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
     override fun onResume() {
         super.onResume()
-        viewModel.resetState()
+        observeToLoading()
+        observeToValidate()
         validate()
         initListeners()
-        observe()
+    }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
+    }
+
+    private fun observeToValidate() {
+        validate()
+        viewModel.validateLiveData.observe(viewLifecycleOwner, ::handleValidate)
     }
 
     private fun validate() {
@@ -46,11 +50,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         viewModel.validate(fullName, email, phone, password, confirmPassword, isAgree)
     }
 
-    private fun observe() {
-        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
-            .onEach { state -> handleState(state) }
-            .launchIn(lifecycleScope)
-    }
 
     private fun initListeners() {
         binding.txtTermsAndConditions.setOnClickListener(this)
@@ -61,17 +60,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         binding.passwordEdt.doAfterTextChanged { validate() }
         binding.confirmPasswordEdt.doAfterTextChanged { validate() }
         binding.checkBoxAgree.setOnCheckedChangeListener { _, _ -> validate() }
-    }
-
-    private fun handleState(state: RegisterFragmentState) {
-        when (state) {
-            is RegisterFragmentState.ShowToast -> handleShowToast(state.message)
-            is RegisterFragmentState.IsLoading -> handleLoading(state.isLoading)
-            is RegisterFragmentState.ErrorRegister -> handleErrorRegister(state.rawResponse)
-            is RegisterFragmentState.SuccessRegister -> handleSuccessRegister(state.tokenEntity)
-            is RegisterFragmentState.Init -> Unit
-            is RegisterFragmentState.Validate -> handleValidate(state.isValid)
-        }
     }
 
     private fun handleSuccessRegister(tokenEntity: TokenEntity) {
@@ -91,10 +79,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         showLoading(isLoading)
     }
 
-    private fun handleShowToast(message: String) {
-        Log.e(tag, message)
-    }
-
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.registerBtn.id -> createAccount()
@@ -112,7 +96,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         val code = "+962"
         val phone = code + binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber()
         val password = binding.passwordEdt.text.toString()
-        viewModel.register(RegisterRequest(fullName, email, phone, password))
+        viewModel.register(RegisterRequest(fullName, email, phone, password)) { result ->
+
+            when (result) {
+                is BaseResult.Errors -> handleErrorRegister(result.error)
+                is BaseResult.Success -> handleSuccessRegister(result.data)
+            }
+        }
     }
 
 

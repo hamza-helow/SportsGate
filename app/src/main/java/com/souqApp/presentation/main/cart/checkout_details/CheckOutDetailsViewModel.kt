@@ -31,8 +31,12 @@ class PaymentDetailsViewModel @Inject constructor(
     var selectedIdAddress: Int? = null
     var selectedDeliveryOptionId: Int? = null
 
-    private val _state = MutableLiveData<PaymentDetailsFragmentState>()
-    val state: LiveData<PaymentDetailsFragmentState> get() = _state
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val checkoutDetailsLiveData: MutableLiveData<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> =
+        MutableLiveData()
+
+    val checkCouponCodeLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
 
     private val _validateLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
     val validateLiveData: LiveData<Boolean> get() = _validateLiveData
@@ -44,34 +48,7 @@ class PaymentDetailsViewModel @Inject constructor(
     }
 
     private fun setLoading(loading: Boolean) {
-        _state.value = PaymentDetailsFragmentState.Loading(loading)
-    }
-
-    private fun onError(throwable: Throwable) {
-        _state.value = PaymentDetailsFragmentState.Error(throwable)
-    }
-
-
-    private fun onCheckoutDetailsLoaded(checkoutDetailsEntity: CheckoutDetailsEntity) {
-        _state.value = PaymentDetailsFragmentState.CheckoutDetailsLoaded(checkoutDetailsEntity)
-    }
-
-
-    private fun onCheckoutDetailsErrorLoad(response: WrappedResponse<CheckoutDetailsResponse>) {
-        _state.value = PaymentDetailsFragmentState.CheckoutDetailsErrorLoad(response)
-    }
-
-
-    private fun onCheckCouponCode(valid: Boolean) {
-        _state.value = PaymentDetailsFragmentState.CheckCouponCode(valid)
-    }
-
-    private fun onCheckoutSuccess(checkoutEntity: CheckoutEntity) {
-        _state.value = PaymentDetailsFragmentState.CheckoutSuccess(checkoutEntity)
-    }
-
-    private fun onCheckoutError(response: WrappedResponse<CheckoutResponse>) {
-        _state.value = PaymentDetailsFragmentState.CheckoutError(response)
+        loadingLiveData.value = loading
     }
 
     init {
@@ -83,21 +60,18 @@ class PaymentDetailsViewModel @Inject constructor(
             getCheckoutDetailsUseCase
                 .execute(deliveryOptionId)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onCheckoutDetailsLoaded(it.data)
-                        is BaseResult.Errors -> onCheckoutDetailsErrorLoad(it.error)
-                    }
+                    checkoutDetailsLiveData.value = it
                 }
         }
     }
 
-    fun checkout(couponCode: String) {
+    fun checkout(
+        couponCode: String,
+        result: (BaseResult<CheckoutEntity, WrappedResponse<CheckoutResponse>>) -> Unit
+    ) {
         viewModelScope.launch {
             checkoutUseCase
                 .execute(
@@ -106,16 +80,10 @@ class PaymentDetailsViewModel @Inject constructor(
                     deliveryOptionId = selectedDeliveryOptionId
                 )
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onCheckoutSuccess(it.data)
-                        is BaseResult.Errors -> onCheckoutError(it.error)
-                    }
+                    result(it)
                 }
 
         }
@@ -126,33 +94,11 @@ class PaymentDetailsViewModel @Inject constructor(
             checkCouponUseCase
                 .execute(code)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    onCheckCouponCode(it)
+                    checkCouponCodeLiveData.value = it
                 }
         }
     }
-
-}
-
-sealed class PaymentDetailsFragmentState {
-
-    data class Loading(val loading: Boolean) : PaymentDetailsFragmentState()
-    data class Error(val throwable: Throwable) : PaymentDetailsFragmentState()
-    data class CheckoutDetailsLoaded(val checkoutDetailsEntity: CheckoutDetailsEntity) :
-        PaymentDetailsFragmentState()
-
-    data class CheckoutDetailsErrorLoad(val response: WrappedResponse<CheckoutDetailsResponse>) :
-        PaymentDetailsFragmentState()
-
-
-    data class CheckCouponCode(val valid: Boolean) : PaymentDetailsFragmentState()
-
-    data class CheckoutSuccess(val checkoutEntity: CheckoutEntity) : PaymentDetailsFragmentState()
-    data class CheckoutError(val response: WrappedResponse<CheckoutResponse>) :
-        PaymentDetailsFragmentState()
 }

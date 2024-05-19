@@ -1,11 +1,14 @@
 package com.souqApp.presentation.products
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.products.GetProductsUseCase
+import com.souqApp.domain.products.ProductsEntity
 import com.souqApp.domain.products.ProductsType
-import com.souqApp.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -14,16 +17,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(private val getProductsUseCase: GetProductsUseCase) :
-    BaseViewModel() {
+    ViewModel() {
 
-    val state: MutableLiveData<ProductsFragmentState> = MutableLiveData()
     var isLastPage = false
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val productsLiveData: MutableLiveData<BaseResult<ProductsEntity, WrappedListResponse<ProductEntity>>> =
+        MutableLiveData()
 
     private fun setLoading(isLoading: Boolean) {
-        state.value = ProductsFragmentState.Loading(isLoading)
+        loadingLiveData.value = isLoading
     }
 
-    fun loadProducts(id: Int, type: ProductsType , pageNumber:Int = 1) {
+    fun loadProducts(id: Int, type: ProductsType, pageNumber: Int = 1) {
 
         viewModelScope.launch {
             getProductsUseCase.execute(
@@ -38,13 +43,15 @@ class ProductsViewModel @Inject constructor(private val getProductsUseCase: GetP
                 setLoading(false)
             }.collect {
                 setLoading(false)
-                when (it) {
-                    is BaseResult.Errors -> Unit
-                    is BaseResult.Success -> {
-                        isLastPage = it.data.products.isEmpty()
-                        state.value = ProductsFragmentState.OnProductsLoaded(it.data.products)
-                    }
-                }
+                productsLiveData.value = it
+//                when (it) {
+//
+//                            is BaseResult.Errors -> Unit
+//                    is BaseResult.Success -> {
+//                        isLastPage = it.data.products.isEmpty()
+//
+//                    }
+//                }
             }
         }
     }

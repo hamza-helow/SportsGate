@@ -1,12 +1,14 @@
 package com.souqApp.presentation.product_details
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.product_details.remote.AddProductToCartResponse
+import com.souqApp.data.product_details.remote.AddToFavoriteResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
+import com.souqApp.data.product_details.remote.ProductDetailsResponse
+import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.product_details.AddProductToCartEntity
 import com.souqApp.domain.product_details.GetVariationProductPriceInfoUseCase
@@ -25,47 +27,28 @@ class ProductDetailsViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private var variationCombinationId: Int? = null
-    private val state = MutableLiveData<ProductDetailsActivityState>()
-    val mState: LiveData<ProductDetailsActivityState> get() = state
+    var variationCombinationId: Int? = null
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val variationProductPriceLiveData: MutableLiveData<BaseResult<VariationProductPriceInfoEntity, WrappedResponse<VariationProductPriceInfoResponse>>> =
+        MutableLiveData()
+
+    val productDetailsLiveData: MutableLiveData<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>> =
+        MutableLiveData()
+
+    val addingToCartLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     private fun setLoading(isLoading: Boolean) {
-        state.value = ProductDetailsActivityState.Loading(isLoading)
+        loadingLiveData.value = isLoading
     }
 
-    private fun onDetailsLoaded(productDetailsEntity: ProductDetailsEntity) {
-        variationCombinationId = productDetailsEntity.variationCompainationId
-
-        state.value = ProductDetailsActivityState.DetailsLoaded(productDetailsEntity)
-    }
-
-    private fun setOnError(wrappedResponse: WrappedResponse<*>) {
-        state.value = ProductDetailsActivityState.DetailsErrorLoaded(wrappedResponse)
-    }
-
-
-    private fun setAddedToCart(entity: AddProductToCartEntity) {
-        state.value = ProductDetailsActivityState.AddedToCart(entity)
-    }
-
-
-    private fun onAddingToCart(onProgress: Boolean) {
-        state.value = ProductDetailsActivityState.AddingToCart(onProgress)
-    }
-
-    private fun handleToggleFavorite(isFavorite: Boolean) {
-        state.value = ProductDetailsActivityState.ToggleFavorite(isFavorite)
-    }
-
-    fun toggleFavorite(idProduct: Int) {
+    fun toggleFavorite(
+        idProduct: Int,
+        onResult: (BaseResult<AddToFavoriteResponse, WrappedResponse<AddToFavoriteResponse>>) -> Unit
+    ) {
         viewModelScope.launch {
             productDetailsUseCase.addOrRemoveProduct(idProduct, variationCombinationId)
-                .catch {}.collect {
-                    when (it) {
-                        is BaseResult.Errors -> Unit
-                        is BaseResult.Success -> handleToggleFavorite(it.data.userFavourite)
-                    }
-                }
+                .catch {}
+                .collect { onResult(it) }
         }
     }
 
@@ -77,20 +60,19 @@ class ProductDetailsViewModel @Inject constructor(
                 setLoading(false)
             }.collect {
                 setLoading(false)
-                when (it) {
-                    is BaseResult.Errors -> Unit
-                    is BaseResult.Success -> {
-                        variationCombinationId = it.data.combinationId
-                        state.value =
-                            ProductDetailsActivityState.VariationProductPriceLoaded(it.data)
-                    }
-                }
-
+                variationProductPriceLiveData.value = it
             }
         }
     }
 
-    fun addProductToCart(productId: Int) {
+    private fun onAddingToCart(add: Boolean) {
+        addingToCartLiveData.value = add
+    }
+
+    fun addProductToCart(
+        productId: Int,
+        onResult: (BaseResult<AddProductToCartEntity, WrappedResponse<AddProductToCartResponse>>) -> Unit
+    ) {
         viewModelScope.launch {
             productDetailsUseCase
                 .addProductToCart(productId, variationCombinationId)
@@ -102,10 +84,7 @@ class ProductDetailsViewModel @Inject constructor(
                 }
                 .collect {
                     onAddingToCart(false)
-                    when (it) {
-                        is BaseResult.Errors -> setOnError(it.error)
-                        is BaseResult.Success -> setAddedToCart(it.data)
-                    }
+                    onResult(it)
                 }
         }
     }
@@ -118,35 +97,10 @@ class ProductDetailsViewModel @Inject constructor(
                     setLoading(false)
                 }.collect {
                     setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onDetailsLoaded(it.data)
-                        is BaseResult.Errors -> setOnError(it.error)
-                    }
+                    productDetailsLiveData.value = it
                 }
         }
 
 
     }
-
-}
-
-
-sealed class ProductDetailsActivityState {
-    object Init : ProductDetailsActivityState()
-    data class Loading(val isLoading: Boolean) : ProductDetailsActivityState()
-    data class DetailsLoaded(val productDetailsEntity: ProductDetailsEntity) :
-        ProductDetailsActivityState()
-
-    data class DetailsErrorLoaded(val wrappedResponse: WrappedResponse<*>) :
-        ProductDetailsActivityState()
-
-    data class ToggleFavorite(val isFavorite: Boolean) : ProductDetailsActivityState()
-
-    data class AddedToCart(val entity: AddProductToCartEntity) : ProductDetailsActivityState()
-
-    data class AddingToCart(val inProgress: Boolean) : ProductDetailsActivityState()
-
-    data class VariationProductPriceLoaded(val variationProductPriceInfoEntity: VariationProductPriceInfoEntity) :
-        ProductDetailsActivityState()
-
 }

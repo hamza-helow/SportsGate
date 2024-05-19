@@ -1,6 +1,7 @@
 package com.souqApp.presentation.search
 
-import android.util.Log
+import android.os.Bundle
+import android.view.View
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -9,11 +10,9 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.NavGraphDirections
-import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.FragmentSearchBinding
 import com.souqApp.infra.extension.start
-import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -32,29 +31,24 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
     override fun showAppBar() = false
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initAdapter()
+        observeToSearchResult()
+    }
+
+    private fun observeToSearchResult() {
+        viewModel.search("")
+        viewModel.searchResultLiveData.observe(viewLifecycleOwner, ::handleLoaded)
+    }
+
+
+    private fun initAdapter() {
         binding.recProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.recProducts.adapter = productHorizontalPagingAdapter
         binding.searchView.setOnQueryTextListener(this)
-        binding.imgBack.setOnClickListener{ findNavController().popBackStack() }
-        observer()
+        binding.imgBack.setOnClickListener { findNavController().popBackStack() }
     }
-
-    private fun observer() {
-        viewModel.search("")
-        viewModel.state.observe(this) { handleState(it) }
-    }
-
-    private fun handleState(state: SearchActivityState) {
-        when (state) {
-            is SearchActivityState.Error -> handleError(state.throwable)
-            is SearchActivityState.ErrorLoad -> handleErrorLoad(state.response)
-            is SearchActivityState.Loaded -> handleLoaded(state.searchEntity)
-            is SearchActivityState.Loading -> Unit
-        }
-    }
-
 
     private fun handleLoaded(result: PagingData<ProductEntity>) {
         lifecycleScope.launch {
@@ -63,15 +57,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                 binding.includeLoader.loadingProgressBar.start(it.refresh == LoadState.Loading)
             }
         }
-    }
-
-    private fun handleErrorLoad(response: WrappedListResponse<ProductEntity>) {
-        showDialog(response.message)
-
-    }
-
-    private fun handleError(throwable: Throwable) {
-        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     override fun onQueryTextSubmit(p0: String?): Boolean {

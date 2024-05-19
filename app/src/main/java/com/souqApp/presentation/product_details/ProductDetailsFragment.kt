@@ -1,5 +1,6 @@
 package com.souqApp.presentation.product_details
 
+import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -17,6 +18,7 @@ import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.databinding.FragmentProductDetailsBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.product_details.AddProductToCartEntity
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import com.souqApp.domain.products.ProductsType
@@ -50,10 +52,35 @@ class ProductDetailsFragment :
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
-    override fun onStart() {
-        super.onStart()
-        observer()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeToLoading()
+        observeToProductDetails()
+        observeToVariationProductPrice()
         init()
+    }
+
+    private fun observeToVariationProductPrice() {
+        viewModel.variationProductPriceLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleOnError(result.error)
+                is BaseResult.Success -> handleVariationProductPriceLoaded(result.data)
+            }
+        }
+    }
+
+    private fun observeToProductDetails() {
+        viewModel.productDetailsLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleOnError(result.error)
+                is BaseResult.Success -> handleDetailsLoaded(result.data)
+            }
+        }
+    }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
     }
 
     private fun initListener() {
@@ -61,7 +88,7 @@ class ProductDetailsFragment :
         binding.btnAddToCart.setOnClickListener(this)
     }
 
-    override fun showAppBar(): Boolean =false
+    override fun showAppBar(): Boolean = false
 
     private fun init() {
         initListener()
@@ -74,26 +101,9 @@ class ProductDetailsFragment :
         }
     }
 
-    private fun observer() {
-        viewModel.mState.observe(viewLifecycleOwner) { handleState(it) }
-    }
-
-    private fun handleState(state: ProductDetailsActivityState) {
-        when (state) {
-            is ProductDetailsActivityState.Init -> Unit
-            is ProductDetailsActivityState.ToggleFavorite -> handleToggleFavorite(state.isFavorite)
-            is ProductDetailsActivityState.Loading -> handleLoading(state.isLoading)
-            is ProductDetailsActivityState.DetailsErrorLoaded -> handleOnError(state.wrappedResponse)
-            is ProductDetailsActivityState.DetailsLoaded -> handleDetailsLoaded(state.productDetailsEntity)
-            is ProductDetailsActivityState.AddedToCart -> handleAddedToCart(state.entity)
-            is ProductDetailsActivityState.AddingToCart -> handleAddingToCart(state.inProgress)
-            is ProductDetailsActivityState.VariationProductPriceLoaded -> handleVariationProductPriceLoaded(
-                state.variationProductPriceInfoEntity
-            )
-        }
-    }
 
     private fun handleVariationProductPriceLoaded(priceInfoEntity: VariationProductPriceInfoEntity) {
+        viewModel.variationCombinationId = priceInfoEntity.combinationId
         binding.price = priceInfoEntity.price
         binding.priceAfterDiscount = priceInfoEntity.discountPrice
         binding.discount = priceInfoEntity.discountPercentage
@@ -119,6 +129,7 @@ class ProductDetailsFragment :
     }
 
     private fun handleDetailsLoaded(productDetailsEntity: ProductDetailsEntity) {
+        viewModel.variationCombinationId = productDetailsEntity.variationCompainationId
         binding.content.isVisible = true
         binding.details = productDetailsEntity
         binding.webView.setContent(productDetailsEntity.desc)
@@ -162,7 +173,7 @@ class ProductDetailsFragment :
 
         relevantProducts.list = productDetailsEntity.relevant
 
-        binding.recRelevant.layoutManager = GridLayoutManager(requireContext(),3)
+        binding.recRelevant.layoutManager = GridLayoutManager(requireContext(), 3)
         binding.recRelevant.adapter = relevantProducts
 
 
@@ -187,12 +198,29 @@ class ProductDetailsFragment :
 
     override fun onClick(view: View) {
         when (view.id) {
-            binding.imgFavorite.id -> checkIsUserLogged {
-                viewModel.toggleFavorite(args.productId)
-            }
+            binding.imgFavorite.id -> toggleFavorite()
+            binding.btnAddToCart.id -> addToCart()
+        }
+    }
 
-            binding.btnAddToCart.id -> checkIsUserLogged {
-                viewModel.addProductToCart(args.productId)
+    private fun toggleFavorite() {
+        checkIsUserLogged {
+            viewModel.toggleFavorite(args.productId) { result ->
+                when (result) {
+                    is BaseResult.Errors -> handleOnError(result.error)
+                    is BaseResult.Success -> handleToggleFavorite(result.data.userFavourite)
+                }
+            }
+        }
+    }
+
+    private fun addToCart() {
+        checkIsUserLogged {
+            viewModel.addProductToCart(args.productId) { result ->
+                when (result) {
+                    is BaseResult.Errors -> handleOnError(result.error)
+                    is BaseResult.Success -> handleAddedToCart(result.data)
+                }
             }
         }
     }

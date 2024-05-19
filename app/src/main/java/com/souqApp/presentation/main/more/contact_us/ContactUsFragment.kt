@@ -1,5 +1,6 @@
 package com.souqApp.presentation.main.more.contact_us
 
+import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -19,10 +20,22 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(FragmentContact
 
     private val viewModel: ContactUsViewModel by viewModels()
 
-    override fun onResume() {
-        super.onResume()
-        observer()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initListener()
+        observeToLoading()
+        observeToValidate()
+    }
+
+    private fun observeToValidate() {
+        validate()
+        viewModel.validateLiveData.observe(viewLifecycleOwner) { enabled ->
+            binding.btnSubmit.isEnabled = enabled
+        }
+    }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
     }
 
 
@@ -34,35 +47,15 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(FragmentContact
         binding.btnSubmit.setOnClickListener(this)
     }
 
-    private fun observer() {
-        viewModel.state.observe(this) { handleState(it) }
-    }
-
-    private fun handleState(state: ContactUsState) {
-
-        when (state) {
-            is ContactUsState.Added -> handleAdded(state.isAdded)
-            is ContactUsState.Error -> handleError(state.throwable)
-            is ContactUsState.Loading -> handleLoading(state.isLoading)
-            is ContactUsState.Validate -> binding.btnSubmit.isEnabled = state.isValid
-        }
-    }
-
     private fun handleLoading(loading: Boolean) {
         binding.loader.loadingProgressBar.start(loading)
         binding.btnSubmit.isEnabled = !loading
     }
 
-    private fun handleError(throwable: Throwable) {
-        if (throwable is SocketTimeoutException) {
-            requireContext().showToast(getString(R.string.unexpected_error_try_again_later))
-        }
-    }
-
     private fun handleAdded(added: Boolean) {
         if (added) {
             requireContext().showToast(getString(R.string.your_inquiry_has_been_sent))
-            findNavController().popBackStack(R.id.moreFragment , false)
+            findNavController().popBackStack(R.id.moreFragment, false)
 
         } else {
             requireContext().showToast(getString(R.string.unexpected_error_try_again_later))
@@ -100,6 +93,6 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(FragmentContact
                 phone = pone,
                 message = message
             )
-        )
+        ) { handleAdded(it) }
     }
 }

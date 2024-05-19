@@ -1,13 +1,13 @@
 package com.souqApp.presentation.main.more.change_password
 
-import android.util.Log
+import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.FragmentChangePasswordBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.activeBorder
 import com.souqApp.infra.extension.isPasswordValid
 import com.souqApp.infra.extension.showToast
@@ -15,35 +15,20 @@ import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(FragmentChangePasswordBinding::inflate), View.OnClickListener {
+class ChangePasswordFragment :
+    BaseFragment<FragmentChangePasswordBinding>(FragmentChangePasswordBinding::inflate),
+    View.OnClickListener {
 
     private val viewModel: ChangePasswordViewModel by viewModels()
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initListener()
-        observer()
+        observeToLoading()
     }
 
-    private fun observer() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.mState.collect { handleState(it) }
-        }
-    }
-
-    private fun handleState(state: ChangePasswordActivityState) {
-
-        when (state) {
-            is ChangePasswordActivityState.Init -> Unit
-            is ChangePasswordActivityState.SuccessChangePassword -> whenSuccessChangePassword()
-            is ChangePasswordActivityState.Error -> handleError(state.throwable)
-            is ChangePasswordActivityState.ErrorChangePassword -> whenErrorChangePassword(state.response)
-            is ChangePasswordActivityState.Loading -> handleLoading(state.isLoading)
-        }
-    }
-
-    private fun handleError(throwable: Throwable) {
-        Log.e("TAG", throwable.stackTraceToString())
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -55,7 +40,7 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(Fragm
     }
 
     private fun whenSuccessChangePassword() {
-       requireContext().showToast("Password changed successfully")
+        requireContext().showToast("Password changed successfully")
         findNavController().popBackStack()
     }
 
@@ -109,6 +94,11 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(Fragm
     private fun changePassword() {
         val currentPassword = binding.includeCurrentPassword.passwordEdt.text.toString()
         val newPassword = binding.includeNewPassword.passwordEdt.text.toString()
-        viewModel.changePassword(currentPassword, newPassword)
+        viewModel.changePassword(currentPassword, newPassword) { result ->
+            when (result) {
+                is BaseResult.Errors -> whenErrorChangePassword(result.error)
+                is BaseResult.Success -> whenSuccessChangePassword()
+            }
+        }
     }
 }

@@ -1,10 +1,12 @@
 package com.souqApp.presentation.main.more.change_password
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.change_password.ChangePasswordUseCase
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.common.entity.EmptyEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,52 +19,27 @@ import javax.inject.Inject
 class ChangePasswordViewModel @Inject constructor(private val changePasswordUseCase: ChangePasswordUseCase) :
     ViewModel() {
 
-    private val state =
-        MutableStateFlow<ChangePasswordActivityState>(ChangePasswordActivityState.Init)
-    val mState: StateFlow<ChangePasswordActivityState> get() = state
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     private fun setLoading(isLoading: Boolean) {
-        state.value = ChangePasswordActivityState.Loading(isLoading)
+        loadingLiveData.value = isLoading
     }
 
-    private fun whenAnErrorOccurs(throwable: Throwable) {
-        state.value = ChangePasswordActivityState.Error(throwable)
-    }
-
-    private fun errorChangePassword(response: WrappedResponse<Nothing>) {
-        state.value = ChangePasswordActivityState.ErrorChangePassword(response)
-    }
-
-    private fun successChangePassword() {
-        state.value = ChangePasswordActivityState.SuccessChangePassword
-    }
-
-    fun changePassword(oldPassword: String, newPassword: String) {
+    fun changePassword(
+        oldPassword: String,
+        newPassword: String,
+        onResult: (BaseResult<EmptyEntity, WrappedResponse<Nothing>>) -> Unit
+    ) {
         viewModelScope.launch {
             changePasswordUseCase
                 .changePassword(oldPassword, newPassword)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    whenAnErrorOccurs(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> successChangePassword()
-                        is BaseResult.Errors -> errorChangePassword(it.error)
-                    }
+                    onResult(it)
                 }
         }
     }
 
-}
-
-sealed class ChangePasswordActivityState {
-    object Init : ChangePasswordActivityState()
-    object SuccessChangePassword : ChangePasswordActivityState()
-    data class Loading(val isLoading: Boolean) : ChangePasswordActivityState()
-    data class Error(val throwable: Throwable) : ChangePasswordActivityState()
-    data class ErrorChangePassword(val response: WrappedResponse<Nothing>) :
-        ChangePasswordActivityState()
 }

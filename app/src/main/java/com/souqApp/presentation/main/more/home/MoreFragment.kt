@@ -11,6 +11,7 @@ import com.souqApp.data.common.utlis.CacheHelper
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.settings.remote.dto.SettingsEntity
 import com.souqApp.databinding.FragmentMoreBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.openUrl
 import com.souqApp.infra.utils.APP_TAG
@@ -43,19 +44,15 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         initPagesAdapter()
         initListener()
         initInfo()
-        observer()
+        observeToSettings()
     }
 
-    private fun observer() {
-        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
-    }
-
-    private fun handleState(state: MoreFragmentState) {
-        when (state) {
-            is MoreFragmentState.Error -> onError(state.throwable)
-            is MoreFragmentState.ErrorLoad -> onErrorLoad(state.response)
-            is MoreFragmentState.Loaded -> onLoaded(state.settingEntity)
-
+    private fun observeToSettings() {
+        viewModel.settingsLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> onErrorLoad(result.error)
+                is BaseResult.Success -> onLoaded(result.data)
+            }
         }
     }
 
@@ -81,10 +78,6 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         binding.imgTiktok.isVisible(false)
         binding.imgInstagram.isVisible(false)
         binding.imgFacebook.isVisible(false)
-    }
-
-    private fun onError(throwable: Throwable) {
-        Log.e(APP_TAG, throwable.stackTraceToString())
     }
 
     private fun initListener() {

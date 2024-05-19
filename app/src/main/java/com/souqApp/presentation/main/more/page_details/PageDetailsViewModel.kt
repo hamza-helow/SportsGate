@@ -1,6 +1,5 @@
 package com.souqApp.presentation.main.more.page_details
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,41 +17,22 @@ import javax.inject.Inject
 class PageDetailsViewModel @Inject constructor(private val getPageDetailsUseCase: GetPageDetailsUseCase) :
     ViewModel() {
 
-    private val _state = MutableLiveData<PageDetailsState>()
-    val state: LiveData<PageDetailsState> get() = _state
-
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val pageDetailsLiveData: MutableLiveData<BaseResult<PageDetailsEntity, WrappedResponse<PageDetailsEntity>>> =
+        MutableLiveData()
 
     private fun setLoading(isLoading: Boolean) {
-        _state.value = PageDetailsState.Loading(isLoading)
-    }
-
-    private fun onError(throwable: Throwable) {
-        _state.value = PageDetailsState.Error(throwable)
-    }
-
-    private fun onLoaded(pageDetailsEntity: PageDetailsEntity) {
-        _state.value = PageDetailsState.Loaded(pageDetailsEntity)
-    }
-
-
-    private fun onErrorLoad(response: WrappedResponse<PageDetailsEntity>) {
-        _state.value = PageDetailsState.ErrorLoad(response)
+        loadingLiveData.value = isLoading
     }
 
     fun getPageDetails(pageId: Int?) {
         viewModelScope.launch {
             getPageDetailsUseCase.invoke(pageId)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    when (it) {
-                        is BaseResult.Errors -> onErrorLoad(it.error)
-                        is BaseResult.Success -> onLoaded(it.data)
-                    }
+                    pageDetailsLiveData.value = it
                 }
         }
     }
@@ -60,11 +40,3 @@ class PageDetailsViewModel @Inject constructor(private val getPageDetailsUseCase
 }
 
 
-sealed class PageDetailsState {
-
-    data class Loading(val isLoading: Boolean) : PageDetailsState()
-    data class Error(val throwable: Throwable) : PageDetailsState()
-    data class Loaded(val details: PageDetailsEntity) : PageDetailsState()
-
-    data class ErrorLoad(val response: WrappedResponse<PageDetailsEntity>) : PageDetailsState()
-}

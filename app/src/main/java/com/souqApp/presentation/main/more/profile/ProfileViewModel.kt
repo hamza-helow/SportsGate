@@ -1,7 +1,11 @@
 package com.souqApp.presentation.main.more.profile
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.souqApp.data.common.remote.dto.UserResponse
+import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.users.DeleteUserUseCase
@@ -18,84 +22,53 @@ class ProfileViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private val state = MutableStateFlow<ProfileActivityState>(ProfileActivityState.Init)
-    val mState: StateFlow<ProfileActivityState> get() = state
 
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val profileChangesLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     fun setProfileChanged(isChanged: Boolean) {
-        state.value = ProfileActivityState.ProfileChanged(isChanged)
+        profileChangesLiveData.value = isChanged
     }
 
     private fun setLoading() {
-        state.value = ProfileActivityState.IsLoading(true)
+        loadingLiveData.value = true
     }
 
     private fun hideLoading() {
-        state.value = ProfileActivityState.IsLoading(false)
-    }
-
-    private fun onAccountDeleted(message: String) {
-        state.value = ProfileActivityState.AccountDeleted(message)
-    }
-
-    private fun showToast(message: String) {
-        state.value = ProfileActivityState.ShowToast(message)
+        loadingLiveData.value = false
     }
 
 
-    private fun successUpdateProfile(loginEntity: UserEntity) {
-        state.value = ProfileActivityState.SuccessUpdateProfile(loginEntity)
-    }
-
-    private fun oneError(message: String) {
-        state.value = ProfileActivityState.OnError(message)
-    }
-
-    fun updateProfile(name: String, image: String) {
+    fun updateProfile(
+        name: String,
+        image: String,
+        onResult: (BaseResult<UserEntity, WrappedResponse<UserResponse>>) -> Unit
+    ) {
         viewModelScope.launch {
             updateProfileUseCase.invoke(name, image)
                 .onStart { setLoading() }
-                .catch {
-                    hideLoading()
-                    showToast(it.stackTraceToString())
-                }
+                .catch { hideLoading() }
                 .collect {
                     hideLoading()
-                    when (it) {
-                        is BaseResult.Success -> successUpdateProfile(it.data)
-                        is BaseResult.Errors -> oneError(it.error.message)
-                    }
+                    onResult(it)
                 }
         }
     }
 
 
-    fun deleteUser(email: String) {
+    fun deleteUser(
+        email: String,
+        onResult: (BaseResult<List<Any>, WrappedListResponse<Any>>) -> Unit
+    ) {
         viewModelScope.launch {
             deleteUserUseCase.invoke(email)
                 .onStart { setLoading() }
                 .catch { hideLoading() }
                 .collect {
                     hideLoading()
-                    when (it) {
-                        is BaseResult.Errors -> oneError(it.error.message)
-                        is BaseResult.Success -> onAccountDeleted(it.message)
-                    }
+                    onResult(it)
                 }
         }
     }
 
-}
-
-sealed class ProfileActivityState {
-    object Init : ProfileActivityState()
-    data class IsLoading(val isLoading: Boolean) : ProfileActivityState()
-    data class ProfileChanged(val isChanged: Boolean) :
-        ProfileActivityState()
-
-    data class ShowToast(val message: String) : ProfileActivityState()
-    data class SuccessUpdateProfile(val userEntity: UserEntity) : ProfileActivityState()
-    data class OnError(val message: String) : ProfileActivityState()
-
-    data class AccountDeleted(val message: String) : ProfileActivityState()
 }

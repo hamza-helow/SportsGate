@@ -1,16 +1,17 @@
 package com.souqApp.presentation.main.more.wish_list
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.FragmentWishListBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.custome_view.flex_recycler_view.showEmptyState
-import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
 class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListBinding::inflate) {
@@ -21,19 +22,24 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListB
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.state.observe(this) { handleState(it) }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeToLoading()
+        observeToWishList()
     }
 
-    private fun handleState(state: WishListActivityState) {
+    private fun observeToWishList() {
 
-        when (state) {
-            is WishListActivityState.Error -> onError(state.throwable)
-            is WishListActivityState.ErrorLoad -> onErrorLoad(state.response)
-            is WishListActivityState.Loaded -> onLoaded(state.products)
-            is WishListActivityState.Loading -> onLoading(state.isLoading)
+        viewModel.wishListLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> onErrorLoad(result.error)
+                is BaseResult.Success -> onLoaded(result.data)
+            }
         }
+    }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::onLoading)
     }
 
     private fun onLoading(loading: Boolean) {
@@ -50,9 +56,4 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListB
         showDialog(response.message)
     }
 
-    private fun onError(throwable: Throwable) {
-        if (throwable is SocketTimeoutException) {
-            requireContext().showToast("Unexpected error, try again later")
-        }
-    }
 }

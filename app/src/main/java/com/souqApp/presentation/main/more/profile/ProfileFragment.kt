@@ -8,12 +8,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.souqApp.R
 import com.souqApp.databinding.FragmentProfileBinding
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
@@ -21,8 +19,6 @@ import com.souqApp.infra.utils.PathUtil
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -56,18 +52,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
-    }
-
-    override fun onResume() {
-        super.onResume()
         initListener()
+        init()
+        observeToLoading()
+        observeToProfileChanged()
     }
 
-    override fun onStart() {
-        super.onStart()
-        observe()
+    private fun observeToProfileChanged() {
+        viewModel.profileChangesLiveData.observe(viewLifecycleOwner, ::handleProfileChanged)
     }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleIsLoading)
+    }
+
 
     private fun initListener() {
         binding.imgProfile.setOnClickListener(this)
@@ -87,24 +85,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun init() {
         binding.user = sharedPrefs.getUserInfo()
-    }
-
-    private fun observe() {
-        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { state -> handleState(state) }
-            .launchIn(lifecycleScope)
-    }
-
-    private fun handleState(state: ProfileActivityState) {
-        when (state) {
-            is ProfileActivityState.Init -> Unit
-            is ProfileActivityState.ProfileChanged -> handleProfileChanged(state.isChanged)
-            is ProfileActivityState.OnError -> Unit
-            is ProfileActivityState.SuccessUpdateProfile -> handleSuccessUpdateProfile(state.userEntity)
-            is ProfileActivityState.IsLoading -> handleIsLoading(state.isLoading)
-            is ProfileActivityState.ShowToast -> Unit
-            is ProfileActivityState.AccountDeleted -> onAccountDeleted(state.message)
-        }
     }
 
     private fun onAccountDeleted(message: String) {
@@ -144,7 +124,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     }
 
     private fun deleteAccount() {
-        viewModel.deleteUser(sharedPrefs.getUserInfo()?.email.orEmpty())
+        viewModel.deleteUser(sharedPrefs.getUserInfo()?.email.orEmpty()) { result ->
+            when (result) {
+                is BaseResult.Errors -> Unit
+                is BaseResult.Success -> onAccountDeleted(result.message)
+            }
+        }
     }
 
     private fun confirmLogout() {
@@ -163,7 +148,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun updateProfile() {
         val name = binding.etName.text.toString().trim()
-        viewModel.updateProfile(name, imageSelected.orEmpty())
+        viewModel.updateProfile(name, imageSelected.orEmpty()) { result ->
+            when (result) {
+                is BaseResult.Errors -> Unit
+                is BaseResult.Success -> handleSuccessUpdateProfile(result.data)
+            }
+        }
     }
 
     private fun requestPermissionReadStorage() {

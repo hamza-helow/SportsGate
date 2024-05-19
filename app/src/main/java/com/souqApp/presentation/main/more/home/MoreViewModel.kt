@@ -1,6 +1,5 @@
 package com.souqApp.presentation.main.more.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,21 +17,8 @@ import javax.inject.Inject
 class MoreViewModel @Inject constructor(private val settingsUseCase: SettingsUseCase) :
     ViewModel() {
 
-
-    private val _state = MutableLiveData<MoreFragmentState>()
-    val state: LiveData<MoreFragmentState> get() = _state
-
-    private fun onError(throwable: Throwable) {
-        _state.value = MoreFragmentState.Error(throwable)
-    }
-
-    private fun onLoaded(settingEntity: SettingsEntity) {
-        _state.value = MoreFragmentState.Loaded(settingEntity)
-    }
-
-    private fun onErrorLoad(response: WrappedResponse<SettingsEntity>) {
-        _state.value = MoreFragmentState.ErrorLoad(response)
-    }
+    val settingsLiveData: MutableLiveData<BaseResult<SettingsEntity, WrappedResponse<SettingsEntity>>> =
+        MutableLiveData()
 
     var facebook: String = ""
     var twitter: String = ""
@@ -44,24 +30,9 @@ class MoreViewModel @Inject constructor(private val settingsUseCase: SettingsUse
     fun getSettings() {
         viewModelScope.launch {
             settingsUseCase.getSettings()
-                .catch { onError(it) }
-                .collect {
-                    when (it) {
-                        is BaseResult.Success -> onLoaded(it.data)
-                        is BaseResult.Errors -> onErrorLoad(it.error)
-                    }
-                }
+                .catch {}
+                .collect { settingsLiveData.value = it }
         }
     }
 
-}
-
-
-sealed class MoreFragmentState {
-
-    data class Error(val throwable: Throwable) : MoreFragmentState()
-    data class Loaded(val settingEntity: SettingsEntity) : MoreFragmentState()
-
-    data class ErrorLoad(val response: WrappedResponse<SettingsEntity>) :
-        MoreFragmentState()
 }

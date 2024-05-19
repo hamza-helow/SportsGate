@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class WishListUseCase @Inject constructor(private val wishListRepository: WishListRepository) {
 
-    suspend fun getAll(): Flow<BaseResult<List<ProductEntity>, WrappedListResponse<ProductEntity>>> {
+    suspend fun invoke(): Flow<BaseResult<List<ProductEntity>, WrappedListResponse<ProductEntity>>> {
         return wishListRepository.getAll()
     }
 }

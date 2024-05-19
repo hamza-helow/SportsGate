@@ -18,48 +18,30 @@ import javax.inject.Inject
 class ContactUsViewModel @Inject constructor(private val contactUsUseCase: ContactUsUseCase) :
     ViewModel() {
 
-    private val _state = MutableLiveData<ContactUsState>()
-    val state: LiveData<ContactUsState> get() = _state
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val validateLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
 
     private fun setLoading(isLoading: Boolean) {
-        _state.value = ContactUsState.Loading(isLoading)
+        loadingLiveData.value = isLoading
     }
 
-    private fun onError(throwable: Throwable) {
-        _state.value = ContactUsState.Error(throwable)
-    }
-
-    private fun onAdded(isAdded: Boolean) {
-        _state.value = ContactUsState.Added(isAdded)
-    }
 
     fun validate(name: String, email: String, message: String, phoneNumber: String) {
-        _state.value = ContactUsState.Validate(name.isNotBlank() && email.isEmail() && message.isNotBlank() && phoneNumber.isPhone())
+        validateLiveData.value =
+            name.isNotBlank() && email.isEmail() && message.isNotBlank() && phoneNumber.isPhone()
     }
 
-    fun sendContactUsInfo(contactUsRequest: ContactUsRequest) {
+    fun sendContactUsInfo(contactUsRequest: ContactUsRequest, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             contactUsUseCase
                 .sendContactUs(contactUsRequest)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    onAdded(it)
+                    onResult(it)
                 }
         }
     }
 
-}
-
-sealed class ContactUsState {
-
-    data class Loading(val isLoading: Boolean) : ContactUsState()
-    data class Error(val throwable: Throwable) : ContactUsState()
-    data class Added(val isAdded: Boolean) : ContactUsState()
-
-    data class Validate(val isValid: Boolean) : ContactUsState()
 }

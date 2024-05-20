@@ -91,6 +91,19 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
             emit(response.status)
         }
     }
+
+    override suspend fun resetCart(): Flow<BaseResult<String, String>> {
+        return flow {
+            val response = handleApi { cartApi.resetCart() }
+
+            if (response.status) {
+                emit(BaseResult.Success(response.message))
+            } else {
+                emit(BaseResult.Errors(response.message))
+            }
+
+        }
+    }
 }
 
 

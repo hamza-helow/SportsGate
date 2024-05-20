@@ -109,7 +109,9 @@
     <string name="done">Done</string>
     <string name="adding_in_progress">Adding in progress</string>
     <string name="change_your_old_password_by_setting_a_new_password_using_the_fields_below">Change your old password by setting a new password using the fields below</string>
-    <string name="enter_your_phone_number_used_your_account_to_be_eligible_to_reset_your_password">Enter your phone number used your account to be eligible to reset your password</string>
+    <string name="enter_your_phone_number">Enter your phone number used your account to be eligible to reset your password</string>
+    <string name="enter_your_email">Enter your Email used your account to be eligible to reset your password</string>
+
     <string name="first_and_last_name_eg_ahmed_mohamed">First and last name eg Ahmed Mohamed</string>
     <string name="i_agree_to_the">I agree to the</string>
     <string name="updated_successfully">Updated successfully</string>

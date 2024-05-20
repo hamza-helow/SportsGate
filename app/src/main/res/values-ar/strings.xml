@@ -100,7 +100,8 @@
     <string name="done">تم</string>
     <string name="adding_in_progress">الإضافة قيد التقدم</string>
     <string name="change_your_old_password_by_setting_a_new_password_using_the_fields_below">قم بتغيير كلمة المرور القديمة الخاصة بك عن طريق تعيين كلمة مرور جديدة باستخدام الحقول أدناه</string>
-    <string name="enter_your_phone_number_used_your_account_to_be_eligible_to_reset_your_password">أدخل رقم هاتفك الذي استخدمه حسابك لتكون مؤهلاً لإعادة تعيين كلمة المرور الخاصة بك</string>
+    <string name="enter_your_phone_number">أدخل رقم هاتفك الذي استخدمه حسابك لتكون مؤهلاً لإعادة تعيين كلمة المرور الخاصة بك</string>
+    <string name="enter_your_email">أدخل البريد الكتروني الذي استخدمه حسابك لتكون مؤهلاً لإعادة تعيين كلمة المرور الخاصة بك</string>
     <string name="first_and_last_name_eg_ahmed_mohamed">الاسم الاول والاسم الاخير على سبيل المثال احمد محمد</string>
     <string name="i_agree_to_the">أنا أوافق على</string>
     <string name="updated_successfully">تم التحديث بنجاح</string>

@@ -7,6 +7,7 @@ import com.souqApp.BuildConfig
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.domain.common.entity.UserEntity
+import java.util.Locale
 
 @Suppress("UNCHECKED_CAST")
 class SharedPrefs(context: Context) {
@@ -18,6 +19,7 @@ class SharedPrefs(context: Context) {
         private const val IS_LOGIN = "is_login"
         private const val LANG = "lang_app"
         private const val FIREBASE_TOKEN = "firebase_token"
+        private const val IS_BY_PHONE = "by_phone"
     }
 
     private val sharedPref: SharedPreferences =
@@ -32,6 +34,13 @@ class SharedPrefs(context: Context) {
         return get(FIREBASE_TOKEN, String::class.java)
     }
 
+    fun setIsByPhone(isByPhone: Boolean) {
+        put(IS_BY_PHONE, isByPhone)
+    }
+
+    fun getIsByPhone(): Boolean {
+        return sharedPref.getBoolean(IS_BY_PHONE, true)
+    }
 
     fun setLanguage(code: String) {
         put(LANG, code)
@@ -40,7 +49,7 @@ class SharedPrefs(context: Context) {
     fun getLanguage(): String {
         val lang = get(LANG, String::class.java)
         if (lang.isEmpty())
-            return "en"
+            return Locale.ENGLISH.language
         return lang
     }
 

@@ -54,9 +54,20 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
         }
     }
 
-    override suspend fun requestPasswordReset(phone: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
+    override suspend fun requestPasswordResetByPhone(phone: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
         return flow {
-            val response = handleApi { verificationApi.requestPasswordReset(phone) }
+            val response = handleApi { verificationApi.requestPasswordResetByPhone(phone) }
+            if (response.status) {
+                emit(BaseResult.Success(EmptyEntity()))
+            } else {
+                emit(BaseResult.Errors(response))
+            }
+        }
+    }
+
+    override suspend fun requestPasswordResetByEmail(email: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
+        return flow {
+            val response = handleApi { verificationApi.requestPasswordResetByEmail(email) }
             if (response.status) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {

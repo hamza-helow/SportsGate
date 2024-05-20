@@ -39,4 +39,7 @@ interface CartApi {
     suspend fun checkCouponCode(@Query("coupon_code") couponCode: String): WrappedResponse<Nothing>
 
 
+    @DELETE("v2/users/carts/reset")
+    suspend fun resetCart(): WrappedResponse<Nothing>
+
 }

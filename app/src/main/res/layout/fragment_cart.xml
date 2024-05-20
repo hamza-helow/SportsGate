@@ -75,30 +75,42 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                 <ProgressBar
-                    app:isVisible="@{!cart.ableToPlaceOrder}"
                     android:id="@+id/placeOrderPercentage"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_4sdp"
                     android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:progress="@{cart.placeOrderPercentage}"
+                    app:isVisible="@{!cart.ableToPlaceOrder}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_place_order_title" />
 
                 <TextView
-                    app:isVisible="@{!cart.ableToPlaceOrder}"
                     android:id="@+id/txt_place_order_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="@{@string/add +' '+ cart.placeOrderAmount+ ' ' +@string/to_place_your_order}"
+                    app:isVisible="@{!cart.ableToPlaceOrder}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Add 6.00 JOD to place your order" />
+
+                <ImageView
+                    android:id="@+id/img_delete_cart"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:importantForAccessibility="no"
+                    app:layout_constraintBottom_toBottomOf="@+id/txt_total"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/txt_total"
+                    app:srcCompat="@drawable/ic_delete"
+                    app:tint="@color/red" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

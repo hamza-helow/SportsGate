@@ -8,6 +8,7 @@ import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.GetCartDetailsUseCase
+import com.souqApp.domain.main.cart.ResetCartUseCase
 import com.souqApp.domain.main.cart.UpdateProductUseCase
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CartFragmentViewModel @Inject constructor(
     private val getCartDetailsUseCase: GetCartDetailsUseCase,
-    private val updateProductUseCase: UpdateProductUseCase
+    private val updateProductUseCase: UpdateProductUseCase,
+    private val resetCartUseCase: ResetCartUseCase
 ) :
     ViewModel() {
 
@@ -46,6 +48,17 @@ class CartFragmentViewModel @Inject constructor(
                 .catch { setLoading(false) }.collect {
                     setLoading(false)
                     cartDetailsLiveData.value = it
+                }
+        }
+    }
+
+    fun resetCart(onResult: (BaseResult<String, String>) -> Unit) {
+        viewModelScope.launch {
+            resetCartUseCase.invoke().onStart { setLoading(true) }
+                .catch { setLoading(false) }
+                .collect {
+                    setLoading(false)
+                    onResult(it)
                 }
         }
     }

@@ -20,8 +20,11 @@ interface VerificationApi {
     ): WrappedResponse<CreateTokenResetPasswordEntity>
 
 
-    @POST("v2/users/requestPasswordReset")
-    suspend fun requestPasswordReset(@Query("phone") phone: String): WrappedResponse<Nothing>
+    @POST("v2/users/requestPasswordResetByPhone")
+    suspend fun requestPasswordResetByPhone(@Query("phone") phone: String): WrappedResponse<Nothing>
+
+    @POST("v2/users/requestPasswordResetByEmail")
+    suspend fun requestPasswordResetByEmail(@Query("phone") phone: String): WrappedResponse<Nothing>
 
 
     @POST("v2/users/resendActivationCode")

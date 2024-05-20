@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
@@ -15,6 +16,7 @@ import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
 import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.extension.setupMenu
 import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +40,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun observeToLoading() {
-        viewModel.loading.observe(viewLifecycleOwner, ::showLoading)
+        viewModel.loading.observe(viewLifecycleOwner, ::handleLoading)
     }
 
     private fun observeToCartDetails() {
@@ -65,13 +67,22 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
     private fun init() {
         binding.btnCheckOut.setOnClickListener(this)
+        binding.imgDeleteCart.setOnClickListener(this)
+    }
+
+    private fun resetCart() {
+        viewModel.resetCart { result ->
+            when (result) {
+                is BaseResult.Errors -> Unit
+                is BaseResult.Success -> {
+                    cartAdapter.clearList()
+                    mainViewModel.setQty(0)
+                    handleCartEmptyState(cartAdapter.dataList)
+                }
+            }
+        }
     }
 
 
@@ -110,7 +121,6 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         binding.cardCheckOut.isVisible = products.isNotEmpty()
     }
 
-
     private fun initCartAdapter() {
         cartAdapter = CartAdapter { product, isIncrease ->
             viewModel.updateProduct(product, isIncrease) {
@@ -126,6 +136,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     override fun onClick(view: View) {
         when (view.id) {
             binding.btnCheckOut.id -> navigateToPaymentDetails()
+            binding.imgDeleteCart.id -> resetCart()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.souqApp.presentation.forgot_password
 
+import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -7,8 +8,10 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.FragmentForgotPasswordBinding
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.toValidPhoneNumber
+import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ForgotPasswordFragment :
@@ -17,11 +20,18 @@ class ForgotPasswordFragment :
 
     private val viewModel: ForgotPasswordViewModel by viewModels()
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.isByPhone = viewModel.isByPhone
+        observeToLoading()
         initListener()
         observeToValidate()
     }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner , ::showLoading)
+    }
+
 
     private fun observeToValidate() {
         validate()
@@ -29,7 +39,12 @@ class ForgotPasswordFragment :
     }
 
     private fun validate() {
-        viewModel.validate(binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber())
+        val credentialId = if (viewModel.isByPhone)
+            binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber()
+        else
+            binding.emailEdt.text.toString()
+
+        viewModel.validate(credentialId)
     }
 
 
@@ -64,6 +79,7 @@ class ForgotPasswordFragment :
 
     private fun initListener() {
         binding.includePhoneNumber.phoneEdt.doAfterTextChanged { validate() }
+        binding.emailEdt.doAfterTextChanged { validate() }
         binding.btnSubmit.setOnClickListener(this)
     }
 

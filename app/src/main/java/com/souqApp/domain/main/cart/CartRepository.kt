@@ -33,4 +33,6 @@ interface CartRepository {
 
     suspend fun checkCouponCode(couponCode: String): Flow<Boolean>
 
+    suspend fun resetCart(): Flow<BaseResult<String, String>>
+
 }

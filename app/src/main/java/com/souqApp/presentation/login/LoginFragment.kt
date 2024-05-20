@@ -33,6 +33,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPrefs.setIsByPhone(true)
         observeToLoading()
         observeToLoginByPhone()
     }
@@ -99,15 +100,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     private fun getUsernameField(): TextInputEditText {
-        return if (!viewModel.isPhoneEnable) binding.emailEdt else binding.includePhoneNumber.phoneEdt
+        return if (!viewModel.isByPhone) binding.emailEdt else binding.includePhoneNumber.phoneEdt
     }
 
     private fun login() {
         var username = getUsernameField().text.toString().trim()
         val password = binding.includePassword.passwordEdt.text.toString()
-        val code = if (viewModel.isPhoneEnable) "+962" else ""
+        val code = if (viewModel.isByPhone) "+962" else ""
 
-        if (viewModel.isPhoneEnable)
+        if (viewModel.isByPhone)
             username = username.toValidPhoneNumber()
 
         if (validate()) {
@@ -134,7 +135,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         val username = getUsernameField().text.toString().trim()
         val password = binding.includePassword.passwordEdt.text.toString()
 
-        if (viewModel.isPhoneEnable) {
+        if (viewModel.isByPhone) {
             if (!username.isPhone()) {
                 binding.includePhoneNumber.root.errorBorder()
                 return false

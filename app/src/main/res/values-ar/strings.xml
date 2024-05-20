@@ -24,16 +24,13 @@
     <string name="sub_total_str">المجموع الفرعي</string>
     <string name="change_password">تغيير كلمة المرور</string>
     <string name="my_orders_history_str">الطلبات</string>
-    <string name="about_us_str">حول التطبيق</string>
     <string name="terms_and_conditions_str">الشروط والأحكام</string>
     <string name="share_app_str">شارك التطبيق</string>
     <string name="contact_us_str">اتصل بنا</string>
     <string name="log_out">تسجيل الخروج</string>
     <string name="save">حفظ</string>
-    <string name="change_pass_str">تغيير كلمة المرور</string>
     <string name="change_language_sr">تغيير اللغة</string>
     <string name="mange_addresses_str">العناوين</string>
-    <string name="you_do_not_have_any_previous_addresses_please_add_an_address_str">ليس لديك أي عناوين سابقة ، يرجى إنشاء عنوان لاستخدامه مع طلباتك التالية</string>
     <string name="edit_str">تعديل</string>
     <string name="add_a_new_address">عنوان جديد</string>
     <string name="notes_str">الملاحظات</string>
@@ -56,13 +53,10 @@
     <string name="login">تسجيل الدخول</string>
     <string name="app_version">نسخة التطبيق:</string>
     <string name="powered_by">مشغل بواسطة: \t</string>
-    <string name="your_cart_is_empty">عربتك فارغة</string>
     <string name="payment_details">بيانات الدفع</string>
-    <string name="buy">إشتر</string>
     <string name="order_number">رقم الطلب</string>
     <string name="status">الحالة</string>
     <string name="delivery_address">عنوان التسليم</string>
-    <string name="specifications">المواصفات</string>
     <string name="continue_shopping">متابعة التسوق</string>
     <string name="forget_your_password">نسيت كلمة المرور؟</string>
     <string name="primary">أساسي</string>
@@ -79,7 +73,6 @@
     <string name="cart">عربة التسوق</string>
     <string name="more">اظهار الكل</string>
     <string name="powered_name">SouqApp</string>
-    <string name="show_all">اظهار الكل</string>
     <string name="current_password">كلمة المرور الحالية</string>
     <string name="submit">ارسال</string>
     <string name="relevant_products">المنتجات المشابهة</string>
@@ -118,7 +111,6 @@
     <string name="your_account_will_be_logged_out_from_the_app">سيتم تسجيل خروج حسابك من التطبيق</string>
     <string name="not_available">غير متاح</string>
     <string name="update">تحديث</string>
-    <string name="there_are_no_products">There are no products</string>
     <string name="phone">الهاتف</string>
     <string name="vat">ضريبة القيمة المضافة</string>
     <string name="cart_empty">Cart Empty</string>
@@ -133,7 +125,6 @@
     <string name="add">اضف</string>
     <string name="to_place_your_order">لتقديم طلبك!</string>
     <string name="pages">Pages</string>
-    <string name="some_things_wrong">Some things wrong!</string>
     <string name="delete_account">Delete Account</string>
     <string name="are_you_sure_you_want_to_delete_the_account">Are you sure you want to delete the account?</string>
 </resources>

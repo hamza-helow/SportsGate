@@ -21,10 +21,4 @@
         <item name="android:background">?android:attr/listDivider</item>
     </style>
 
-    <style name="splash" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
 </resources>

@@ -56,7 +56,7 @@ class AddAddressFragment :
     }
 
     private fun getAddressDetails(): AddressDetailsEntity? {
-        val address = arguments?.getSerializable(ADDRESS_DETAILS) ?: return null
+        @Suppress("DEPRECATION") val address = arguments?.getSerializable(ADDRESS_DETAILS) ?: return null
         return address as AddressDetailsEntity
     }
 

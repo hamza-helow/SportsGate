@@ -29,16 +29,13 @@
     <string name="sub_total_str">Subtotal</string>
     <string name="change_password">Change Password</string>
     <string name="my_orders_history_str">Orders</string>
-    <string name="about_us_str">About Us</string>
     <string name="terms_and_conditions_str">Terms &amp; Conditions</string>
     <string name="share_app_str">App Share</string>
     <string name="contact_us_str">Contact Us</string>
     <string name="log_out">Logout</string>
     <string name="save">Save</string>
-    <string name="change_pass_str">Change Password</string>
     <string name="change_language_sr">Change Language</string>
     <string name="mange_addresses_str">Addresses</string>
-    <string name="you_do_not_have_any_previous_addresses_please_add_an_address_str">You do not have any previous addresses, please create one to use with your next orders</string>
     <string name="edit_str">Edit</string>
     <string name="add_a_new_address">New Address</string>
     <string name="notes_str">Notes</string>
@@ -61,13 +58,10 @@
     <string name="login">Login</string>
     <string name="app_version">App Version:</string>
     <string name="powered_by">Powered By: \t</string>
-    <string name="your_cart_is_empty">Your Cart is Empty</string>
     <string name="payment_details">Payment Details</string>
-    <string name="buy">Buy</string>
     <string name="order_number">Order Number</string>
     <string name="status">Status</string>
     <string name="delivery_address">Delivery Address</string>
-    <string name="specifications">Specifications</string>
     <string name="continue_shopping">Continue Shopping</string>
     <string name="forget_your_password">forget your password?</string>
     <string name="primary">Primary</string>
@@ -87,7 +81,6 @@
 
 
     <string name="powered_name">SouqApp</string>
-    <string name="show_all">show all</string>
     <string name="current_password">Current password</string>
     <string name="submit">Submit</string>
     <string name="relevant_products">Relevant products</string>
@@ -129,7 +122,6 @@
     <string name="arabic" translatable="false">العربية</string>
     <string name="not_available">Not Available</string>
     <string name="update">Update</string>
-    <string name="there_are_no_products">There are no products</string>
     <string name="phone">Phone</string>
     <string name="vat">VAT</string>
     <string name="cart_empty">Cart Empty</string>
@@ -144,7 +136,6 @@
     <string name="add">Add</string>
     <string name="to_place_your_order">to place your order!</string>
     <string name="pages">Pages</string>
-    <string name="some_things_wrong">Some things wrong!</string>
     <string name="delete_account">Delete Account</string>
     <string name="are_you_sure_you_want_to_delete_the_account">Are you sure you want to delete the account?</string>
 </resources>

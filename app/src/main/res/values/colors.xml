@@ -6,9 +6,7 @@
     <color name="colorAccent">#3D17B1</color>
 
     <color name="grey">#FF979797</color>
-    <color name="gray_background">#fff2f6f8</color>
     <color name="gray_light2">#ffabb9c3</color>
-    <color name="gray_light3">#ffdee7ed</color>
     <color name="green">#ff37c47b</color>
     <color name="red">#ffec272d</color>
     <color name="tool_bar_color">#4E4E4E</color>

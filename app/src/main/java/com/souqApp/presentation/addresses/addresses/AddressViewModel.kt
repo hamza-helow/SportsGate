@@ -40,8 +40,7 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
 
     fun deleteAddress(
         addressId: Int,
-        position: Int,
-        onResult: (deleted: Boolean, position: Int) -> Unit
+        onResult: (deleted: Boolean) -> Unit
     ) {
 
         viewModelScope.launch {
@@ -50,7 +49,7 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
                 .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    onResult(it, position)
+                    onResult(it)
                 }
         }
     }

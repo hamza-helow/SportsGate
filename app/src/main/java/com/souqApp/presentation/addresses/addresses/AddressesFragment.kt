@@ -101,7 +101,7 @@ class AddressesFragment :
 
 
     private fun deleteAddress(address: AddressEntity, position: Int) {
-        viewModel.deleteAddress(address.id, position) { deleted: Boolean, position: Int ->
+        viewModel.deleteAddress(address.id) { deleted: Boolean ->
             handleDeleteAddress(deleted, position)
         }
     }

@@ -11,7 +11,6 @@ import com.souqApp.databinding.FragmentOrderDetailsBinding
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.orders.OrderDetailsEntity
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 

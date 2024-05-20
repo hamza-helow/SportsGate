@@ -6,7 +6,6 @@ import com.souqApp.BR
 import com.souqApp.databinding.ItemProductImageBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
-
 class ImagesProductAdapter(private val onClickItem: (image: String) -> Unit = {}) :
     BaseRecyclerAdapter<ItemProductImageBinding, String>() {
 

@@ -3,7 +3,6 @@ package com.souqApp.presentation.activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate

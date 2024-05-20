@@ -20,13 +20,12 @@ import com.souqApp.databinding.FragmentAddAddressBinding
 import com.souqApp.domain.addresses.AddressDetailsEntity
 import com.souqApp.domain.addresses.AreaEntity
 import com.souqApp.domain.addresses.CityEntity
-import com.souqApp.infra.extension.showToast
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.successBorder
 import com.souqApp.infra.utils.ADDRESS_DETAILS
 import com.souqApp.presentation.addresses.map.MapsActivity
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
 class AddAddressFragment :
@@ -64,18 +63,38 @@ class AddAddressFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        observeToLoading()
+        observeToValidate()
         initListener()
         fetchAddressDetailsIfExist()
-        observer()
+        observeToUserLatLng()
+        observeToCities()
+    }
+
+    private fun observeToCities() {
+        viewModel.citiesLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleCitiesErrLoad(result.error)
+                is BaseResult.Success -> handleCitiesLoaded(result.data)
+            }
+        }
+    }
+
+    private fun observeToUserLatLng() {
+        viewModel.userLatLng.observe(viewLifecycleOwner) { whenUserSetLatLng() }
+    }
+
+    private fun observeToValidate() {
+        validate()
+        viewModel.validate.observe(viewLifecycleOwner, ::handleValidate)
+    }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
     }
 
     private fun init() {
         binding.txtStreet.doAfterTextChanged { validate() }
-    }
-
-    private fun observer() {
-        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
-        viewModel.userLatLng.observe(viewLifecycleOwner) { whenUserSetLatLng() }
     }
 
     private fun whenUserSetLatLng() {
@@ -92,20 +111,6 @@ class AddAddressFragment :
         )
     }
 
-
-    private fun handleState(state: AddAddressFragmentState) {
-        when (state) {
-            is AddAddressFragmentState.Loading -> handleLoading(state.isLoading)
-            is AddAddressFragmentState.Error -> handleError(state.throwable)
-            is AddAddressFragmentState.LoadCities.CitiesLoaded -> handleCitiesLoaded(state.cityEntities)
-            is AddAddressFragmentState.LoadCities.CitiesErrLoad -> handleCitiesErrLoad(state.response)
-            is AddAddressFragmentState.AddAddress.AddedAddress -> handleAddOrUpdateAddress(state.added)
-            is AddAddressFragmentState.UpdateAddress.AddressUpdated -> handleAddOrUpdateAddress(
-                state.updated
-            )
-            is AddAddressFragmentState.Validate -> handleValidate(state.isValid)
-        }
-    }
 
     private fun handleValidate(valid: Boolean) {
         binding.btnSubmit.isEnabled = valid
@@ -127,12 +132,6 @@ class AddAddressFragment :
             cityEntities
         )
         binding.spinnerCities.adapter = adapter
-    }
-
-    private fun handleError(error: Throwable) {
-        if (error is SocketTimeoutException) {
-            requireContext().showToast("Unexpected error, try again later")
-        }
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -167,11 +166,6 @@ class AddAddressFragment :
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = AddAddressFragment()
-    }
-
     override fun onClick(view: View) {
         when (view.id) {
             binding.cardPickLocation.id -> requestLocationPermission()
@@ -195,10 +189,18 @@ class AddAddressFragment :
         )
 
         if (addressId == null) {
-            viewModel.addAddress(addressRequest)
+            addAddress(addressRequest)
         } else {
-            viewModel.updateAddress(addressRequest)
+            updateAddress(addressRequest)
         }
+    }
+
+    private fun addAddress(addressRequest: AddressRequest) {
+        viewModel.addAddress(addressRequest, ::handleAddOrUpdateAddress)
+    }
+
+    private fun updateAddress(addressRequest: AddressRequest) {
+        viewModel.updateAddress(addressRequest, ::handleAddOrUpdateAddress)
     }
 
     private fun requestLocationPermission() {

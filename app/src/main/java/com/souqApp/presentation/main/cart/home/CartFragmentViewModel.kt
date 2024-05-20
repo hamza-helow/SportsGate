@@ -1,6 +1,5 @@
 package com.souqApp.presentation.main.cart.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

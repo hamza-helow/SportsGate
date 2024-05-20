@@ -7,7 +7,6 @@ import com.souqApp.databinding.FragmentImagePreviewBinding
 import com.souqApp.infra.utils.setImageUrl
 import com.souqApp.presentation.base.BaseFragment
 
-
 class ImagePreviewFragment :
     BaseFragment<FragmentImagePreviewBinding>(FragmentImagePreviewBinding::inflate) {
 

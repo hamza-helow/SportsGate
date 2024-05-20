@@ -12,7 +12,6 @@ import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.SocketTimeoutException
 
 @AndroidEntryPoint
 class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(FragmentContactUsBinding::inflate),

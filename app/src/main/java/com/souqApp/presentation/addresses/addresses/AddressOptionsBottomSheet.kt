@@ -6,7 +6,6 @@ import com.souqApp.databinding.BottomSheetAddressOptionsBinding
 import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-
 class AddressOptionsBottomSheet(private val isPrimary: Boolean) : BottomSheetDialogFragment() {
 
     private lateinit var binding: BottomSheetAddressOptionsBinding

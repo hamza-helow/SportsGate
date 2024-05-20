@@ -1,7 +1,6 @@
 package com.souqApp.presentation.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import androidx.core.widget.doAfterTextChanged

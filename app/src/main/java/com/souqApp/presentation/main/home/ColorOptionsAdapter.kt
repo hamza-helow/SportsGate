@@ -7,14 +7,11 @@ import com.souqApp.databinding.ItemHomeVariationColorsBinding
 import com.souqApp.infra.extension.setHexColor
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
-class ColorOptionsAdapter  : BaseRecyclerAdapter<ItemHomeVariationColorsBinding, VariationOption>() {
+class ColorOptionsAdapter : BaseRecyclerAdapter<ItemHomeVariationColorsBinding, VariationOption>() {
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = list[position]
-
         holder.binding.txtColor.setHexColor(item.description)
-//        holder.binding.txtColor.backgroundTintList =
-//            ColorStateList.valueOf(Color.parseColor(item.description))
     }
 
     override fun getBinding(parent: ViewGroup, viewType: Int): ItemHomeVariationColorsBinding {
@@ -25,7 +22,7 @@ class ColorOptionsAdapter  : BaseRecyclerAdapter<ItemHomeVariationColorsBinding,
         )
     }
 
-    override fun enableAddItem(): Boolean  =false
+    override fun enableAddItem(): Boolean = false
 
     override fun needLoadMore(page: Int) {}
 }

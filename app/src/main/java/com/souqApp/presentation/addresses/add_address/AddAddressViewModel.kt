@@ -21,18 +21,19 @@ import javax.inject.Inject
 class AddAddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase) :
     ViewModel() {
 
-    private val _state = MutableLiveData<AddAddressFragmentState>()
-    val state: LiveData<AddAddressFragmentState> get() = _state
+
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val validate: MutableLiveData<Boolean> = MutableLiveData()
+    val citiesLiveData: MutableLiveData<BaseResult<List<CityEntity>, WrappedListResponse<CityResponse>>> =
+        MutableLiveData()
 
     private val _userLatLng = MutableLiveData<LatLng>()
     val userLatLng: LiveData<LatLng> get() = _userLatLng
 
     fun validate(street: String, buildingNumber: String, floorNumber: String) {
-        _state.value =
-            AddAddressFragmentState.Validate(
-                street.isNotBlank() && buildingNumber.isNotBlank()
-                        && floorNumber.isNotBlank() && userLatLng.value != null
-            )
+        validate.value =
+            street.isNotBlank() && buildingNumber.isNotBlank()
+                    && floorNumber.isNotBlank() && userLatLng.value != null
     }
 
     fun setUserLatLng(latLng: LatLng) {
@@ -40,27 +41,7 @@ class AddAddressViewModel @Inject constructor(private val addressUseCase: Addres
     }
 
     private fun setLoading(isLoading: Boolean) {
-        _state.value = AddAddressFragmentState.Loading(isLoading)
-    }
-
-    private fun onUpdateAddress(updated: Boolean) {
-        _state.value = AddAddressFragmentState.UpdateAddress.AddressUpdated(updated)
-    }
-
-    private fun onError(throwable: Throwable) {
-        _state.value = AddAddressFragmentState.Error(throwable)
-    }
-
-    private fun onLoadedCites(cityEntities: List<CityEntity>) {
-        _state.value = AddAddressFragmentState.LoadCities.CitiesLoaded(cityEntities)
-    }
-
-    private fun onAddAddress(added: Boolean) {
-        _state.value = AddAddressFragmentState.AddAddress.AddedAddress(added)
-    }
-
-    private fun onErrorLoadCities(response: WrappedListResponse<CityResponse>) {
-        _state.value = AddAddressFragmentState.LoadCities.CitiesErrLoad(response)
+        loadingLiveData.value = isLoading
     }
 
     @Inject
@@ -69,81 +50,40 @@ class AddAddressViewModel @Inject constructor(private val addressUseCase: Addres
 
             addressUseCase.getCitiesHaveAreas()
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onLoadedCites(it.data)
-                        is BaseResult.Errors -> onErrorLoadCities(it.error)
-                    }
+                    citiesLiveData.value = it
                 }
         }
     }
 
 
-    fun addAddress(addressRequest: AddressRequest) {
-
+    fun addAddress(addressRequest: AddressRequest, onResult: (added: Boolean) -> Unit) {
         viewModelScope.launch {
-
             addressUseCase.add(addressRequest)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    onAddAddress(it)
+                    onResult(it)
                 }
         }
 
     }
 
 
-    fun updateAddress(addressRequest: AddressRequest) {
-
+    fun updateAddress(addressRequest: AddressRequest, onResult: (updated: Boolean) -> Unit) {
         viewModelScope.launch {
-
             addressUseCase
                 .update(addressRequest)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    onUpdateAddress(it)
+                    onResult(it)
                 }
         }
     }
-
-}
-
-
-sealed class AddAddressFragmentState {
-
-    data class Loading(val isLoading: Boolean) : AddAddressFragmentState()
-    data class Error(val throwable: Throwable) : AddAddressFragmentState()
-
-    data class Validate(val isValid: Boolean) : AddAddressFragmentState()
-
-    sealed class LoadCities {
-        data class CitiesLoaded(val cityEntities: List<CityEntity>) : AddAddressFragmentState()
-        data class CitiesErrLoad(val response: WrappedListResponse<CityResponse>) :
-            AddAddressFragmentState()
-    }
-
-    sealed class AddAddress {
-        data class AddedAddress(val added: Boolean) : AddAddressFragmentState()
-    }
-
-    sealed class UpdateAddress {
-        data class AddressUpdated(val updated: Boolean) : AddAddressFragmentState()
-    }
-
 
 }

@@ -12,7 +12,6 @@ import com.souqApp.infra.extension.setContent
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class PageDetailsFragment :
     BaseFragment<FragmentPageDetailsBinding>(FragmentPageDetailsBinding::inflate) {

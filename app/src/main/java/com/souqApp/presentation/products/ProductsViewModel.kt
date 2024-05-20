@@ -44,14 +44,6 @@ class ProductsViewModel @Inject constructor(private val getProductsUseCase: GetP
             }.collect {
                 setLoading(false)
                 productsLiveData.value = it
-//                when (it) {
-//
-//                            is BaseResult.Errors -> Unit
-//                    is BaseResult.Success -> {
-//                        isLastPage = it.data.products.isEmpty()
-//
-//                    }
-//                }
             }
         }
     }

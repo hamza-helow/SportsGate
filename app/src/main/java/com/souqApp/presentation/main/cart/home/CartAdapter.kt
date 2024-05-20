@@ -8,7 +8,6 @@ import com.souqApp.infra.custome_view.flex_recycler_view.SingleFlexRecyclerAdapt
 class CartAdapter(private val onChangeQTY: ((ProductInCartEntity, isIncrease: Boolean) -> Unit)) :
     SingleFlexRecyclerAdapter<ItemCartBinding, ProductInCartEntity>(ItemCartBinding::inflate) {
 
-
     override fun setupViewHolder(holder: Holder, position: Int, item: ProductInCartEntity) {
 
         holder.bind(BR.product, item)

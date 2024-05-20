@@ -2,13 +2,9 @@ package com.souqApp.presentation.verification
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.souqApp.R
@@ -20,12 +16,9 @@ import com.souqApp.databinding.FragmentVerificationBinding
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.start
-import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint

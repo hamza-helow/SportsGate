@@ -1,7 +1,6 @@
 package com.souqApp.presentation.addresses.address_details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
@@ -20,13 +19,12 @@ import com.souqApp.data.addresses.remote.dto.AddressDetailsResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.FragmentAddressDetailsBinding
 import com.souqApp.domain.addresses.AddressDetailsEntity
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.ADDRESS_DETAILS
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.SocketTimeoutException
 
 
 @AndroidEntryPoint
@@ -52,46 +50,34 @@ class AddressDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAddressDetails(args.addressId)
+        observeToLoading()
+        observeToAddressDetails()
         handleBack()
         initMap(savedInstanceState)
         initListener()
-        observer()
+    }
+
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
+    }
+
+    private fun observeToAddressDetails() {
+        viewModel.getAddressDetails(args.addressId)
+
+        viewModel.addressDetailsLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleAddressDetailsErrorLoad(result.error)
+                is BaseResult.Success -> handleAddressDetailsLoaded(result.data)
+            }
+        }
     }
 
     private fun initListener() {
         binding.btnEdit.setOnClickListener(this)
     }
 
-    private fun observer() {
-        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
-    }
-
-    private fun handleState(state: AddressDetailsFragmentState) {
-        when (state) {
-            is AddressDetailsFragmentState.Loading -> handleLoading(state.isLoading)
-            is AddressDetailsFragmentState.AddressDetailsLoaded -> handleAddressDetailsLoaded(state.addressDetailsEntity)
-            is AddressDetailsFragmentState.Error -> handleError(state.throwable)
-            is AddressDetailsFragmentState.AddressDetailsErrorLoad -> handleAddressDetailsErrorLoad(
-                state.response
-            )
-        }
-    }
-
     private fun handleAddressDetailsErrorLoad(response: WrappedResponse<AddressDetailsResponse>) {
         showDialog(response.message)
-    }
-
-    private fun handleError(error: Throwable) {
-        binding.progressBar.start(false)
-
-        Log.e("TAG" , error.stackTraceToString())
-
-      //  binding.content.isVisible(false)
-
-        if (error is SocketTimeoutException) {
-            requireContext().showToast("Unexpected error, try again later")
-        }
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -102,23 +88,17 @@ class AddressDetailsFragment :
     private fun handleAddressDetailsLoaded(addressDetailsEntity: AddressDetailsEntity) {
         binding.addressDetails = addressDetailsEntity
 
-        //init latLng
         val latLng = LatLng(addressDetailsEntity.lat, addressDetailsEntity.lng)
-
-        // Creating a marker
         val markerOptions = MarkerOptions()
+
         markerOptions.position(latLng)
 
-        // Clears the previously touched position
         mMap.clear()
 
-        // init CameraUpdateFactory
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16f)
 
-        // Animating to the touched position
         mMap.animateCamera(cameraUpdate)
 
-        // add marker
         mMap.addMarker(markerOptions)
     }
 
@@ -132,11 +112,6 @@ class AddressDetailsFragment :
             viewLifecycleOwner,
             onBackPressedCallback
         )
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = AddressDetailsFragment()
     }
 
     override fun onMapReady(map: GoogleMap) {

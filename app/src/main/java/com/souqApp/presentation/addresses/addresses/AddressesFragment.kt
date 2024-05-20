@@ -1,7 +1,6 @@
 package com.souqApp.presentation.addresses.addresses
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
@@ -15,8 +14,8 @@ import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.databinding.FragmentAddressesBinding
 import com.souqApp.domain.addresses.AddressEntity
+import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.setupMenu
-import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,17 +30,39 @@ class AddressesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.refreshSwiper.setOnRefreshListener(this)
+        observeToLoading()
+        initAdapter()
+        initAddressOptionsBottomSheet()
+        initMenu()
+        observeToAddresses()
+    }
 
+    private fun observeToAddresses() {
         viewModel.getAddresses()
-        addressAdapter = AdapterAddress()
-        binding.recAddresses.setAdapter(addressAdapter,LinearLayoutManager(requireContext()))
+        viewModel.addressLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> handleAddressesErrorLoad(result.error)
+                is BaseResult.Success -> handleAddressesLoaded(result.data)
+            }
+        }
+    }
 
+    private fun observeToLoading() {
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::handleLoading)
+    }
+
+    private fun initMenu() {
         setupMenu(R.menu.menu_add) {
             if (it.itemId == R.id.item_add)
                 goToAddAddressFragment()
         }
+    }
+
+    private fun initAdapter() {
+
+        addressAdapter = AdapterAddress()
+        binding.recAddresses.setAdapter(addressAdapter, LinearLayoutManager(requireContext()))
 
         addressAdapter.onClickItem = {
             if (args.selectedMode) {
@@ -57,21 +78,18 @@ class AddressesFragment :
             }
 
         }
-        observer()
     }
 
-    private fun observer() {
-        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
-
+    private fun initAddressOptionsBottomSheet() {
         addressAdapter.onClickMoreButton = { address, position ->
             val bottomSheet = AddressOptionsBottomSheet(address.isPrimary)
 
             bottomSheet.onClickDeleteButton = {
-                viewModel.deleteAddress(address.id, position)
+                deleteAddress(address, position)
             }
 
             bottomSheet.onClickChangeDefault = {
-                viewModel.changeDefault(addressId = address.id)
+                changeDefault(address)
             }
 
             bottomSheet.show(
@@ -82,16 +100,15 @@ class AddressesFragment :
     }
 
 
-    private fun handleState(state: AddressesFragmentState) {
-        when (state) {
-            is AddressesFragmentState.Init -> Unit
-            is AddressesFragmentState.Loading -> handleLoading(state.isLoading)
-            is AddressesFragmentState.Error -> handleError(state.throwable)
-            is AddressesFragmentState.AddressesLoaded -> handleAddressesLoaded(state.addressEntities)
-            is AddressesFragmentState.AddressesErrorLoad -> handleAddressesErrorLoad(state.response)
-            is AddressesFragmentState.ChangeDefaultAddress -> handleChangeDefaultAddress(state.changed)
-            is AddressesFragmentState.DeleteAddress ->
-                handleDeleteAddress(state.deleted, state.position)
+    private fun deleteAddress(address: AddressEntity, position: Int) {
+        viewModel.deleteAddress(address.id, position) { deleted: Boolean, position: Int ->
+            handleDeleteAddress(deleted, position)
+        }
+    }
+
+    private fun changeDefault(address: AddressEntity) {
+        viewModel.changeDefault(address.id) { changed: Boolean ->
+            handleChangeDefaultAddress(changed)
         }
     }
 
@@ -122,9 +139,6 @@ class AddressesFragment :
         binding.recAddresses.setupEmptyState(addressAdapter.dataList.isEmpty())
     }
 
-    private fun handleError(throwable: Throwable) {
-        Log.e(APP_TAG, throwable.stackTraceToString())
-    }
 
     private fun handleLoading(loading: Boolean) {
         showLoading(loading)

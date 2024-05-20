@@ -7,7 +7,6 @@ import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.ItemHomeCategoryBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
-
 class HomeCategoryAdapter(
     private val verticalMode: Boolean = true,
     val onClickItem: (CategoryEntity) -> Unit

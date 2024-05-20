@@ -1,19 +1,24 @@
 package com.souqApp.presentation.search
 
 import android.annotation.SuppressLint
-import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.souqApp.BR
+import com.souqApp.R
 import com.souqApp.databinding.BottomSheetFilterBinding
 import com.souqApp.databinding.ItemFilterBinding
-import com.souqApp.R
-import com.souqApp.infra.utils.*
+import com.souqApp.infra.utils.A_TO_Z
+import com.souqApp.infra.utils.BEST_MATCH
+import com.souqApp.infra.utils.BEST_SELLING
+import com.souqApp.infra.utils.BaseRecyclerAdapter
+import com.souqApp.infra.utils.NEW_ARRIVAL
+import com.souqApp.infra.utils.PRICE_HIGH_TO_LOW
+import com.souqApp.infra.utils.PRICE_LOW_TO_HIGH
+import com.souqApp.infra.utils.Z_TO_A
 
 class FilterBottomSheet : BottomSheetDialogFragment() {
 

@@ -2,7 +2,6 @@ package com.souqApp.presentation.main.more.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +13,6 @@ import com.souqApp.databinding.FragmentMoreBinding
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.extension.openUrl
-import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.infra.utils.MIN_ANDROID_VERSION
 import com.souqApp.infra.utils.ORDER_HISTORY_ANDROID
 import com.souqApp.infra.utils.SHOW_COPYRIGHTS

@@ -1,6 +1,5 @@
 package com.souqApp.presentation.main.more.contact_us
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

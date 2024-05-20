@@ -1,6 +1,5 @@
 package com.souqApp.presentation.addresses.addresses
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,98 +18,56 @@ import javax.inject.Inject
 class AddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase) :
     ViewModel() {
 
-    private val _state = MutableLiveData<AddressesFragmentState>()
-
-    val state: LiveData<AddressesFragmentState> get() = _state
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val addressLiveData: MutableLiveData<BaseResult<List<AddressEntity>, WrappedListResponse<AddressResponse>>> =
+        MutableLiveData()
 
     private fun setLoading(loading: Boolean) {
-        _state.value = AddressesFragmentState.Loading(loading)
-    }
-
-    private fun onError(throwable: Throwable) {
-        _state.value = AddressesFragmentState.Error(throwable)
-    }
-
-    private fun onAddressesLoaded(addressEntities: List<AddressEntity>) {
-        _state.value = AddressesFragmentState.AddressesLoaded(addressEntities)
-    }
-
-    private fun onAddressErrorLoad(response: WrappedListResponse<AddressResponse>) {
-        _state.value = AddressesFragmentState.AddressesErrorLoad(response)
-    }
-
-    private fun onDeleteAddress(deleted: Boolean, position: Int) {
-        _state.value = AddressesFragmentState.DeleteAddress(deleted, position)
-    }
-
-    private fun onChangeDefault(changed: Boolean) {
-        _state.value = AddressesFragmentState.ChangeDefaultAddress(changed)
+        loadingLiveData.value = loading
     }
 
     fun getAddresses() {
         viewModelScope.launch {
             addressUseCase.getAll()
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    when (it) {
-                        is BaseResult.Success -> onAddressesLoaded(it.data)
-                        is BaseResult.Errors -> onAddressErrorLoad(it.error)
-                    }
+                    addressLiveData.value = it
                 }
         }
     }
 
-    fun deleteAddress(addressId: Int, position: Int) {
+    fun deleteAddress(
+        addressId: Int,
+        position: Int,
+        onResult: (deleted: Boolean, position: Int) -> Unit
+    ) {
 
         viewModelScope.launch {
-
             addressUseCase.delete(addressId)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    onDeleteAddress(it, position)
+                    onResult(it, position)
                 }
         }
     }
 
 
-    fun changeDefault(addressId: Int) {
+    fun changeDefault(addressId: Int, onResult: (changed: Boolean) -> Unit) {
         viewModelScope.launch {
             addressUseCase
                 .changeDefault(addressId)
                 .onStart { setLoading(true) }
-                .catch {
-                    setLoading(false)
-                    onError(it)
-                }
+                .catch { setLoading(false) }
                 .collect {
                     setLoading(false)
-                    onChangeDefault(it)
+                    onResult(it)
                 }
         }
     }
 
 }
 
-sealed class AddressesFragmentState {
-    object Init : AddressesFragmentState()
-
-    data class Loading(val isLoading: Boolean) : AddressesFragmentState()
-    data class Error(val throwable: Throwable) : AddressesFragmentState()
-    data class AddressesLoaded(val addressEntities: List<AddressEntity>) : AddressesFragmentState()
-    data class AddressesErrorLoad(val response: WrappedListResponse<AddressResponse>) :
-        AddressesFragmentState()
-
-    data class DeleteAddress(val deleted: Boolean, val position: Int) : AddressesFragmentState()
-
-    data class ChangeDefaultAddress(val changed: Boolean) : AddressesFragmentState()
-}

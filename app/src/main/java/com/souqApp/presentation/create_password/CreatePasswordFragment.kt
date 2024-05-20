@@ -1,6 +1,6 @@
 package com.souqApp.presentation.create_password
 
-import android.util.Log
+import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -9,7 +9,6 @@ import androidx.navigation.fragment.navArgs
 import com.souqApp.R
 import com.souqApp.databinding.FragmentCreatePasswordBinding
 import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.utils.APP_TAG
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,10 +20,20 @@ class CreatePasswordFragment :
     private val viewModel: CreatePasswordViewModel by viewModels()
     private val args: CreatePasswordFragmentArgs by navArgs()
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.state.observe(this) { handleState(it) }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeToLoading()
+        observeToValidate()
         initListener()
+    }
+
+    private fun observeToValidate() {
+        validate()
+        viewModel.validateLiveData.observe(viewLifecycleOwner, ::handleValidate)
+    }
+
+    private fun observeToLoading() {
+        viewModel.validateLiveData.observe(viewLifecycleOwner, ::showLoading)
     }
 
     private fun initListener() {
@@ -33,28 +42,13 @@ class CreatePasswordFragment :
         binding.passwordEdt.doAfterTextChanged { validate() }
     }
 
-    private fun handleState(state: CreatePasswordActivityState) {
-        when (state) {
-            is CreatePasswordActivityState.Created -> onCreatePassword(state.isCreated)
-            is CreatePasswordActivityState.Error -> onError(state.throwable)
-            is CreatePasswordActivityState.Loading -> onLoading(state.isLoading)
-            is CreatePasswordActivityState.Validate -> onValidate(state.isValid)
-        }
-    }
 
-    private fun onValidate(valid: Boolean) {
+    private fun handleValidate(valid: Boolean) {
         binding.btnSave.isEnabled = valid
     }
 
-    private fun onLoading(loading: Boolean) {
-        showLoading(loading)
-    }
 
-    private fun onError(throwable: Throwable) {
-        Log.e(APP_TAG, throwable.stackTraceToString())
-    }
-
-    private fun onCreatePassword(created: Boolean) {
+    private fun handleOnPasswordChanged(created: Boolean) {
         if (created) {
             findNavController().popBackStack(R.id.loginFragment, false)
             requireContext().showToast(getString(R.string.password_changed))
@@ -69,7 +63,7 @@ class CreatePasswordFragment :
 
     private fun save() {
         val password = binding.passwordEdt.text.toString()
-        viewModel.createPassword(password, args.resetToken)
+        viewModel.createPassword(password, args.resetToken, ::handleOnPasswordChanged)
     }
 
 

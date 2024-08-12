@@ -1,6 +1,7 @@
 package com.souqApp.domain.verifcation
 
 import com.souqApp.data.common.remote.dto.UserResponse
+import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
@@ -23,4 +24,6 @@ interface VerificationRepository {
     suspend fun requestPasswordResetByEmail(email: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>>
 
     suspend fun resendActivationCode(): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>>
+
+    suspend fun getPasswordSupportedMethods(): Flow<BaseResult<List<String>, WrappedListResponse<String>>>
 }

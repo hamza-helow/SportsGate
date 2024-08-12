@@ -1,17 +1,18 @@
-package com.souqApp.presentation.forgot_password
+package com.souqApp.presentation.forgot_password.home
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
+import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.databinding.FragmentForgotPasswordBinding
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.toValidPhoneNumber
-import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
+import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ForgotPasswordFragment :
@@ -19,17 +20,18 @@ class ForgotPasswordFragment :
     View.OnClickListener {
 
     private val viewModel: ForgotPasswordViewModel by viewModels()
+    private val args: ForgotPasswordFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.isByPhone = viewModel.isByPhone
+        binding.isByPhone = args.byPhone
         observeToLoading()
         initListener()
         observeToValidate()
     }
 
     private fun observeToLoading() {
-        viewModel.loadingLiveData.observe(viewLifecycleOwner , ::showLoading)
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
     }
 
 
@@ -39,12 +41,7 @@ class ForgotPasswordFragment :
     }
 
     private fun validate() {
-        val credentialId = if (viewModel.isByPhone)
-            binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber()
-        else
-            binding.emailEdt.text.toString()
-
-        viewModel.validate(credentialId)
+        viewModel.validate(args.byPhone, getIdCredential())
     }
 
 
@@ -53,11 +50,16 @@ class ForgotPasswordFragment :
     }
 
     private fun handleOnOtpSent() {
-        navigate(ForgotPasswordFragmentDirections.toVerificationFragment(getMobileNumber()))
+        navigate(
+            NavGraphDirections.toVerificationFragment(
+                getIdCredential(),
+                if (args.byPhone) VerificationType.RESET_PASSWORD_BY_PHONE else VerificationType.RESET_PASSWORD_BY_EMAIL
+            )
+        )
     }
 
     private fun requestOtp() {
-        viewModel.requestPasswordReset(getMobileNumber()) { result ->
+        viewModel.requestPasswordReset(args.byPhone, getIdCredential()) { result ->
             when (result) {
                 is BaseResult.Errors -> {
                     handleOnOtpSentError(result.error)
@@ -70,16 +72,20 @@ class ForgotPasswordFragment :
         }
     }
 
-    private fun getMobileNumber(): String {
-        val phoneNumber = binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber()
-        val code = "+962"
-
-        return code + phoneNumber
+    private fun getIdCredential(): String {
+        if (args.byPhone) {
+            val phoneNumber =
+                binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber()
+            val code = "962"
+            return code + phoneNumber
+        } else {
+            return binding.etEmail.text.toString()
+        }
     }
 
     private fun initListener() {
         binding.includePhoneNumber.phoneEdt.doAfterTextChanged { validate() }
-        binding.emailEdt.doAfterTextChanged { validate() }
+        binding.etEmail.doAfterTextChanged { validate() }
         binding.btnSubmit.setOnClickListener(this)
     }
 

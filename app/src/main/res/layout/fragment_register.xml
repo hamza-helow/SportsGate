@@ -133,7 +133,7 @@
                     android:id="@+id/txt_terms_and_conditions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/terms_and_conditions_str"
+                    android:text="@string/terms_and_conditions"
                     android:textColor="@color/colorPrimary" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

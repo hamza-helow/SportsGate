@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_graph"
+    app:startDestination="@id/registerFragment">
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.souqApp.presentation.register.home.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/to_verificationToCompleteRegistrationFragment"
+            app:destination="@id/verificationToCompleteRegistrationFragment" />
+        <action
+            android:id="@+id/to_termsAndConditionsFragment"
+            app:destination="@id/termsAndConditionsFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/verificationToCompleteRegistrationFragment"
+        android:name="com.souqApp.presentation.register.verification.VerificationToCompleteRegistrationFragment"
+        android:label="VerificationToCompleteRegistrationFragment"
+        tools:layout="@layout/fragment_verification_to_complete_registration">
+
+        <argument
+            android:name="mobileNumber"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/termsAndConditionsFragment"
+        android:name="com.souqApp.presentation.register.terms_and_condition.TermsAndConditionsFragment"
+        android:label="@string/terms_and_conditions"
+        tools:layout="@layout/fragment_terms_and_conditions" />
+</navigation>

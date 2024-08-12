@@ -21,7 +21,6 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
 
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
-
     private fun setLoading() {
         loadingLiveData.value = true
     }
@@ -63,10 +62,10 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
         }
     }
 
-    fun requestPasswordReset(phoneNumber: String) {
+    fun requestPasswordReset(credentialId: String, isPhone: Boolean) {
         viewModelScope.launch {
             verificationUseCase
-                .requestPasswordReset(phoneNumber)
+                .requestPasswordReset(credentialId, isPhone)
                 .catch {}
                 .collect()
         }

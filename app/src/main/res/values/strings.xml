@@ -29,7 +29,7 @@
     <string name="sub_total_str">Subtotal</string>
     <string name="change_password">Change Password</string>
     <string name="my_orders_history_str">Orders</string>
-    <string name="terms_and_conditions_str">Terms &amp; Conditions</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="share_app_str">App Share</string>
     <string name="contact_us_str">Contact Us</string>
     <string name="log_out">Logout</string>
@@ -73,6 +73,7 @@
     <string name="sign_up">Sign up</string>
     <string name="phone_otp_message">An SMS has been sent to your mobile number enter below to verify your phone number and complete your registration</string>
     <string name="verify_phone_number">Verify Phone Number</string>
+    <string name="verify_email">Verify Email</string>
     <string name="resend_code_after">Resend code after %1$d sec </string>
     <string name="home">Home</string>
     <string name="categories">Categories</string>
@@ -140,4 +141,5 @@
     <string name="pages">Pages</string>
     <string name="delete_account">Delete Account</string>
     <string name="are_you_sure_you_want_to_delete_the_account">Are you sure you want to delete the account?</string>
+    <string name="password_methods">Password Methods</string>
 </resources>

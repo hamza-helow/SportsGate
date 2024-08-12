@@ -36,16 +36,37 @@
         android:id="@+id/to_ForceUpdateDialogFragment"
         app:destination="@id/forceUpdateDialogFragment" />
 
+    <action
+        android:id="@+id/to_verificationFragment"
+        app:destination="@id/verificationFragment" />
+
     <fragment
-        tools:layout="@layout/fragment_splash"
         android:id="@+id/splashFragment"
         android:name="com.souqApp.presentation.splash.SplashFragment"
-        android:label="" >
+        android:label=""
+        tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/to_homeGraph"
             app:destination="@id/home_graph" />
     </fragment>
 
+
+    <fragment
+        android:id="@+id/verificationFragment"
+        android:name="com.souqApp.presentation.verification.VerificationFragment"
+        android:label="VerificationFragment">
+
+        <argument
+            android:name="idCredential"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="verificationType"
+            app:argType="com.souqApp.presentation.common.enums.VerificationType" />
+
+
+    </fragment>
 
     <fragment
         android:id="@+id/productDetailsFragment"

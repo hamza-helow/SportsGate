@@ -27,11 +27,14 @@ class VerificationUseCase @Inject constructor(
         return verificationRepository.createTokenResetPassword(phone, code)
     }
 
-    suspend fun requestPasswordReset(credentialId: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
-        return if (sharedPrefs.getIsByPhone())
+    suspend fun requestPasswordReset(
+        credentialId: String,
+        isPhone: Boolean
+    ): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
+        return if (isPhone)
             verificationRepository.requestPasswordResetByPhone(credentialId)
         else
-            verificationRepository.requestPasswordResetByPhone(credentialId)
+            verificationRepository.requestPasswordResetByEmail(credentialId)
     }
 
     suspend fun resendActivationCode(): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {

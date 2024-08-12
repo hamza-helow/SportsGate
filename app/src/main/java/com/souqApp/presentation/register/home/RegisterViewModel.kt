@@ -1,4 +1,4 @@
-package com.souqApp.presentation.register
+package com.souqApp.presentation.register.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

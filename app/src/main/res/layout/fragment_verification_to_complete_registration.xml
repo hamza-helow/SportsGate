@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data>
-
-        <variable
-            name="isResetPassword"
-            type="Boolean" />
-    </data>
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -21,11 +14,10 @@
 
 
         <TextView
-            android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
-            tools:text="@string/verify_phone_number"
+            android:text="@string/verify_phone_number"
             android:textColor="@color/black"
             android:textSize="@dimen/_20sdp"
             android:textStyle="bold"
@@ -37,18 +29,17 @@
             layout="@layout/loader" />
 
         <TextView
-            android:id="@+id/txt_sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingTop="8dp"
             android:paddingBottom="12dp"
+            android:text="@string/phone_otp_message"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/reset_pass_message" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <com.mukesh.OtpView

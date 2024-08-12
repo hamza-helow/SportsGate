@@ -6,7 +6,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
@@ -16,7 +15,6 @@ import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
 import com.souqApp.infra.extension.isVisible
-import com.souqApp.infra.extension.setupMenu
 import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint

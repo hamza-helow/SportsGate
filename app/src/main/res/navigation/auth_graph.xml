@@ -6,25 +6,25 @@
     app:startDestination="@id/loginFragment">
 
 
+    <include app:graph="@navigation/register_graph" />
+    <include app:graph="@navigation/forgot_password_graph" />
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.souqApp.presentation.login.LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
-        <action
-            android:id="@+id/to_registerFragment"
-            app:destination="@id/registerFragment" />
-        <action
-            android:id="@+id/to_verificationFragment"
-            app:destination="@id/verificationFragment" />
-    </fragment>
+            android:id="@+id/to_forgotPassword_graph"
+            app:destination="@+id/forgot_password_graph" />
 
+        <action
+            android:id="@+id/to_register_graph"
+            app:destination="@+id/register_graph" />
+    </fragment>
 
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.souqApp.presentation.forgot_password.ForgotPasswordFragment"
+        android:name="com.souqApp.presentation.forgot_password.home.ForgotPasswordFragment"
         android:label="@string/forget_password"
         tools:layout="@layout/fragment_forgot_password">
         <action
@@ -32,20 +32,6 @@
             app:destination="@id/verificationFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/verificationFragment"
-        android:name="com.souqApp.presentation.verification.VerificationFragment"
-        tools:layout="@layout/fragment_verification">
-
-        <argument
-            android:name="phoneNumber"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/to_createPasswordFragment"
-            app:destination="@id/createPasswordFragment" />
-
-    </fragment>
 
     <fragment
         android:id="@+id/createPasswordFragment"
@@ -62,26 +48,6 @@
             app:argType="string" />
 
     </fragment>
-
-    <fragment
-        android:id="@+id/registerFragment"
-        android:name="com.souqApp.presentation.register.RegisterFragment"
-        android:label="@string/sign_up"
-        tools:layout="@layout/fragment_register">
-        <action
-            android:id="@+id/to_verificationFragment"
-            app:destination="@id/verificationFragment" />
-        <action
-            android:id="@+id/to_termsAndConditionsFragment"
-            app:destination="@id/termsAndConditionsFragment" />
-    </fragment>
-
-
-    <fragment
-        android:id="@+id/termsAndConditionsFragment"
-        android:name="com.souqApp.presentation.main.more.terms_and_conditions.TermsAndConditionsFragment"
-        android:label="@string/terms_and_conditions_str"
-        tools:layout="@layout/fragment_terms_and_conditions" />
 
 
 </navigation>

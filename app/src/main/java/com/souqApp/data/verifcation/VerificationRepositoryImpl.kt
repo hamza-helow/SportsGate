@@ -1,6 +1,7 @@
 package com.souqApp.data.verifcation
 
 import com.souqApp.data.common.remote.dto.UserResponse
+import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.verifcation.remote.VerificationApi
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 class VerificationRepositoryImpl @Inject constructor(private val verificationApi: VerificationApi) :
     VerificationRepository {
+
     override suspend fun activeAccount(activeAccountRequest: ActiveAccountRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return flow {
             val response = handleApi { verificationApi.activeAccount(activeAccountRequest) }
@@ -44,7 +46,8 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
         code: String
     ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>> {
         return flow {
-            val response = handleApi { verificationApi.createTokenResetPassword(phone, code) }
+            val response =
+                handleApi { verificationApi.createTokenResetPasswordByPhone(phone, code) }
             if (response.status) {
                 emit(BaseResult.Success(response.data))
 
@@ -85,6 +88,17 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
                 emit(BaseResult.Errors(response))
             }
 
+        }
+    }
+
+    override suspend fun getPasswordSupportedMethods(): Flow<BaseResult<List<String>, WrappedListResponse<String>>> {
+        return flow {
+            val response = handleApi { verificationApi.getPasswordSupportedMethods() }
+            if (response.status) {
+                emit(BaseResult.Success(response.data.orEmpty()))
+            } else {
+                emit(BaseResult.Errors(response))
+            }
         }
     }
 }

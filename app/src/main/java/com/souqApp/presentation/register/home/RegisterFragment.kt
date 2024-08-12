@@ -1,4 +1,4 @@
-package com.souqApp.presentation.register
+package com.souqApp.presentation.register.home
 
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
@@ -68,7 +68,9 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
     private fun navigateToVerificationScreen() {
-        navigate(RegisterFragmentDirections.toVerificationFragment(null))
+//        navigate(
+//            RegisterFragmentDirections.toVerificationFragment(null)
+//        )
     }
 
     private fun handleErrorRegister(response: WrappedResponse<TokenResponse>) {

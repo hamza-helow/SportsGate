@@ -24,7 +24,7 @@
     <string name="sub_total_str">المجموع الفرعي</string>
     <string name="change_password">تغيير كلمة المرور</string>
     <string name="my_orders_history_str">الطلبات</string>
-    <string name="terms_and_conditions_str">الشروط والأحكام</string>
+    <string name="terms_and_conditions">الشروط والأحكام</string>
     <string name="share_app_str">شارك التطبيق</string>
     <string name="contact_us_str">اتصل بنا</string>
     <string name="log_out">تسجيل الخروج</string>
@@ -67,6 +67,7 @@
     <string name="sign_up">اشتراك</string>
     <string name="phone_otp_message">تم إرسال رسالة نصية قصيرة إلى رقم هاتفك المحمول أدخل أدناه للتحقق من رقم هاتفك وإكمال تسجيلك</string>
     <string name="verify_phone_number">تحقق من رقم الهاتف</string>
+    <string name="verify_email">تحقق من البريد الالكتروني </string>
     <string name="resend_code_after"> %1$d اعادة الارسال بعد </string>
     <string name="home">الرئيسية</string>
     <string name="categories">الأقسام</string>
@@ -128,4 +129,5 @@
     <string name="pages">Pages</string>
     <string name="delete_account">Delete Account</string>
     <string name="are_you_sure_you_want_to_delete_the_account">Are you sure you want to delete the account?</string>
+    <string name="password_methods">Password Methods</string>
 </resources>

@@ -77,7 +77,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     private fun navigateToVerificationScreen() {
-        navigate(LoginFragmentDirections.toVerificationFragment(null))
+        // navigate(LoginFragmentDirections.toVerificationFragment(null))
     }
 
     private fun navigateToMainScreen() {
@@ -173,11 +173,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     private fun navigateToForgotPasswordFragment() {
-        navigate(LoginFragmentDirections.toForgotPasswordFragment())
+        navigate(LoginFragmentDirections.toForgotPasswordGraph())
     }
 
     private fun goToCreateAccountScreen() {
-        navigate(LoginFragmentDirections.toRegisterFragment())
+        navigate(LoginFragmentDirections.toRegisterGraph())
     }
 
     private fun loginByPhoneToggle() {

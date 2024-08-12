@@ -18,6 +18,7 @@ import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
+import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,17 +31,27 @@ class VerificationFragment :
     lateinit var sharedPrefs: SharedPrefs
     private val viewModel: VerificationViewModel by viewModels()
     private val args: VerificationFragmentArgs by navArgs()
-
-    private val isResetPassword by lazy {
-        args.phoneNumber.isNullOrBlank().not()
-    }
+    private val verificationType by lazy { args.verificationType }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.isResetPassword = isResetPassword
+        initUi()
         observeToLoading()
         startTimer()
         initListener()
+    }
+
+    private fun initUi() {
+
+        binding.txtSubTitle.text = if (verificationType == VerificationType.ACTIVE_ACCOUNT) {
+            getString(R.string.reset_pass_message)
+        } else {
+            if (verificationType == VerificationType.RESET_PASSWORD_BY_EMAIL)
+                getString(R.string.verify_email)
+            else
+                getString(R.string.verify_phone_number)
+        }
+
     }
 
     private fun observeToLoading() {
@@ -49,12 +60,12 @@ class VerificationFragment :
 
 
     private fun onSuccessResetVerification(createTokenResetPasswordEntity: CreateTokenResetPasswordEntity) {
-        navigate(
-            VerificationFragmentDirections.toCreatePasswordFragment(
-                args.phoneNumber.orEmpty(),
-                createTokenResetPasswordEntity.token
-            )
-        )
+//        navigate(
+//            VerificationToResetPasswordFragmentDirections.toCreatePasswordFragment(
+//                args.idCredential.orEmpty(),
+//                createTokenResetPasswordEntity.token
+//            )
+//        ) //TODO
     }
 
     private fun onErrorResetVerification(response: WrappedResponse<CreateTokenResetPasswordEntity>) {
@@ -114,17 +125,25 @@ class VerificationFragment :
     }
 
     private fun sendCode() {
-        if (isResetPassword)
-            viewModel.requestPasswordReset(args.phoneNumber.orEmpty())
-        else
+
+        if (verificationType == VerificationType.ACTIVE_ACCOUNT) {
             viewModel.resendActivationCode()
+        } else {
+            viewModel.requestPasswordReset(
+                credentialId = args.idCredential.orEmpty(),
+                isPhone = verificationType == VerificationType.RESET_PASSWORD_BY_EMAIL
+            )
+        }
+
+
     }
 
     private fun submit() {
-        if (isResetPassword)
-            createResetPasswordToken()
-        else
+        if (verificationType == VerificationType.ACTIVE_ACCOUNT) {
             activeAccount()
+        } else {
+            createResetPasswordToken()
+        }
     }
 
     private fun activeAccount() {
@@ -144,7 +163,7 @@ class VerificationFragment :
 
     private fun createResetPasswordToken() {
         viewModel.createTokenResetPassword(
-            args.phoneNumber.orEmpty(),
+            args.idCredential.orEmpty(),
             binding.otpView.text.toString()
         ) { result ->
             when (result) {

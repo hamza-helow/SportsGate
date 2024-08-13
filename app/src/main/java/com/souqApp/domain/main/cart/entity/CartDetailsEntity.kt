@@ -5,7 +5,9 @@ data class CartDetailsEntity(
     var subTotal: String,
     val settingCurrency: String,
     val products: List<ProductInCartEntity>,
-    var placeOrderPercentage:Int,
-    var isAbleToPlaceOrder:Boolean,
-    var placeOrderAmount:String
+    var placeOrderPercentage: Int,
+    var isAbleToPlaceOrder: Boolean,
+    var placeOrderAmount: String,
+    val verifyPhoneRequired: Boolean,
+    val verifyEmailRequired: Boolean
 )

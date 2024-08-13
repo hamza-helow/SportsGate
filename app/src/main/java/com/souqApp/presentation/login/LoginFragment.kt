@@ -26,14 +26,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
-
-    val viewModel: LoginViewModel by viewModels()
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun showAppBar() = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedPrefs.setIsByPhone(true)
         observeToLoading()
         observeToLoginByPhone()
     }
@@ -70,15 +68,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         val requiredVerification = userEntity.verified == 2
         sharedPrefs.saveToken(userEntity.token.orEmpty(), requiredVerification.not())
         sharedPrefs.saveUserInfo(userEntity)
-        if (requiredVerification) {
-            navigateToVerificationScreen()
-        } else
-            navigateToMainScreen()
+        navigateToMainScreen()
     }
 
-    private fun navigateToVerificationScreen() {
-        // navigate(LoginFragmentDirections.toVerificationFragment(null))
-    }
 
     private fun navigateToMainScreen() {
         findNavController().popBackStack()

@@ -9,6 +9,7 @@ import javax.inject.Inject
 
 class CreatePasswordRepositoryImpl @Inject constructor(private val createPasswordApi: CreatePasswordApi) :
     CreatePasswordRepository {
+
     override suspend fun resetPassword(newPassword: String, resetToken: String): Flow<Boolean> {
         return flow {
             val response = handleApi { createPasswordApi.resetPassword(newPassword, resetToken) }

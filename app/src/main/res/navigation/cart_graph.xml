@@ -13,6 +13,9 @@
         <action
             android:id="@+id/to_paymentDetailsFragment"
             app:destination="@id/paymentDetailsFragment" />
+        <action
+            android:id="@+id/to_verifyByMethodFragment"
+            app:destination="@id/verifyByMethodFragment" />
 
     </fragment>
 
@@ -71,6 +74,18 @@
         <argument
             android:name="orderId"
             app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/verifyByMethodFragment"
+        android:name="com.souqApp.presentation.main.cart.verify_by_method.VerifyByMethodFragment"
+        android:label=""
+        tools:layout="@layout/fragment_verify_by_method">
+
+        <argument
+            android:name="verifyType"
+            app:argType="com.souqApp.presentation.common.enums.VerificationType" />
 
     </fragment>
 </navigation>

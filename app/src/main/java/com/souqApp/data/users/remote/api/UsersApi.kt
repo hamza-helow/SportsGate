@@ -23,4 +23,22 @@ interface UsersApi {
     @POST("v2/users/dropAccount")
     suspend fun deleteUser(@Query("email") email: String): WrappedListResponse<Any>
 
+    @POST("v2/users/resendPhoneOTP")
+    suspend fun sendOtpByPhone(): WrappedResponse<Nothing>
+
+    @POST("v2/users/resendEmailOTP")
+    suspend fun sendOtpByEmail(): WrappedResponse<Nothing>
+
+    @POST("v2/users/verifyPhoneNumberByOTP")
+    suspend fun verifyMobile(
+        @Query("code") code: String,
+        @Query("device_type") deviceType: Int = 0
+    ): WrappedResponse<UserResponse>
+
+    @POST("v2/users/verifyEmailByOTP")
+    suspend fun verifyEmail(
+        @Query("code") code: String,
+        @Query("device_type") deviceType: Int = 0
+    ): WrappedResponse<UserResponse>
+
 }

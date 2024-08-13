@@ -33,7 +33,7 @@ class CreatePasswordFragment :
     }
 
     private fun observeToLoading() {
-        viewModel.validateLiveData.observe(viewLifecycleOwner, ::showLoading)
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
     }
 
     private fun initListener() {

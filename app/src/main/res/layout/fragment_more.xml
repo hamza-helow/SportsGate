@@ -61,26 +61,46 @@
                     app:placeholder="@{@drawable/ic_account_circle}"
                     tools:src="@drawable/ic_account_circle" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/txt_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
+                    android:text='@{user.name}'
+                    android:textSize="17sp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                    app:layout_constraintTop_toTopOf="@+id/circleImageView">
+                    app:layout_constraintTop_toTopOf="@+id/circleImageView"
+                    tools:text="Hamza Al-helow" />
+
+
+                <LinearLayout
+                    android:id="@+id/layout_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="@+id/txt_user_name"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_user_name">
+
+                    <ImageView
+                        android:id="@+id/img_verified"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:importantForAccessibility="no"
+                        app:isVisible="@{!user.verifyPhoneRequired}"
+                        app:layout_constraintStart_toStartOf="@+id/txt_user_name"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_user_name"
+                        app:srcCompat="@drawable/ic_verified" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{user.name,default="user name"}'
-                        android:textSize="17sp"
-                        android:textStyle="bold" />
+                        android:text='@{user.phone}'
+                        app:layout_constraintStart_toEndOf="@+id/img_verified"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_user_name"
+                        tools:text="962788051422" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text='@{user.phone,default="phone number"}' />
 
                 </LinearLayout>
 
@@ -93,6 +113,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/circleImageView"
                     tools:ignore="ContentDescription" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

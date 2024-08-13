@@ -7,13 +7,11 @@ import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.EmptyEntity
 import com.souqApp.domain.common.entity.UserEntity
-import com.souqApp.infra.utils.SharedPrefs
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class VerificationUseCase @Inject constructor(
-    private val verificationRepository: VerificationRepository,
-    private val sharedPrefs: SharedPrefs
+    private val verificationRepository: VerificationRepository
 ) {
 
     suspend fun invokeActiveAccount(activeAccountRequest: ActiveAccountRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
@@ -21,10 +19,14 @@ class VerificationUseCase @Inject constructor(
     }
 
     suspend fun createTokenResetPassword(
-        phone: String,
+        byPhone: Boolean,
+        credentialId: String,
         code: String
     ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>> {
-        return verificationRepository.createTokenResetPassword(phone, code)
+        return if (byPhone)
+            verificationRepository.createTokenResetPasswordByPhone(credentialId, code)
+        else
+            verificationRepository.createTokenResetPasswordByEmail(credentialId, code)
     }
 
     suspend fun requestPasswordReset(

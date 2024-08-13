@@ -9,7 +9,6 @@ import com.souqApp.data.login.remote.dto.LoginRequest
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.login.LoginUseCase
-import com.souqApp.infra.utils.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -18,8 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase,
-    private val sharedPrefs: SharedPrefs
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
@@ -27,13 +25,8 @@ class LoginViewModel @Inject constructor(
 
     val isByPhone get() = loginByPhoneLiveData.value == true
 
-    private fun setLoginByPhone(byPhone: Boolean) {
-        sharedPrefs.setIsByPhone(byPhone)
-    }
-
     fun loginByPhoneToggle() {
         loginByPhoneLiveData.value = isByPhone.not()
-        setLoginByPhone(isByPhone)
     }
 
     private fun setLoading() {

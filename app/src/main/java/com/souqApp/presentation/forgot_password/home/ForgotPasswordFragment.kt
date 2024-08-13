@@ -3,6 +3,7 @@ package com.souqApp.presentation.forgot_password.home
 import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.souqApp.NavGraphDirections
@@ -12,6 +13,7 @@ import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.extension.toValidPhoneNumber
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.enums.VerificationType
+import com.souqApp.presentation.verification.VerificationFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +30,17 @@ class ForgotPasswordFragment :
         observeToLoading()
         initListener()
         observeToValidate()
+        observeToVerificationResult()
+    }
+
+    private fun observeToVerificationResult() {
+        setFragmentResultListener(VerificationFragment.RESULT) { _, bundle ->
+
+            navigate(ForgotPasswordFragmentDirections.toCreatePasswordFragment(
+                getIdCredential() ,
+                bundle.getString(VerificationFragment.TOKEN).orEmpty()
+            ))
+        }
     }
 
     private fun observeToLoading() {
@@ -53,7 +66,7 @@ class ForgotPasswordFragment :
         navigate(
             NavGraphDirections.toVerificationFragment(
                 getIdCredential(),
-                if (args.byPhone) VerificationType.RESET_PASSWORD_BY_PHONE else VerificationType.RESET_PASSWORD_BY_EMAIL
+                if (args.byPhone) VerificationType.BY_PHONE else VerificationType.BY_EMAIL
             )
         )
     }

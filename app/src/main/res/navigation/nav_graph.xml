@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/verificationFragment"
         android:name="com.souqApp.presentation.verification.VerificationFragment"
-        android:label="VerificationFragment">
+        android:label="">
 
         <argument
             android:name="idCredential"

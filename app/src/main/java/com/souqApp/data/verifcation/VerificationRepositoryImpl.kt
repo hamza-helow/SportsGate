@@ -1,5 +1,6 @@
 package com.souqApp.data.verifcation
 
+import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -24,16 +25,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
 
             if (response.status) {
                 val body = response.data
-                val entity = UserEntity(
-                    body.id,
-                    body.name,
-                    body.email,
-                    body.phone,
-                    body.image,
-                    body.verified,
-                    body.token
-                )
-                emit(BaseResult.Success(entity))
+                emit(BaseResult.Success(body.toEntity()))
             } else {
                 emit(BaseResult.Errors(response))
             }
@@ -41,13 +33,29 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
         }
     }
 
-    override suspend fun createTokenResetPassword(
+    override suspend fun createTokenResetPasswordByPhone(
         phone: String,
         code: String
     ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>> {
         return flow {
             val response =
                 handleApi { verificationApi.createTokenResetPasswordByPhone(phone, code) }
+            if (response.status) {
+                emit(BaseResult.Success(response.data))
+
+            } else {
+                emit(BaseResult.Errors(response))
+            }
+        }
+    }
+
+    override suspend fun createTokenResetPasswordByEmail(
+        phone: String,
+        code: String
+    ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>> {
+        return flow {
+            val response =
+                handleApi { verificationApi.createTokenResetPasswordByEmail(phone, code) }
             if (response.status) {
                 emit(BaseResult.Success(response.data))
 

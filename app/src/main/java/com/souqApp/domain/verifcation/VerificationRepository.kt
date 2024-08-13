@@ -14,7 +14,12 @@ interface VerificationRepository {
 
     suspend fun activeAccount(activeAccountRequest: ActiveAccountRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>>
 
-    suspend fun createTokenResetPassword(
+    suspend fun createTokenResetPasswordByPhone(
+        phone: String,
+        code: String
+    ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>>
+
+    suspend fun createTokenResetPasswordByEmail(
         phone: String,
         code: String
     ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>>

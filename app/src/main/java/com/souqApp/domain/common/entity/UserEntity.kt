@@ -7,5 +7,7 @@ data class UserEntity(
     val phone: String,
     val image: String,
     val verified: Int,
-    val token: String?
+    val token: String? ,
+    val verifyPhoneRequired: Boolean,
+    val verifyEmailRequired: Boolean
 )

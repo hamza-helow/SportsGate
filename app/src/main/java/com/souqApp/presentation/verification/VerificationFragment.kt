@@ -3,14 +3,15 @@ package com.souqApp.presentation.verification
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.souqApp.R
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.databinding.FragmentVerificationBinding
 import com.souqApp.domain.common.BaseResult
@@ -42,15 +43,10 @@ class VerificationFragment :
     }
 
     private fun initUi() {
-
-        binding.txtSubTitle.text = if (verificationType == VerificationType.ACTIVE_ACCOUNT) {
-            getString(R.string.reset_pass_message)
-        } else {
-            if (verificationType == VerificationType.RESET_PASSWORD_BY_EMAIL)
-                getString(R.string.verify_email)
-            else
-                getString(R.string.verify_phone_number)
-        }
+        binding.txtTitle.text = if (verificationType == VerificationType.BY_EMAIL)
+            getString(R.string.verify_email)
+        else
+            getString(R.string.verify_phone_number)
 
     }
 
@@ -60,12 +56,8 @@ class VerificationFragment :
 
 
     private fun onSuccessResetVerification(createTokenResetPasswordEntity: CreateTokenResetPasswordEntity) {
-//        navigate(
-//            VerificationToResetPasswordFragmentDirections.toCreatePasswordFragment(
-//                args.idCredential.orEmpty(),
-//                createTokenResetPasswordEntity.token
-//            )
-//        ) //TODO
+        findNavController().popBackStack()
+        setFragmentResult(RESULT, bundleOf(TOKEN to createTokenResetPasswordEntity.token))
     }
 
     private fun onErrorResetVerification(response: WrappedResponse<CreateTokenResetPasswordEntity>) {
@@ -125,46 +117,21 @@ class VerificationFragment :
     }
 
     private fun sendCode() {
-
-        if (verificationType == VerificationType.ACTIVE_ACCOUNT) {
-            viewModel.resendActivationCode()
-        } else {
-            viewModel.requestPasswordReset(
-                credentialId = args.idCredential.orEmpty(),
-                isPhone = verificationType == VerificationType.RESET_PASSWORD_BY_EMAIL
-            )
-        }
-
-
+        viewModel.requestPasswordReset(
+            credentialId = args.idCredential.orEmpty(),
+            isPhone = verificationType == VerificationType.BY_EMAIL
+        )
     }
 
     private fun submit() {
-        if (verificationType == VerificationType.ACTIVE_ACCOUNT) {
-            activeAccount()
-        } else {
-            createResetPasswordToken()
-        }
-    }
-
-    private fun activeAccount() {
-        viewModel.activeAccount(
-            ActiveAccountRequest(
-                binding.otpView.text.toString(),
-                "0",
-                "",
-            )
-        ) { result ->
-            when (result) {
-                is BaseResult.Errors -> handleErrorAccountVerification(result.error)
-                is BaseResult.Success -> handleSuccessAccountVerification(result.data)
-            }
-        }
+        createResetPasswordToken()
     }
 
     private fun createResetPasswordToken() {
         viewModel.createTokenResetPassword(
-            args.idCredential.orEmpty(),
-            binding.otpView.text.toString()
+            byPhone = args.verificationType == VerificationType.BY_PHONE,
+            credentialId = args.idCredential.orEmpty(),
+            code = binding.otpView.text.toString()
         ) { result ->
             when (result) {
                 is BaseResult.Errors -> onErrorResetVerification(result.error)
@@ -174,8 +141,11 @@ class VerificationFragment :
     }
 
     private fun validate(): Boolean {
-        if (binding.otpView.text!!.length < 4) // when enter code (4 digit)
-            return false
-        return true
+        return binding.otpView.text!!.length >= 4
+    }
+
+    companion object {
+        const val RESULT = "verification_fragment_result"
+        const val TOKEN = "token"
     }
 }

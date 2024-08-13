@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -17,6 +18,8 @@ import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
+import com.souqApp.presentation.common.enums.VerificationType
+import com.souqApp.presentation.main.cart.verify_by_method.VerifyByMethodFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,14 +34,23 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        init()
+        observeToVerifyByMethodFragmentResult()
         initCartAdapter()
         observeToCartDetails()
         observeToLoading()
-        init()
+
+    }
+
+    private fun observeToVerifyByMethodFragmentResult() {
+        setFragmentResultListener(VerifyByMethodFragment.RESULT) { _, _ ->
+            viewModel.getCartDetails()
+        }
     }
 
     private fun observeToLoading() {
-        viewModel.loading.observe(viewLifecycleOwner, ::handleLoading)
+        viewModel.loadingCart.observe(viewLifecycleOwner, ::handleLoadingCart)
+        viewModel.loadingVerifyMethod.observe(viewLifecycleOwner, ::handleLoadingVerifyMethod)
     }
 
     private fun observeToCartDetails() {
@@ -68,6 +80,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     private fun init() {
         binding.btnCheckOut.setOnClickListener(this)
         binding.imgDeleteCart.setOnClickListener(this)
+        binding.layoutPhoneNotVerified.setOnClickListener(this)
+        binding.layoutEmailNotVerified.setOnClickListener(this)
     }
 
     private fun resetCart() {
@@ -109,13 +123,19 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         showDialog(response.message)
     }
 
-    private fun handleLoading(loading: Boolean) {
+    private fun handleLoadingCart(loading: Boolean) {
         showLoading(loading)
         binding.content.isVisible(!loading)
     }
 
+    private fun handleLoadingVerifyMethod(loading: Boolean) {
+        showLoading(loading)
+    }
+
     private fun handleCartEmptyState(products: List<ProductInCartEntity>) {
-        binding.recProducts.setupEmptyState(products.isEmpty())
+        val isEmptyState = products.isEmpty()
+        binding.isEmptyState = isEmptyState
+        binding.recProducts.setupEmptyState(isEmptyState)
         binding.cardCheckOut.isVisible = products.isNotEmpty()
     }
 
@@ -135,6 +155,21 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         when (view.id) {
             binding.btnCheckOut.id -> navigateToPaymentDetails()
             binding.imgDeleteCart.id -> resetCart()
+            binding.layoutPhoneNotVerified.id -> verifyMethod(VerificationType.BY_PHONE)
+            binding.layoutEmailNotVerified.id -> verifyMethod(VerificationType.BY_EMAIL)
+        }
+    }
+
+    private fun verifyMethod(verificationType: VerificationType) {
+        viewModel.sendOtpToVerifyMethod(verificationType) { result ->
+            when (result) {
+                is BaseResult.Errors -> showDialog(result.error.message)
+                is BaseResult.Success -> navigate(
+                    CartFragmentDirections.toVerifyByMethodFragment(
+                        verificationType
+                    )
+                )
+            }
         }
     }
 

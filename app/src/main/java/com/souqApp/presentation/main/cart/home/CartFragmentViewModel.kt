@@ -7,12 +7,15 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.common.entity.EmptyEntity
 import com.souqApp.domain.main.cart.GetCartDetailsUseCase
 import com.souqApp.domain.main.cart.ResetCartUseCase
 import com.souqApp.domain.main.cart.UpdateProductUseCase
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
+import com.souqApp.domain.users.SendOtpUseCase
+import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -23,41 +26,66 @@ import javax.inject.Inject
 class CartFragmentViewModel @Inject constructor(
     private val getCartDetailsUseCase: GetCartDetailsUseCase,
     private val updateProductUseCase: UpdateProductUseCase,
-    private val resetCartUseCase: ResetCartUseCase
+    private val resetCartUseCase: ResetCartUseCase,
+    private val sendOtpUseCase: SendOtpUseCase,
 ) :
     ViewModel() {
 
     val cartDetailsLiveData: MutableLiveData<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>> =
         MutableLiveData()
 
-    val loading: MutableLiveData<Boolean> = MutableLiveData()
+    val loadingCart: MutableLiveData<Boolean> = MutableLiveData()
+    val loadingVerifyMethod: MutableLiveData<Boolean> = MutableLiveData()
 
 
-    private fun setLoading(isLoading: Boolean) {
-        loading.value = isLoading
+    private fun setLoadingCart(isLoading: Boolean) {
+        loadingCart.value = isLoading
     }
 
+    private fun setLoadingVerifyMethod(isLoading: Boolean) {
+        loadingVerifyMethod.value = isLoading
+    }
 
     @Inject
     fun getCartDetails() {
         viewModelScope.launch {
             getCartDetailsUseCase.execute()
                 .onStart {
-                    setLoading(true)
+                    setLoadingCart(true)
                 }
-                .catch { setLoading(false) }.collect {
-                    setLoading(false)
+                .catch { setLoadingCart(false) }.collect {
+                    setLoadingCart(false)
                     cartDetailsLiveData.value = it
                 }
         }
     }
 
+    fun sendOtpToVerifyMethod(
+        verifyType: VerificationType,
+        onCollect: (BaseResult<EmptyEntity, WrappedResponse<Nothing>>) -> Unit
+    ) {
+        viewModelScope.launch {
+            sendOtpUseCase.invoke(verifyType == VerificationType.BY_PHONE)
+                .onStart {
+                    setLoadingVerifyMethod(true)
+                }.catch {
+                    setLoadingVerifyMethod(false)
+                }
+                .collect { result ->
+                    setLoadingVerifyMethod(false)
+                    onCollect(result)
+                }
+        }
+
+    }
+
+
     fun resetCart(onResult: (BaseResult<String, String>) -> Unit) {
         viewModelScope.launch {
-            resetCartUseCase.invoke().onStart { setLoading(true) }
-                .catch { setLoading(false) }
+            resetCartUseCase.invoke().onStart { setLoadingCart(true) }
+                .catch { setLoadingCart(false) }
                 .collect {
-                    setLoading(false)
+                    setLoadingCart(false)
                     onResult(it)
                 }
         }

@@ -47,12 +47,13 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
     }
 
     fun createTokenResetPassword(
-        phone: String,
+        byPhone: Boolean,
+        credentialId: String,
         code: String,
         onResult: (BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>) -> Unit
     ) {
         viewModelScope.launch {
-            verificationUseCase.createTokenResetPassword(phone, code)
+            verificationUseCase.createTokenResetPassword(byPhone, credentialId, code)
                 .onStart { setLoading() }
                 .catch { hideLoading() }
                 .collect {

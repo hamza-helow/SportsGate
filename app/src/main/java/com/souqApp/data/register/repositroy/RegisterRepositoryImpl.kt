@@ -14,6 +14,7 @@ import javax.inject.Inject
 
 class RegisterRepositoryImpl @Inject constructor(private val registerApi: RegisterApi) :
     RegisterRepository {
+
     override suspend fun register(registerRequest: RegisterRequest): Flow<BaseResult<TokenEntity, WrappedResponse<TokenResponse>>> {
         return flow {
             val response = handleApi { registerApi.register(registerRequest) }
@@ -25,4 +26,5 @@ class RegisterRepositoryImpl @Inject constructor(private val registerApi: Regist
             }
         }
     }
+
 }

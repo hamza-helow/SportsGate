@@ -19,7 +19,6 @@ class SharedPrefs(context: Context) {
         private const val IS_LOGIN = "is_login"
         private const val LANG = "lang_app"
         private const val FIREBASE_TOKEN = "firebase_token"
-        private const val IS_BY_PHONE = "by_phone"
     }
 
     private val sharedPref: SharedPreferences =
@@ -32,14 +31,6 @@ class SharedPrefs(context: Context) {
 
     fun firebaseToken(): String {
         return get(FIREBASE_TOKEN, String::class.java)
-    }
-
-    fun setIsByPhone(isByPhone: Boolean) {
-        put(IS_BY_PHONE, isByPhone)
-    }
-
-    fun getIsByPhone(): Boolean {
-        return sharedPref.getBoolean(IS_BY_PHONE, true)
     }
 
     fun setLanguage(code: String) {
@@ -69,7 +60,7 @@ class SharedPrefs(context: Context) {
         if (result.isEmpty())
             return null
 
-        return Gson().fromJson(result, UserResponse::class.java).toEntity()
+        return Gson().fromJson(result, UserEntity::class.java)
     }
 
     private fun clearUserInfo() {

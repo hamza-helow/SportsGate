@@ -30,7 +30,17 @@ import com.souqApp.domain.product_details.AddProductToCartEntity
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import com.souqApp.infra.extension.orDash
 
-fun UserResponse.toEntity() = UserEntity(id, name, email, phone, image, verified, token)
+fun UserResponse.toEntity() = UserEntity(
+    id = id,
+    name = name,
+    email = email,
+    phone = phone,
+    image = image,
+    verified = verified,
+    token = token,
+    verifyPhoneRequired = verifyPhoneRequired == true,
+    verifyEmailRequired = verifyEmailRequired == true
+)
 
 
 fun UpdateProductCartResponse.toEntity() = UpdateProductCartEntity(
@@ -167,7 +177,9 @@ fun CartDetailsResponse.toEntity() = CartDetailsEntity(
     products = products.toEntities(),
     placeOrderPercentage = placeOrderPercentage ?: 0,
     isAbleToPlaceOrder = isAbleToPlaceOrder ?: true,
-    placeOrderAmount = placeOrderAmount.orDash()
+    placeOrderAmount = placeOrderAmount.orDash(),
+    verifyPhoneRequired = verifyPhoneRequired == true,
+    verifyEmailRequired = verifyEmailRequired == true
 )
 
 @JvmName("toProductsInCartEntities")

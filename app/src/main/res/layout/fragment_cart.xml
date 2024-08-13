@@ -8,6 +8,11 @@
         <variable
             name="cart"
             type="com.souqApp.domain.main.cart.entity.CartDetailsEntity" />
+
+        <variable
+            name="isEmptyState"
+            type="Boolean" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -16,13 +21,77 @@
         android:layout_height="match_parent"
         tools:context=".presentation.main.cart.home.CartFragment">
 
-        <com.souqApp.infra.custome_view.flex_recycler_view.FlexRecyclerView
-            android:id="@+id/rec_products"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:emptyState="@layout/empty_state_cart"
-            tools:itemCount="2"
-            tools:listItem="@layout/item_cart" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_phone_not_verified"
+                app:isVisible="@{cart.verifyPhoneRequired &amp;&amp; !isEmptyState}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/border_bg_1_dp_width"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_8sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/your_phone_number_is_not_verified"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:text="@string/verify_your_phone_number"
+                    app:drawableEndCompat="@drawable/ic_arrow_right" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_email_not_verified"
+                app:isVisible="@{cart.verifyEmailRequired &amp;&amp; !isEmptyState}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/border_bg_1_dp_width"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_8sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/your_email_address_is_not_verified"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:text="@string/verify_your_email_address"
+                    app:drawableEndCompat="@drawable/ic_arrow_right" />
+
+            </LinearLayout>
+
+
+
+            <com.souqApp.infra.custome_view.flex_recycler_view.FlexRecyclerView
+                android:id="@+id/rec_products"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:emptyState="@layout/empty_state_cart"
+                tools:itemCount="2"
+                tools:listItem="@layout/item_cart" />
+
+        </LinearLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_check_out"

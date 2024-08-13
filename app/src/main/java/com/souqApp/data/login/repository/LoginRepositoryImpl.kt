@@ -1,5 +1,6 @@
 package com.souqApp.data.login.repository
 
+import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.common.utlis.handleApi
@@ -13,21 +14,13 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(private val loginApi: LoginApi) : LoginRepository {
+
     override suspend fun login(loginRequest: LoginRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return flow {
             val response = handleApi { loginApi.login(loginRequest) }
             if (response.status) {
                 val body = response.data
-                val loginEntity = UserEntity(
-                    body.id,
-                    body.name,
-                    body.email,
-                    body.phone,
-                    body.image,
-                    body.verified,
-                    body.token
-                )
-                emit(BaseResult.Success(loginEntity))
+                emit(BaseResult.Success( body.toEntity()))
             } else {
                 emit(BaseResult.Errors(response))
             }

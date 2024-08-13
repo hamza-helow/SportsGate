@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.souqApp.R
@@ -17,6 +18,7 @@ import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.PathUtil
 import com.souqApp.infra.utils.SharedPrefs
+import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -28,6 +30,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     @Inject
     lateinit var sharedPrefs: SharedPrefs
     private var imageSelected: String? = null
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val viewModel: ProfileViewModel by viewModels()
 
 
@@ -142,6 +145,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     }
 
     private fun logout() {
+        mainViewModel.setQty(0)
         sharedPrefs.logout()
         findNavController().popBackStack()
     }

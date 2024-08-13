@@ -176,7 +176,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun handleCartCountUpdated(count: Int) {
-        if (count != 0)
             mainViewModel.setQty(count)
     }
 

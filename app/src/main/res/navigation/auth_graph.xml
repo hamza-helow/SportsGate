@@ -22,17 +22,6 @@
             app:destination="@+id/register_graph" />
     </fragment>
 
-    <fragment
-        android:id="@+id/forgotPasswordFragment"
-        android:name="com.souqApp.presentation.forgot_password.home.ForgotPasswordFragment"
-        android:label="@string/forget_password"
-        tools:layout="@layout/fragment_forgot_password">
-        <action
-            android:id="@+id/to_verificationFragment"
-            app:destination="@id/verificationFragment" />
-    </fragment>
-
-
 
 
 </navigation>

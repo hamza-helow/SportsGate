@@ -36,10 +36,10 @@ class ForgotPasswordFragment :
     private fun observeToVerificationResult() {
         setFragmentResultListener(VerificationFragment.RESULT) { _, bundle ->
 
-            navigate(ForgotPasswordFragmentDirections.toCreatePasswordFragment(
-                getIdCredential() ,
-                bundle.getString(VerificationFragment.TOKEN).orEmpty()
-            ))
+//            navigate(ForgotPasswordFragmentDirections.toCreatePasswordFragment(
+//                getIdCredential() ,
+//                bundle.getString(VerificationFragment.TOKEN).orEmpty() //TODO
+//            ))
         }
     }
 

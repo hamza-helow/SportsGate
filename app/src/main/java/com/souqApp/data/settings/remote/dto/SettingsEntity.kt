@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName
 
 data class SettingsEntity(
     @SerializedName("facebook")
-    val facebook: String,
+    val facebook: String?,
     @SerializedName("image")
-    val image: String,
+    val image: String?,
     @SerializedName("instagram")
-    val instagram: String,
+    val instagram: String?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("tiktok")
-    val tiktok: String,
+    val tiktok: String?,
     @SerializedName("twitter")
-    val twitter: String
+    val twitter: String?
 )

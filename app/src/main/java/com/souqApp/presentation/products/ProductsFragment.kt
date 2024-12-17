@@ -47,8 +47,7 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>(FragmentProductsB
     }
 
     private fun setupAdapter() {
-        productsAdapter =
-            ProductGridAdapter { navigate(NavGraphDirections.toProductDetailsFragment(it)) }
+        productsAdapter = ProductGridAdapter { navigate(NavGraphDirections.toProductDetailsFragment(it)) }
         productsAdapter.setPaginationListener(object : PaginationListener {
             override val startPage: Int get() = 1
 

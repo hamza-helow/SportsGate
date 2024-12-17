@@ -1,9 +1,13 @@
 package com.souqApp.presentation.orders.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.souqApp.data.common.utlis.WrappedListResponse
+import com.souqApp.data.notification.remote.NotificationEntity
 import com.souqApp.data.orders.remote.OrderResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.orders.OrderEntity
@@ -15,30 +19,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OrdersViewModel @Inject constructor(private val ordersUseCase: OrdersUseCase) : ViewModel() {
-
-    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val orderLiveData: MutableLiveData<BaseResult<List<OrderEntity>, WrappedListResponse<OrderResponse>>> =
-        MutableLiveData()
-
-    private fun setLoading(isLoading: Boolean) {
-        loadingLiveData.value = isLoading
-    }
-
-
-    @Inject
-    fun getOrders() {
-        viewModelScope.launch {
-
-            ordersUseCase
-                .getOrders()
-                .onStart { setLoading(true) }
-                .catch { setLoading(false) }
-                .collect {
-                    setLoading(false)
-                    orderLiveData.value = it
-                }
-        }
-    }
-
+class OrdersViewModel @Inject constructor(ordersUseCase: OrdersUseCase) : ViewModel() {
+    val orders: LiveData<PagingData<OrderEntity>> = ordersUseCase.invoke().cachedIn(viewModelScope)
 }

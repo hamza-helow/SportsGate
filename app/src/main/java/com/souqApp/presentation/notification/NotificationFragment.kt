@@ -1,15 +1,15 @@
 package com.souqApp.presentation.notification
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.notification.remote.NotificationEntities
 import com.souqApp.databinding.FragmentNotificationBinding
-import com.souqApp.domain.common.BaseResult
-import com.souqApp.infra.custome_view.flex_recycler_view.showEmptyState
+import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -17,46 +17,38 @@ class NotificationFragment :
     BaseFragment<FragmentNotificationBinding>(FragmentNotificationBinding::inflate) {
 
     private val viewModel: NotificationViewModel by viewModels()
-    private val notificationAdapter = NotificationAdapter()
+    private lateinit var notificationAdapter: NotificationAdapter
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
 
     override fun onResume() {
         super.onResume()
-        observeToLoading()
+        initAdapter()
         observeToNotifications()
-
-        binding.rec.showEmptyState(sharedPrefs.isLogin().not())
     }
 
-    private fun observeToNotifications() {
-        viewModel.notificationsLiveData.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is BaseResult.Errors -> {
-                    onErrorLoad(result.error)
-                }
+    private fun initAdapter() {
+        notificationAdapter = NotificationAdapter()
+        binding.rec.layoutManager = LinearLayoutManager(requireContext())
+        binding.rec.setAdapter(notificationAdapter)
+    }
 
-                is BaseResult.Success -> {
-                    onLoaded(result.data)
+
+    private fun observeToNotifications() {
+        viewModel.notifications.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                notificationAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+                notificationAdapter.loadStateFlow.collect { loadStates ->
+                    if (loadStates.refresh is LoadState.Loading) {
+                        showLoading(true)
+                    } else {
+                        showLoading(false)
+                        binding.tvEmptyState.isVisible(notificationAdapter.itemCount == 0)
+                    }
                 }
             }
         }
-    }
-
-    private fun observeToLoading() {
-        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
-    }
-
-
-    private fun onLoaded(entities: NotificationEntities) {
-        notificationAdapter.addList(entities.notifications)
-        binding.rec.setAdapter(notificationAdapter, LinearLayoutManager(requireContext()))
-        binding.rec.showEmptyState(entities.notifications.isEmpty())
-    }
-
-    private fun onErrorLoad(response: WrappedResponse<NotificationEntities>) {
-        showDialog(response.message)
     }
 
 }

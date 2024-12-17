@@ -85,7 +85,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.recNewProducts.addItemDecoration(SpacesItemDecoration(20))
         binding.recNewProducts.adapter = newProductAdapter
         binding.recNewProducts.layoutManager =
-            StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
 
 

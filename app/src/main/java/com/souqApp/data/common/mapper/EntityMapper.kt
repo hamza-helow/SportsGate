@@ -8,9 +8,11 @@ import com.souqApp.data.common.utlis.Constants
 import com.souqApp.data.main.cart.remote.dto.*
 import com.souqApp.data.main.home.remote.dto.CheckUpdateResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
-import com.souqApp.data.orders.remote.OrderDetailsResponse
-import com.souqApp.data.orders.remote.OrderResponse
-import com.souqApp.data.orders.remote.ProductInOrderResponse
+import com.souqApp.data.orders.remote.dto.OrderDetailsResponse
+import com.souqApp.data.orders.remote.dto.OrderResponse
+import com.souqApp.data.orders.remote.dto.OrderStatus
+import com.souqApp.data.orders.remote.dto.OrderSummary
+import com.souqApp.data.orders.remote.dto.ProductInOrderResponse
 import com.souqApp.data.product_details.remote.AddProductToCartResponse
 import com.souqApp.data.product_details.remote.ProductDetailsEntity
 import com.souqApp.data.product_details.remote.ProductDetailsResponse
@@ -23,9 +25,11 @@ import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.main.cart.entity.*
 import com.souqApp.domain.main.home.CheckUpdateEntity
 import com.souqApp.domain.main.home.HomeEntity
-import com.souqApp.domain.orders.OrderDetailsEntity
-import com.souqApp.domain.orders.OrderEntity
-import com.souqApp.domain.orders.ProductInOrderEntity
+import com.souqApp.domain.orders.entity.OrderDetailsEntity
+import com.souqApp.domain.orders.entity.OrderEntity
+import com.souqApp.domain.orders.entity.OrderStatusEntity
+import com.souqApp.domain.orders.entity.OrderSummaryEntity
+import com.souqApp.domain.orders.entity.ProductInOrderEntity
 import com.souqApp.domain.product_details.AddProductToCartEntity
 import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
 import com.souqApp.infra.extension.orDash
@@ -125,21 +129,30 @@ fun VariationProductPriceInfoResponse.toEntity(): VariationProductPriceInfoEntit
 fun OrderDetailsResponse.toEntity(): OrderDetailsEntity {
     return OrderDetailsEntity(
         address = address.orDash(),
-        couponDiscount = couponDiscount.orDash(),
         couponPercent = couponPercent ?: 0.0,
         deliveryOptionId = deliveryOptionId ?: 0,
-        deliveryPrice = deliveryPrice.orDash(),
         orderNumber = orderNumber.orDash(),
         products = products.toEntities(),
         reason = reason.orDash(),
-        status = status ?: 0,
-        statusDescription = statusDescription.orDash(),
-        subTotal = subTotal.orDash(),
-        total = total.orDash(),
-        vat = vat.orDash(),
+        status = status?.toEntity(),
+        orderSummary = summary?.toEntity(),
         createdAt = createdAt.orDash()
     )
 }
+
+fun OrderSummary.toEntity() = OrderSummaryEntity(
+    subTotal = subTotal.orDash(),
+    total = total.orDash(),
+    deliveryPrice = deliveryPrice.orDash(),
+    vat = vat.orDash(),
+    couponDiscount = couponDiscount.orDash()
+)
+
+fun OrderStatus.toEntity() = OrderStatusEntity(
+    code = code ?: 0,
+    name = name.orDash(),
+    description = description.orEmpty()
+)
 
 @JvmName("toProductInOrderEntities")
 fun List<ProductInOrderResponse>.toEntities(): List<ProductInOrderEntity> {
@@ -151,9 +164,9 @@ fun List<ProductInOrderResponse>.toEntities(): List<ProductInOrderEntity> {
             name = it.name.orDash(),
             qty = it.qty ?: 1,
             thumb = it.thumb.orEmpty(),
-            total_price = it.total_price.orDash(),
-            variation_compaination_id = it.variation_compaination_id ?: 0,
-            variation_compaination_label = it.variation_compaination_label.orDash()
+            totalPrice = it.total_price.orDash(),
+            variationCompainationId = it.variation_compaination_id ?: 0,
+            variationCompainationLabel = it.variation_compaination_label.orDash()
         )
     }
 }
@@ -205,11 +218,12 @@ fun List<CityResponse>.toEntity() =
 @JvmName("toEntityOrderResponse")
 fun List<OrderResponse>.toEntity() = map {
     OrderEntity(
-        it.createdAt.orDash(),
-        it.id ?: 0,
-        it.number.orDash(),
-        it.statusDescription.orDash(),
-        it.totalPrice.orDash(),
+        createdAt = it.createdAt.orDash(),
+        id = it.id ?: 0,
+        number = it.number.orDash(),
+        totalPrice = it.totalPrice.orDash(),
+        href = it.href.orEmpty(),
+        orderStatus = it.status?.toEntity()
     )
 }
 

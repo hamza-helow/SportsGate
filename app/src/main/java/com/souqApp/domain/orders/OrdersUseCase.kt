@@ -5,12 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.souqApp.data.common.utlis.WrappedListResponse
-import com.souqApp.data.notification.remote.NotificationEntity
-import com.souqApp.data.orders.remote.OrderResponse
-import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.notification.NotificationsPagingSource
-import kotlinx.coroutines.flow.Flow
+import com.souqApp.domain.orders.entity.OrderEntity
 import javax.inject.Inject
 
 class OrdersUseCase @Inject constructor(private val ordersRepository: OrdersRepository) {

@@ -6,11 +6,8 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.souqApp.BR
-import com.souqApp.data.notification.remote.NotificationEntity
-import com.souqApp.databinding.ItemNotificationBinding
 import com.souqApp.databinding.ItemOrderBinding
-import com.souqApp.domain.orders.OrderEntity
-import com.souqApp.infra.utils.BaseRecyclerAdapter
+import com.souqApp.domain.orders.entity.OrderEntity
 
 class OrdersAdapter(val onClickItem: (Int) -> Unit) :
     PagingDataAdapter<OrderEntity, OrdersAdapter.ViewHolder>(DiffCallback) {

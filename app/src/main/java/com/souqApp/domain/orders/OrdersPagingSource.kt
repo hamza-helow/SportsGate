@@ -3,6 +3,7 @@ package com.souqApp.domain.orders
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.orders.entity.OrderEntity
 
 class OrdersPagingSource(private val ordersRepository: OrdersRepository) :
     PagingSource<Int, OrderEntity>() {

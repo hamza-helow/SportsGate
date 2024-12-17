@@ -7,7 +7,7 @@
 
         <variable
             name="productInOrder"
-            type="com.souqApp.domain.orders.ProductInOrderEntity" />
+            type="com.souqApp.domain.orders.entity.ProductInOrderEntity" />
 
     </data>
 

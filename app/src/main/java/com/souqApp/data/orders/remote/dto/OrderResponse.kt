@@ -1,4 +1,5 @@
-package com.souqApp.data.orders.remote
+package com.souqApp.data.orders.remote.dto
+
 import com.google.gson.annotations.SerializedName
 
 data class OrderResponse(
@@ -8,8 +9,10 @@ data class OrderResponse(
     val id: Int?,
     @SerializedName("number")
     val number: String?,
-    @SerializedName("status_description")
-    val statusDescription: String?,
     @SerializedName("total_price")
-    val totalPrice: String?
+    val totalPrice: String?,
+    @SerializedName("status")
+    val status: OrderStatus?,
+    @SerializedName("href")
+    val href: String?
 )

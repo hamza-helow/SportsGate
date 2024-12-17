@@ -126,12 +126,13 @@
     <string name="insert_phone_number">Insert phone number</string>
     <string name="add">اضف</string>
     <string name="to_place_your_order">لتقديم طلبك!</string>
-    <string name="pages">Pages</string>
-    <string name="delete_account">Delete Account</string>
-    <string name="are_you_sure_you_want_to_delete_the_account">Are you sure you want to delete the account?</string>
-    <string name="password_methods">Password Methods</string>
-    <string name="your_email_address_is_not_verified">Your Email Address is not verified</string>
-    <string name="verify_your_email_address">Verify your email address</string>
-    <string name="your_phone_number_is_not_verified">Your Phone Number is not verified</string>
-    <string name="verify_your_phone_number">Verify your phone Number</string>
+    <string name="pages">صفحات</string>
+    <string name="delete_account">حذف الحساب</string>
+    <string name="are_you_sure_you_want_to_delete_the_account">هل أنت متأكد أنك تريد حذف الحساب؟</string>
+    <string name="password_methods">طرق كلمة المرور</string>
+    <string name="your_email_address_is_not_verified">عنوان بريدك الإلكتروني غير مُؤكد</string>
+    <string name="verify_your_email_address">تحقق من عنوان بريدك الإلكتروني</string>
+    <string name="your_phone_number_is_not_verified">رقم هاتفك غير مُؤكد</string>
+    <string name="verify_your_phone_number">تحقق من رقم هاتفك</string>
+
 </resources>

@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.orders.remote.OrderDetailsResponse
+import com.souqApp.data.orders.remote.dto.OrderDetailsResponse
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.orders.OrderDetailsEntity
+import com.souqApp.domain.orders.entity.OrderDetailsEntity
 import com.souqApp.domain.orders.OrderDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch

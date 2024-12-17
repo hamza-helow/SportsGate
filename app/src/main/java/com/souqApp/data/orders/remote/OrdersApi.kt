@@ -2,6 +2,8 @@ package com.souqApp.data.orders.remote
 
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.orders.remote.dto.OrderDetailsResponse
+import com.souqApp.data.orders.remote.dto.OrderResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -10,5 +12,5 @@ interface OrdersApi {
     suspend fun getOrders(): WrappedListResponse<OrderResponse>
 
     @GET("v2/users/orders/getOrderDetails")
-    suspend fun getOrderDetails(@Query("order_id") order_id: Int): WrappedResponse<OrderDetailsResponse>
+    suspend fun getOrderDetails(@Query("order_id") orderId: Int): WrappedResponse<OrderDetailsResponse>
 }

@@ -6,12 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.souqApp.data.common.utlis.WrappedListResponse
-import com.souqApp.data.orders.remote.OrderResponse
 import com.souqApp.databinding.FragmentOrdersBinding
-import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.orders.OrderEntity
-import com.souqApp.infra.extension.isVisible
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

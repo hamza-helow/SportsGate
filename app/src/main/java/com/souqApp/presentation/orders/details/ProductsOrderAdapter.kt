@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.souqApp.BR
 import com.souqApp.databinding.ItemProductInOrderDetailsBinding
-import com.souqApp.domain.orders.ProductInOrderEntity
+import com.souqApp.domain.orders.entity.ProductInOrderEntity
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
 class ProductsOrderAdapter :

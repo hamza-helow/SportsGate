@@ -6,10 +6,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.orders.remote.OrderDetailsResponse
+import com.souqApp.data.orders.remote.dto.OrderDetailsResponse
 import com.souqApp.databinding.FragmentOrderDetailsBinding
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.orders.OrderDetailsEntity
+import com.souqApp.domain.orders.entity.OrderDetailsEntity
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint

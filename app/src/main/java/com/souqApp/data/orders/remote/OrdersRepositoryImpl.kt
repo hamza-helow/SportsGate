@@ -4,9 +4,11 @@ import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.common.utlis.handleApi
+import com.souqApp.data.orders.remote.dto.OrderDetailsResponse
+import com.souqApp.data.orders.remote.dto.OrderResponse
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.orders.OrderDetailsEntity
-import com.souqApp.domain.orders.OrderEntity
+import com.souqApp.domain.orders.entity.OrderDetailsEntity
+import com.souqApp.domain.orders.entity.OrderEntity
 import com.souqApp.domain.orders.OrdersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -28,7 +30,7 @@ class OrdersRepositoryImpl @Inject constructor(private val ordersApi: OrdersApi)
 
     override suspend fun getOrderDetails(orderId: Int): Flow<BaseResult<OrderDetailsEntity, WrappedResponse<OrderDetailsResponse>>> {
         return flow {
-            val response = handleApi { ordersApi.getOrderDetails(order_id = orderId) }
+            val response = handleApi { ordersApi.getOrderDetails(orderId = orderId) }
             if (response.status) {
                 emit(BaseResult.Success(response.data.toEntity()))
             } else {

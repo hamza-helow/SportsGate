@@ -7,7 +7,7 @@
 
         <variable
             name="details"
-            type="com.souqApp.domain.orders.OrderDetailsEntity" />
+            type="com.souqApp.domain.orders.entity.OrderDetailsEntity" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{details.statusDescription}"
+                android:text="@{details.status.description}"
                 tools:text="Pending" />
 
 
@@ -87,14 +87,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 app:label="@string/sub_total_str"
-                app:value="@{details.subTotal}"
+                app:value="@{details.orderSummary.subTotal}"
                 tools:value="100 JOD" />
 
             <com.souqApp.infra.custome_view.LabelWithValueHorizontal
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:label="@string/delivery_str"
-                app:value="@{details.deliveryPrice}"
+                app:value="@{details.orderSummary.deliveryPrice}"
                 tools:value="100 JOD" />
 
 
@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:label="@string/vat"
-                app:value="@{details.vat}"
+                app:value="@{details.orderSummary.vat}"
                 tools:value="100 JOD" />
 
             <com.souqApp.infra.custome_view.LabelWithValueHorizontal
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 app:isVisible="@{details.couponPercent > 0}"
                 app:label="@string/discount_str"
-                app:value="@{details.couponDiscount}"
+                app:value="@{details.orderSummary.couponDiscount}"
                 tools:value="100 JOD" />
 
             <com.souqApp.infra.custome_view.LabelWithValueHorizontal
@@ -120,7 +120,7 @@
                 app:boldValue="true"
                 app:hasDivider="false"
                 app:label="@string/order_total_str"
-                app:value="@{details.total}"
+                app:value="@{details.orderSummary.total}"
                 tools:value="100 JOD" />
 
 

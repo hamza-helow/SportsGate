@@ -1,8 +1,9 @@
 package com.souqApp.domain.orders
 
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.orders.remote.OrderDetailsResponse
+import com.souqApp.data.orders.remote.dto.OrderDetailsResponse
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.orders.entity.OrderDetailsEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

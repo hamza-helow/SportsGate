@@ -94,8 +94,6 @@ class ProductDetailsFragment :
         initListener()
         binding.isLogin = sharedPrefs.isLogin()
         binding.showAddToCart = firebaseConfig.getBoolean(IS_PURCHASE_ENABLED)
-        viewModel.productDetails(args.productId)
-
         binding.imgBack.setOnClickListener {
             findNavController().popBackStack()
         }

@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class ProductDetailsUseCase @Inject constructor(private val productDetailsRepository: ProductDetailsRepository) {
 
-    suspend fun productDetails(productID: Int): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>> {
+    suspend fun productDetails(productID: Int?): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>> {
         return productDetailsRepository.productDetails(productID)
     }
 

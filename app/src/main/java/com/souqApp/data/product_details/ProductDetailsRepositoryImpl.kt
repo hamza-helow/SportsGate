@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetailsApi: ProductDetailsApi) :
     ProductDetailsRepository {
 
-    override suspend fun productDetails(productID: Int): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>> {
+    override suspend fun productDetails(productID: Int?): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>> {
         return flow {
             val response = handleApi { productsDetailsApi.productDetails(productID) }
             val isSuccessful = response.status

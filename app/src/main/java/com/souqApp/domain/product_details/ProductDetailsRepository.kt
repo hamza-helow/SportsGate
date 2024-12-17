@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProductDetailsRepository {
 
-    suspend fun productDetails(productID: Int): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>>
+    suspend fun productDetails(productID: Int?): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>>
 
     suspend fun addOrRemoveProductToFavorite(
         productId: Int,

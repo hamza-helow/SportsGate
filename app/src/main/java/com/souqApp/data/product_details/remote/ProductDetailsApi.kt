@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface ProductDetailsApi {
     @GET("v2/products/getProductDetails")
-    suspend fun productDetails(@Query("id") productId: Int): WrappedResponse<ProductDetailsResponse>
+    suspend fun productDetails(@Query("id") productId: Int?): WrappedResponse<ProductDetailsResponse>
 
     @POST("v2/users/favorites/addOrRemoveFavoriteProduct")
     suspend fun addOrRemoveProductToFavorite(

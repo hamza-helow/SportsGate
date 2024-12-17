@@ -13,6 +13,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.souqApp.R
+import com.souqApp.domain.common.entity.NotificationType
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -34,12 +35,10 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
 
 
     private fun sendNotification(remoteMessage: RemoteMessage) {
-
         val data = remoteMessage.data
-        val type = data["notify_type"]
-        val redirectId = data["redirect_id"] ?: ""
+        val type = data[Constant.NOTIFY_TYPE]
+        val redirectId = data[Constant.REDIRECT_ID] ?: ""
         val title = remoteMessage.notification?.body.toString()
-
         val intent = getIntent(type = type, redirectId = redirectId)
         val channelId = getString(R.string.default_notification_channel_id)
         RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -70,11 +69,11 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
 
 
     private fun getIntent(type: String?, redirectId: String): PendingIntent? {
-        return when (type) {
-            "1" -> mainIntent() //general
-            "2" -> mainIntent()  //coupon
-            "3" -> orderIntent(redirectId)  //order
-            "4" -> productIntent(redirectId)  //product
+        return when (NotificationType.findByCode(type)) {
+            NotificationType.GENERAL -> mainIntent()
+            NotificationType.COUPON -> mainIntent()
+            NotificationType.ORDER -> orderIntent(redirectId)
+            NotificationType.PRODUCT -> productIntent(redirectId)
             else -> null
         }
     }
@@ -90,7 +89,7 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
         return NavDeepLinkBuilder(this)
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.product_details)
-            .setArguments(bundleOf("productId" to redirectId.toInt()))
+            .setArguments(bundleOf(Constant.PRODUCT_ID to redirectId.toInt()))
             .createPendingIntent()
     }
 
@@ -98,7 +97,7 @@ class MFirebaseMessagingService : FirebaseMessagingService() {
         return NavDeepLinkBuilder(this)
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.orderDetailsFragment)
-            .setArguments(bundleOf("orderId" to redirectId.toInt()))
+            .setArguments(bundleOf(Constant.ORDER_ID to redirectId.toInt()))
             .createPendingIntent()
     }
 }

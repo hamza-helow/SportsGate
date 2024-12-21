@@ -2,6 +2,7 @@ package com.souqApp.presentation.addresses.add_address
 
 import android.Manifest
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -10,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.google.android.gms.maps.model.LatLng
 import com.souqApp.R
@@ -21,11 +23,14 @@ import com.souqApp.domain.addresses.AddressDetailsEntity
 import com.souqApp.domain.addresses.AreaEntity
 import com.souqApp.domain.addresses.CityEntity
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.infra.extension.getAddressLine
+import com.souqApp.infra.extension.orZero
 import com.souqApp.infra.extension.successBorder
 import com.souqApp.infra.utils.ADDRESS_DETAILS
 import com.souqApp.presentation.addresses.map.MapsActivity
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddAddressFragment :
@@ -45,18 +50,19 @@ class AddAddressFragment :
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 val lat = result.data?.getDoubleExtra(MapsActivity.LAT, 0.0) ?: 0.0
                 val lng = result.data?.getDoubleExtra(MapsActivity.LNG, 0.0) ?: 0.0
-                viewModel.setUserLatLng(LatLng(lat, lng))
+                viewModel.setSelectedLocation(LatLng(lat, lng))
             }
         }
 
     private fun fetchAddressDetailsIfExist() {
         val addressDetails = getAddressDetails() ?: return
         binding.addressDetails = addressDetails
-        viewModel.setUserLatLng(LatLng(addressDetails.lat, addressDetails.lng))
+        viewModel.setSelectedLocation(LatLng(addressDetails.lat, addressDetails.lng))
     }
 
     private fun getAddressDetails(): AddressDetailsEntity? {
-        @Suppress("DEPRECATION") val address = arguments?.getSerializable(ADDRESS_DETAILS) ?: return null
+        @Suppress("DEPRECATION") val address =
+            arguments?.getSerializable(ADDRESS_DETAILS) ?: return null
         return address as AddressDetailsEntity
     }
 
@@ -67,7 +73,7 @@ class AddAddressFragment :
         observeToValidate()
         initListener()
         fetchAddressDetailsIfExist()
-        observeToUserLatLng()
+        observeToSelectedLocation()
         observeToCities()
     }
 
@@ -80,8 +86,8 @@ class AddAddressFragment :
         }
     }
 
-    private fun observeToUserLatLng() {
-        viewModel.userLatLng.observe(viewLifecycleOwner) { whenUserSetLatLng() }
+    private fun observeToSelectedLocation() {
+        viewModel.selectedLocation.observe(viewLifecycleOwner) { whenUserSetLocation(it) }
     }
 
     private fun observeToValidate() {
@@ -97,11 +103,25 @@ class AddAddressFragment :
         binding.txtStreet.doAfterTextChanged { validate() }
     }
 
-    private fun whenUserSetLatLng() {
-        binding.txtPickLocation.text = getString(R.string.location_selected)
-        binding.cardPickLocation.successBorder()
-        validate()
+    private fun whenUserSetLocation(selectedLocation: LatLng) {
+        getAddressLine(selectedLocation) { addressLine ->
+            binding.txtPickLocation.text = addressLine
+            binding.cardPickLocation.successBorder()
+            validate()
+        }
+
     }
+
+    private fun getAddressLine(
+        location: LatLng,
+        addressLine: (String) -> Unit
+    ) {
+        val geocoder = Geocoder(requireContext())
+        lifecycleScope.launch {
+            addressLine(geocoder.getAddressLine(location.latitude, location.longitude))
+        }
+    }
+
 
     private fun validate() {
         viewModel.validate(
@@ -180,8 +200,9 @@ class AddAddressFragment :
         val street = binding.txtStreet.text.toString()
         val idCity = (binding.spinnerCities.selectedItem as CityEntity).id
         val idArea = (binding.spinnerAreas.selectedItem as AreaEntity).id
-        val lat = viewModel.userLatLng.value?.latitude!!
-        val lng = viewModel.userLatLng.value?.longitude!!
+        val latLng = viewModel.selectedLocation.value
+        val lat = latLng?.latitude.orZero()
+        val lng = latLng?.longitude.orZero()
         val addressId = if (getAddressDetails() == null) null else getAddressDetails()?.id
 
         val addressRequest = AddressRequest(

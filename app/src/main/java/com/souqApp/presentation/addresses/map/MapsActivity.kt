@@ -3,10 +3,15 @@ package com.souqApp.presentation.addresses.map
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -16,6 +21,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.souqApp.R
 import com.souqApp.databinding.ActivityMapsBinding
+import com.souqApp.infra.extension.getAddress
+import com.souqApp.infra.extension.getAddressLine
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -36,13 +49,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         binding.btnSubmit.setOnClickListener {
+
+            val latitude = mMap.cameraPosition.target.latitude
+            val longitude = mMap.cameraPosition.target.longitude
             val intent = Intent()
-            intent.putExtra(LAT, mMap.cameraPosition.target.latitude)
-            intent.putExtra(LNG, mMap.cameraPosition.target.longitude)
+            intent.putExtra(LAT, latitude)
+            intent.putExtra(LNG, longitude)
             setResult(RESULT_OK, intent)
             finish()
         }
     }
+
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap

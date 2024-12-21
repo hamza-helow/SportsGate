@@ -65,10 +65,12 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
     }
 
     private fun onLoaded(settingEntity: SettingsEntity) {
-        viewModel.facebook = settingEntity.facebook.orEmpty()
-        viewModel.instagram = settingEntity.instagram.orEmpty()
-        viewModel.twitter = settingEntity.twitter.orEmpty()
-        viewModel.tiktok = settingEntity.tiktok.orEmpty()
+        val socialLinks = settingEntity.socialLinks
+        binding.appName = settingEntity.storeName
+        viewModel.facebook = socialLinks?.facebook.orEmpty()
+        viewModel.instagram = socialLinks?.instagram.orEmpty()
+        viewModel.twitter = socialLinks?.twitter.orEmpty()
+        viewModel.tiktok = socialLinks?.tiktok.orEmpty()
     }
 
     private fun onErrorLoad(response: WrappedResponse<SettingsEntity>) {

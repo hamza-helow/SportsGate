@@ -25,6 +25,10 @@
             name="appVersion"
             type="String" />
 
+        <variable
+            name="appName"
+            type="String" />
+
         <import type="com.souqApp.BuildConfig" />
 
     </data>
@@ -46,6 +50,7 @@
                 android:id="@+id/card_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_24sdp"
                 android:orientation="horizontal"
                 app:isVisible="@{sharedPrefs.login}">
@@ -358,7 +363,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/powered_name"
+                        android:text="@{appName}"
+                        tools:text="@string/powered_name"
                         android:textColor="@color/colorAccent" />
                 </LinearLayout>
 

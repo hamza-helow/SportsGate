@@ -25,6 +25,10 @@
         app:destination="@id/productDetailsFragment" />
 
     <action
+        android:id="@+id/to_orderDetailsFragment"
+        app:destination="@id/orderDetailsFragment" />
+
+    <action
         android:id="@+id/to_loading_dialog_fragment"
         app:destination="@id/loadingDialogFragment" />
 
@@ -91,6 +95,18 @@
         <action
             android:id="@+id/to_imagePreviewFragment"
             app:destination="@id/imagePreviewFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="com.souqApp.presentation.orders.details.OrderDetailsFragment"
+        android:label="@string/order_details"
+        tools:layout="@layout/fragment_order_details">
+
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
 
     </fragment>
 

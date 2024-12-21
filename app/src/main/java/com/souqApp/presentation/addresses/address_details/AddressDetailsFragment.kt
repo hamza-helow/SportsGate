@@ -62,8 +62,6 @@ class AddressDetailsFragment :
     }
 
     private fun observeToAddressDetails() {
-        viewModel.getAddressDetails(args.addressId)
-
         viewModel.addressDetailsLiveData.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is BaseResult.Errors -> handleAddressDetailsErrorLoad(result.error)
@@ -90,13 +88,9 @@ class AddressDetailsFragment :
 
         val latLng = LatLng(addressDetailsEntity.lat, addressDetailsEntity.lng)
         val markerOptions = MarkerOptions()
-
         markerOptions.position(latLng)
-
         mMap.clear()
-
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16f)
-
         mMap.animateCamera(cameraUpdate)
 
         mMap.addMarker(markerOptions)
@@ -116,6 +110,7 @@ class AddressDetailsFragment :
 
     override fun onMapReady(map: GoogleMap) {
         mMap = map
+        viewModel.getAddressDetails(args.addressId)
     }
 
     override fun onClick(view: View) {

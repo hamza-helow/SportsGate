@@ -1,7 +1,9 @@
 package com.souqApp.presentation.orders.home
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -10,6 +12,7 @@ import com.souqApp.databinding.FragmentOrdersBinding
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class OrdersFragment : BaseFragment<FragmentOrdersBinding>(FragmentOrdersBinding::inflate) {
@@ -24,9 +27,16 @@ class OrdersFragment : BaseFragment<FragmentOrdersBinding>(FragmentOrdersBinding
     }
 
     private fun initAdapter() {
-        ordersAdapter = OrdersAdapter { navigate(OrdersFragmentDirections.toOrderDetailsFragment(it)) }
+        ordersAdapter = OrdersAdapter(onViewInvoice = ::viewInvoice) {
+            navigate(OrdersFragmentDirections.toOrderDetailsFragment(it))
+        }
         binding.recOrders.layoutManager = LinearLayoutManager(requireContext())
         binding.recOrders.adapter = ordersAdapter
+    }
+
+    private fun viewInvoice(link: String) {
+        val customTabsIntent: CustomTabsIntent = CustomTabsIntent.Builder().build()
+        customTabsIntent.launchUrl(requireContext(), Uri.parse(link))
     }
 
     private fun observeToOrders() {

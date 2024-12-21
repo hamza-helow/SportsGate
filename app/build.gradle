@@ -155,6 +155,8 @@ dependencies {
 
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    implementation("androidx.browser:browser:1.8.0")
 }
 
 apply plugin: 'com.google.gms.google-services'

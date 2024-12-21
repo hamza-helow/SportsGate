@@ -28,7 +28,7 @@ class MoreViewModel @Inject constructor(private val settingsUseCase: SettingsUse
     @Inject
     fun getSettings() {
         viewModelScope.launch {
-            settingsUseCase.getSettings()
+            settingsUseCase.invoke()
                 .catch {}
                 .collect { settingsLiveData.value = it }
         }

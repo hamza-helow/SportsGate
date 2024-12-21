@@ -4,7 +4,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.souqApp.NavGraphDirections
+import com.souqApp.data.notification.remote.NotificationEntity
 import com.souqApp.databinding.FragmentNotificationBinding
+import com.souqApp.domain.common.entity.NotificationType
 import com.souqApp.infra.extension.isVisible
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
@@ -29,9 +32,19 @@ class NotificationFragment :
     }
 
     private fun initAdapter() {
-        notificationAdapter = NotificationAdapter()
+        notificationAdapter = NotificationAdapter(::handleOnClickItem)
         binding.rec.layoutManager = LinearLayoutManager(requireContext())
         binding.rec.setAdapter(notificationAdapter)
+    }
+
+    private fun handleOnClickItem(item: NotificationEntity) {
+        val direction = when (NotificationType.findByCode(item.notifyType.toString())) {
+            NotificationType.ORDER -> NavGraphDirections.toOrderDetailsFragment(item.redirectId)
+            NotificationType.PRODUCT -> NavGraphDirections.toProductDetailsFragment(item.redirectId)
+            else -> null
+        }
+
+        direction?.let(::navigate)
     }
 
 

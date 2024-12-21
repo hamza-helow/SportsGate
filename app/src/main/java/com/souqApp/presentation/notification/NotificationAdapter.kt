@@ -9,14 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.souqApp.data.notification.remote.NotificationEntity
 import com.souqApp.databinding.ItemNotificationBinding
 
-class NotificationAdapter :
+class NotificationAdapter(private val onClickItem: (NotificationEntity) -> Unit) :
     PagingDataAdapter<NotificationEntity, NotificationAdapter.ViewHolder>(DiffCallback) {
 
 
-
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onClickItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,9 +30,17 @@ class NotificationAdapter :
     class ViewHolder(private val binding: ItemNotificationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: NotificationEntity?) {
+        fun bind(item: NotificationEntity?, onClickItem: (NotificationEntity) -> Unit) {
+
+            if (item == null)
+                return
+
             binding.setVariable(BR.notification, item)
             binding.executePendingBindings()
+
+            binding.root.setOnClickListener {
+                onClickItem(item)
+            }
         }
     }
 

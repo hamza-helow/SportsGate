@@ -9,11 +9,11 @@ import com.souqApp.BR
 import com.souqApp.databinding.ItemOrderBinding
 import com.souqApp.domain.orders.entity.OrderEntity
 
-class OrdersAdapter(val onClickItem: (Int) -> Unit) :
+class OrdersAdapter(val onViewInvoice: (link: String) -> Unit, val onClickItem: (Int) -> Unit) :
     PagingDataAdapter<OrderEntity, OrdersAdapter.ViewHolder>(DiffCallback) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), onClickItem)
+        holder.bind(getItem(position), onClickItem, onViewInvoice)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,17 +22,21 @@ class OrdersAdapter(val onClickItem: (Int) -> Unit) :
         )
     }
 
-
     class ViewHolder(private val binding: ItemOrderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: OrderEntity?, onClickItem: (Int) -> Unit) {
+        fun bind(
+            item: OrderEntity?,
+            onClickItem: (Int) -> Unit,
+            onViewInvoice: (link: String) -> Unit
+        ) {
 
             if (item == null)
                 return
 
             binding.setVariable(BR.order, item)
             binding.executePendingBindings()
+            binding.tvViewInvoice.setOnClickListener { onViewInvoice(item.href) }
             binding.root.setOnClickListener { onClickItem(item.id) }
         }
     }

@@ -27,17 +27,18 @@ class AddAddressViewModel @Inject constructor(private val addressUseCase: Addres
     val citiesLiveData: MutableLiveData<BaseResult<List<CityEntity>, WrappedListResponse<CityResponse>>> =
         MutableLiveData()
 
-    private val _userLatLng = MutableLiveData<LatLng>()
-    val userLatLng: LiveData<LatLng> get() = _userLatLng
+
+    private val _selectedLocation = MutableLiveData<LatLng>()
+    val selectedLocation: LiveData<LatLng> get() = _selectedLocation
 
     fun validate(street: String, buildingNumber: String, floorNumber: String) {
         validate.value =
             street.isNotBlank() && buildingNumber.isNotBlank()
-                    && floorNumber.isNotBlank() && userLatLng.value != null
+                    && floorNumber.isNotBlank() && selectedLocation.value != null
     }
 
-    fun setUserLatLng(latLng: LatLng) {
-        _userLatLng.value = latLng
+    fun setSelectedLocation(latLng: LatLng) {
+        _selectedLocation.value = latLng
     }
 
     private fun setLoading(isLoading: Boolean) {

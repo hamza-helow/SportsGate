@@ -2,7 +2,6 @@ package com.souqApp.data.main.home.remote
 
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.main.home.remote.dto.CheckUpdateResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.domain.common.BaseResult
@@ -16,7 +15,7 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(private val homeApi: HomeApi) : HomeRepository {
     override suspend fun home(): Flow<BaseResult<HomeEntity, WrappedResponse<HomeResponse>>> {
         return flow {
-            val response = handleApi {  homeApi.getHome() }
+            val response = homeApi.getHome()
             val isSuccessful = response.status
 
             if (isSuccessful) {
@@ -30,7 +29,7 @@ class HomeRepositoryImpl @Inject constructor(private val homeApi: HomeApi) : Hom
 
     override suspend fun checkUpdate(): Flow<BaseResult<CheckUpdateEntity, WrappedResponse<CheckUpdateResponse>>> {
         return flow {
-            val response = handleApi { homeApi.checkUpdate() }
+            val response =  homeApi.checkUpdate()
             if (response.status) {
                 emit(BaseResult.Success(response.data.toEntity()))
             } else {

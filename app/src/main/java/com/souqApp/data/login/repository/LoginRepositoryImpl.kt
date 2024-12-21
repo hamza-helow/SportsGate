@@ -3,7 +3,6 @@ package com.souqApp.data.login.repository
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.login.remote.api.LoginApi
 import com.souqApp.data.login.remote.dto.LoginRequest
 import com.souqApp.domain.common.BaseResult
@@ -17,10 +16,10 @@ class LoginRepositoryImpl @Inject constructor(private val loginApi: LoginApi) : 
 
     override suspend fun login(loginRequest: LoginRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return flow {
-            val response = handleApi { loginApi.login(loginRequest) }
+            val response = loginApi.login(loginRequest)
             if (response.status) {
                 val body = response.data
-                emit(BaseResult.Success( body.toEntity()))
+                emit(BaseResult.Success(body.toEntity()))
             } else {
                 emit(BaseResult.Errors(response))
             }

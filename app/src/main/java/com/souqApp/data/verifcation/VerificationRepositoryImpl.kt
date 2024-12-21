@@ -4,7 +4,6 @@ import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.verifcation.remote.VerificationApi
 import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
@@ -21,7 +20,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
 
     override suspend fun activeAccount(activeAccountRequest: ActiveAccountRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return flow {
-            val response = handleApi { verificationApi.activeAccount(activeAccountRequest) }
+            val response = verificationApi.activeAccount(activeAccountRequest)
 
             if (response.status) {
                 val body = response.data
@@ -38,8 +37,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
         code: String
     ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>> {
         return flow {
-            val response =
-                handleApi { verificationApi.createTokenResetPasswordByPhone(phone, code) }
+            val response = verificationApi.createTokenResetPasswordByPhone(phone, code)
             if (response.status) {
                 emit(BaseResult.Success(response.data))
 
@@ -54,8 +52,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
         code: String
     ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>> {
         return flow {
-            val response =
-                handleApi { verificationApi.createTokenResetPasswordByEmail(phone, code) }
+            val response = verificationApi.createTokenResetPasswordByEmail(phone, code)
             if (response.status) {
                 emit(BaseResult.Success(response.data))
 
@@ -67,7 +64,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
 
     override suspend fun requestPasswordResetByPhone(phone: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
         return flow {
-            val response = handleApi { verificationApi.requestPasswordResetByPhone(phone) }
+            val response =  verificationApi.requestPasswordResetByPhone(phone)
             if (response.status) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {
@@ -78,7 +75,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
 
     override suspend fun requestPasswordResetByEmail(email: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
         return flow {
-            val response = handleApi { verificationApi.requestPasswordResetByEmail(email) }
+            val response =  verificationApi.requestPasswordResetByEmail(email)
             if (response.status) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {
@@ -89,7 +86,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
 
     override suspend fun resendActivationCode(): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {
         return flow {
-            val response = handleApi { verificationApi.resendActivationCode() }
+            val response = verificationApi.resendActivationCode()
             if (response.status) {
                 emit(BaseResult.Success(EmptyEntity()))
             } else {
@@ -101,7 +98,7 @@ class VerificationRepositoryImpl @Inject constructor(private val verificationApi
 
     override suspend fun getPasswordSupportedMethods(): Flow<BaseResult<List<String>, WrappedListResponse<String>>> {
         return flow {
-            val response = handleApi { verificationApi.getPasswordSupportedMethods() }
+            val response = verificationApi.getPasswordSupportedMethods()
             if (response.status) {
                 emit(BaseResult.Success(response.data.orEmpty()))
             } else {

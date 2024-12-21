@@ -2,7 +2,6 @@ package com.souqApp.data.register.repositroy
 
 import com.souqApp.data.common.remote.dto.TokenResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.register.remote.api.RegisterApi
 import com.souqApp.data.register.remote.dto.RegisterRequest
 import com.souqApp.domain.common.BaseResult
@@ -17,7 +16,7 @@ class RegisterRepositoryImpl @Inject constructor(private val registerApi: Regist
 
     override suspend fun register(registerRequest: RegisterRequest): Flow<BaseResult<TokenEntity, WrappedResponse<TokenResponse>>> {
         return flow {
-            val response = handleApi { registerApi.register(registerRequest) }
+            val response = registerApi.register(registerRequest)
             if (response.status) {
                 val registerEntity = TokenEntity(response.data.token)
                 emit(BaseResult.Success(registerEntity))

@@ -1,7 +1,6 @@
 package com.souqApp.data.notification
 
 import com.souqApp.data.common.utlis.WrappedListResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.notification.remote.NotificationApi
 import com.souqApp.data.notification.remote.NotificationEntity
 import com.souqApp.domain.common.BaseResult
@@ -15,7 +14,7 @@ class NotificationRepositoryImpl @Inject constructor(private val notificationApi
 
     override suspend fun notificationsHistory(pageNumber: Int): Flow<BaseResult<List<NotificationEntity>, WrappedListResponse<NotificationEntity>>> {
         return flow {
-            val response = handleApi { notificationApi.notificationsHistory(page = pageNumber) }
+            val response = notificationApi.notificationsHistory(page = pageNumber)
             if (response.status) {
                 emit(BaseResult.Success(response.data.orEmpty()))
             } else {

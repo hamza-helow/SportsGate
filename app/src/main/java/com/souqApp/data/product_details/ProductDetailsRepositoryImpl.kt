@@ -2,7 +2,6 @@ package com.souqApp.data.product_details
 
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.product_details.remote.*
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.product_details.AddProductToCartEntity
@@ -17,7 +16,7 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
 
     override suspend fun productDetails(productID: Int?): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>> {
         return flow {
-            val response = handleApi { productsDetailsApi.productDetails(productID) }
+            val response = productsDetailsApi.productDetails(productID)
             val isSuccessful = response.status
             if (isSuccessful) {
                 emit(BaseResult.Success(response.data.toEntity()))
@@ -32,12 +31,10 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
         combinationId: Int?
     ): Flow<BaseResult<AddToFavoriteResponse, WrappedResponse<AddToFavoriteResponse>>> {
         return flow {
-            val response = handleApi {
-                productsDetailsApi.addOrRemoveProductToFavorite(
-                    productId,
-                    combinationId
-                )
-            }
+            val response = productsDetailsApi.addOrRemoveProductToFavorite(
+                productId,
+                combinationId
+            )
 
             if (response.status) {
                 emit(BaseResult.Success(response.data))
@@ -52,8 +49,7 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
         combinationId: Int?
     ): Flow<BaseResult<AddProductToCartEntity, WrappedResponse<AddProductToCartResponse>>> {
         return flow {
-            val response =
-                handleApi { productsDetailsApi.addProductToCart(productId, combinationId) }
+            val response = productsDetailsApi.addProductToCart(productId, combinationId)
             if (response.status) {
                 emit(BaseResult.Success(response.data.toEntity()))
             } else {
@@ -67,8 +63,7 @@ class ProductDetailsRepositoryImpl @Inject constructor(private val productsDetai
         label: String
     ): Flow<BaseResult<VariationProductPriceInfoEntity, WrappedResponse<VariationProductPriceInfoResponse>>> {
         return flow {
-            val response =
-                handleApi { productsDetailsApi.getVariationProductPriceInfo(productId, label) }
+            val response = productsDetailsApi.getVariationProductPriceInfo(productId, label)
             if (response.status) {
                 emit(BaseResult.Success(response.data.toEntity()))
             } else {

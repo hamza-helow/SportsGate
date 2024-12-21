@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class GetCartDetailsUseCase @Inject constructor(private val cartRepository: CartRepository) {
 
-    suspend fun execute(): Flow<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>> {
-        return cartRepository.getCartDetails()
+    suspend fun execute(updated:Long): Flow<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>> {
+        return cartRepository.getCartDetails(updated)
     }
 }

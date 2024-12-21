@@ -13,7 +13,7 @@ import retrofit2.http.Query
 interface CartApi {
 
     @GET("v2/users/carts/details")
-    suspend fun getCartDetails(): WrappedResponse<CartDetailsResponse>
+    suspend fun getCartDetails(@Query("updated") updated: Long): WrappedResponse<CartDetailsResponse>
 
     @DELETE("v2/users/carts/remove")
     suspend fun deleteProductFromCart(@Query("id") cartItemId: Int): WrappedResponse<UpdateProductCartResponse>

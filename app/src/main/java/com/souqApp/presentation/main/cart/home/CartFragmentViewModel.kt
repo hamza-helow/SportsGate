@@ -15,6 +15,7 @@ import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
 import com.souqApp.domain.users.SendOtpUseCase
+import com.souqApp.infra.utils.getTimestampInSeconds
 import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -28,8 +29,9 @@ class CartFragmentViewModel @Inject constructor(
     private val updateProductUseCase: UpdateProductUseCase,
     private val resetCartUseCase: ResetCartUseCase,
     private val sendOtpUseCase: SendOtpUseCase,
-) :
-    ViewModel() {
+) : ViewModel() {
+
+    private var updatedTime: Long = getTimestampInSeconds()
 
     val cartDetailsLiveData: MutableLiveData<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>> =
         MutableLiveData()
@@ -49,7 +51,7 @@ class CartFragmentViewModel @Inject constructor(
     @Inject
     fun getCartDetails() {
         viewModelScope.launch {
-            getCartDetailsUseCase.execute()
+            getCartDetailsUseCase.execute(updatedTime)
                 .onStart {
                     setLoadingCart(true)
                 }
@@ -85,6 +87,7 @@ class CartFragmentViewModel @Inject constructor(
             resetCartUseCase.invoke().onStart { setLoadingCart(true) }
                 .catch { setLoadingCart(false) }
                 .collect {
+                    updatedTime = getTimestampInSeconds()
                     setLoadingCart(false)
                     onResult(it)
                 }
@@ -98,7 +101,10 @@ class CartFragmentViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             updateProductUseCase.execute(product, isIncrease)
-                .collect { onResult(it) }
+                .collect {
+                    updatedTime = getTimestampInSeconds()
+                    onResult(it)
+                }
         }
     }
 }

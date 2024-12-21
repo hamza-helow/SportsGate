@@ -3,7 +3,6 @@ package com.souqApp.data.orders.remote
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.orders.remote.dto.OrderDetailsResponse
 import com.souqApp.data.orders.remote.dto.OrderResponse
 import com.souqApp.domain.common.BaseResult
@@ -18,7 +17,7 @@ class OrdersRepositoryImpl @Inject constructor(private val ordersApi: OrdersApi)
     OrdersRepository {
     override suspend fun getOrders(): Flow<BaseResult<List<OrderEntity>, WrappedListResponse<OrderResponse>>> {
         return flow {
-            val response = handleApi { ordersApi.getOrders() }
+            val response = ordersApi.getOrders()
 
             if (response.status) {
                 emit(BaseResult.Success(data = response.data.orEmpty().toEntity()))
@@ -30,7 +29,7 @@ class OrdersRepositoryImpl @Inject constructor(private val ordersApi: OrdersApi)
 
     override suspend fun getOrderDetails(orderId: Int): Flow<BaseResult<OrderDetailsEntity, WrappedResponse<OrderDetailsResponse>>> {
         return flow {
-            val response = handleApi { ordersApi.getOrderDetails(orderId = orderId) }
+            val response = ordersApi.getOrderDetails(orderId = orderId)
             if (response.status) {
                 emit(BaseResult.Success(response.data.toEntity()))
             } else {

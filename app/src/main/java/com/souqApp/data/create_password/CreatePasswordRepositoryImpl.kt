@@ -1,6 +1,5 @@
 package com.souqApp.data.create_password
 
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.create_password.remote.CreatePasswordApi
 import com.souqApp.domain.create_password.CreatePasswordRepository
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +11,7 @@ class CreatePasswordRepositoryImpl @Inject constructor(private val createPasswor
 
     override suspend fun resetPassword(newPassword: String, resetToken: String): Flow<Boolean> {
         return flow {
-            val response = handleApi { createPasswordApi.resetPassword(newPassword, resetToken) }
+            val response = createPasswordApi.resetPassword(newPassword, resetToken)
             emit(response.status)
         }
     }

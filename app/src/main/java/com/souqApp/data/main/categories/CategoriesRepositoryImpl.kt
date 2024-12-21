@@ -1,7 +1,6 @@
 package com.souqApp.data.main.categories
 
 import com.souqApp.data.common.utlis.WrappedListResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.main.categories.remote.CategoriesApi
 import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.domain.common.BaseResult
@@ -14,7 +13,7 @@ class CategoriesRepositoryImpl @Inject constructor(private val categoriesApi: Ca
     CategoriesRepository {
     override suspend fun categories(): Flow<BaseResult<List<CategoryEntity>, WrappedListResponse<CategoryEntity>>> {
         return flow {
-            val response = handleApi { categoriesApi.categories() }
+            val response = categoriesApi.categories()
 
             val isSuccessful = response.status
 

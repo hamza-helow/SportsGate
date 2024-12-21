@@ -2,7 +2,6 @@ package com.souqApp.data.main.cart.remote
 
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
@@ -19,10 +18,9 @@ import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : CartRepository {
 
-
-    override suspend fun getCartDetails(): Flow<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>> {
+    override suspend fun getCartDetails(updated: Long): Flow<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>> {
         return flow {
-            val response = handleApi { cartApi.getCartDetails() }
+            val response =  cartApi.getCartDetails(updated)
             if (response.status) {
                 emit(BaseResult.Success(response.data.toEntity()))
             } else {
@@ -34,7 +32,7 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
 
     override suspend fun deleteProductFromCart(cartItemId: Int): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>> {
         return flow {
-            val response = handleApi { cartApi.deleteProductFromCart(cartItemId) }
+            val response = cartApi.deleteProductFromCart(cartItemId)
             if (response.status) {
                 emit(BaseResult.Success(data = response.data.toEntity()))
             } else {
@@ -49,8 +47,8 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
         combinationId: Int?
     ): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>> {
         return flow {
-            val response = handleApi { cartApi.updateProductQty(productId, qty, combinationId) }
 
+            val response = cartApi.updateProductQty(productId, qty, combinationId)
             if (response.status) {
                 emit(BaseResult.Success(data = response.data.toEntity()))
             } else {
@@ -62,7 +60,7 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
 
     override suspend fun getCheckoutDetails(deliveryOptionId: Int?): Flow<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> {
         return flow {
-            val response = handleApi { cartApi.getCheckoutDetails(deliveryOptionId) }
+            val response = cartApi.getCheckoutDetails(deliveryOptionId)
             if (response.status) {
                 emit(BaseResult.Success(data = response.data.toEntity()))
             } else {
@@ -78,7 +76,7 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
         deliveryOptionId: Int?
     ): Flow<BaseResult<CheckoutEntity, WrappedResponse<CheckoutResponse>>> {
         return flow {
-            val response = handleApi { cartApi.checkout(couponCode, addressId, deliveryOptionId) }
+            val response = cartApi.checkout(couponCode, addressId, deliveryOptionId)
             if (response.status) {
                 emit(BaseResult.Success(data = response.data.toEntity()))
             } else {
@@ -89,14 +87,14 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
 
     override suspend fun checkCouponCode(couponCode: String): Flow<Boolean> {
         return flow {
-            val response = handleApi { cartApi.checkCouponCode(couponCode) }
+            val response =cartApi.checkCouponCode(couponCode)
             emit(response.status)
         }
     }
 
     override suspend fun resetCart(): Flow<BaseResult<String, String>> {
         return flow {
-            val response = handleApi { cartApi.resetCart() }
+            val response = cartApi.resetCart()
 
             if (response.status) {
                 emit(BaseResult.Success(response.message))

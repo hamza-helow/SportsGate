@@ -26,12 +26,6 @@ data class WrappedResponse<T>(
     }
 }
 
-fun formattedErrors(arrErrors: List<String>?): String {
-    var errors = ""
-    if (arrErrors != null && arrErrors.isNotEmpty()) {
-        arrErrors.forEach { error ->
-            errors += error + "\n"
-        }
-    }
-    return errors.trim()
+fun formattedErrors(errors: List<String>?): String {
+    return errors.orEmpty().joinToString { "$it\n" }
 }

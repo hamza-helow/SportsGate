@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CartRepository {
 
-    suspend fun getCartDetails(): Flow<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>>
+    suspend fun getCartDetails(updated:Long): Flow<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>>
 
     suspend fun deleteProductFromCart(cartItemId: Int): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>>
 

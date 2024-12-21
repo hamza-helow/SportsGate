@@ -2,7 +2,6 @@ package com.souqApp.data.settings
 
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.common.utlis.handleApi
 import com.souqApp.data.settings.remote.SettingsApi
 import com.souqApp.data.settings.remote.dto.ContentEntity
 import com.souqApp.data.settings.remote.dto.PageDetailsEntity
@@ -18,7 +17,7 @@ class SettingsRepositoryImpl @Inject constructor(private val settingsApi: Settin
     SettingsRepository {
     override suspend fun termsAndConditions(): Flow<BaseResult<ContentEntity, WrappedResponse<ContentEntity>>> {
         return flow {
-            val response = handleApi { settingsApi.termsAndConditions() }
+            val response = settingsApi.termsAndConditions()
             if (response.status) {
                 emit(BaseResult.Success(response.data))
             } else {
@@ -29,7 +28,7 @@ class SettingsRepositoryImpl @Inject constructor(private val settingsApi: Settin
 
     override suspend fun aboutUs(): Flow<BaseResult<ContentEntity, WrappedResponse<ContentEntity>>> {
         return flow {
-            val response = handleApi { settingsApi.aboutUs() }
+            val response = settingsApi.aboutUs()
             if (response.status) {
                 emit(BaseResult.Success(response.data))
             } else {
@@ -40,7 +39,7 @@ class SettingsRepositoryImpl @Inject constructor(private val settingsApi: Settin
 
     override suspend fun getSettings(): Flow<BaseResult<SettingsEntity, WrappedResponse<SettingsEntity>>> {
         return flow {
-            val response = handleApi { settingsApi.getSettings() }
+            val response = settingsApi.getSettings()
             if (response.status) {
                 emit(BaseResult.Success(response.data))
             } else {
@@ -51,7 +50,7 @@ class SettingsRepositoryImpl @Inject constructor(private val settingsApi: Settin
 
     override suspend fun getPages(): Flow<BaseResult<List<PageEntity>, WrappedListResponse<PageEntity>>> {
         return flow {
-            val response = handleApi { settingsApi.getPages() }
+            val response = settingsApi.getPages()
             if (response.status) {
                 emit(BaseResult.Success(response.data.orEmpty()))
             } else {
@@ -62,7 +61,7 @@ class SettingsRepositoryImpl @Inject constructor(private val settingsApi: Settin
 
     override suspend fun getPageDetails(pageId: Int?): Flow<BaseResult<PageDetailsEntity, WrappedResponse<PageDetailsEntity>>> {
         return flow {
-            val response = handleApi { settingsApi.getPageDetails(pageId) }
+            val response = settingsApi.getPageDetails(pageId)
 
 
             if (response.status) {

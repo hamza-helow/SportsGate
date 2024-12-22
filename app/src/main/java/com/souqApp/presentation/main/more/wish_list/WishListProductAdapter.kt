@@ -13,6 +13,6 @@ class WishListProductAdapter(val onClickItem: (Int) -> Unit) :
 
     override fun setupViewHolder(holder: Holder, position: Int, item: ProductEntity) {
         holder.bind(BR.product, item)
-        holder.binding.root.setOnClickListener { onClickItem(it.id) }
+        holder.binding.root.setOnClickListener { onClickItem(item.id) }
     }
 }

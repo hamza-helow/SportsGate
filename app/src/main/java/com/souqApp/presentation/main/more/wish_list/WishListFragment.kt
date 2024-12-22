@@ -3,13 +3,16 @@ package com.souqApp.presentation.main.more.wish_list
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.FragmentWishListBinding
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.infra.custome_view.flex_recycler_view.showEmptyState
+import com.souqApp.infra.utils.SwipeToDeleteCallback
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,7 +50,18 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListB
     }
 
     private fun onLoaded(products: List<ProductEntity>) {
-        adapter.addList(products)
+        adapter.replaceList(products)
+
+        val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recProducts.recyclerView)
+
+
         binding.recProducts.setAdapter(adapter, LinearLayoutManager(requireContext()))
         binding.recProducts.showEmptyState(products.isEmpty())
     }

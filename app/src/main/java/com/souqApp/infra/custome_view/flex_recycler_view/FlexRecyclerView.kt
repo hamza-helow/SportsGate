@@ -21,7 +21,7 @@ import com.souqApp.R
 class FlexRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     FrameLayout(context, attrs) {
 
-    private val recyclerView = RecyclerView(context)
+    val recyclerView = RecyclerView(context)
 
     private val typedArray by lazy {
         context.obtainStyledAttributes(attrs, R.styleable.flexRecycler, 0, 0)
@@ -58,7 +58,7 @@ class FlexRecyclerView @JvmOverloads constructor(context: Context, attrs: Attrib
             val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
 
             val animation: Animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
-             layout.startAnimation(animation)
+            layout.startAnimation(animation)
 
             params.gravity = Gravity.CENTER
             layout.layoutParams = params

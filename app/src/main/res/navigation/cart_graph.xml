@@ -81,7 +81,7 @@
         android:id="@+id/verifyByMethodFragment"
         android:name="com.souqApp.presentation.main.cart.verify_by_method.VerifyByMethodFragment"
         android:label=""
-        tools:layout="@layout/fragment_verify_by_method">
+        tools:layout="@layout/fragment_verification">
 
         <argument
             android:name="verifyType"

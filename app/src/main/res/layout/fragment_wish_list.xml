@@ -7,6 +7,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
+    android:background="@color/white"
     app:emptyState="@layout/empty_state_wish_list"
     tools:listItem="@layout/item_product_horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android"

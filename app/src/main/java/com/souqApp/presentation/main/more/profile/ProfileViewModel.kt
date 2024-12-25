@@ -7,9 +7,12 @@ import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.common.entity.EmptyEntity
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.users.DeleteUserUseCase
+import com.souqApp.domain.users.SendOtpUseCase
 import com.souqApp.domain.users.UpdateProfileUseCase
+import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val updateProfileUseCase: UpdateProfileUseCase,
-    private val deleteUserUseCase: DeleteUserUseCase
+    private val deleteUserUseCase: DeleteUserUseCase,
+    private val sendOtpUseCase: SendOtpUseCase,
 ) :
     ViewModel() {
 
@@ -38,6 +42,24 @@ class ProfileViewModel @Inject constructor(
         loadingLiveData.value = false
     }
 
+    fun sendOtpToVerifyMethod(
+        verifyType: VerificationType,
+        onCollect: (BaseResult<EmptyEntity, WrappedResponse<Nothing>>) -> Unit
+    ) {
+        viewModelScope.launch {
+            sendOtpUseCase.invoke(verifyType == VerificationType.BY_PHONE)
+                .onStart {
+                    setLoading()
+                }.catch {
+                    hideLoading()
+                }
+                .collect { result ->
+                    hideLoading()
+                    onCollect(result)
+                }
+        }
+
+    }
 
     fun updateProfile(
         name: String,

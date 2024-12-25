@@ -10,16 +10,17 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.souqApp.NavGraphDirections
 import com.souqApp.R
 import com.souqApp.databinding.FragmentProfileBinding
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.showToast
-import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.PathUtil
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
+import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -75,14 +76,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         binding.btnLogout.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.btnDelete.setOnClickListener(this)
+        binding.tvVerifiedEmail.setOnClickListener(this)
+        binding.tvVerifiedPhone.setOnClickListener(this)
+        binding.etName.doAfterTextChanged { checkIsProfileChanged() }
+    }
 
-        binding.etName.doAfterTextChanged {
-            val name = it.toString()
-            if (name != sharedPrefs.getUserInfo()?.name) {
-                viewModel.setProfileChanged(true)
-            } else {
-                viewModel.setProfileChanged(false)
-            }
+    private fun checkIsProfileChanged() {
+        val name = binding.etName.text.toString()
+        if (name != sharedPrefs.getUserInfo()?.name) {
+            viewModel.setProfileChanged(true)
+        } else {
+            viewModel.setProfileChanged(false)
         }
     }
 
@@ -90,12 +94,23 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         binding.user = sharedPrefs.getUserInfo()
     }
 
+    private fun verifyMethod(verificationType: VerificationType) {
+        viewModel.sendOtpToVerifyMethod(verificationType) { result ->
+            when (result) {
+                is BaseResult.Errors -> showDialog(result.error.message)
+                is BaseResult.Success -> navigate(
+                    NavGraphDirections.toVerifyByMethodFragment(verificationType, R.id.profileFragment)
+                )
+            }
+        }
+    }
+
     private fun onAccountDeleted(message: String) {
         showDialog(message, onConfirm = { logout() })
     }
 
     private fun handleIsLoading(isLoading: Boolean) {
-        binding.includeLoader.loadingProgressBar.start(isLoading)
+        showLoading(isLoading)
     }
 
     private fun handleSuccessUpdateProfile(userEntity: UserEntity) {
@@ -113,6 +128,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             binding.btnSave.id -> updateProfile()
             binding.btnLogout.id -> confirmLogout()
             binding.btnDelete.id -> confirmDeleteAccount()
+            binding.tvVerifiedEmail.id -> verifyMethod(VerificationType.BY_EMAIL)
+            binding.tvVerifiedPhone.id -> verifyMethod(VerificationType.BY_PHONE)
         }
     }
 

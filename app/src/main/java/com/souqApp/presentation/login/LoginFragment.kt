@@ -65,8 +65,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     private fun handleSuccessLogin(userEntity: UserEntity) {
-        val requiredVerification = userEntity.verified == 2
-        sharedPrefs.saveToken(userEntity.token.orEmpty(), requiredVerification.not())
+        sharedPrefs.saveToken(userEntity.token.orEmpty(), true)
         sharedPrefs.saveUserInfo(userEntity)
         navigateToMainScreen()
     }

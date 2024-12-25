@@ -44,6 +44,10 @@
         android:id="@+id/to_verificationFragment"
         app:destination="@id/verificationFragment" />
 
+    <action
+        android:id="@+id/to_verifyByMethodFragment"
+        app:destination="@id/verifyByMethodFragment" />
+
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.souqApp.presentation.splash.SplashFragment"
@@ -194,6 +198,22 @@
         <argument
             android:name="image"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/verifyByMethodFragment"
+        android:name="com.souqApp.presentation.verify_by_method.VerifyByMethodFragment"
+        android:label=""
+        tools:layout="@layout/fragment_verification">
+
+        <argument
+            android:name="verifyType"
+            app:argType="com.souqApp.presentation.common.enums.VerificationType" />
+
+        <argument
+            android:name="popupTo"
+            app:argType="integer" />
+
     </fragment>
 
 

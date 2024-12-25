@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.souqApp.presentation.register.home.RegisterFragment"
-        android:label="RegisterFragment"
+        android:label="@string/sign_up"
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/to_termsAndConditionsFragment"

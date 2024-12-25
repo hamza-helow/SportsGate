@@ -7,6 +7,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.souqApp.NavGraphDirections
+import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
@@ -19,7 +21,7 @@ import com.souqApp.infra.extension.isVisible
 import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.enums.VerificationType
-import com.souqApp.presentation.main.cart.verify_by_method.VerifyByMethodFragment
+import com.souqApp.presentation.verify_by_method.VerifyByMethodFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -165,9 +167,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
             when (result) {
                 is BaseResult.Errors -> showDialog(result.error.message)
                 is BaseResult.Success -> navigate(
-                    CartFragmentDirections.toVerifyByMethodFragment(
-                        verificationType
-                    )
+                    NavGraphDirections.toVerifyByMethodFragment(verificationType, R.id.cartFragment)
                 )
             }
         }

@@ -1,4 +1,4 @@
-package com.souqApp.presentation.main.cart.verify_by_method
+package com.souqApp.presentation.verify_by_method
 
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -118,7 +118,7 @@ class VerifyByMethodFragment :
     private fun onSuccessVerified(userEntity: UserEntity) {
         sharedPrefs.saveUserInfo(userEntity)
         setFragmentResult(RESULT, bundleOf())
-        findNavController().popBackStack(R.id.cartFragment, false)
+        findNavController().popBackStack(args.popupTo, false)
     }
 
     private fun onErrorVerified(response: WrappedResponse<UserResponse>) {

@@ -1,4 +1,4 @@
-package com.souqApp.presentation.main.cart.verify_by_method
+package com.souqApp.presentation.verify_by_method
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle

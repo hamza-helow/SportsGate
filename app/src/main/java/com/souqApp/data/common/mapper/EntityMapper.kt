@@ -36,14 +36,15 @@ import com.souqApp.infra.extension.orDash
 
 fun UserResponse.toEntity() = UserEntity(
     id = id,
-    name = name,
-    email = email,
-    phone = phone,
-    image = image,
-    verified = verified,
+    name = name.orDash(),
+    email = email.orEmpty(),
+    phone = phone.orEmpty(),
+    image = image.orEmpty(),
     token = token,
     verifyPhoneRequired = verifyPhoneRequired == true,
-    verifyEmailRequired = verifyEmailRequired == true
+    verifyEmailRequired = verifyEmailRequired == true,
+    verifiedPhone = verifiedPhone == true,
+    verifiedEmail = verifiedEmail == true
 )
 
 

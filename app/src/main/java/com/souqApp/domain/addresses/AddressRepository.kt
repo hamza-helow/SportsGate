@@ -12,18 +12,18 @@ import retrofit2.Response
 
 interface AddressRepository {
 
-    suspend fun getAll(): Flow<BaseResult<List<AddressEntity>, WrappedListResponse<AddressResponse>>>
+    suspend fun getAll(): WrappedListResponse<AddressResponse>
 
-    suspend fun getDetails(addressId: Int): Flow<BaseResult<AddressDetailsEntity, WrappedResponse<AddressDetailsResponse>>>
+    suspend fun getDetails(addressId: Int): WrappedResponse<AddressDetailsResponse>
 
-    suspend fun add(addressRequest: AddressRequest): Flow<Boolean>
+    suspend fun add(addressRequest: AddressRequest): WrappedResponse<Nothing>
 
-    suspend fun update(addressRequest: AddressRequest): Flow<Boolean>
+    suspend fun update(addressRequest: AddressRequest): WrappedResponse<Nothing>
 
-    suspend fun delete(addressId: Int): Flow<Boolean>
+    suspend fun delete(addressId: Int): WrappedResponse<Nothing>
 
-    suspend fun getCitiesHaveAreas(): Flow<BaseResult<List<CityEntity>, WrappedListResponse<CityResponse>>>
+    suspend fun getCitiesHaveAreas(): WrappedListResponse<CityResponse>
 
-    suspend fun changeDefault(addressId: Int): Flow<Boolean>
+    suspend fun changeDefault(addressId: Int): WrappedResponse<Nothing>
 
 }

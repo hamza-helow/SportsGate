@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.verifcation.GetSupportedPasswordMethodsUseCase
+import com.souqApp.domain.verifcation.usecase.GetSupportedPasswordMethodsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch

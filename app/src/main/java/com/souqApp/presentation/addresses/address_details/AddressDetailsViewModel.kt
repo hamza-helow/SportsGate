@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.addresses.remote.dto.AddressDetailsResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.addresses.AddressDetailsEntity
-import com.souqApp.domain.addresses.AddressUseCase
+import com.souqApp.domain.addresses.usecase.GetAddressDetailsUseCase
 import com.souqApp.domain.common.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddressDetailsViewModel @Inject constructor(private val addressUseCase: AddressUseCase) :
+class AddressDetailsViewModel @Inject constructor(private val getAddressDetailsUseCase: GetAddressDetailsUseCase) :
     ViewModel() {
 
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
@@ -28,7 +28,7 @@ class AddressDetailsViewModel @Inject constructor(private val addressUseCase: Ad
 
     fun getAddressDetails(addressId: Int) {
         viewModelScope.launch {
-            addressUseCase.getDetails(addressId)
+            getAddressDetailsUseCase.invoke(addressId)
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {

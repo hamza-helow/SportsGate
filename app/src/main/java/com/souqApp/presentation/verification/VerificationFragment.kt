@@ -10,12 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.souqApp.R
-import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.databinding.FragmentVerificationBinding
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.start
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
@@ -67,16 +65,6 @@ class VerificationFragment :
     private fun handleLoading(isLoading: Boolean) {
         binding.btnSendOtp.isEnabled = !isLoading
         binding.loader.loadingProgressBar.start(isLoading)
-    }
-
-    private fun handleSuccessAccountVerification(userEntity: UserEntity) {
-        sharedPrefs.saveUserInfo(userEntity)
-        sharedPrefs.saveToken(userEntity.token.orEmpty())
-        findNavController().popBackStack(R.id.homeFragment, false)
-    }
-
-    private fun handleErrorAccountVerification(response: WrappedResponse<UserResponse>) {
-        showDialog(response.formattedErrors())
     }
 
     private fun initListener() {

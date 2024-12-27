@@ -3,7 +3,7 @@ package com.souqApp.presentation.create_password
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.souqApp.domain.create_password.CreatePasswordUseCase
+import com.souqApp.domain.auth.usecase.CreatePasswordUseCase
 import com.souqApp.infra.extension.isPasswordValid
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -33,7 +33,7 @@ class CreatePasswordViewModel @Inject constructor(private val createPasswordUseC
         onChanged: (changed: Boolean) -> Unit
     ) {
         viewModelScope.launch {
-            createPasswordUseCase.resetPassword(newPassword, resetToken)
+            createPasswordUseCase.invoke(newPassword, resetToken)
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {

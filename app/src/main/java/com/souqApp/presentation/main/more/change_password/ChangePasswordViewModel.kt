@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.domain.change_password.ChangePasswordUseCase
+import com.souqApp.domain.auth.usecase.ChangePasswordUseCase
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.EmptyEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +30,7 @@ class ChangePasswordViewModel @Inject constructor(private val changePasswordUseC
     ) {
         viewModelScope.launch {
             changePasswordUseCase
-                .changePassword(oldPassword, newPassword)
+                .invoke(oldPassword, newPassword)
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {

@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.products.GetProductsUseCase
-import com.souqApp.domain.products.ProductsEntity
-import com.souqApp.domain.products.ProductsType
+import com.souqApp.domain.products.usecase.GetProductsUseCase
+import com.souqApp.domain.products.entity.ProductsEntity
+import com.souqApp.domain.products.entity.ProductsType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart

@@ -6,7 +6,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.souqApp.R
-import com.souqApp.data.contact_us.remote.ContactUsRequest
+import com.souqApp.data.settings.remote.dto.ContactUsRequest
 import com.souqApp.databinding.FragmentContactUsBinding
 import com.souqApp.infra.extension.showToast
 import com.souqApp.infra.extension.start

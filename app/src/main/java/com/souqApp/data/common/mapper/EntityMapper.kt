@@ -13,10 +13,10 @@ import com.souqApp.data.orders.remote.dto.OrderResponse
 import com.souqApp.data.orders.remote.dto.OrderStatus
 import com.souqApp.data.orders.remote.dto.OrderSummary
 import com.souqApp.data.orders.remote.dto.ProductInOrderResponse
-import com.souqApp.data.product_details.remote.AddProductToCartResponse
-import com.souqApp.data.product_details.remote.ProductDetailsEntity
-import com.souqApp.data.product_details.remote.ProductDetailsResponse
-import com.souqApp.data.product_details.remote.VariationProductPriceInfoResponse
+import com.souqApp.data.products.remote.dto.AddProductToCartResponse
+import com.souqApp.data.products.remote.dto.ProductDetailsEntity
+import com.souqApp.data.products.remote.dto.ProductDetailsResponse
+import com.souqApp.data.products.remote.dto.VariationProductPriceInfoResponse
 import com.souqApp.domain.addresses.AddressDetailsEntity
 import com.souqApp.domain.addresses.AddressEntity
 import com.souqApp.domain.addresses.AreaEntity
@@ -30,8 +30,8 @@ import com.souqApp.domain.orders.entity.OrderEntity
 import com.souqApp.domain.orders.entity.OrderStatusEntity
 import com.souqApp.domain.orders.entity.OrderSummaryEntity
 import com.souqApp.domain.orders.entity.ProductInOrderEntity
-import com.souqApp.domain.product_details.AddProductToCartEntity
-import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
+import com.souqApp.domain.products.entity.AddProductToCartEntity
+import com.souqApp.domain.products.entity.VariationProductPriceInfoEntity
 import com.souqApp.infra.extension.orDash
 
 fun UserResponse.toEntity() = UserEntity(

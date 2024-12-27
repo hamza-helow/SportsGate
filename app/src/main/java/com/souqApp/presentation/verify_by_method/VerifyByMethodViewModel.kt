@@ -9,8 +9,8 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.EmptyEntity
 import com.souqApp.domain.common.entity.UserEntity
-import com.souqApp.domain.users.VerifyMethodUseCase
-import com.souqApp.domain.users.SendOtpUseCase
+import com.souqApp.domain.auth.usecase.VerifyMethodUseCase
+import com.souqApp.domain.auth.usecase.SendOtpUseCase
 import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch

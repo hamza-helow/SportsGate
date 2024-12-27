@@ -15,7 +15,7 @@
 
         <variable
             name="details"
-            type="com.souqApp.data.product_details.remote.ProductDetailsEntity" />
+            type="com.souqApp.data.products.remote.dto.ProductDetailsEntity" />
 
         <variable
             name="discount"

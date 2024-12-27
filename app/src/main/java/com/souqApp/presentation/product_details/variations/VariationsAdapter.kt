@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.souqApp.data.product_details.remote.CombinationOption
-import com.souqApp.data.product_details.remote.Variation
+import com.souqApp.data.products.remote.dto.CombinationOption
+import com.souqApp.data.products.remote.dto.Variation
 import com.souqApp.databinding.ItemVariationBinding
 
 class VariationsAdapter(

@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.addresses.remote.dto.AddressResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.domain.addresses.AddressEntity
-import com.souqApp.domain.addresses.AddressUseCase
+import com.souqApp.domain.addresses.usecase.ChangeDefaultAddressUseCase
+import com.souqApp.domain.addresses.usecase.DeleteAddressUseCase
+import com.souqApp.domain.addresses.usecase.GetAddressesUseCase
 import com.souqApp.domain.common.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -15,8 +17,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase) :
-    ViewModel() {
+class AddressViewModel @Inject constructor(
+    private val deleteAddressUseCase: DeleteAddressUseCase,
+    private val getAddressesUseCase: GetAddressesUseCase,
+    private val changeDefaultAddressUseCase: ChangeDefaultAddressUseCase
+) : ViewModel() {
 
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val addressLiveData: MutableLiveData<BaseResult<List<AddressEntity>, WrappedListResponse<AddressResponse>>> =
@@ -28,7 +33,7 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
 
     fun getAddresses() {
         viewModelScope.launch {
-            addressUseCase.getAll()
+            getAddressesUseCase.invoke()
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {
@@ -42,9 +47,8 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
         addressId: Int,
         onResult: (deleted: Boolean) -> Unit
     ) {
-
         viewModelScope.launch {
-            addressUseCase.delete(addressId)
+            deleteAddressUseCase.invoke(addressId)
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {
@@ -57,8 +61,8 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
 
     fun changeDefault(addressId: Int, onResult: (changed: Boolean) -> Unit) {
         viewModelScope.launch {
-            addressUseCase
-                .changeDefault(addressId)
+            changeDefaultAddressUseCase
+                .invoke(addressId)
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {

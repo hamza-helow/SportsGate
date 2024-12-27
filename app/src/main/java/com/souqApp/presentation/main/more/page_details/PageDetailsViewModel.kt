@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.settings.remote.dto.PageDetailsEntity
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.settings.GetPageDetailsUseCase
+import com.souqApp.domain.settings.usecase.GetPageDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart

@@ -2,7 +2,7 @@ package com.souqApp.presentation.main.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.souqApp.data.product_details.remote.VariationOption
+import com.souqApp.data.products.remote.dto.VariationOption
 import com.souqApp.databinding.ItemHomeVariationColorsBinding
 import com.souqApp.infra.extension.setHexColor
 import com.souqApp.infra.utils.BaseRecyclerAdapter

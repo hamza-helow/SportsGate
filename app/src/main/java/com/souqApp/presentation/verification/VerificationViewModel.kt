@@ -3,20 +3,23 @@ package com.souqApp.presentation.verification
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.common.entity.UserEntity
-import com.souqApp.domain.verifcation.VerificationUseCase
+import com.souqApp.domain.verifcation.usecase.CreateResetTokenUseCase
+import com.souqApp.domain.verifcation.usecase.RequestPasswordResetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class VerificationViewModel @Inject constructor(private val verificationUseCase: VerificationUseCase) :
+class VerificationViewModel @Inject constructor(
+    private val createResetTokenUseCase: CreateResetTokenUseCase,
+    private val requestPasswordResetUseCase: RequestPasswordResetUseCase
+) :
     ViewModel() {
 
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
@@ -29,23 +32,6 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
         loadingLiveData.value = false
     }
 
-
-    fun activeAccount(
-        activeAccountRequest: ActiveAccountRequest,
-        onResult: (BaseResult<UserEntity, WrappedResponse<UserResponse>>) -> Unit
-    ) {
-        viewModelScope.launch {
-            verificationUseCase.invokeActiveAccount(activeAccountRequest)
-                .onStart { setLoading() }
-                .catch {
-                    hideLoading()
-                }.collect {
-                    hideLoading()
-                    onResult(it)
-                }
-        }
-    }
-
     fun createTokenResetPassword(
         byPhone: Boolean,
         credentialId: String,
@@ -53,7 +39,7 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
         onResult: (BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>) -> Unit
     ) {
         viewModelScope.launch {
-            verificationUseCase.createTokenResetPassword(byPhone, credentialId, code)
+            createResetTokenUseCase.invoke(byPhone, credentialId, code)
                 .onStart { setLoading() }
                 .catch { hideLoading() }
                 .collect {
@@ -65,18 +51,9 @@ class VerificationViewModel @Inject constructor(private val verificationUseCase:
 
     fun requestPasswordReset(credentialId: String, isPhone: Boolean) {
         viewModelScope.launch {
-            verificationUseCase
-                .requestPasswordReset(credentialId, isPhone)
+            requestPasswordResetUseCase
+                .invoke(credentialId, isPhone)
                 .catch {}
-                .collect()
-        }
-    }
-
-    fun resendActivationCode() {
-        viewModelScope.launch {
-            verificationUseCase
-                .resendActivationCode()
-                .catch { }
                 .collect()
         }
     }

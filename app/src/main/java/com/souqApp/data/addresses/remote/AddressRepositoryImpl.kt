@@ -19,67 +19,33 @@ import javax.inject.Inject
 class AddressRepositoryImpl @Inject constructor(private val addressApi: AddressApi) :
     AddressRepository {
 
-    override suspend fun getAll(): Flow<BaseResult<List<AddressEntity>, WrappedListResponse<AddressResponse>>> {
-        return flow {
-            val response = addressApi.getAll()
-            if (response.status) {
-                val data = response.data.orEmpty().toEntity()
-                emit(BaseResult.Success(data))
-            } else {
-                emit(BaseResult.Errors(response))
-            }
-        }
+    override suspend fun getAll(): WrappedListResponse<AddressResponse> {
+        return addressApi.getAll()
+
     }
 
-    override suspend fun getDetails(addressId: Int): Flow<BaseResult<AddressDetailsEntity, WrappedResponse<AddressDetailsResponse>>> {
-        return flow {
-            val response = addressApi.getDetails(addressId)
-            if (response.status) {
-                val data = response.data.toEntity()
-                emit(BaseResult.Success(data))
-            } else {
-                emit(BaseResult.Errors(response))
-            }
-
-        }
+    override suspend fun getDetails(addressId: Int): WrappedResponse<AddressDetailsResponse> {
+        return addressApi.getDetails(addressId)
     }
 
-    override suspend fun add(addressRequest: AddressRequest): Flow<Boolean> {
-        return flow {
-            val response = addressApi.add(addressRequest)
-            emit(response.status)
-        }
+    override suspend fun add(addressRequest: AddressRequest): WrappedResponse<Nothing> {
+        return addressApi.add(addressRequest)
     }
 
-    override suspend fun update(addressRequest: AddressRequest): Flow<Boolean> {
-        return flow {
-            val response = addressApi.update(addressRequest)
-            emit(response.status)
-        }
+    override suspend fun update(addressRequest: AddressRequest): WrappedResponse<Nothing> {
+        return addressApi.update(addressRequest)
     }
 
-    override suspend fun delete(addressId: Int): Flow<Boolean> {
-        return flow {
-            val response = addressApi.delete(addressId)
-            emit(response.status)
-        }
+    override suspend fun delete(addressId: Int): WrappedResponse<Nothing> {
+        return addressApi.delete(addressId)
     }
 
-    override suspend fun getCitiesHaveAreas(): Flow<BaseResult<List<CityEntity>, WrappedListResponse<CityResponse>>> {
-        return flow {
-            val response = addressApi.getCitiesHaveAreas()
-            if (response.status) {
-                emit(BaseResult.Success(data = response.data.orEmpty().toEntity()))
-            } else {
-                emit(BaseResult.Errors(response))
-            }
-        }
+    override suspend fun getCitiesHaveAreas(): WrappedListResponse<CityResponse> {
+        return addressApi.getCitiesHaveAreas()
+
     }
 
-    override suspend fun changeDefault(addressId: Int): Flow<Boolean> {
-        return flow {
-            val response = addressApi.changeDefault(addressId)
-            emit(response.status)
-        }
+    override suspend fun changeDefault(addressId: Int): WrappedResponse<Nothing> {
+        return addressApi.changeDefault(addressId)
     }
 }

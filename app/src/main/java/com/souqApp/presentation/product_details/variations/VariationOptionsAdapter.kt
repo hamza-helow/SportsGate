@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.souqApp.BR
-import com.souqApp.data.product_details.remote.CombinationOption
-import com.souqApp.data.product_details.remote.Variation
-import com.souqApp.data.product_details.remote.VariationType
+import com.souqApp.data.products.remote.dto.CombinationOption
+import com.souqApp.data.products.remote.dto.Variation
+import com.souqApp.data.products.remote.dto.VariationType
 import com.souqApp.databinding.ItemVariationColorsBinding
 import com.souqApp.databinding.ItemVariationImageBinding
 import com.souqApp.databinding.ItemVariationTextBinding

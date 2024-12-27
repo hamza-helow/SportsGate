@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.login.remote.dto.LoginRequest
+import com.souqApp.data.auth.dto.LoginRequest
 import com.souqApp.databinding.FragmentLoginBinding
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
@@ -65,7 +65,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     private fun handleSuccessLogin(userEntity: UserEntity) {
-        sharedPrefs.saveToken(userEntity.token.orEmpty(), true)
         sharedPrefs.saveUserInfo(userEntity)
         navigateToMainScreen()
     }

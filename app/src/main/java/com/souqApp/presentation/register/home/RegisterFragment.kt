@@ -5,11 +5,12 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.souqApp.R
-import com.souqApp.data.common.remote.dto.TokenResponse
+import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.register.remote.dto.RegisterRequest
+import com.souqApp.data.auth.dto.RegisterRequest
 import com.souqApp.databinding.FragmentRegisterBinding
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.infra.extension.toValidPhoneNumber
 import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.presentation.base.BaseFragment
@@ -63,11 +64,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         binding.checkBoxAgree.setOnCheckedChangeListener { _, _ -> validate() }
     }
 
-    private fun handleSuccessRegister() {
+    private fun handleSuccessRegister(userEntity: UserEntity) {
+        sharedPrefs.saveUserInfo(userEntity)
         findNavController().popBackStack(R.id.homeFragment, false)
     }
 
-    private fun handleErrorRegister(response: WrappedResponse<TokenResponse>) {
+    private fun handleErrorRegister(response: WrappedResponse<UserResponse>) {
         showDialog(response.formattedErrors())
     }
 
@@ -95,7 +97,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         viewModel.register(RegisterRequest(fullName, email, phone, password)) { result ->
             when (result) {
                 is BaseResult.Errors -> handleErrorRegister(result.error)
-                is BaseResult.Success -> handleSuccessRegister()
+                is BaseResult.Success -> handleSuccessRegister(result.data)
             }
         }
     }

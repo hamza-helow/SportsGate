@@ -136,7 +136,7 @@
 
         <argument
             android:name="type"
-            app:argType="com.souqApp.domain.products.ProductsType" />
+            app:argType="com.souqApp.domain.products.entity.ProductsType" />
 
     </fragment>
 

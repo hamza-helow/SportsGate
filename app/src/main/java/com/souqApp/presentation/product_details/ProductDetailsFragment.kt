@@ -16,12 +16,12 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.NavGraphDirections
 import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.product_details.remote.ProductDetailsEntity
+import com.souqApp.data.products.remote.dto.ProductDetailsEntity
 import com.souqApp.databinding.FragmentProductDetailsBinding
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.product_details.AddProductToCartEntity
-import com.souqApp.domain.product_details.VariationProductPriceInfoEntity
-import com.souqApp.domain.products.ProductsType
+import com.souqApp.domain.products.entity.AddProductToCartEntity
+import com.souqApp.domain.products.entity.VariationProductPriceInfoEntity
+import com.souqApp.domain.products.entity.ProductsType
 import com.souqApp.infra.extension.setContent
 import com.souqApp.infra.utils.IS_PURCHASE_ENABLED
 import com.souqApp.infra.utils.SharedPrefs

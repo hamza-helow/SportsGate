@@ -6,7 +6,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.NavGraphDirections
 import com.souqApp.databinding.FragmentCategoriesBinding
-import com.souqApp.domain.products.ProductsType
+import com.souqApp.domain.products.entity.ProductsType
 import com.souqApp.presentation.base.BaseFragment
 
 class CategoryChildrenFragment :

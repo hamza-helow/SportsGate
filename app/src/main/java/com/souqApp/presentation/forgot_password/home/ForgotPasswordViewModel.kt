@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.EmptyEntity
-import com.souqApp.domain.verifcation.VerificationUseCase
+import com.souqApp.domain.verifcation.usecase.RequestPasswordResetUseCase
 import com.souqApp.infra.extension.isEmail
 import com.souqApp.infra.extension.isPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
-    private val verificationUseCase: VerificationUseCase
+    private val requestPasswordResetUseCase: RequestPasswordResetUseCase
 ) : ViewModel() {
 
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
@@ -42,8 +42,8 @@ class ForgotPasswordViewModel @Inject constructor(
         onResult: (BaseResult<EmptyEntity, WrappedResponse<Nothing>>) -> Unit
     ) {
         viewModelScope.launch {
-            verificationUseCase
-                .requestPasswordReset(credentialId, isByPhone)
+            requestPasswordResetUseCase
+                .invoke(credentialId, isByPhone)
                 .onStart { showLoading(true) }
                 .catch { showLoading(false) }
                 .collect {

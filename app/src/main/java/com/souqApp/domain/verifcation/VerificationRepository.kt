@@ -1,34 +1,27 @@
 package com.souqApp.domain.verifcation
 
-import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.verifcation.remote.dto.ActiveAccountRequest
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.EmptyEntity
-import com.souqApp.domain.common.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 interface VerificationRepository {
 
-    suspend fun activeAccount(activeAccountRequest: ActiveAccountRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>>
-
     suspend fun createTokenResetPasswordByPhone(
         phone: String,
         code: String
-    ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>>
+    ): WrappedResponse<CreateTokenResetPasswordEntity>
 
     suspend fun createTokenResetPasswordByEmail(
         phone: String,
         code: String
-    ): Flow<BaseResult<CreateTokenResetPasswordEntity, WrappedResponse<CreateTokenResetPasswordEntity>>>
+    ):  WrappedResponse<CreateTokenResetPasswordEntity>
 
-    suspend fun requestPasswordResetByPhone(phone: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>>
+    suspend fun requestPasswordResetByPhone(phone: String): WrappedResponse<Nothing>
 
-    suspend fun requestPasswordResetByEmail(email: String): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>>
+    suspend fun requestPasswordResetByEmail(email: String): WrappedResponse<Nothing>
 
-    suspend fun resendActivationCode(): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>>
-
-    suspend fun getPasswordSupportedMethods(): Flow<BaseResult<List<String>, WrappedListResponse<String>>>
+    suspend fun getPasswordSupportedMethods(): WrappedListResponse<String>
 }

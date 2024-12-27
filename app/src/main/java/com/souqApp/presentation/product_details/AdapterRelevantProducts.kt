@@ -3,7 +3,7 @@ package com.souqApp.presentation.product_details
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.library.baseAdapters.BR
-import com.souqApp.data.product_details.remote.RelevantProductResponse
+import com.souqApp.data.products.remote.dto.RelevantProductResponse
 import com.souqApp.databinding.ItemProductRelevantBinding
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 

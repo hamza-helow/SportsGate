@@ -4,11 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.register.remote.dto.RegisterRequest
-import com.souqApp.data.common.remote.dto.TokenResponse
+import com.souqApp.data.auth.dto.RegisterRequest
+import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.common.entity.TokenEntity
-import com.souqApp.domain.register.usecase.RegisterUseCase
+import com.souqApp.domain.common.entity.UserEntity
+import com.souqApp.domain.auth.usecase.RegisterUseCase
 import com.souqApp.infra.extension.isEmail
 import com.souqApp.infra.extension.isPasswordValid
 import com.souqApp.infra.extension.isPhone
@@ -48,7 +48,7 @@ class RegisterViewModel @Inject constructor(private val registerUseCase: Registe
 
     fun register(
         registerRequest: RegisterRequest,
-        onResult: (BaseResult<TokenEntity, WrappedResponse<TokenResponse>>) -> Unit
+        onResult: (BaseResult<UserEntity, WrappedResponse<UserResponse>>) -> Unit
     ) {
         viewModelScope.launch {
             registerUseCase.invokeRegister(registerRequest)

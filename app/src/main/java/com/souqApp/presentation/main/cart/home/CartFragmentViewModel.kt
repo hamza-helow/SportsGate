@@ -14,7 +14,7 @@ import com.souqApp.domain.main.cart.UpdateProductUseCase
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
-import com.souqApp.domain.users.SendOtpUseCase
+import com.souqApp.domain.auth.usecase.SendOtpUseCase
 import com.souqApp.infra.utils.getTimestampInSeconds
 import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.lifecycle.HiltViewModel

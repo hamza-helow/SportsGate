@@ -1,7 +1,7 @@
 package com.souqApp.data.main.home.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.souqApp.data.product_details.remote.Variation
+import com.souqApp.data.products.remote.dto.Variation
 
 data class ProductEntity(
     @SerializedName("desc")

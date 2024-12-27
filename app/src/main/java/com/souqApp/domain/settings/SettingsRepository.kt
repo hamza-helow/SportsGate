@@ -2,7 +2,7 @@ package com.souqApp.domain.settings
 
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.settings.remote.dto.ContentEntity
+import com.souqApp.data.settings.remote.dto.ContactUsRequest
 import com.souqApp.data.settings.remote.dto.PageDetailsEntity
 import com.souqApp.data.settings.remote.dto.PageEntity
 import com.souqApp.data.settings.remote.dto.SettingsEntity
@@ -12,13 +12,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
 
-    suspend fun termsAndConditions(): Flow<BaseResult<ContentEntity, WrappedResponse<ContentEntity>>>
+    suspend fun getSettings(): WrappedResponse<SettingsEntity>
 
-    suspend fun aboutUs(): Flow<BaseResult<ContentEntity, WrappedResponse<ContentEntity>>>
+    suspend fun getPages(): WrappedListResponse<PageEntity>
 
-    suspend fun getSettings(): Flow<BaseResult<SettingsEntity, WrappedResponse<SettingsEntity>>>
+    suspend fun getPageDetails(pageId:Int?): WrappedResponse<PageDetailsEntity>
 
-    suspend fun getPages(): Flow<BaseResult<List<PageEntity>, WrappedListResponse<PageEntity>>>
-
-    suspend fun getPageDetails(pageId:Int?): Flow<BaseResult<PageDetailsEntity, WrappedResponse<PageDetailsEntity>>>
+    suspend fun sendContactUs(contactUsRequest: ContactUsRequest): WrappedResponse<Nothing>
 }

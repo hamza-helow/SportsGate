@@ -14,7 +14,6 @@ class SharedPrefs(context: Context) {
 
     companion object {
         private const val PREF = BuildConfig.APPLICATION_ID
-        private const val PREF_TOKEN = "user_token"
         private const val PREF_USER_INFO = "user_info"
         private const val IS_LOGIN = "is_login"
         private const val LANG = "lang_app"
@@ -44,10 +43,6 @@ class SharedPrefs(context: Context) {
         return lang
     }
 
-    fun saveToken(token: String, isLogin: Boolean = true) {
-        put(PREF_TOKEN, token)
-        put(IS_LOGIN, isLogin)
-    }
 
     fun saveUserInfo(user: UserEntity) {
         val jsonString = Gson().toJson(user, UserEntity::class.java) ?: ""
@@ -68,13 +63,10 @@ class SharedPrefs(context: Context) {
     }
 
     fun isLogin(): Boolean {
-        return getToken().isNotEmpty() && get(IS_LOGIN, Boolean::class.java)
+        return getUserInfo()?.token.isNullOrEmpty().not()
     }
 
-    fun getToken() = get(PREF_TOKEN, String::class.java)
-
     fun logout() {
-        saveToken("", false)
         clearUserInfo()
     }
 

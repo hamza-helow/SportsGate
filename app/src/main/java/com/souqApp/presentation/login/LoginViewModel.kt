@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.login.remote.dto.LoginRequest
+import com.souqApp.data.auth.dto.LoginRequest
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.UserEntity
-import com.souqApp.domain.login.LoginUseCase
+import com.souqApp.domain.auth.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart

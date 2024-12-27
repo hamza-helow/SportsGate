@@ -8,7 +8,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.souqApp.data.main.home.remote.dto.ProductEntity
-import com.souqApp.domain.products.GetProductsUseCaseP
+import com.souqApp.domain.products.usecase.GetProductsUseCaseP
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch

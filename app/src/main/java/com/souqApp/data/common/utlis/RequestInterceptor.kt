@@ -11,7 +11,7 @@ import org.json.JSONObject
 class RequestInterceptor(private val sharedPrefs: SharedPrefs) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = sharedPrefs.getToken()
+        val token = sharedPrefs.getUserInfo()?.token
 
         val newRequest = chain.request()
             .newBuilder()

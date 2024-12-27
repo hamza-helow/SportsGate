@@ -39,9 +39,6 @@ class ResetPasswordMethodsFragment :
     }
 
     private fun handleClickItem(method: String) {
-
-        Log.e("TAG" , method)
-
        navigate( ResetPasswordMethodsFragmentDirections.toForgotPasswordFragment(method != EMAIL))
     }
 

@@ -3,8 +3,8 @@ package com.souqApp.presentation.main.more.contact_us
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.souqApp.data.contact_us.remote.ContactUsRequest
-import com.souqApp.domain.contact_us.ContactUsUseCase
+import com.souqApp.data.settings.remote.dto.ContactUsRequest
+import com.souqApp.domain.settings.usecase.ContactUsUseCase
 import com.souqApp.infra.extension.isEmail
 import com.souqApp.infra.extension.isPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +33,7 @@ class ContactUsViewModel @Inject constructor(private val contactUsUseCase: Conta
     fun sendContactUsInfo(contactUsRequest: ContactUsRequest, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             contactUsUseCase
-                .sendContactUs(contactUsRequest)
+                .invoke(contactUsRequest)
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {

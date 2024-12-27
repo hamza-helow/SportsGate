@@ -5,7 +5,7 @@
 
         <variable
             name="relevantProduct"
-            type="com.souqApp.data.product_details.remote.RelevantProductResponse" />
+            type="com.souqApp.data.products.remote.dto.RelevantProductResponse" />
 
     </data>
 

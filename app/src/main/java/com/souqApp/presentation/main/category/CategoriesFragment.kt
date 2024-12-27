@@ -10,7 +10,7 @@ import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.databinding.FragmentCategoriesBinding
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.products.ProductsType
+import com.souqApp.domain.products.entity.ProductsType
 import com.souqApp.infra.extension.showToast
 import com.souqApp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint

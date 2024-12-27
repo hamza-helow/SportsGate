@@ -9,9 +9,9 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.EmptyEntity
 import com.souqApp.domain.common.entity.UserEntity
-import com.souqApp.domain.users.DeleteUserUseCase
-import com.souqApp.domain.users.SendOtpUseCase
-import com.souqApp.domain.users.UpdateProfileUseCase
+import com.souqApp.domain.auth.usecase.DeleteUserUseCase
+import com.souqApp.domain.auth.usecase.SendOtpUseCase
+import com.souqApp.domain.auth.usecase.UpdateProfileUseCase
 import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*

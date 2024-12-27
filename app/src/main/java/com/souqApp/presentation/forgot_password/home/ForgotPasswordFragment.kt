@@ -35,11 +35,10 @@ class ForgotPasswordFragment :
 
     private fun observeToVerificationResult() {
         setFragmentResultListener(VerificationFragment.RESULT) { _, bundle ->
-
-//            navigate(ForgotPasswordFragmentDirections.toCreatePasswordFragment(
-//                getIdCredential() ,
-//                bundle.getString(VerificationFragment.TOKEN).orEmpty() //TODO
-//            ))
+            navigate(ForgotPasswordFragmentDirections.toCreatePasswordFragment(
+                getIdCredential() ,
+                bundle.getString(VerificationFragment.TOKEN).orEmpty()
+            ))
         }
     }
 
@@ -86,13 +85,13 @@ class ForgotPasswordFragment :
     }
 
     private fun getIdCredential(): String {
-        if (args.byPhone) {
+        return if (args.byPhone) {
             val phoneNumber =
                 binding.includePhoneNumber.phoneEdt.text.toString().toValidPhoneNumber()
             val code = "962"
-            return code + phoneNumber
+            code + phoneNumber
         } else {
-            return binding.etEmail.text.toString()
+            binding.etEmail.text.toString()
         }
     }
 

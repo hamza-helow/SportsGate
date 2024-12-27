@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.wish_list.WishListUseCase
+import com.souqApp.domain.products.usecase.GetFavoriteProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WishListViewModel @Inject constructor(private val wishListUseCase: WishListUseCase) :
+class WishListViewModel @Inject constructor(private val getFavoriteProductsUseCase: GetFavoriteProductsUseCase) :
     ViewModel() {
 
 
@@ -29,8 +29,7 @@ class WishListViewModel @Inject constructor(private val wishListUseCase: WishLis
     @Inject
     fun getWishList() {
         viewModelScope.launch {
-
-            wishListUseCase
+            getFavoriteProductsUseCase
                 .invoke()
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }

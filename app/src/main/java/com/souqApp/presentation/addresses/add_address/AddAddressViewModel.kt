@@ -8,8 +8,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.souqApp.data.addresses.remote.dto.AddressRequest
 import com.souqApp.data.addresses.remote.dto.CityResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
-import com.souqApp.domain.addresses.AddressUseCase
 import com.souqApp.domain.addresses.CityEntity
+import com.souqApp.domain.addresses.usecase.AddAddressUseCase
+import com.souqApp.domain.addresses.usecase.GetCitiesHavAreasUseCase
 import com.souqApp.domain.common.BaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -18,7 +19,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddAddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase) :
+class AddAddressViewModel @Inject constructor(
+    private val updateAddAddressUseCase: AddAddressUseCase,
+    private val addAddressUseCase: AddAddressUseCase,
+    private val getCitiesHavAreasUseCase: GetCitiesHavAreasUseCase
+) :
     ViewModel() {
 
 
@@ -48,8 +53,7 @@ class AddAddressViewModel @Inject constructor(private val addressUseCase: Addres
     @Inject
     fun loadCities() {
         viewModelScope.launch {
-
-            addressUseCase.getCitiesHaveAreas()
+            getCitiesHavAreasUseCase.invoke()
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {
@@ -62,7 +66,7 @@ class AddAddressViewModel @Inject constructor(private val addressUseCase: Addres
 
     fun addAddress(addressRequest: AddressRequest, onResult: (added: Boolean) -> Unit) {
         viewModelScope.launch {
-            addressUseCase.add(addressRequest)
+            addAddressUseCase.invoke(addressRequest)
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {
@@ -76,8 +80,8 @@ class AddAddressViewModel @Inject constructor(private val addressUseCase: Addres
 
     fun updateAddress(addressRequest: AddressRequest, onResult: (updated: Boolean) -> Unit) {
         viewModelScope.launch {
-            addressUseCase
-                .update(addressRequest)
+            updateAddAddressUseCase
+                .invoke(addressRequest)
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {

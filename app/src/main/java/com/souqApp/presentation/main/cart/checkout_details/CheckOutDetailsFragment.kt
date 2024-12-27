@@ -6,6 +6,7 @@ import android.widget.CompoundButton
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.souqApp.R
 import com.souqApp.data.common.utlis.Constants
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -32,15 +33,39 @@ class CheckOutDetailsFragment :
     private val viewModel: PaymentDetailsViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
 
+    private lateinit var paymentMethodsAdapter: PaymentMethodsAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initPaymentMethodsAdapter()
         observeToLoading()
         observeToCheckoutDetails()
         observeTocCheckCouponCode()
+        observeToPaymentMethods()
         initListener()
         observeToValidate()
         binding.radioButtonHomeDelivery.setOnCheckedChangeListener(this)
         binding.radioButtonSitePickup.setOnCheckedChangeListener(this)
+    }
+
+    private fun observeToPaymentMethods() {
+        viewModel.paymentMethodsLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                is BaseResult.Errors -> Unit
+                is BaseResult.Success -> {
+                    paymentMethodsAdapter.replaceList(it.data)
+                }
+            }
+        }
+    }
+
+    private fun initPaymentMethodsAdapter() {
+        paymentMethodsAdapter = PaymentMethodsAdapter()
+        binding.recPaymentMethods.setAdapter(
+            paymentMethodsAdapter,
+            LinearLayoutManager(requireContext())
+        )
+
     }
 
     private fun observeTocCheckCouponCode() {

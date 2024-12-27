@@ -234,3 +234,13 @@ fun CheckUpdateResponse.toEntity() = CheckUpdateEntity(
     newVersion = newVersion == true,
     storeUrl = storeUrl.orEmpty()
 )
+
+fun PaymentMethodResponse.toEntity() = PaymentMethodEntity(
+    id = id ?: -1,
+    name = name.orEmpty(),
+    label = label.orEmpty(),
+    type = type.orEmpty(),
+    slug = slug.orEmpty(),
+    isActive = isActive == true,
+    description = description.orEmpty()
+)

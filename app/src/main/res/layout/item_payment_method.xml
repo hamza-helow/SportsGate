@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="paymentMethod"
+            type="com.souqApp.domain.main.cart.entity.PaymentMethodEntity" />
+    </data>
+
+    <RadioButton
+        android:id="@+id/radioButton_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{paymentMethod.label}"
+        tools:text="@string/cash_str" />
+
+</layout>

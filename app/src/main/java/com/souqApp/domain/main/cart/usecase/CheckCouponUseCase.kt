@@ -1,5 +1,6 @@
-package com.souqApp.domain.main.cart
+package com.souqApp.domain.main.cart.usecase
 
+import com.souqApp.domain.main.cart.CartRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

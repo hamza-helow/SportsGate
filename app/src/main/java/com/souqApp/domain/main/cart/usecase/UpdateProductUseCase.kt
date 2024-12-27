@@ -1,9 +1,10 @@
-package com.souqApp.domain.main.cart
+package com.souqApp.domain.main.cart.usecase
 
 import com.souqApp.data.common.mapper.toEntity
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 import com.souqApp.domain.common.BaseResult
+import com.souqApp.domain.main.cart.CartRepository
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
 import com.souqApp.infra.utils.SharedPrefs

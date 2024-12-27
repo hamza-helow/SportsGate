@@ -165,27 +165,12 @@
                     android:text="@string/select_payment_method_sub_str"
                     android:textColor="@color/grey" />
 
-                <RadioGroup
-                    android:id="@+id/radio_group"
+                <com.souqApp.infra.custome_view.flex_recycler_view.FlexRecyclerView
+                    android:id="@+id/rec_payment_methods"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp">
-
-                    <RadioButton
-                        android:id="@+id/radioButton_cash"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="@string/cash_str" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:enabled="false"
-                        android:text="@string/credit_str" />
-                </RadioGroup>
+                    app:itemCount="2"
+                    app:listItem="@layout/item_payment_method" />
 
                 <View
                     style="@style/Divider"

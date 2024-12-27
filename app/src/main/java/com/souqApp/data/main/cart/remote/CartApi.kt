@@ -1,9 +1,11 @@
 package com.souqApp.data.main.cart.remote
 
+import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
+import com.souqApp.data.main.cart.remote.dto.PaymentMethodResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -41,5 +43,8 @@ interface CartApi {
 
     @DELETE("v2/users/carts/reset")
     suspend fun resetCart(): WrappedResponse<Nothing>
+
+    @GET("v2/users/carts/payment_methods")
+    suspend fun getPaymentMethods(): WrappedListResponse<PaymentMethodResponse>
 
 }

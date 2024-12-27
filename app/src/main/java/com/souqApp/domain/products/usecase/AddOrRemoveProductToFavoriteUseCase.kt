@@ -16,8 +16,8 @@ class AddOrRemoveProductToFavoriteUseCase @Inject constructor(
 ) {
 
     suspend fun invoke(
-        productId: Int,
-        combinationId: Int?
+        productId: Int?,
+        combinationId: Int? = null
     ): Flow<BaseResult<AddToFavoriteResponse, WrappedResponse<AddToFavoriteResponse>>> {
         return flow {
             val response = productsRepository.addOrRemoveProductToFavorite(

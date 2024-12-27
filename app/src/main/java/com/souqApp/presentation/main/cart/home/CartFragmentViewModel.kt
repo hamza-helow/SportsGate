@@ -8,9 +8,9 @@ import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.EmptyEntity
-import com.souqApp.domain.main.cart.GetCartDetailsUseCase
-import com.souqApp.domain.main.cart.ResetCartUseCase
-import com.souqApp.domain.main.cart.UpdateProductUseCase
+import com.souqApp.domain.main.cart.usecase.GetCartDetailsUseCase
+import com.souqApp.domain.main.cart.usecase.ResetCartUseCase
+import com.souqApp.domain.main.cart.usecase.UpdateProductUseCase
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity

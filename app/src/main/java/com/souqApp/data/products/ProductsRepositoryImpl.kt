@@ -31,7 +31,7 @@ class ProductsRepositoryImpl @Inject constructor(private val productsApi: Produc
     }
 
     override suspend fun addOrRemoveProductToFavorite(
-        productId: Int,
+        productId: Int?,
         combinationId: Int?
     ): WrappedResponse<AddToFavoriteResponse> {
         return productsApi.addOrRemoveProductToFavorite(productId, combinationId)

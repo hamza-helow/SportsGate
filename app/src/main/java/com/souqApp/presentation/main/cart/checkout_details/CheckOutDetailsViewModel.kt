@@ -4,15 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
+import com.souqApp.data.main.cart.remote.dto.PaymentMethodResponse
 import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.main.cart.CheckCouponUseCase
-import com.souqApp.domain.main.cart.CheckoutUseCase
-import com.souqApp.domain.main.cart.GetCheckoutDetailsUseCase
+import com.souqApp.domain.main.cart.usecase.CheckCouponUseCase
+import com.souqApp.domain.main.cart.usecase.CheckoutUseCase
+import com.souqApp.domain.main.cart.usecase.GetCheckoutDetailsUseCase
 import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
+import com.souqApp.domain.main.cart.entity.PaymentMethodEntity
+import com.souqApp.domain.main.cart.usecase.GetPaymentMethodsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -23,7 +27,8 @@ import javax.inject.Inject
 class PaymentDetailsViewModel @Inject constructor(
     private val getCheckoutDetailsUseCase: GetCheckoutDetailsUseCase,
     private val checkoutUseCase: CheckoutUseCase,
-    private val checkCouponUseCase: CheckCouponUseCase
+    private val checkCouponUseCase: CheckCouponUseCase,
+    private val getPaymentMethodsUseCase: GetPaymentMethodsUseCase
 ) :
     ViewModel() {
 
@@ -33,6 +38,9 @@ class PaymentDetailsViewModel @Inject constructor(
 
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val checkoutDetailsLiveData: MutableLiveData<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> =
+        MutableLiveData()
+
+    val paymentMethodsLiveData: MutableLiveData<BaseResult<List<PaymentMethodEntity>, WrappedListResponse<PaymentMethodResponse>>> =
         MutableLiveData()
 
     val checkCouponCodeLiveData: MutableLiveData<Boolean> = MutableLiveData()
@@ -53,6 +61,18 @@ class PaymentDetailsViewModel @Inject constructor(
 
     init {
         getCheckoutDetails()
+        getPaymentMethods()
+    }
+
+    private fun getPaymentMethods() {
+        viewModelScope.launch {
+            getPaymentMethodsUseCase.invoke()
+                .onStart { setLoading(true) }
+                .catch { setLoading(false) }
+                .collect {
+                    paymentMethodsLiveData.value = it
+                }
+        }
     }
 
     fun getCheckoutDetails(deliveryOptionId: Int? = null) {

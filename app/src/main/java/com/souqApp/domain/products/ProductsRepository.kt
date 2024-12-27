@@ -27,7 +27,7 @@ interface ProductsRepository {
     suspend fun getProductDetails(productID: Int?): WrappedResponse<ProductDetailsResponse>
 
     suspend fun addOrRemoveProductToFavorite(
-        productId: Int,
+        productId: Int?,
         combinationId: Int?
     ): WrappedResponse<AddToFavoriteResponse>
 

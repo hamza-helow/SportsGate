@@ -1,9 +1,11 @@
 package com.souqApp.domain.main.cart
 
+import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
+import com.souqApp.data.main.cart.remote.dto.PaymentMethodResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 
 interface CartRepository {
@@ -30,5 +32,7 @@ interface CartRepository {
     suspend fun checkCouponCode(couponCode: String): WrappedResponse<Nothing>
 
     suspend fun resetCart(): WrappedResponse<Nothing>
+
+    suspend fun getPaymentMethods(): WrappedListResponse<PaymentMethodResponse>
 
 }

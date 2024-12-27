@@ -17,7 +17,7 @@ interface ProductsApi {
 
     @POST("v2/users/favorites/addOrRemoveFavoriteProduct")
     suspend fun addOrRemoveProductToFavorite(
-        @Query("product_id") productId: Int,
+        @Query("product_id") productId: Int?,
         @Query("combination_id") combinationId: Int?
     ): WrappedResponse<AddToFavoriteResponse>
 

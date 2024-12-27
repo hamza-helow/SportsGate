@@ -54,16 +54,28 @@ class WishListFragment : BaseFragment<FragmentWishListBinding>(FragmentWishListB
 
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
+                val position = viewHolder.layoutPosition
+                adapter.removeItem(position)
+                binding.recProducts.showEmptyState(adapter.dataList.isEmpty())
+                removeProduct(products.getOrNull(position)?.id)
             }
         }
 
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(binding.recProducts.recyclerView)
 
-
         binding.recProducts.setAdapter(adapter, LinearLayoutManager(requireContext()))
         binding.recProducts.showEmptyState(products.isEmpty())
+    }
+
+
+    private fun removeProduct(productId: Int?) {
+        viewModel.removeProductFromFavorite(productId) {
+            when (it) {
+                is BaseResult.Errors -> Unit
+                is BaseResult.Success -> Unit
+            }
+        }
     }
 
     private fun onErrorLoad(response: WrappedListResponse<ProductEntity>) {

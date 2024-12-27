@@ -1,4 +1,4 @@
-package com.souqApp.domain.main.home
+package com.souqApp.domain.main.home.entity
 
 data class CheckUpdateEntity(
     val forceUpdate: Boolean,

@@ -16,8 +16,8 @@ import com.souqApp.NavGraphDirections
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.main.home.remote.dto.HomeResponse
 import com.souqApp.databinding.FragmentHomeBinding
-import com.souqApp.domain.main.home.CheckUpdateEntity
-import com.souqApp.domain.main.home.HomeEntity
+import com.souqApp.domain.main.home.entity.CheckUpdateEntity
+import com.souqApp.domain.main.home.entity.HomeEntity
 import com.souqApp.domain.products.entity.ProductsType
 import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment

@@ -1,38 +1,34 @@
 package com.souqApp.domain.main.cart
 
-import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.main.cart.remote.dto.*
-import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
-import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.main.cart.entity.CartDetailsEntity
-import com.souqApp.domain.main.cart.entity.CheckoutEntity
-import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
-import kotlinx.coroutines.flow.Flow
+import com.souqApp.data.main.cart.remote.dto.CartDetailsResponse
+import com.souqApp.data.main.cart.remote.dto.CheckoutDetailsResponse
+import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
+import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 
 interface CartRepository {
 
-    suspend fun getCartDetails(updated:Long): Flow<BaseResult<CartDetailsEntity, WrappedResponse<CartDetailsResponse>>>
+    suspend fun getCartDetails(updated: Long): WrappedResponse<CartDetailsResponse>
 
-    suspend fun deleteProductFromCart(cartItemId: Int): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>>
+    suspend fun deleteProductFromCart(cartItemId: Int): WrappedResponse<UpdateProductCartResponse>
 
     suspend fun updateProductQty(
         productId: Int,
         qty: Int,
         combinationId: Int?
-    ): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>>
+    ): WrappedResponse<UpdateProductCartResponse>
 
-    suspend fun getCheckoutDetails(deliveryOptionId: Int?): Flow<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>>
+    suspend fun getCheckoutDetails(deliveryOptionId: Int?): WrappedResponse<CheckoutDetailsResponse>
 
 
     suspend fun checkout(
         couponCode: String?,
         addressId: Int?,
         deliveryOptionId: Int?
-    ): Flow<BaseResult<CheckoutEntity, WrappedResponse<CheckoutResponse>>>
+    ): WrappedResponse<CheckoutResponse>
 
-    suspend fun checkCouponCode(couponCode: String): Flow<Boolean>
+    suspend fun checkCouponCode(couponCode: String): WrappedResponse<Nothing>
 
-    suspend fun resetCart(): Flow<BaseResult<String, String>>
+    suspend fun resetCart(): WrappedResponse<Nothing>
 
 }

@@ -2,7 +2,7 @@ package com.souqApp.data.main.home.remote.dto
 
 import com.google.gson.annotations.SerializedName
 import com.souqApp.data.main.common.CategoryEntity
-import com.souqApp.domain.main.home.TagEntity
+import com.souqApp.domain.main.home.entity.TagEntity
 
 data class HomeResponse(
     @SerializedName("cart_products_count")

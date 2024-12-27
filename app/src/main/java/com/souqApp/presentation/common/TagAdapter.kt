@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.souqApp.BR
 import com.souqApp.databinding.ItemTagBinding
-import com.souqApp.domain.main.home.TagEntity
+import com.souqApp.domain.main.home.entity.TagEntity
 import com.souqApp.infra.utils.BaseRecyclerAdapter
 
 class TagAdapter(private val onClick: (TagEntity) -> Unit) :

@@ -1,4 +1,4 @@
-package com.souqApp.domain.main.home
+package com.souqApp.domain.main.home.entity
 
 import com.souqApp.data.main.common.CategoryEntity
 import com.souqApp.data.main.home.remote.dto.ProductAdsEntity

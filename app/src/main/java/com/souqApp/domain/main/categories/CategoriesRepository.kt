@@ -6,5 +6,5 @@ import com.souqApp.domain.common.BaseResult
 import kotlinx.coroutines.flow.Flow
 
 interface CategoriesRepository {
-    suspend fun categories(): Flow<BaseResult<List<CategoryEntity>, WrappedListResponse<CategoryEntity>>>
+    suspend fun categories(): WrappedListResponse<CategoryEntity>
 }

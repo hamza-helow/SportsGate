@@ -1,7 +1,7 @@
 package com.souqApp.data.products.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.souqApp.domain.main.home.TagEntity
+import com.souqApp.domain.main.home.entity.TagEntity
 
 data class ProductDetailsEntity(
     val id: Int,

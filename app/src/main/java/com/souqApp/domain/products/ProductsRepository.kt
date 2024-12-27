@@ -24,23 +24,23 @@ interface ProductsRepository {
         recommended: Int? = null,
     ): WrappedListResponse<ProductEntity>
 
-    suspend fun productDetails(productID: Int?): Flow<BaseResult<ProductDetailsEntity, WrappedResponse<ProductDetailsResponse>>>
+    suspend fun getProductDetails(productID: Int?): WrappedResponse<ProductDetailsResponse>
 
     suspend fun addOrRemoveProductToFavorite(
         productId: Int,
         combinationId: Int?
-    ): Flow<BaseResult<AddToFavoriteResponse, WrappedResponse<AddToFavoriteResponse>>>
+    ): WrappedResponse<AddToFavoriteResponse>
 
     suspend fun addProductToCart(
         productId: Int,
         combinationId: Int?
-    ): Flow<BaseResult<AddProductToCartEntity, WrappedResponse<AddProductToCartResponse>>>
+    ): WrappedResponse<AddProductToCartResponse>
 
     suspend fun getVariationProductPriceInfo(
         productId: Int,
         label: String
-    ): Flow<BaseResult<VariationProductPriceInfoEntity, WrappedResponse<VariationProductPriceInfoResponse>>>
+    ): WrappedResponse<VariationProductPriceInfoResponse>
 
 
-    suspend fun getFavoriteProducts(): WrappedListResponse<ProductEntity>
+    suspend fun getFavoriteProducts(updated: Long): WrappedListResponse<ProductEntity>
 }

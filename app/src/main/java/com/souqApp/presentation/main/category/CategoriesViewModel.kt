@@ -28,7 +28,7 @@ class CategoriesViewModel @Inject constructor(private val categoriesUseCase: Cat
     @Inject
     fun getCategories() {
         viewModelScope.launch {
-            categoriesUseCase.categories()
+            categoriesUseCase.invoke()
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }
                 .collect {

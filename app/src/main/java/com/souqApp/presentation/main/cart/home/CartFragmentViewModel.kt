@@ -51,7 +51,7 @@ class CartFragmentViewModel @Inject constructor(
     @Inject
     fun getCartDetails() {
         viewModelScope.launch {
-            getCartDetailsUseCase.execute(updatedTime)
+            getCartDetailsUseCase.execute()
                 .onStart {
                     setLoadingCart(true)
                 }

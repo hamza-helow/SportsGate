@@ -12,9 +12,11 @@ import com.souqApp.data.products.remote.dto.ProductDetailsResponse
 import com.souqApp.data.products.remote.dto.VariationProductPriceInfoResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.products.entity.AddProductToCartEntity
-import com.souqApp.domain.products.GetVariationProductPriceInfoUseCase
-import com.souqApp.domain.products.usecase.ProductDetailsUseCase
+import com.souqApp.domain.products.usecase.GetVariationProductPriceInfoUseCase
+import com.souqApp.domain.products.usecase.AddProductToCartUseCase
 import com.souqApp.domain.products.entity.VariationProductPriceInfoEntity
+import com.souqApp.domain.products.usecase.AddOrRemoveProductToFavoriteUseCase
+import com.souqApp.domain.products.usecase.GetProductDetailsUseCase
 import com.souqApp.infra.utils.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -24,8 +26,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
-    private val productDetailsUseCase: ProductDetailsUseCase,
+    private val addProductToCartUseCase: AddProductToCartUseCase,
+    private val getProductDetailsUseCase: GetProductDetailsUseCase,
     private val getVariationProductPriceInfoUseCase: GetVariationProductPriceInfoUseCase,
+    private val addOrRemoveProductToFavoriteUseCase: AddOrRemoveProductToFavoriteUseCase,
     private val savedStateHandle: SavedStateHandle
 ) :
     ViewModel() {
@@ -54,7 +58,7 @@ class ProductDetailsViewModel @Inject constructor(
         onResult: (BaseResult<AddToFavoriteResponse, WrappedResponse<AddToFavoriteResponse>>) -> Unit
     ) {
         viewModelScope.launch {
-            productDetailsUseCase.addOrRemoveProduct(idProduct, variationCombinationId)
+            addOrRemoveProductToFavoriteUseCase.invoke(idProduct, variationCombinationId)
                 .catch {}
                 .collect { onResult(it) }
         }
@@ -82,8 +86,8 @@ class ProductDetailsViewModel @Inject constructor(
         onResult: (BaseResult<AddProductToCartEntity, WrappedResponse<AddProductToCartResponse>>) -> Unit
     ) {
         viewModelScope.launch {
-            productDetailsUseCase
-                .addProductToCart(productId, variationCombinationId)
+            addProductToCartUseCase
+                .invoke(productId, variationCombinationId)
                 .onStart {
                     onAddingToCart(true)
                 }
@@ -97,9 +101,9 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    fun getProductDetails() {
+    private fun getProductDetails() {
         viewModelScope.launch {
-            productDetailsUseCase.productDetails(productId)
+            getProductDetailsUseCase.invoke(productId)
                 .onStart { setLoading(true) }
                 .catch {
                     setLoading(false)

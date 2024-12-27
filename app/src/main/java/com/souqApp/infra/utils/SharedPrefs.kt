@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.souqApp.BuildConfig
-import com.souqApp.data.common.mapper.toEntity
-import com.souqApp.data.common.remote.dto.UserResponse
 import com.souqApp.domain.common.entity.UserEntity
 import java.util.Locale
 
@@ -15,9 +13,10 @@ class SharedPrefs(context: Context) {
     companion object {
         private const val PREF = BuildConfig.APPLICATION_ID
         private const val PREF_USER_INFO = "user_info"
-        private const val IS_LOGIN = "is_login"
         private const val LANG = "lang_app"
         private const val FIREBASE_TOKEN = "firebase_token"
+        private const val LAST_CART_UPDATE_TIME_STAMP = "last_cart_update_time_stamp"
+        private const val LAST_WISH_LIST_UPDATE_TIME_STAMP = "last_wish_list_update_time_stamp"
     }
 
     private val sharedPref: SharedPreferences =
@@ -41,6 +40,22 @@ class SharedPrefs(context: Context) {
         if (lang.isEmpty())
             return Locale.ENGLISH.language
         return lang
+    }
+
+    fun setLastCartUpdateTimeStamp(code: Long) {
+        put(LAST_CART_UPDATE_TIME_STAMP, code)
+    }
+
+    fun getLastCartUpdateTimeStamp(): Long {
+        return get(LAST_CART_UPDATE_TIME_STAMP, Long::class.java)
+    }
+
+    fun setLastWishListUpdateTimeStamp(code: Long) {
+        put(LAST_WISH_LIST_UPDATE_TIME_STAMP, code)
+    }
+
+    fun getLastWishListUpdateTimeStamp(): Long {
+        return get(LAST_WISH_LIST_UPDATE_TIME_STAMP, Long::class.java)
     }
 
 

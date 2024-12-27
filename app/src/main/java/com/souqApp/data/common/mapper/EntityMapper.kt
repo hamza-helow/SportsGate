@@ -23,8 +23,8 @@ import com.souqApp.domain.addresses.AreaEntity
 import com.souqApp.domain.addresses.CityEntity
 import com.souqApp.domain.common.entity.UserEntity
 import com.souqApp.domain.main.cart.entity.*
-import com.souqApp.domain.main.home.CheckUpdateEntity
-import com.souqApp.domain.main.home.HomeEntity
+import com.souqApp.domain.main.home.entity.CheckUpdateEntity
+import com.souqApp.domain.main.home.entity.HomeEntity
 import com.souqApp.domain.orders.entity.OrderDetailsEntity
 import com.souqApp.domain.orders.entity.OrderEntity
 import com.souqApp.domain.orders.entity.OrderStatusEntity

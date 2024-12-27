@@ -7,8 +7,8 @@ import com.souqApp.domain.common.BaseResult
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
-    suspend fun home(): Flow<BaseResult<HomeEntity, WrappedResponse<HomeResponse>>>
+    suspend fun getHome(): WrappedResponse<HomeResponse>
 
-    suspend fun checkUpdate(): Flow<BaseResult<CheckUpdateEntity, WrappedResponse<CheckUpdateResponse>>>
+    suspend fun checkUpdate(): WrappedResponse<CheckUpdateResponse>
 
 }

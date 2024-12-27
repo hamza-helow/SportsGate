@@ -46,7 +46,7 @@ interface ProductsApi {
 
 
     @GET("v2/users/favorites/getFavoriteProducts")
-    suspend fun getFavoriteProducts(): WrappedListResponse<ProductEntity>
+    suspend fun getFavoriteProducts(@Query("updated") updated: Long): WrappedListResponse<ProductEntity>
 
 }
 

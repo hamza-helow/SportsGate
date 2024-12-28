@@ -42,7 +42,6 @@
     <string name="select_payment_method_str">طريقة الدفع</string>
     <string name="select_payment_method_sub_str">اختر طريقة الدفع المفضلة</string>
     <string name="cash_str">نقدي عند التوصيل</string>
-    <string name="credit_str">بطاقة ائتمان(Visa, Mastercard)</string>
     <string name="select_delivery_address_sub_str">حدد عنوان التسليم الخاص بك</string>
     <string name="promo_code_str">الرمز الترويجي</string>
     <string name="delivery_str">التوصيل</string>
@@ -65,7 +64,6 @@
     <string name="pick_your_location">اختر موقعك</string>
     <string name="code_country">+962</string>
     <string name="sign_up">اشتراك</string>
-    <string name="phone_otp_message">تم إرسال رسالة نصية قصيرة إلى رقم هاتفك المحمول أدخل أدناه للتحقق من رقم هاتفك وإكمال تسجيلك</string>
     <string name="verify_phone_number">تحقق من رقم الهاتف</string>
     <string name="verify_email">تحقق من البريد الالكتروني </string>
     <string name="resend_code_after"> %1$d اعادة الارسال بعد </string>
@@ -77,7 +75,6 @@
     <string name="current_password">كلمة المرور الحالية</string>
     <string name="submit">ارسال</string>
     <string name="relevant_products">المنتجات المشابهة</string>
-    <string name="location_selected">تم اختيار الموقع</string>
     <string name="set_as_primary_delivery_address">تعيين كعنوان التسليم الأساسي</string>
     <string name="area">المنطقة</string>
     <string name="address_details">تفاصيل العنوان</string>

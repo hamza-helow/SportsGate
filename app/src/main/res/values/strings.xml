@@ -47,7 +47,6 @@
     <string name="select_payment_method_str">Payment Method</string>
     <string name="select_payment_method_sub_str">Choose your preferred payment method</string>
     <string name="cash_str">Cash on Delivery</string>
-    <string name="credit_str">Credit Card (Visa, Mastercard)</string>
     <string name="select_delivery_address_sub_str">Selected your delivery address</string>
     <string name="promo_code_str">Promo Code</string>
     <string name="delivery_str">Delivery</string>
@@ -71,7 +70,6 @@
 
     <string name="code_country">+962</string>
     <string name="sign_up">Sign up</string>
-    <string name="phone_otp_message">An SMS has been sent to your mobile number enter below to verify your phone number and complete your registration</string>
     <string name="verify_phone_number">Verify Phone Number</string>
     <string name="verify_email">Verify Email</string>
     <string name="resend_code_after">Resend code after %1$d sec </string>
@@ -86,7 +84,6 @@
     <string name="submit">Submit</string>
     <string name="relevant_products">Relevant products</string>
     <string name="title_activity_maps" tools:ignore="MissingTranslation">MapsActivity</string>
-    <string name="location_selected">The Location has been selected</string>
     <string name="set_as_primary_delivery_address">Set As Primary Delivery Address</string>
     <string name="area">Area</string>
     <string name="address_details">Address Details</string>

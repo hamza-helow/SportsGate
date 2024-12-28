@@ -6,8 +6,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.souqApp.data.common.utlis.CacheHelper
 import com.souqApp.data.common.utlis.WrappedResponse
+import com.souqApp.data.settings.remote.dto.PageEntity
 import com.souqApp.data.settings.remote.dto.SettingsEntity
 import com.souqApp.databinding.FragmentMoreBinding
 import com.souqApp.domain.common.BaseResult
@@ -39,10 +39,23 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initPagesAdapter()
         initListener()
         initInfo()
         observeToSettings()
+        observeToPages()
+    }
+
+    private fun observeToPages() {
+        viewModel.pagesLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is BaseResult.Errors -> Unit
+                is BaseResult.Success -> onPagesLoaded(result.data)
+            }
+        }
+    }
+
+    private fun onPagesLoaded(pages: List<PageEntity>) {
+        initPagesAdapter(pages)
     }
 
     private fun observeToSettings() {
@@ -54,9 +67,7 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>(FragmentMoreBinding::infl
         }
     }
 
-    private fun initPagesAdapter() {
-        val pages = CacheHelper.pages
-
+    private fun initPagesAdapter(pages: List<PageEntity>) {
         binding.txtPages.isVisible(pages.isNotEmpty())
         pagesAdapter = PagesAdapter { navigate(MoreFragmentDirections.toPageDetailsFragment(it)) }
         pagesAdapter.list = pages

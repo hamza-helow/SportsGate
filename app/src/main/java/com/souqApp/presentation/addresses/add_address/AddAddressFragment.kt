@@ -175,7 +175,7 @@ class AddAddressFragment :
                 val data = binding.spinnerCities.selectedItem as CityEntity
                 val adapterAreas = ArrayAdapter(
                     requireContext(),
-                    android.R.layout.simple_spinner_item,
+                    R.layout.item_spinner,
                     data.areas
                 )
                 binding.spinnerAreas.adapter = adapterAreas

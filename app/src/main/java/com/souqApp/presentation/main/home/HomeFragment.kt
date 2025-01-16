@@ -5,10 +5,10 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -73,8 +73,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun initBestSellingAdapter() {
         bestSellingAdapter = ProductGridAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
-        binding.recBestSelling.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.recBestSelling.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recBestSelling.addItemDecoration(SpacesItemDecoration(20))
         binding.recBestSelling.adapter = bestSellingAdapter
     }
@@ -84,8 +83,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         newProductAdapter = ProductGridAdapter(firebaseRemoteConfig, ::navigateToProductDetails)
         binding.recNewProducts.addItemDecoration(SpacesItemDecoration(20))
         binding.recNewProducts.adapter = newProductAdapter
-        binding.recNewProducts.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.recNewProducts.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
 
@@ -176,7 +174,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun handleCartCountUpdated(count: Int) {
-            mainViewModel.setQty(count)
+        mainViewModel.setQty(count)
     }
 
     private fun handleHomeLoadedError(response: WrappedResponse<HomeResponse>) {

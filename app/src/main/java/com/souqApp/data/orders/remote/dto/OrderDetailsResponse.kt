@@ -21,7 +21,9 @@ data class OrderDetailsResponse(
     @SerializedName("summary")
     val summary: OrderSummary? ,
     @SerializedName("status")
-    val status: OrderStatus?
+    val status: OrderStatus?,
+    @SerializedName("href")
+    val href: String?
 )
 
 data class ProductInOrderResponse(

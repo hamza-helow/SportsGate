@@ -1,5 +1,3 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         google()
@@ -16,9 +14,9 @@ buildscript {
 }
 
 plugins {
-    id("com.android.application") version "7.2.2" apply false
-    id("com.android.library") version "7.2.2" apply false
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1" apply false
+    alias(libs.plugins.android.application) apply  false
+    alias(libs.plugins.android.library) apply  false
+    alias(libs.plugins.mapsplatform) apply false
     alias(libs.plugins.kotlin.android) apply  false
     alias(libs.plugins.compose.compiler) apply false
 }

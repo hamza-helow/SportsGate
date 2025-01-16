@@ -1,7 +1,6 @@
 package com.souqApp.domain.verifcation.usecase
 
 import com.souqApp.data.common.utlis.WrappedResponse
-import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.EmptyEntity
 import com.souqApp.domain.verifcation.VerificationRepository
@@ -13,7 +12,7 @@ class RequestPasswordResetUseCase @Inject constructor(
     private val verificationRepository: VerificationRepository
 ) {
 
-    suspend fun invoke(
+    fun invoke(
         credentialId: String,
         isPhone: Boolean
     ): Flow<BaseResult<EmptyEntity, WrappedResponse<Nothing>>> {

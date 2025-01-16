@@ -6,7 +6,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.souqApp.NavGraphDirections
 import com.souqApp.R
 import com.souqApp.data.common.utlis.WrappedResponse
@@ -17,7 +19,9 @@ import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
+import com.souqApp.infra.custome_view.flex_recycler_view.showEmptyState
 import com.souqApp.infra.extension.isVisible
+import com.souqApp.infra.utils.SwipeToDeleteCallback
 import com.souqApp.presentation.activity.MainViewModel
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.common.enums.VerificationType
@@ -36,14 +40,20 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         init()
         observeToVerifyByMethodFragmentResult()
         initCartAdapter()
         observeToCartDetails()
         observeToLoading()
 
+    }
+
+    private fun init() {
+        binding.recProducts.setupEmptyState(viewModel.sharedPrefs.isLogin().not())
+        binding.btnCheckOut.setOnClickListener(this)
+        binding.imgDeleteCart.setOnClickListener(this)
+        binding.layoutPhoneNotVerified.setOnClickListener(this)
+        binding.layoutEmailNotVerified.setOnClickListener(this)
     }
 
     private fun observeToVerifyByMethodFragmentResult() {
@@ -74,6 +84,17 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
 
     private fun handleCartDetailsLoaded(cartDetailsEntity: CartDetailsEntity) {
         val products = cartDetailsEntity.products
+
+        val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.layoutPosition
+                products.getOrNull(position)?.let(::deleteProduct)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recProducts.recyclerView)
+
         handleCartEmptyState(products)
         binding.cart = cartDetailsEntity
         cartAdapter.addList(products)
@@ -81,11 +102,13 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
 
-    private fun init() {
-        binding.btnCheckOut.setOnClickListener(this)
-        binding.imgDeleteCart.setOnClickListener(this)
-        binding.layoutPhoneNotVerified.setOnClickListener(this)
-        binding.layoutEmailNotVerified.setOnClickListener(this)
+    fun deleteProduct(product: ProductInCartEntity) {
+        viewModel.deleteProduct(product) {
+            when (it) {
+                is BaseResult.Errors -> handleErrorUpdateQuantity(it.error)
+                is BaseResult.Success -> handleUpdateQuantity(it.data)
+            }
+        }
     }
 
     private fun resetCart() {

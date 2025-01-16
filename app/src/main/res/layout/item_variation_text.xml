@@ -10,21 +10,16 @@
 
     </data>
 
-    <FrameLayout
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
+    <TextView
         android:layout_margin="@dimen/_4sdp"
+        tools:background="@drawable/circle_border"
+        android:gravity="center"
         android:background="@{selected ? @drawable/circle_border :null}"
-        tools:background="@drawable/circle_border">
-
-        <TextView
-            android:gravity="center"
-            android:id="@+id/txtValue"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="12sp"
-            tools:text="L" />
-    </FrameLayout>
-
+        android:id="@+id/txtValue"
+        android:padding="@dimen/_8sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        tools:text="128 GB" />
 
 </layout>

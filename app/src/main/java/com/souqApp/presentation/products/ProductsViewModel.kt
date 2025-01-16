@@ -1,50 +1,33 @@
 package com.souqApp.presentation.products
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.souqApp.data.common.utlis.WrappedListResponse
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.souqApp.data.main.home.remote.dto.ProductEntity
-import com.souqApp.domain.common.BaseResult
-import com.souqApp.domain.products.usecase.GetProductsUseCase
-import com.souqApp.domain.products.entity.ProductsEntity
 import com.souqApp.domain.products.entity.ProductsType
+import com.souqApp.domain.products.usecase.GetProductsUseCase
+import com.souqApp.infra.utils.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductsViewModel @Inject constructor(private val getProductsUseCase: GetProductsUseCase) :
-    ViewModel() {
+class ProductsViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getProductsUseCase: GetProductsUseCase
+) : ViewModel() {
 
-    var isLastPage = false
-    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val productsLiveData: MutableLiveData<BaseResult<ProductsEntity, WrappedListResponse<ProductEntity>>> =
-        MutableLiveData()
+    val id: Int? by lazy { savedStateHandle.get<Int>(Constant.CATEGORY_ID) }
+    val type: ProductsType? by lazy { savedStateHandle.get<ProductsType>(Constant.TYPE) }
 
-    private fun setLoading(isLoading: Boolean) {
-        loadingLiveData.value = isLoading
+    val productsLiveData: LiveData<PagingData<ProductEntity>> by lazy {
+        val request = getProductsUseCase.request
+        request.promo = id.takeIf { type == ProductsType.PROMO }
+        request.tag = id.takeIf { type == ProductsType.TAG }
+        request.categoryId = id.takeIf { type == ProductsType.CATEGORY }
+        getProductsUseCase.invoke().cachedIn(viewModelScope)
     }
 
-    fun loadProducts(id: Int, type: ProductsType, pageNumber: Int = 1) {
-
-        viewModelScope.launch {
-            getProductsUseCase.execute(
-                promo = if (type == ProductsType.PROMO) id else null,
-                tag = if (type == ProductsType.TAG) id else null,
-                type = if (type == ProductsType.CATEGORY) id else null,
-                page = pageNumber
-            ).onStart {
-                if (pageNumber == 1)
-                    setLoading(true)
-            }.catch {
-                setLoading(false)
-            }.collect {
-                setLoading(false)
-                productsLiveData.value = it
-            }
-        }
-    }
 }

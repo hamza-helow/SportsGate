@@ -28,13 +28,17 @@ interface CartApi {
     ): WrappedResponse<UpdateProductCartResponse>
 
     @GET("v2/users/carts/checkoutDetails")
-    suspend fun getCheckoutDetails(@Query("delivery_option_id") deliveryOptionId: Int?): WrappedResponse<CheckoutDetailsResponse>
+    suspend fun getCheckoutDetails(
+        @Query("delivery_option_id") deliveryOptionId: Int?,
+        @Query("updated") updated: Long
+    ): WrappedResponse<CheckoutDetailsResponse>
 
     @POST("v2/users/carts/checkout")
     suspend fun checkout(
         @Query("coupon_code") couponCode: String?,
         @Query("address_id") addressId: Int?,
-        @Query("delivery_option_id") deliveryOptionId: Int?
+        @Query("delivery_option_id") deliveryOptionId: Int?,
+        @Query("payment_method_id") paymentMethodId: Int?
     ): WrappedResponse<CheckoutResponse>
 
     @GET("v2/users/carts/checkCouponCode")

@@ -66,6 +66,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
     private fun handleSuccessRegister(userEntity: UserEntity) {
         sharedPrefs.saveUserInfo(userEntity)
+        sharedPrefs.setUserToken(userEntity.token)
         findNavController().popBackStack(R.id.homeFragment, false)
     }
 

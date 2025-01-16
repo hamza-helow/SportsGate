@@ -15,8 +15,10 @@ class SharedPrefs(context: Context) {
         private const val PREF_USER_INFO = "user_info"
         private const val LANG = "lang_app"
         private const val FIREBASE_TOKEN = "firebase_token"
+        private const val USER_TOKEN = "user_token"
         private const val LAST_CART_UPDATE_TIME_STAMP = "last_cart_update_time_stamp"
         private const val LAST_WISH_LIST_UPDATE_TIME_STAMP = "last_wish_list_update_time_stamp"
+        private const val LAST_CHECK_OUT_DETAILS_TIME_STAMP = "last_check_out_details_time_stamp"
     }
 
     private val sharedPref: SharedPreferences =
@@ -31,6 +33,14 @@ class SharedPrefs(context: Context) {
         return get(FIREBASE_TOKEN, String::class.java)
     }
 
+    fun setUserToken(token: String?) {
+        put(USER_TOKEN, token.orEmpty())
+    }
+
+    fun getUserToken(): String {
+        return get(USER_TOKEN, String::class.java)
+    }
+
     fun setLanguage(code: String) {
         put(LANG, code)
     }
@@ -42,16 +52,24 @@ class SharedPrefs(context: Context) {
         return lang
     }
 
-    fun setLastCartUpdateTimeStamp(code: Long) {
-        put(LAST_CART_UPDATE_TIME_STAMP, code)
+    fun setLastCartUpdateTimeStamp(timestamp: Long) {
+        put(LAST_CART_UPDATE_TIME_STAMP, timestamp)
     }
 
     fun getLastCartUpdateTimeStamp(): Long {
         return get(LAST_CART_UPDATE_TIME_STAMP, Long::class.java)
     }
 
-    fun setLastWishListUpdateTimeStamp(code: Long) {
-        put(LAST_WISH_LIST_UPDATE_TIME_STAMP, code)
+    fun setLastCheckOutDetailsTimeStamp(timestamp: Long) {
+        put(LAST_CHECK_OUT_DETAILS_TIME_STAMP, timestamp)
+    }
+
+    fun getLastCheckOutDetailsTimeStamp(): Long {
+        return get(LAST_CHECK_OUT_DETAILS_TIME_STAMP, Long::class.java)
+    }
+
+    fun setLastWishListUpdateTimeStamp(timestamp: Long) {
+        put(LAST_WISH_LIST_UPDATE_TIME_STAMP, timestamp)
     }
 
     fun getLastWishListUpdateTimeStamp(): Long {

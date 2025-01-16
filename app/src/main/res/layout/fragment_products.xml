@@ -10,12 +10,27 @@
             type="Boolean" />
     </data>
 
-    <com.souqApp.infra.custome_view.flex_recycler_view.FlexRecyclerView
-        android:id="@+id/rec_products"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/_4sdp"
-        tools:listItem="@layout/item_product"
-        app:emptyState="@layout/empty_state_products"
-        app:showEmptyState="@{showEmptyState}" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_products"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_4sdp"
+            app:emptyState="@layout/empty_state_products"
+            tools:listItem="@layout/item_product" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="@dimen/_12sdp"
+            android:gravity="center"
+            android:text="@string/no_products_found"
+            app:drawableTopCompat="@drawable/ic_products_empty_state"
+            app:isVisible="@{showEmptyState}" />
+
+    </FrameLayout>
 </layout>

@@ -35,6 +35,7 @@ class PaymentDetailsViewModel @Inject constructor(
     var defaultIdAddress: Int? = null
     var selectedIdAddress: Int? = null
     var selectedDeliveryOptionId: Int? = null
+    var selectedPaymentMethod: PaymentMethodEntity? = null
 
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val checkoutDetailsLiveData: MutableLiveData<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> =
@@ -44,7 +45,6 @@ class PaymentDetailsViewModel @Inject constructor(
         MutableLiveData()
 
     val checkCouponCodeLiveData: MutableLiveData<Boolean> = MutableLiveData()
-
 
     private val _validateLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
     val validateLiveData: LiveData<Boolean> get() = _validateLiveData
@@ -97,7 +97,8 @@ class PaymentDetailsViewModel @Inject constructor(
                 .execute(
                     couponCode = couponCode,
                     addressId = selectedIdAddress ?: defaultIdAddress,
-                    deliveryOptionId = selectedDeliveryOptionId
+                    deliveryOptionId = selectedDeliveryOptionId,
+                    paymentMethodId = selectedPaymentMethod?.id
                 )
                 .onStart { setLoading(true) }
                 .catch { setLoading(false) }

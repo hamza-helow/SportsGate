@@ -3,6 +3,7 @@ package com.souqApp.presentation.forgot_password.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.souqApp.data.common.remote.dto.TokenResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.common.entity.EmptyEntity

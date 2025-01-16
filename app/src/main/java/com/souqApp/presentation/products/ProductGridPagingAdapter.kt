@@ -1,4 +1,4 @@
-package com.souqApp.presentation.search
+package com.souqApp.presentation.products
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import com.souqApp.BR
 import com.souqApp.data.common.utlis.Constants
 import com.souqApp.data.main.home.remote.dto.ProductEntity
-import com.souqApp.databinding.ItemProductHorizontalBinding
+import com.souqApp.databinding.ItemProductGridBinding
 import com.souqApp.infra.utils.BaseViewHolder
 
-class ProductHorizontalPagingAdapter(val onClickItem: (Int) -> Unit) :
-    PagingDataAdapter<ProductEntity, ProductHorizontalPagingAdapter.ProductHorizontalViewHolder>(DiffCallback) {
+class ProductGridPagingAdapter(val onClickItem: (Int) -> Unit) :
+    PagingDataAdapter<ProductEntity, ProductGridPagingAdapter.ProductGridViewHolder>(DiffCallback) {
 
-    override fun onBindViewHolder(holder: ProductHorizontalViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProductGridViewHolder, position: Int) {
         holder.bind(BR.product, getItem(position))
 
         holder.binding.root.setOnClickListener {
@@ -21,9 +21,9 @@ class ProductHorizontalPagingAdapter(val onClickItem: (Int) -> Unit) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHorizontalViewHolder {
-        return ProductHorizontalViewHolder(
-            ItemProductHorizontalBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductGridViewHolder {
+        return ProductGridViewHolder(
+            ItemProductGridBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -31,8 +31,8 @@ class ProductHorizontalPagingAdapter(val onClickItem: (Int) -> Unit) :
         )
     }
 
-    inner class ProductHorizontalViewHolder(override val binding: ItemProductHorizontalBinding) :
-        BaseViewHolder<ItemProductHorizontalBinding>(binding)
+    inner class ProductGridViewHolder(override val binding: ItemProductGridBinding) :
+        BaseViewHolder<ItemProductGridBinding>(binding)
 
 
     private companion object DiffCallback : DiffUtil.ItemCallback<ProductEntity>() {

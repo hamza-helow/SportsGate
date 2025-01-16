@@ -15,6 +15,8 @@ import com.souqApp.domain.main.cart.entity.CartDetailsEntity
 import com.souqApp.domain.main.cart.entity.ProductInCartEntity
 import com.souqApp.domain.main.cart.entity.UpdateProductCartEntity
 import com.souqApp.domain.auth.usecase.SendOtpUseCase
+import com.souqApp.domain.main.cart.usecase.DeleteProductUseCase
+import com.souqApp.infra.utils.SharedPrefs
 import com.souqApp.infra.utils.getTimestampInSeconds
 import com.souqApp.presentation.common.enums.VerificationType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +31,8 @@ class CartFragmentViewModel @Inject constructor(
     private val updateProductUseCase: UpdateProductUseCase,
     private val resetCartUseCase: ResetCartUseCase,
     private val sendOtpUseCase: SendOtpUseCase,
+    private val deleteProductUseCase: DeleteProductUseCase,
+    val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
     private var updatedTime: Long = getTimestampInSeconds()
@@ -50,6 +54,10 @@ class CartFragmentViewModel @Inject constructor(
 
     @Inject
     fun getCartDetails() {
+
+        if (sharedPrefs.isLogin().not())
+            return
+
         viewModelScope.launch {
             getCartDetailsUseCase.execute()
                 .onStart {
@@ -107,4 +115,18 @@ class CartFragmentViewModel @Inject constructor(
                 }
         }
     }
+
+    fun deleteProduct(
+        product: ProductInCartEntity,
+        onResult: (BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>) -> Unit
+    ) {
+        viewModelScope.launch {
+            deleteProductUseCase.execute(product)
+                .collect {
+                    updatedTime = getTimestampInSeconds()
+                    onResult(it)
+                }
+        }
+    }
+
 }

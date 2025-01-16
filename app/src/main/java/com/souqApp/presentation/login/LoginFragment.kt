@@ -66,6 +66,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun handleSuccessLogin(userEntity: UserEntity) {
         sharedPrefs.saveUserInfo(userEntity)
+        sharedPrefs.setUserToken(userEntity.token)
         navigateToMainScreen()
     }
 

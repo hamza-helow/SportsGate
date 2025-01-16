@@ -16,6 +16,7 @@ import com.souqApp.databinding.FragmentPaymentDetailsBinding
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
 import com.souqApp.domain.main.cart.entity.CheckoutEntity
+import com.souqApp.domain.main.cart.entity.PaymentMethodEntity
 import com.souqApp.infra.extension.errorBorder
 import com.souqApp.infra.extension.secondOrNull
 import com.souqApp.infra.extension.showToast
@@ -32,12 +33,10 @@ class CheckOutDetailsFragment :
 
     private val viewModel: PaymentDetailsViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
-
     private lateinit var paymentMethodsAdapter: PaymentMethodsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initPaymentMethodsAdapter()
         observeToLoading()
         observeToCheckoutDetails()
         observeTocCheckCouponCode()
@@ -52,20 +51,29 @@ class CheckOutDetailsFragment :
         viewModel.paymentMethodsLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is BaseResult.Errors -> Unit
-                is BaseResult.Success -> {
-                    paymentMethodsAdapter.replaceList(it.data)
-                }
+                is BaseResult.Success -> onPaymentMethodsLoaded(it.data)
             }
         }
     }
 
-    private fun initPaymentMethodsAdapter() {
-        paymentMethodsAdapter = PaymentMethodsAdapter()
+    private fun onPaymentMethodsLoaded(methods: List<PaymentMethodEntity>) {
+
+        if (viewModel.selectedPaymentMethod == null) {
+            viewModel.selectedPaymentMethod = methods.firstOrNull()
+        }
+
+        paymentMethodsAdapter =
+            PaymentMethodsAdapter({ viewModel.selectedPaymentMethod }, ::handleSelectPaymentMethod)
+        paymentMethodsAdapter.replaceList(methods)
         binding.recPaymentMethods.setAdapter(
             paymentMethodsAdapter,
             LinearLayoutManager(requireContext())
         )
+    }
 
+
+    private fun handleSelectPaymentMethod(paymentMethodEntity: PaymentMethodEntity) {
+        viewModel.selectedPaymentMethod = paymentMethodEntity
     }
 
     private fun observeTocCheckCouponCode() {

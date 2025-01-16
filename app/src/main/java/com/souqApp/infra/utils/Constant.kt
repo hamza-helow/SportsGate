@@ -6,5 +6,7 @@ object Constant {
     const val ORDER_ID = "orderId"
     const val NOTIFY_TYPE ="notify_type"
     const val REDIRECT_ID = "redirect_id"
+    const val CATEGORY_ID = "categoryId"
+    const val TYPE ="type"
 
 }

@@ -8,6 +8,7 @@ import com.souqApp.data.main.cart.remote.dto.CheckoutResponse
 import com.souqApp.data.main.cart.remote.dto.PaymentMethodResponse
 import com.souqApp.data.main.cart.remote.dto.UpdateProductCartResponse
 import com.souqApp.domain.main.cart.CartRepository
+import retrofit2.http.Query
 import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : CartRepository {
@@ -30,17 +31,21 @@ class CartRepositoryImpl @Inject constructor(private val cartApi: CartApi) : Car
     }
 
 
-    override suspend fun getCheckoutDetails(deliveryOptionId: Int?): WrappedResponse<CheckoutDetailsResponse> {
-        return cartApi.getCheckoutDetails(deliveryOptionId)
+    override suspend fun getCheckoutDetails(
+        deliveryOptionId: Int?,
+        updated: Long
+    ): WrappedResponse<CheckoutDetailsResponse> {
+        return cartApi.getCheckoutDetails(deliveryOptionId, updated)
     }
 
 
     override suspend fun checkout(
         couponCode: String?,
         addressId: Int?,
-        deliveryOptionId: Int?
+        deliveryOptionId: Int?,
+        paymentMethodId: Int?
     ): WrappedResponse<CheckoutResponse> {
-        return cartApi.checkout(couponCode, addressId, deliveryOptionId)
+        return cartApi.checkout(couponCode, addressId, deliveryOptionId, paymentMethodId)
     }
 
     override suspend fun checkCouponCode(couponCode: String): WrappedResponse<Nothing> {

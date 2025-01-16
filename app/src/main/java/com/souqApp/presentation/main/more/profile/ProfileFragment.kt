@@ -115,6 +115,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun handleSuccessUpdateProfile(userEntity: UserEntity) {
         sharedPrefs.saveUserInfo(userEntity)
+        sharedPrefs.setUserToken(userEntity.token)
         requireContext().showToast(getString(R.string.updated_successfully))
     }
 

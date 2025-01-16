@@ -6,14 +6,18 @@ import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.domain.common.BaseResult
 import com.souqApp.domain.main.cart.CartRepository
 import com.souqApp.domain.main.cart.entity.CheckoutDetailsEntity
+import com.souqApp.infra.utils.SharedPrefs
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetCheckoutDetailsUseCase @Inject constructor(private val cartRepository: CartRepository) {
-    suspend fun execute(deliveryOptionId: Int?): Flow<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> {
+class GetCheckoutDetailsUseCase @Inject constructor(
+    private val cartRepository: CartRepository,
+    private val sharedPrefs: SharedPrefs
+) {
+    fun execute(deliveryOptionId: Int?): Flow<BaseResult<CheckoutDetailsEntity, WrappedResponse<CheckoutDetailsResponse>>> {
         return flow {
-            val response = cartRepository.getCheckoutDetails(deliveryOptionId)
+            val response = cartRepository.getCheckoutDetails(deliveryOptionId,sharedPrefs.getLastCheckOutDetailsTimeStamp())
             if (response.status) {
                 emit(BaseResult.Success(data = response.data.toEntity()))
             } else {

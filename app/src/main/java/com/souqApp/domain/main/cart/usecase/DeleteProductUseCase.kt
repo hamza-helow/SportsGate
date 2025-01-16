@@ -13,24 +13,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class UpdateProductUseCase @Inject constructor(
+class DeleteProductUseCase @Inject constructor(
     private val cartRepository: CartRepository,
     private val sharedPrefs: SharedPrefs
 ) {
-    fun execute(
-        product: ProductInCartEntity,
-        isIncrease: Boolean
-    ): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>> {
+    fun execute(product: ProductInCartEntity): Flow<BaseResult<UpdateProductCartEntity, WrappedResponse<UpdateProductCartResponse>>> {
         return flow {
             val productId = product.cartItemId
-            val qty = if (isIncrease) product.qty + 1 else product.qty - 1
-            val combinationId = product.combinationId
-
-            val response =
-                if (product.qty == 1 && isIncrease.not())
-                    cartRepository.deleteProductFromCart(productId)
-                else
-                    cartRepository.updateProductQty(productId, qty, combinationId)
+            val response = cartRepository.deleteProductFromCart(productId)
 
             if (response.status) {
                 sharedPrefs.setLastCartUpdateTimeStamp(getTimestampInSeconds())

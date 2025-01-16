@@ -1,17 +1,17 @@
 package com.souqApp.presentation.products
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.souqApp.NavGraphDirections
-import com.souqApp.data.main.home.remote.dto.ProductEntity
 import com.souqApp.databinding.FragmentProductsBinding
-import com.souqApp.domain.common.BaseResult
-import com.souqApp.infra.custome_view.flex_recycler_view.PaginationListener
 import com.souqApp.presentation.base.BaseFragment
 import com.souqApp.presentation.main.home.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -23,51 +23,35 @@ class ProductsFragment : BaseFragment<FragmentProductsBinding>(FragmentProductsB
     @Inject
     lateinit var remoteConfig: FirebaseRemoteConfig
 
-    private lateinit var productsAdapter: ProductGridAdapter
+    private lateinit var productsAdapter: ProductGridPagingAdapter
     override fun onStart() {
         super.onStart()
         setupAdapter()
-        observeToLoading()
         observeToProducts()
     }
 
     private fun observeToProducts() {
-        viewModel.loadProducts(args.categoryId, args.type)
-
         viewModel.productsLiveData.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is BaseResult.Errors -> Unit
-                is BaseResult.Success -> handleOnProductsLoaded(result.data.products)
+            lifecycleScope.launch {
+                productsAdapter.submitData(viewLifecycleOwner.lifecycle, result)
+                productsAdapter.loadStateFlow.collect { loadStates ->
+                    if (loadStates.refresh is LoadState.Loading) {
+                        showLoading(true)
+                    } else {
+                        showLoading(false)
+                        binding.showEmptyState = (productsAdapter.itemCount == 0)
+                    }
+                }
             }
         }
     }
 
-    private fun observeToLoading() {
-        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
-    }
-
     private fun setupAdapter() {
-        productsAdapter = ProductGridAdapter { navigate(NavGraphDirections.toProductDetailsFragment(it)) }
-        productsAdapter.setPaginationListener(object : PaginationListener {
-            override val startPage: Int get() = 1
-
-            override val isLastPage: Boolean get() = viewModel.isLastPage
-
-            override fun loadMore(pageNumber: Int) {
-                viewModel.loadProducts(args.categoryId, args.type, pageNumber)
-            }
-        })
-    }
-
-    private fun handleOnProductsLoaded(products: List<ProductEntity>) {
-        viewModel.isLastPage = products.isEmpty()
-        binding.showEmptyState = products.isEmpty()
-        productsAdapter.addList(products)
+        productsAdapter =
+            ProductGridPagingAdapter { navigate(NavGraphDirections.toProductDetailsFragment(it)) }
         binding.recProducts.addItemDecoration(SpacesItemDecoration(20))
-        binding.recProducts.setAdapter(
-            productsAdapter,
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        )
+        binding.recProducts.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.recProducts.adapter = productsAdapter
     }
 
     override fun updateTitleBar() = args.name

@@ -47,8 +47,7 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(FragmentContact
     }
 
     private fun handleLoading(loading: Boolean) {
-        binding.loader.loadingProgressBar.start(loading)
-        binding.btnSubmit.isEnabled = !loading
+        showLoading(loading)
     }
 
     private fun handleAdded(added: Boolean) {

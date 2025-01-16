@@ -130,6 +130,16 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/_8sdp" />
 
+            <TextView
+                android:id="@+id/tv_view_invoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/view_invoice"
+                android:textAlignment="textEnd"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rec_products"
                 android:layout_width="match_parent"

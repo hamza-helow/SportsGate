@@ -9,7 +9,8 @@ data class OrderDetailsEntity(
     val reason: String,
     val status: OrderStatusEntity?,
     val orderSummary: OrderSummaryEntity?,
-    val createdAt: String
+    val createdAt: String,
+    val href:String
 )
 
 

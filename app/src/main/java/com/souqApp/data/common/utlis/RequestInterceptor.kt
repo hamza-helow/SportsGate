@@ -1,5 +1,6 @@
 package com.souqApp.data.common.utlis
 
+import com.google.gson.Gson
 import com.souqApp.infra.utils.SharedPrefs
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -11,7 +12,7 @@ import org.json.JSONObject
 class RequestInterceptor(private val sharedPrefs: SharedPrefs) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = sharedPrefs.getUserInfo()?.token
+        val token = sharedPrefs.getUserToken()
 
         val newRequest = chain.request()
             .newBuilder()
@@ -23,22 +24,41 @@ class RequestInterceptor(private val sharedPrefs: SharedPrefs) : Interceptor {
         val response = chain.proceed(newRequest)
         val responseBodyString = response.body.string()
 
-        val jsonResponse = JSONObject(responseBodyString)
-        if (jsonResponse.has("errors") && jsonResponse.get("errors") is JSONObject) {
-            val errors = jsonResponse.getJSONObject("errors")
-            if (errors.length() == 0) {
-                jsonResponse.put("errors", JSONArray())
+        try {
+            val jsonResponse = JSONObject(responseBodyString)
+            if (jsonResponse.has("errors") && jsonResponse.get("errors") is JSONObject) {
+                val errors = jsonResponse.getJSONObject("errors")
+                if (errors.length() == 0) {
+                    jsonResponse.put("errors", JSONArray())
+                }
             }
+
+            val modifiedResponseBody = ResponseBody.create(
+                "application/json".toMediaType(),
+                jsonResponse.toString()
+            )
+
+            return response.newBuilder()
+                .body(modifiedResponseBody)
+                .apply { if (response.code != 200) code(200) }
+                .build()
+
+        } catch (e: Exception) {
+            val data = WrappedResponse<Any?>(
+                message = "",
+                status = false,
+                errors = emptyList(),
+                data = null
+            )
+            val modifiedResponseBody = ResponseBody.create(
+                "application/json".toMediaType(),
+                Gson().toJson(data)
+            )
+
+            return response.newBuilder()
+                .body(modifiedResponseBody)
+                .apply { if (response.code != 200) code(200) }
+                .build()
         }
-
-        val modifiedResponseBody = ResponseBody.create(
-            "application/json".toMediaType(),
-            jsonResponse.toString()
-        )
-
-        return response.newBuilder()
-            .body(modifiedResponseBody)
-            .apply { if (response.code != 200) code(200) }
-            .build()
     }
 }

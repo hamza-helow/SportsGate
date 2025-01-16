@@ -15,11 +15,6 @@
             android:padding="@dimen/_16sdp"
             tools:context=".presentation.addresses.add_address.AddAddressFragment">
 
-            <include
-                android:id="@+id/loader"
-                layout="@layout/loader" />
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,7 +1,9 @@
 package com.souqApp.presentation.orders.details
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class OrderDetailsFragment :
-    BaseFragment<FragmentOrderDetailsBinding>(FragmentOrderDetailsBinding::inflate) {
+    BaseFragment<FragmentOrderDetailsBinding>(FragmentOrderDetailsBinding::inflate),
+    View.OnClickListener {
 
     private val args: OrderDetailsFragmentArgs by navArgs()
     private val viewModel: OrderDetailsViewModel by viewModels()
@@ -24,9 +27,14 @@ class OrderDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initListeners()
         initAdapter()
         observeToLoading()
         observeToOrderDetails()
+    }
+
+    private fun initListeners() {
+        binding.tvViewInvoice.setOnClickListener(this)
     }
 
     private fun observeToOrderDetails() {
@@ -53,6 +61,7 @@ class OrderDetailsFragment :
     }
 
     private fun handleLoaded(orderDetailsEntity: OrderDetailsEntity) {
+        viewModel.href = orderDetailsEntity.href
         productsOrderAdapter.addList(orderDetailsEntity.products)
         binding.details = orderDetailsEntity
     }
@@ -60,5 +69,16 @@ class OrderDetailsFragment :
     private fun handleLoading(loading: Boolean) {
         binding.content.isVisible(!loading)
         showLoading(loading)
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            binding.tvViewInvoice.id -> viewInvoice()
+        }
+    }
+
+    private fun viewInvoice() {
+        val customTabsIntent: CustomTabsIntent = CustomTabsIntent.Builder().build()
+        customTabsIntent.launchUrl(requireContext(), Uri.parse(viewModel.href))
     }
 }

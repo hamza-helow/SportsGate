@@ -12,9 +12,8 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_140sdp"
         android:adjustViewBounds="true"
-        android:maxHeight="@dimen/_140sdp"
         app:networkImage="@{image}"
         tools:ignore="ContentDescription"
         tools:layout_height="@dimen/_140sdp"

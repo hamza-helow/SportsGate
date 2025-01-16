@@ -15,11 +15,13 @@ class CheckoutUseCase @Inject constructor(private val cartRepository: CartReposi
     suspend fun execute(
         couponCode: String?,
         addressId: Int?,
-        deliveryOptionId: Int?
+        deliveryOptionId: Int?,
+        paymentMethodId: Int?
     ): Flow<BaseResult<CheckoutEntity, WrappedResponse<CheckoutResponse>>> {
 
         return flow {
-            val response = cartRepository.checkout(couponCode, addressId, deliveryOptionId)
+            val response =
+                cartRepository.checkout(couponCode, addressId, deliveryOptionId, paymentMethodId)
             if (response.status) {
                 emit(BaseResult.Success(data = response.data.toEntity()))
             } else {

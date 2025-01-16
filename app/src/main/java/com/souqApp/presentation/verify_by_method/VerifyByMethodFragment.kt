@@ -117,6 +117,7 @@ class VerifyByMethodFragment :
 
     private fun onSuccessVerified(userEntity: UserEntity) {
         sharedPrefs.saveUserInfo(userEntity)
+        sharedPrefs.setUserToken(userEntity.token)
         setFragmentResult(RESULT, bundleOf())
         findNavController().popBackStack(args.popupTo, false)
     }

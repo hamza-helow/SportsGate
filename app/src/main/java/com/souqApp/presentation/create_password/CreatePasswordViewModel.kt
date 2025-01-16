@@ -1,5 +1,6 @@
 package com.souqApp.presentation.create_password
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

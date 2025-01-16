@@ -1,6 +1,5 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
+    alias(libs.plugins.android.application)
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs")
@@ -12,7 +11,6 @@ plugins {
 
 android {
     compileSdk = 35
-
     namespace = "com.souqApp"
 
     defaultConfig {
@@ -22,9 +20,7 @@ android {
         versionCode = 8
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
         vectorDrawables.useSupportLibrary = true
-       // signingConfig = signingConfigs.debug
     }
 
     kapt {
@@ -65,9 +61,7 @@ android {
 
 dependencies {
 
-    val composeBom = platform("androidx.compose:compose-bom:2025.01.00")
-    implementation(composeBom)
-
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material)
     implementation(libs.androidx.foundation)

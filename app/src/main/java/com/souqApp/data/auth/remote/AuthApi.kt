@@ -29,7 +29,7 @@ interface AuthApi {
     @POST("v2/users/resetPassword")
     suspend fun resetPassword(
         @Query("new_password") newPassword: String,
-        @Header("Authorization") resetToken: String
+
     ): WrappedResponse<Nothing>
 
     @POST("v2/users/requestPasswordReset")

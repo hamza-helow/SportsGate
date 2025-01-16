@@ -1,5 +1,6 @@
 package com.souqApp.domain.verifcation
 
+import com.souqApp.data.common.remote.dto.TokenResponse
 import com.souqApp.data.common.utlis.WrappedListResponse
 import com.souqApp.data.common.utlis.WrappedResponse
 import com.souqApp.data.verifcation.remote.dto.CreateTokenResetPasswordEntity

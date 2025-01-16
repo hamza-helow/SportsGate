@@ -5,6 +5,7 @@ appintro = "6.1.0"
 browser = "1.8.0"
 circleimageview = "3.1.0"
 compiler = "4.13.0"
+composeBom = "2025.01.00"
 constraintlayout = "2.2.0"
 annotation = "1.9.1"
 converterGson = "2.9.0"
@@ -54,6 +55,7 @@ scrollingpagerindicator = "1.2.4"
 sdpAndroid = "1.1.0"
 shimmer = "0.5.0"
 kotlin = "2.0.0"
+mapsplatform = "2.0.1"
 
 [libraries]
 android-otpview-pinview = { module = "com.github.mukeshsolanki:android-otpview-pinview", version.ref = "androidOtpviewPinview" }
@@ -61,6 +63,7 @@ androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-browser = { module = "androidx.browser:browser", version.ref = "browser" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
@@ -121,4 +124,8 @@ shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android" ,version.ref = "kotlin"}
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "gradle" }
+android-library = { id = "com.android.library", version.ref = "gradle" }
+mapsplatform = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsplatform" }
+kotlin-kapt = {id= "kotlin-kapt" }

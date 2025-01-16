@@ -22,6 +22,8 @@ class OrderDetailsViewModel @Inject constructor(private val orderDetailsUseCase:
     val orderDetailsLiveData: MutableLiveData<BaseResult<OrderDetailsEntity, WrappedResponse<OrderDetailsResponse>>> =
         MutableLiveData()
 
+    var href: String = ""
+
     private fun setLoading(isLoading: Boolean) {
         loadingLiveData.value = isLoading
     }

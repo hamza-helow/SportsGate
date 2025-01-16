@@ -27,7 +27,7 @@ class AuthRepositoryImpl @Inject constructor(private val authApi: AuthApi) :
         newPassword: String,
         resetToken: String
     ): WrappedResponse<Nothing> {
-        return authApi.resetPassword(newPassword, resetToken)
+        return authApi.resetPassword(newPassword)
     }
 
 

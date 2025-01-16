@@ -20,13 +20,17 @@ interface CartRepository {
         combinationId: Int?
     ): WrappedResponse<UpdateProductCartResponse>
 
-    suspend fun getCheckoutDetails(deliveryOptionId: Int?): WrappedResponse<CheckoutDetailsResponse>
+    suspend fun getCheckoutDetails(
+        deliveryOptionId: Int?,
+        updated: Long
+    ): WrappedResponse<CheckoutDetailsResponse>
 
 
     suspend fun checkout(
         couponCode: String?,
         addressId: Int?,
-        deliveryOptionId: Int?
+        deliveryOptionId: Int?,
+        paymentMethodId: Int?
     ): WrappedResponse<CheckoutResponse>
 
     suspend fun checkCouponCode(couponCode: String): WrappedResponse<Nothing>

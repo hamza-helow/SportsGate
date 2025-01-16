@@ -137,7 +137,8 @@ fun OrderDetailsResponse.toEntity(): OrderDetailsEntity {
         reason = reason.orDash(),
         status = status?.toEntity(),
         orderSummary = summary?.toEntity(),
-        createdAt = createdAt.orDash()
+        createdAt = createdAt.orDash(),
+        href = href.orEmpty()
     )
 }
 

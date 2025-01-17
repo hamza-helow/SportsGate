@@ -35,6 +35,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
             buildConfigField("String", "API_BASE_URL", "\"https://dellcom.advancedsouqstagingappenv.uk/t/api/\"")
+            signingConfig = signingConfigs.getByName("debug")
         }
 
         debug {

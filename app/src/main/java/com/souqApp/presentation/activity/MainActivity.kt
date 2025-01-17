@@ -3,6 +3,7 @@ package com.souqApp.presentation.activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -25,16 +26,15 @@ import dagger.hilt.android.EntryPointAccessors
 import java.util.Locale
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), AppBarConfig {
 
     private val viewModel: MainViewModel by viewModels()
-
     private lateinit var binding: ActivityMainBinding
-
     private val appBarConfiguration: AppBarConfiguration by lazy { AppBarConfiguration(navController.graph) }
-
     private val navController: NavController by lazy { (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController }
+
 
     private val bottomNavigationItems = listOf(
         R.id.homeFragment,
@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
+        handleOnBack()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         window.decorView.layoutDirection = resources.configuration.layoutDirection
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
         }
 
         setupBottomNav()
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             if (destination is FloatingWindow)
@@ -82,9 +84,31 @@ class MainActivity : AppCompatActivity(), AppBarConfig {
         }
     }
 
+    private fun handleOnBack() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                when {
+                    navController.currentDestination?.id == R.id.homeFragment -> {
+                        finish()
+                    }
+
+                    bottomNavigationItems.contains(navController.currentDestination?.id) -> {
+                        navController.popBackStack(R.id.homeFragment, false)
+                    }
+
+                    else -> {
+                        remove()
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            }
+        })
+    }
+
     private fun setupBottomNav() {
         binding.bottomNavigationView.setupWithNavController(navController)
     }
+
 
     override fun updateTitleBar(title: String) {
         binding.toolbar.title = title

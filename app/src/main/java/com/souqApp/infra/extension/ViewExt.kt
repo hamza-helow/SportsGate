@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
@@ -76,14 +77,17 @@ fun View.setHexColor(hex: String) {
 fun WebView.setContent(content: String?) {
     if (content.orEmpty().isEmpty())
         return
-
-//    isFocusable = true
     isFocusableInTouchMode = true
     settings.javaScriptEnabled = true
     settings.loadsImagesAutomatically = true
 
+   // webChromeClient = WebChromeClient()
+
+   // setLayerType(WebView.LAYER_TYPE_HARDWARE, null)
+
     loadDataWithBaseURL(
         null,
-        "<style>img{max-width: 100%}</style>$content", "text/html", "UTF-8", null
+        "<style>img{max-width: 80%}</style>$content", "text/html", "UTF-8", null
     )
+
 }

@@ -45,13 +45,17 @@
             app:layout_constraintTop_toTopOf="@+id/cardImageProduct">
 
             <TextView
-                android:layout_margin="@dimen/_8sdp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:layout_marginHorizontal="@dimen/_4sdp"
                 android:layout_width="wrap_content"
+                android:minEms="2"
+                android:maxEms="2"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text='@{"-" + String.valueOf(product.discountPercentage) + "%" }'
                 android:textColor="@color/white"
                 android:textSize="11sp"
+                android:textAlignment="center"
                 tools:text="50%" />
 
         </androidx.cardview.widget.CardView>
